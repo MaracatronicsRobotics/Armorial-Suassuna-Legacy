@@ -62,6 +62,7 @@ public:
     // Player skills
     void setSpeed(float x, float y, float theta);
     void goTo(/* parametros aqui dentro */);
+    void Fon(/* parametros aqui dentro */);
 
     // Behaviour
     void setBehaviour(Behaviour *b);

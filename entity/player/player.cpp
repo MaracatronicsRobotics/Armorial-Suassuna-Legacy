@@ -240,3 +240,7 @@ void Player::setSpeed(float x, float y, float theta) {
 void Player::goTo(/* parametros vao aqui dentro */){
     // o que faz
 }
+
+void Player::Fon(/* parametros aqui dentro */){
+    // o que faz
+}
