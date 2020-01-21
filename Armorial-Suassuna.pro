@@ -81,8 +81,7 @@ SOURCES += \
     entity/contromodule/strategy/basics/mrcstrategy.cpp \
     entity/contromodule/strategy/basics/sslstrategy.cpp \
     entity/contromodule/controlmodule.cpp \
-    entity/contromodule/strategy/basics/sslstrategy_halt.cpp \
-    entity/contromodule/playbook/basics/playbook_donothing.cpp
+    entity/contromodule/strategy/basics/sslstrategy_halt.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
