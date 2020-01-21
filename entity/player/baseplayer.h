@@ -33,4 +33,5 @@ class NavigationAlgorithm;
 class ControlAlgorithm;
 class PlayerUtils;
 class Locations;
+class grsSimulator;
 #endif // BASEPLAYER_HH

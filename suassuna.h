@@ -17,8 +17,6 @@
 #include <entity/player/sslplayer/sslplayer.h>
 #include <entity/contromodule/coach.h>
 
-#include <entity/contromodule/grsSimulator/grsSimulator.h>
-
 #define MAX_ROBOT_ID 6
 
 class Suassuna

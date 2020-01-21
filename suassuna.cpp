@@ -4,6 +4,8 @@
 #include <entity/contromodule/strategy/strategystate.h>
 #include <entity/contromodule/strategy/basics/mrcstrategy.h>
 
+#include <entity/contromodule/grsSimulator/grsSimulator.h>
+
 Suassuna::Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide)
     : _teamId(teamId), _teamColor(teamColor), _fieldSide(fieldSide){
     // Create controller
@@ -42,13 +44,13 @@ bool Suassuna::start() {
     _ref->addGameInfo(Colors::BLUE);
     _world->addEntity(_ref, 0);
 
-    // Create GRSim Simulator
-    //_grSimulator = new grsSimulator();
-    //_world->addEntity(_grSimulator, 0);
-
     // Setup teams
     setupTeams(opTeamId, opTeamColor, opFieldSide);
     _world->setTeams(_ourTeam, _theirTeam);
+
+    // Create GRSim Simulator
+    _grSimulator = new grsSimulator();
+    _world->addEntity(_grSimulator, 0);
 
     // Setup team players
     setupOurPlayers();
@@ -126,7 +128,7 @@ void Suassuna::setupOurPlayers() {
     QList<quint8> playerList = _world->getWorldMap()->players(_teamId);
     for(quint8 i=0; i<playerList.size() && i<=MAX_ROBOT_ID; i++) {
         // Create Player
-        Player *player = new Player(_world, _ourTeam, _ctr, playerList.at(i), new Behaviour_DoNothing(), _ref);
+        Player *player = new Player(_world, _ourTeam, _ctr, playerList.at(i), new Behaviour_DoNothing(), _ref, _grSimulator);
         // Enable
         player->enable(true);
         // Add to team
@@ -140,7 +142,7 @@ void Suassuna::setupOppPlayers(quint8 opTeamId) {
     const QList<quint8> opPlayerList = _world->getWorldMap()->players(opTeamId);
     for(quint8 i=0; i<opPlayerList.size() && i<=MAX_ROBOT_ID; i++) {
         // Create Player
-        Player *opPlayer = new Player(_world, _theirTeam, _ctr, opPlayerList.at(i), new Behaviour_DoNothing(),_ref);
+        Player *opPlayer = new Player(_world, _theirTeam, _ctr, opPlayerList.at(i), new Behaviour_DoNothing(), _ref, _grSimulator);
         // Disable (op team doesnt run)
         opPlayer->enable(false);
         // Add to team
