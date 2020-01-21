@@ -11,7 +11,7 @@
 class Player : public Entity
 {
 public:
-    Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Behaviour *defaultBehaviour, SSLReferee *ref);
+    Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Behaviour *defaultBehaviour, SSLReferee *ref, grsSimulator *grSim);
     ~Player();
     QString name();
     void reset();
@@ -105,6 +105,9 @@ private:
     // errors
     float _lError;
     float _aError;
+
+    // grSimulator for tests
+    grsSimulator *_grSim;
 
 };
 

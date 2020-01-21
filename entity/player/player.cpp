@@ -3,11 +3,13 @@
 #include <entity/player/playeraccess.h>
 #include <entity/player/behaviour/behaviour.h>
 
+#include <entity/contromodule/grsSimulator/grsSimulator.h>
+
 QString Player::name(){
     return "Player #"+QString::number((int)_team->teamId())+":"+QString::number((int)_playerId);
 }
 
-Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Behaviour *defaultBehaviour, SSLReferee *ref) : Entity(Entity::ENT_PLAYER){
+Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Behaviour *defaultBehaviour, SSLReferee *ref, grsSimulator *grSim) : Entity(Entity::ENT_PLAYER){
     _world = world;
     _team = team;
     _playerId = playerID;
@@ -23,6 +25,9 @@ Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Be
 
     // Reset player
     reset();
+
+    // grSimulator for test
+    _grSim = grSim;
 }
 
 Player::~Player(){
@@ -220,15 +225,18 @@ void Player::idle(){
     _nextOrientation = orientation();
 
     // Set speed to 0
-    //
+    setSpeed(0.0, 0.0, 0.0);
 
     // Reset navigation algorithm
     //
 }
 
 void Player::setSpeed(float x, float y, float theta) {
+    // tem que fazer ajustes com os pids
+    _grSim->setSpeed((int)_team->teamId(), (int)playerId(), x, y, theta);
 }
 
+// exemplo de skill
 void Player::goTo(/* parametros vao aqui dentro */){
     // o que faz
 }
