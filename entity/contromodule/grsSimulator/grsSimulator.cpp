@@ -20,6 +20,7 @@
  ***/
 
 #include "grsSimulator.h"
+#include <iostream>
 
 QString grsSimulator::name(){
     return "GRSim Simulator";

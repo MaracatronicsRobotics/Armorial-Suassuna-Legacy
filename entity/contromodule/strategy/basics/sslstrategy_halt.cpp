@@ -15,5 +15,6 @@ void SSLStrategy_Halt::configure(int numOurPlayers) {
 }
 
 void SSLStrategy_Halt::run(int numOurPlayers) {
-    _pb_doNothing->addPlayers(dist()->getAllPlayers());
+    _pb_doNothing->addPlayer(0);
+    //_pb_doNothing->addPlayers(dist()->getAllPlayers());
 }

@@ -6,12 +6,12 @@ QString Behaviour_DoNothing::name() {
 }
 
 Behaviour_DoNothing::Behaviour_DoNothing() {
-
 }
 
 void Behaviour_DoNothing::configure() {
-    usesSkill(new Skill_DoNothing());
-}
+    usesSkill(new Skill_GoToLookTo());
+};
 
 void Behaviour_DoNothing::run() {
 }
+
