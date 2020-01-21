@@ -20,6 +20,7 @@ public:
 protected:
     Player *player() { return _player; }
     Locations *loc() { return _loc; }
+
 private:
     virtual void run() = 0;
 

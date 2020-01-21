@@ -78,11 +78,11 @@ void grsSimulator::sendPacket(grs_robot robot){
 
 void grsSimulator::setSpeed(quint8 teamId, quint8 robotId, float vx, float vy, float theta){
     if(!(teamId < MAX_TEAMS)){
-        std::cout << "[GRSIM ACTUATOR] Invalid team id: " << teamId << std::endl;
+        std::cout << "[GRSIM ACTUATOR] Invalid team id." << std::endl;
         return;
     }
     if(!(robotId < MAX_ROBOTS)){
-        std::cout << "[GRSIM ACTUATOR] Invalid robot id: " << robotId << std::endl;
+        std::cout << "[GRSIM ACTUATOR] Invalid robot id." << std::endl;
         return ;
     }
 
