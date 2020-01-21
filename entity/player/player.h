@@ -5,6 +5,7 @@
 #include <entity/world/world.h>
 #include <utils/utils.hh>
 #include <entity/player/baseplayer.h>
+#include <bits/stdc++.h>
 
 #define IDLE_COUNT 10
 
@@ -61,8 +62,9 @@ public:
 
     // Player skills
     void setSpeed(float x, float y, float theta);
-    void goTo(/* parametros aqui dentro */);
-    void Fon(/* parametros aqui dentro */);
+    std::pair<float, float> GoTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle);
+    float RotateTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle);
+    void goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle);
 
     // Behaviour
     void setBehaviour(Behaviour *b);
