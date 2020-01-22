@@ -1,10 +1,5 @@
 #include "playbook_timeout.h"
 
-<<<<<<< Updated upstream
-playbook_timeout::playbook_timeout()
-{
-
-=======
 QString Playbook_TimeOut::name() {
     return "Playbook_TimeOut";
 }
@@ -60,5 +55,4 @@ void Playbook_TimeOut::run(int numPlayers) {
     for(int i=0; i<numPlayers; i++){
         setPlayerBehaviour(dist()->getPlayer(), _bh_to.at(i));
     }
->>>>>>> Stashed changes
 }

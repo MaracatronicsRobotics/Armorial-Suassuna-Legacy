@@ -1,16 +1,6 @@
 #ifndef PLAYBOOK_TIMEOUT_H
 #define PLAYBOOK_TIMEOUT_H
 
-<<<<<<< Updated upstream
-
-class playbook_timeout
-{
-public:
-    playbook_timeout();
-};
-
-#endif // PLAYBOOK_TIMEOUT_H
-=======
 #include <entity/contromodule/playbook/playbook.h>
 #include <entity/player/behaviour/mrcbehaviours.h>
 
@@ -27,4 +17,3 @@ public:
 };
 
 #endif // PLAYBOOK_TIMEOUT_H
->>>>>>> Stashed changes

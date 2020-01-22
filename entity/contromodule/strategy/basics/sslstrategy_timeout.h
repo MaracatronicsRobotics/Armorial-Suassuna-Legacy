@@ -1,16 +1,6 @@
 #ifndef SSLSTRATEGY_TIMEOUT_H
 #define SSLSTRATEGY_TIMEOUT_H
 
-<<<<<<< Updated upstream
-
-class sslstrategy_timeout
-{
-public:
-    sslstrategy_timeout();
-};
-
-#endif // SSLSTRATEGY_TIMEOUT_H
-=======
 #include <entity/contromodule/strategy/strategystate.h>
 #include <entity/contromodule/playbook/mrcplaybook.h>
 
@@ -26,4 +16,3 @@ public:
 };
 
 #endif // SSLSTRATEGY_TIMEOUT_H
->>>>>>> Stashed changes

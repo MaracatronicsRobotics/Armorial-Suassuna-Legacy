@@ -1,10 +1,4 @@
 #include "behaviour_timeout.h"
-<<<<<<< Updated upstream
-
-behaviour_timeout::behaviour_timeout()
-{
-
-=======
 #include <entity/player/skills/skills_include.h>
 
 QString Behaviour_TimeOut::name() {
@@ -28,5 +22,4 @@ void Behaviour_TimeOut::run() {
 
 void Behaviour_TimeOut::setSkillPosition(Position pos){
     _desiredPosition = pos;
->>>>>>> Stashed changes
 }

@@ -1,10 +1,4 @@
 #include "sslstrategy_timeout.h"
-<<<<<<< Updated upstream
-
-sslstrategy_timeout::sslstrategy_timeout()
-{
-
-=======
 #include <entity/contromodule/strategy/strategystate.h>
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
@@ -22,5 +16,4 @@ void SSLStrategy_TimeOut::configure(int numOurPlayers) {
 
 void SSLStrategy_TimeOut::run(int numOurPlayers) {
     _pb_timeOut->addPlayers(dist()->getAllPlayers());
->>>>>>> Stashed changes
 }

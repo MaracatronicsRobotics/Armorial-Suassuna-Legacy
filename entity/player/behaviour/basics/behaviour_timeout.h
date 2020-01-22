@@ -1,16 +1,6 @@
 #ifndef BEHAVIOUR_TIMEOUT_H
 #define BEHAVIOUR_TIMEOUT_H
 
-<<<<<<< Updated upstream
-
-class behaviour_timeout
-{
-public:
-    behaviour_timeout();
-};
-
-#endif // BEHAVIOUR_TIMEOUT_H
-=======
 #include <entity/player/behaviour/behaviour.h>
 #include <entity/player/skills/skills_include.h>
 
@@ -29,4 +19,3 @@ public:
 };
 
 #endif // BEHAVIOUR_TIMEOUT_H
->>>>>>> Stashed changes

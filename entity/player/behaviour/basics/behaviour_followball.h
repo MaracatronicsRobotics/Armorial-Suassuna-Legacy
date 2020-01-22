@@ -1,16 +1,6 @@
 #ifndef BEHAVIOUR_FOLLOWBALL_H
 #define BEHAVIOUR_FOLLOWBALL_H
 
-<<<<<<< Updated upstream
-
-class behaviour_followball
-{
-public:
-    behaviour_followball();
-};
-
-#endif // BEHAVIOUR_FOLLOWBALL_H
-=======
 #include <entity/player/behaviour/behaviour.h>
 #include <entity/player/skills/skills_include.h>
 
@@ -26,4 +16,3 @@ public:
 };
 
 #endif // BEHAVIOUR_FOLLOWBALL_H
->>>>>>> Stashed changes

@@ -1,16 +1,6 @@
 #ifndef PLAYBOOK_FOLLOWBALL_H
 #define PLAYBOOK_FOLLOWBALL_H
 
-<<<<<<< Updated upstream
-
-class playbook_followball
-{
-public:
-    playbook_followball();
-};
-
-#endif // PLAYBOOK_FOLLOWBALL_H
-=======
 #include <entity/contromodule/playbook/playbook.h>
 #include <entity/player/behaviour/mrcbehaviours.h>
 
@@ -32,4 +22,3 @@ public:
 };
 
 #endif // PLAYBOOK_FOLLOWBALL_H
->>>>>>> Stashed changes

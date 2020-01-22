@@ -1,10 +1,5 @@
 #include "playbook_followball.h"
 
-<<<<<<< Updated upstream
-playbook_followball::playbook_followball()
-{
-
-=======
 QString Playbook_FollowBall::name() {
     return "Playbook_FollowBall";
 }
@@ -29,5 +24,4 @@ void Playbook_FollowBall::configure(int numPlayers) {
 void Playbook_FollowBall::run(int numPlayers) {
     for(int i=0; i<numPlayers; i++)
         setPlayerBehaviour(dist()->getPlayer(), _bh_followBall.at(i));
->>>>>>> Stashed changes
 }
