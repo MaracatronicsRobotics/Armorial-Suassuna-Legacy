@@ -1,5 +1,5 @@
 #include "mrcstrategy.h"
-#include "sslstrategy_halt.h"
+#include <entity/contromodule/strategy/mrcstrategies.h>
 
 QString MRCStrategy::name() {
     return "MRCStrategy_2020";
@@ -21,5 +21,6 @@ void MRCStrategy::configure() {
     setStrategyState(THEIRKICKOFF, new SSLStrategy_Halt());
     setStrategyState(THEIRDIRECTKICK, new SSLStrategy_Halt());
     setStrategyState(THEIRINDIRECTKICK, new SSLStrategy_Halt());
+    setStrategyState(TIMEOUT, new SSLStrategy_TimeOut());
     setStrategyState(UNDEFINED, new SSLStrategy_Halt());
 }

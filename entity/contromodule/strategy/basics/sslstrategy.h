@@ -21,6 +21,7 @@ protected:
         THEIRPENALTY,
         THEIRDIRECTKICK,
         THEIRINDIRECTKICK,
+        TIMEOUT,
         UNDEFINED
     } SSLGameState;
     void setStrategyState(SSLGameState gameState, StrategyState *strategyState);

@@ -1,7 +1,6 @@
 #ifndef SSLSTRATEGY_HALT_H
 #define SSLSTRATEGY_HALT_H
 
-
 #include <entity/contromodule/strategy/strategystate.h>
 #include <entity/contromodule/playbook/mrcplaybook.h>
 

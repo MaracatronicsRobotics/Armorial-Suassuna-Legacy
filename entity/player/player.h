@@ -62,9 +62,9 @@ public:
 
     // Player skills
     void setSpeed(float x, float y, float theta);
-    std::pair<float, float> GoTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle);
+    std::pair<float, float> GoTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double _distBall = 0.2);
     float RotateTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle);
-    void goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle);
+    void goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double _distBall = 0.2);
 
     // Behaviour
     void setBehaviour(Behaviour *b);

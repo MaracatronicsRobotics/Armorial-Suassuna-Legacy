@@ -20,7 +20,7 @@ void SSLStrategy::runStrategy() {
     if(gameState==UNDEFINED)
         return;
 
-    Strategy::runStrategy(HALT, SSLGameInfo::STATE_CANTMOVE);
+    Strategy::runStrategy(gameState, refState);
 
 }
 
@@ -37,6 +37,8 @@ SSLStrategy::SSLGameState SSLStrategy::refState2SSLGameState(SSLGameInfo::RefPro
         case SSLGameInfo::STATE_THEIRINDIRECTKICK:  return THEIRINDIRECTKICK;
         case SSLGameInfo::STATE_THEIRKICKOFF:       return THEIRKICKOFF;
         case SSLGameInfo::STATE_THEIRPENALTY:       return THEIRPENALTY;
+        case SSLGameInfo::STATE_TIMEOUT:            return TIMEOUT;
+
         case SSLGameInfo::STATE_UNDEFINED:
         default:
             std::cout << "[ERROR] SSLStrategy: undefined state, should never reach here!\n";

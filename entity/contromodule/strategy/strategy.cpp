@@ -12,7 +12,19 @@ Strategy::Strategy()
 }
 
 Strategy::~Strategy(){
+    // Load StrategyStates
+    QList<StrategyState*> gameStates = _strategyStatesTable.values();
 
+    // Delete one by one
+    QList<StrategyState*>::const_iterator it;
+    for(it=gameStates.constBegin(); it!=gameStates.constEnd(); it++)
+        delete *it;
+
+    // Clear for convenience
+    _strategyStatesTable.clear();
+
+    if(_dist!=NULL)
+        delete _dist;
 }
 
 void Strategy::initialize(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam, CoachUtils *utils){

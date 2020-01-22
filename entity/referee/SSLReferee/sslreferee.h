@@ -31,7 +31,7 @@
 
 class SSLReferee : public Referee {
 public:
-    SSLReferee(QString ipAddress = "224.5.23.1", int port = 10003);
+    SSLReferee(QString ipAddress = "224.5.23.2", int port = 10003);
     ~SSLReferee();
     QString name();
 

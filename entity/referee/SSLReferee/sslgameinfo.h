@@ -108,6 +108,8 @@ public:
     bool ourFreeKick();
     bool theirFreeKick();
 
+    bool timeOut();
+
     bool canMove();
 
     bool allowedNearBall();
@@ -132,6 +134,7 @@ public:
         STATE_THEIRINDIRECTKICK,
         STATE_THEIRPENALTY,
         STATE_THEIRKICKOFF,
+        STATE_TIMEOUT,
         STATE_UNDEFINED
     } RefProcessedState;
     RefProcessedState processedState();
