@@ -237,7 +237,7 @@ void Player::setSpeed(float x, float y, float theta) {
 }
 
 // exemplo de skill
-std::pair<float, float> Player::GoTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle){
+std::pair<float, float> Player::GoTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double _distBall){
     // Define a velocidade do robô para chegar na bola
     long double Vx = (point_x - robot_x);
     long double Vy = (point_y - robot_y);
@@ -247,18 +247,18 @@ std::pair<float, float> Player::GoTo(double robot_x, double robot_y, double poin
     double vySaida = (Vy * cos(theta) - Vx * sin(theta));
     double sinal_x = 1;
     double sinal_y = 1;
+
     if(vxSaida < 0) sinal_x = -1;
     if(vySaida < 0) sinal_y = -1;
-    if(moduloDistancia > 0.2){
+
+    if(moduloDistancia > _distBall){
         vxSaida = std::min(fabs(vxSaida)*0.7, 1.0);
+        vySaida = std::min(fabs(vySaida)*0.7, 1.0);
     } else {
         vxSaida = 0;
-    }
-    if(moduloDistancia > 0.2){
-        vySaida = std::min(fabs(vySaida)*0.7, 1.0);
-    } else{
         vySaida = 0;
     }
+
     setSpeed(vxSaida * sinal_x, vySaida * sinal_y, 0.0);
 
     return std::make_pair(vxSaida * sinal_x, vySaida * sinal_y);
@@ -317,9 +317,9 @@ float Player::RotateTo(double robot_x, double robot_y, double point_x, double po
     return speed;
 }
 
-void Player::goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double angleOrigin2Robot){
+void Player::goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double angleOrigin2Robot, double _distBall){
     std::pair<float, float> a;
-    a = GoTo(robot_x, robot_y, point_x, point_y, angleOrigin2Robot);
+    a = GoTo(robot_x, robot_y, point_x, point_y, angleOrigin2Robot, _distBall);
     float theta = RotateTo(robot_x, robot_y, point_x, point_y, angleOrigin2Robot);
 
     setSpeed(a.first, a.second, theta);

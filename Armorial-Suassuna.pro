@@ -85,7 +85,12 @@ SOURCES += \
     entity/contromodule/strategy/basics/sslstrategy.cpp \
     entity/contromodule/controlmodule.cpp \
     entity/contromodule/strategy/basics/sslstrategy_halt.cpp \
-    entity/contromodule/playbook/basics/playbook_donothing.cpp
+    entity/contromodule/playbook/basics/playbook_donothing.cpp \
+    entity/player/behaviour/basics/behaviour_followball.cpp \
+    entity/contromodule/playbook/basics/playbook_followball.cpp \
+    entity/contromodule/playbook/basics/playbook_timeout.cpp \
+    entity/player/behaviour/basics/behaviour_timeout.cpp \
+    entity/contromodule/strategy/basics/sslstrategy_timeout.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -162,4 +167,10 @@ HEADERS += \
     entity/contromodule/controlmodule.h \
     entity/contromodule/strategy/basics/sslstrategy_halt.h \
     entity/contromodule/playbook/basics/playbook_donothing.h \
-    entity/contromodule/playbook/mrcplaybook.h
+    entity/contromodule/playbook/mrcplaybook.h \
+    entity/player/behaviour/basics/behaviour_followball.h \
+    entity/contromodule/playbook/basics/playbook_followball.h \
+    entity/contromodule/playbook/basics/playbook_timeout.h \
+    entity/player/behaviour/basics/behaviour_timeout.h \
+    entity/contromodule/strategy/basics/sslstrategy_timeout.h \
+    entity/contromodule/strategy/mrcstrategies.h

@@ -49,9 +49,8 @@ void Coach::run(){
             for(int x = 0; x < _ourTeam->avPlayersSize(); x++){
                 std::cout << "Player " << (int) _ourTeam->avPlayers().values().at(x)->playerId() << " has behaviour " << _ourTeam->avPlayers().values().at(x)->getBehaviourName().toStdString() << std::endl;
             }
-
-            strat->runStrategy();
         }
+        strat->runStrategy();
     }
 
 }

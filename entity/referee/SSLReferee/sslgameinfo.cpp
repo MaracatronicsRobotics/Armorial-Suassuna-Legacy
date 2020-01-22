@@ -38,6 +38,8 @@ const int SSLGameInfo::YELLOW ;
 const int SSLGameInfo::READY ;
 const int SSLGameInfo::NOTREADY ;
 
+const int SSLGameInfo::TIMEOUT ;
+
 SSLGameInfo::SSLGameInfo(Colors::Color color) {
     _color = color;
     setState(HALTED);
@@ -176,8 +178,8 @@ void SSLGameInfo::processCommand() {
     mLastRefPack.unlock();
 
     switch(ref_command) {
-        case SSL_Referee_Command_TIMEOUT_YELLOW:
-        case SSL_Referee_Command_TIMEOUT_BLUE:
+        case SSL_Referee_Command_TIMEOUT_YELLOW:        setState(TIMEOUT);                          break;
+        case SSL_Referee_Command_TIMEOUT_BLUE:          setState(TIMEOUT);                          break;
         case SSL_Referee_Command_HALT:                  setState(HALTED);                           break;
 
         case SSL_Referee_Command_GOAL_YELLOW:
@@ -262,7 +264,9 @@ bool SSLGameInfo::freeKick() { return directKick() || indirectKick(); }
 bool SSLGameInfo::ourFreeKick() { return ourDirectKick() || ourIndirectKick(); }
 bool SSLGameInfo::theirFreeKick() { return theirDirectKick() || theirIndirectKick(); }
 
-//Halt!
+bool SSLGameInfo::timeOut() { return getState() == TIMEOUT; }
+
+//Halt!//
 bool SSLGameInfo::canMove() { return (getState() != HALTED); }
 
 bool SSLGameInfo::allowedNearBall() {
@@ -274,6 +278,10 @@ bool SSLGameInfo::canKickBall() {
 }
 
 SSLGameInfo::RefProcessedState SSLGameInfo::processedState() {
+    if(timeOut()){
+        return STATE_TIMEOUT;
+    }
+
     if(!canMove())
         return STATE_CANTMOVE;
 
