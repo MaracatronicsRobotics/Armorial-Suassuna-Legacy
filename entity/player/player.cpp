@@ -285,11 +285,18 @@ std::pair<float, float> Player::goTo(double robot_x, double robot_y, double poin
 
         return std::make_pair(0.0, 0.0);
     }
+*/
+    if(moduloDistancia <= _distBall){
+        vxSaida = 0;
+        vySaida = 0;
 
-    double newVX = _vxPID->calculate(vxSaida * sinal_x, velocity().x());
-    double newVY = _vyPID->calculate(vySaida * sinal_y, velocity().y());
+        return std::make_pair(0.0, 0.0);
+    }
+
+    double newVX = _vxPID->calculate(vxSaida, velocity().x());
+    double newVY = _vyPID->calculate(vySaida, velocity().y());
     //setSpeed(vxSaida * sinal_x, vySaida * sinal_y, 0.0);
-    setSpeed(newVX, newVY, 0.0);
+    //setSpeed(newVX, newVY, 0.0);
 
     return std::make_pair(newVX, newVY);
 }
@@ -342,9 +349,10 @@ std::pair<double, double> Player::rotateTo(double robot_x, double robot_y, doubl
         speed = 0;
     }
 
+
     double newSpeed = _vwPID->calculate(speed, angularSpeed().value());
     //setSpeed(0.0, 0.0, speed);
-    setSpeed(0.0, 0.0, newSpeed);
+    //setSpeed(0.0, 0.0, newSpeed);
 
     return newSpeed;
 }
