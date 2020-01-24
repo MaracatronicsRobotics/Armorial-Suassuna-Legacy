@@ -284,6 +284,10 @@ std::pair<float, float> Player::goTo(double robot_x, double robot_y, double poin
 
         return std::make_pair(0.0, 0.0);
     }
+*/
+    if(moduloDistancia <= _distBall){
+        vxSaida = 0;
+        vySaida = 0;
 
     float newVX = _vxPID->calculate(vxSaida, velocity().x());
     float newVY = _vyPID->calculate(vySaida, velocity().y());
