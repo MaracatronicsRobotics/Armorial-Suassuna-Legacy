@@ -6,13 +6,14 @@
 #include <utils/utils.hh>
 #include <entity/player/baseplayer.h>
 #include <bits/stdc++.h>
+#include <entity/player/control/pid.h>
 
 #define IDLE_COUNT 10
 
 class Player : public Entity
 {
 public:
-    Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Behaviour *defaultBehaviour, SSLReferee *ref, grsSimulator *grSim);
+    Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Behaviour *defaultBehaviour, SSLReferee *ref, grsSimulator *grSim, PID *vxPID, PID *vyPID, PID *vwPID);
     ~Player();
     QString name();
     void reset();
@@ -39,6 +40,7 @@ public:
     // Velocity
     Velocity velocity() const;
     float lastSpeed() const;
+    AngularSpeed angularSpeed() const;
 
     // Direction
     Angle nextDirection() const;
@@ -111,6 +113,11 @@ private:
 
     // grSimulator for tests
     grsSimulator *_grSim;
+
+    // PID's
+    PID *_vxPID;
+    PID *_vyPID;
+    PID *_vwPID;
 
 };
 

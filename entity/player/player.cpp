@@ -9,7 +9,7 @@ QString Player::name(){
     return "Player #"+QString::number((int)_team->teamId())+":"+QString::number((int)_playerId);
 }
 
-Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Behaviour *defaultBehaviour, SSLReferee *ref, grsSimulator *grSim) : Entity(Entity::ENT_PLAYER){
+Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Behaviour *defaultBehaviour, SSLReferee *ref, grsSimulator *grSim, PID *vxPID, PID *vyPID, PID *vwPID) : Entity(Entity::ENT_PLAYER){
     _world = world;
     _team = team;
     _playerId = playerID;
@@ -19,6 +19,10 @@ Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Be
     _defaultBehaviour = defaultBehaviour;
     _playerAccessSelf = new PlayerAccess(true, this, team->loc());
     _playerAccessBus = new PlayerAccess(false, this, team->loc());
+
+    _vxPID = vxPID;
+    _vyPID = vyPID;
+    _vwPID = vwPID;
 
     // Idle control
     _idleCount = 0;
@@ -154,7 +158,11 @@ Angle Player::nextOrientation() const{
 }
 
 Velocity Player::velocity() const{
-    //return _team->wm()->playerVelocity(teamId(), _playerId);
+    return _team->wm()->playerVelocity(teamId(), _playerId);
+}
+
+AngularSpeed Player::angularSpeed() const{
+    return _team->wm()->playerAngularSpeed(teamId(), _playerId);
 }
 
 float Player::lastSpeed() const{
@@ -252,16 +260,19 @@ std::pair<float, float> Player::GoTo(double robot_x, double robot_y, double poin
     if(vySaida < 0) sinal_y = -1;
 
     if(moduloDistancia > _distBall){
-        vxSaida = std::min(fabs(vxSaida)*0.7, 1.0);
-        vySaida = std::min(fabs(vySaida)*0.7, 1.0);
+        vxSaida = std::min(fabs(vxSaida)*0.7, 2.0);
+        vySaida = std::min(fabs(vySaida)*0.7, 2.0);
     } else {
         vxSaida = 0;
         vySaida = 0;
     }
 
-    setSpeed(vxSaida * sinal_x, vySaida * sinal_y, 0.0);
+    double newVX = _vxPID->calculate(vxSaida * sinal_x, velocity().x());
+    double newVY = _vyPID->calculate(vySaida * sinal_y, velocity().y());
+    //setSpeed(vxSaida * sinal_x, vySaida * sinal_y, 0.0);
+    setSpeed(newVX, newVY, 0.0);
 
-    return std::make_pair(vxSaida * sinal_x, vySaida * sinal_y);
+    return std::make_pair(newVX, newVY);
 }
 
 float Player::RotateTo(double robot_x, double robot_y, double point_x, double point_y, double angleOrigin2Robot) {
@@ -284,7 +295,7 @@ float Player::RotateTo(double robot_x, double robot_y, double point_x, double po
     long double minValue = 1.5;
     long double maxValue = 3.0;
 
-    long double speed;
+    long double speed = 0.0;
 
     angleRobot2Ball = angleOrigin2Robot - angleOrigin2ball;
 
@@ -312,9 +323,11 @@ float Player::RotateTo(double robot_x, double robot_y, double point_x, double po
         speed = 0.0;
     }
 
-    setSpeed(0.0, 0.0, speed);
+    double newSpeed = _vwPID->calculate(speed, angularSpeed().value());
+    //setSpeed(0.0, 0.0, speed);
+    setSpeed(0.0, 0.0, newSpeed);
 
-    return speed;
+    return newSpeed;
 }
 
 void Player::goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double angleOrigin2Robot, double _distBall){
