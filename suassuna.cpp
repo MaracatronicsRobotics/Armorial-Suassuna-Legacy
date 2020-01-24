@@ -3,6 +3,7 @@
 #include <entity/contromodule/strategy/strategy.h>
 #include <entity/contromodule/strategy/strategystate.h>
 #include <entity/contromodule/strategy/basics/mrcstrategy.h>
+#include <entity/player/control/pid.h>
 
 #include <entity/contromodule/grsSimulator/grsSimulator.h>
 
@@ -128,7 +129,10 @@ void Suassuna::setupOurPlayers() {
     QList<quint8> playerList = _world->getWorldMap()->players(_teamId);
     for(quint8 i=0; i<playerList.size() && i<=MAX_ROBOT_ID; i++) {
         // Create Player
-        Player *player = new Player(_world, _ourTeam, _ctr, playerList.at(i), new Behaviour_DoNothing(), _ref, _grSimulator);
+        PID *vxPID = new PID(0.6, 0.2, 0.0000001, 2.0, -2.0);
+        PID *vyPID = new PID(0.6, 0.2, 0.0000001, 2.0, -2.0);
+        PID *vwPID = new PID(0.8, 0.0, 0.0, GEARSystem::Angle::toRadians(180), -GEARSystem::Angle::toRadians(180));
+        Player *player = new Player(_world, _ourTeam, _ctr, playerList.at(i), new Behaviour_DoNothing(), _ref, _grSimulator, vxPID, vyPID, vwPID);
         // Enable
         player->enable(true);
         // Add to team
@@ -142,7 +146,7 @@ void Suassuna::setupOppPlayers(quint8 opTeamId) {
     const QList<quint8> opPlayerList = _world->getWorldMap()->players(opTeamId);
     for(quint8 i=0; i<opPlayerList.size() && i<=MAX_ROBOT_ID; i++) {
         // Create Player
-        Player *opPlayer = new Player(_world, _theirTeam, _ctr, opPlayerList.at(i), new Behaviour_DoNothing(), _ref, _grSimulator);
+        Player *opPlayer = new Player(_world, _theirTeam, _ctr, opPlayerList.at(i), NULL, _ref, NULL, NULL, NULL, NULL);
         // Disable (op team doesnt run)
         opPlayer->enable(false);
         // Add to team
