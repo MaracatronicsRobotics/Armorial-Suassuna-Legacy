@@ -258,7 +258,7 @@ std::pair<float, float> Player::GoTo(double robot_x, double robot_y, double poin
 
     if(vxSaida < 0) sinal_x = -1;
     if(vySaida < 0) sinal_y = -1;
-
+/*
     if(moduloDistancia > _distBall){
         vxSaida = std::min(fabs(vxSaida)*0.7, 2.0);
         vySaida = std::min(fabs(vySaida)*0.7, 2.0);
@@ -266,11 +266,18 @@ std::pair<float, float> Player::GoTo(double robot_x, double robot_y, double poin
         vxSaida = 0;
         vySaida = 0;
     }
+*/
+    if(moduloDistancia <= _distBall){
+        vxSaida = 0;
+        vySaida = 0;
 
-    double newVX = _vxPID->calculate(vxSaida * sinal_x, velocity().x());
-    double newVY = _vyPID->calculate(vySaida * sinal_y, velocity().y());
+        return std::make_pair(0.0, 0.0);
+    }
+
+    double newVX = _vxPID->calculate(vxSaida, velocity().x());
+    double newVY = _vyPID->calculate(vySaida, velocity().y());
     //setSpeed(vxSaida * sinal_x, vySaida * sinal_y, 0.0);
-    setSpeed(newVX, newVY, 0.0);
+    //setSpeed(newVX, newVY, 0.0);
 
     return std::make_pair(newVX, newVY);
 }
@@ -323,9 +330,10 @@ float Player::RotateTo(double robot_x, double robot_y, double point_x, double po
         speed = 0;
     }
 
+
     double newSpeed = _vwPID->calculate(speed, angularSpeed().value());
     //setSpeed(0.0, 0.0, speed);
-    setSpeed(0.0, 0.0, newSpeed);
+    //setSpeed(0.0, 0.0, newSpeed);
 
     return newSpeed;
 }
