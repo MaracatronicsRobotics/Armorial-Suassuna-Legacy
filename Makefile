@@ -17,7 +17,11 @@ CXX           = g++
 DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -O2 -std=gnu++1y -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+<<<<<<< dev
 INCPATH       = -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtOpenGL -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
+=======
+INCPATH       = -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtOpenGL -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 QMAKE         = /usr/lib/qt5/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -53,6 +57,7 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = entity/entity.cpp \
+<<<<<<< dev
 		entity/player/behaviour/basics/behaviour_goalkeeper.cpp \
 		entity/player/behaviour/basics/behaviour_markball.cpp \
 		entity/player/behaviour/basics/behaviour_penalty_cf.cpp \
@@ -61,6 +66,10 @@ SOURCES       = entity/entity.cpp \
 		entity/player/skills/basics/skill_goto.cpp \
 		entity/player/skills/basics/skill_gotolookto.cpp \
 		entity/player/skills/basics/skill_interceptball.cpp \
+=======
+		entity/player/skills/basics/skill_goto.cpp \
+		entity/player/skills/basics/skill_gotolookto.cpp \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/skills/basics/skill_rotateto.cpp \
 		entity/world/world.cpp \
 		entity/world/worldmapupdater.cpp \
@@ -92,8 +101,11 @@ SOURCES       = entity/entity.cpp \
 		utils/fields/field_vss2008.cc \
 		utils/fields/fields.cc \
 		utils/fieldside/fieldside.cc \
+<<<<<<< dev
 		utils/freeangles/freeangles.cpp \
 		utils/freeangles/obstacle.cpp \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		utils/graph/edge.cc \
 		utils/graph/graph.cc \
 		utils/graph/vertex.cc \
@@ -123,6 +135,7 @@ SOURCES       = entity/entity.cpp \
 		entity/contromodule/strategy/basics/sslstrategy_halt.cpp \
 		entity/contromodule/playbook/basics/playbook_donothing.cpp \
 		entity/player/behaviour/basics/behaviour_followball.cpp \
+<<<<<<< dev
 		entity/player/behaviour/basics/behaviour_timeout.cpp \
 		entity/player/control/pid.cpp \
 		utils/mrctimer/mrctimer.cpp \
@@ -157,6 +170,18 @@ OBJECTS       = entity.o \
 		skill_goto.o \
 		skill_gotolookto.o \
 		skill_interceptball.o \
+=======
+		entity/contromodule/playbook/basics/playbook_followball.cpp \
+		entity/contromodule/playbook/basics/playbook_timeout.cpp \
+		entity/player/behaviour/basics/behaviour_timeout.cpp \
+		entity/contromodule/strategy/basics/sslstrategy_timeout.cpp \
+		entity/player/control/pid.cpp \
+		utils/mrctimer/mrctimer.cpp moc_playbook.cpp \
+		moc_behaviour.cpp
+OBJECTS       = entity.o \
+		skill_goto.o \
+		skill_gotolookto.o \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		skill_rotateto.o \
 		world.o \
 		worldmapupdater.o \
@@ -188,8 +213,11 @@ OBJECTS       = entity.o \
 		field_vss2008.o \
 		fields.o \
 		fieldside.o \
+<<<<<<< dev
 		freeangles.o \
 		obstacle.o \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		edge.o \
 		graph.o \
 		vertex.o \
@@ -219,6 +247,7 @@ OBJECTS       = entity.o \
 		sslstrategy_halt.o \
 		playbook_donothing.o \
 		behaviour_followball.o \
+<<<<<<< dev
 		behaviour_timeout.o \
 		pid.o \
 		mrctimer.o \
@@ -245,6 +274,16 @@ OBJECTS       = entity.o \
 		moc_mainwindow.o \
 		moc_samico.o \
 		moc_qsfmlwidget.o
+=======
+		playbook_followball.o \
+		playbook_timeout.o \
+		behaviour_timeout.o \
+		sslstrategy_timeout.o \
+		pid.o \
+		mrctimer.o \
+		moc_playbook.o \
+		moc_behaviour.o
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -324,6 +363,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		Armorial-Suassuna.pro entity/baseentity.h \
 		entity/entity.h \
+<<<<<<< dev
 		entity/player/behaviour/basics/behaviour_markball.h \
 		entity/player/behaviour/basics/behaviour_penalty_cf.h \
 		entity/player/skills/basics/skill_aroundtheball.h \
@@ -331,6 +371,10 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		entity/player/skills/basics/skill_goto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
 		entity/player/skills/basics/skill_interceptball.h \
+=======
+		entity/player/skills/basics/skill_goto.h \
+		entity/player/skills/basics/skill_gotolookto.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/world/world.h \
 		entity/world/worldmapupdater.h \
@@ -364,8 +408,11 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		utils/fields/fields.hh \
 		utils/fields/wrfields.hh \
 		utils/fieldside/fieldside.hh \
+<<<<<<< dev
 		utils/freeangles/freeangles.h \
 		utils/freeangles/obstacle.h \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		utils/graph/basegraph.hh \
 		utils/graph/edge.hh \
 		utils/graph/graph.hh \
@@ -400,6 +447,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		entity/contromodule/playbook/basics/playbook_donothing.h \
 		entity/contromodule/playbook/mrcplaybook.h \
 		entity/player/behaviour/basics/behaviour_followball.h \
+<<<<<<< dev
 		entity/player/behaviour/basics/behaviour_timeout.h \
 		entity/contromodule/strategy/mrcstrategies.h \
 		entity/player/control/pid.h \
@@ -429,6 +477,17 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		entity/player/skills/basics/skill_goto.cpp \
 		entity/player/skills/basics/skill_gotolookto.cpp \
 		entity/player/skills/basics/skill_interceptball.cpp \
+=======
+		entity/contromodule/playbook/basics/playbook_followball.h \
+		entity/contromodule/playbook/basics/playbook_timeout.h \
+		entity/player/behaviour/basics/behaviour_timeout.h \
+		entity/contromodule/strategy/basics/sslstrategy_timeout.h \
+		entity/contromodule/strategy/mrcstrategies.h \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h entity/entity.cpp \
+		entity/player/skills/basics/skill_goto.cpp \
+		entity/player/skills/basics/skill_gotolookto.cpp \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/skills/basics/skill_rotateto.cpp \
 		entity/world/world.cpp \
 		entity/world/worldmapupdater.cpp \
@@ -460,8 +519,11 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		utils/fields/field_vss2008.cc \
 		utils/fields/fields.cc \
 		utils/fieldside/fieldside.cc \
+<<<<<<< dev
 		utils/freeangles/freeangles.cpp \
 		utils/freeangles/obstacle.cpp \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		utils/graph/edge.cc \
 		utils/graph/graph.cc \
 		utils/graph/vertex.cc \
@@ -491,6 +553,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		entity/contromodule/strategy/basics/sslstrategy_halt.cpp \
 		entity/contromodule/playbook/basics/playbook_donothing.cpp \
 		entity/player/behaviour/basics/behaviour_followball.cpp \
+<<<<<<< dev
 		entity/player/behaviour/basics/behaviour_timeout.cpp \
 		entity/player/control/pid.cpp \
 		utils/mrctimer/mrctimer.cpp \
@@ -508,6 +571,14 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		entity/coachview/mainwindow.cpp \
 		entity/coachview/samico.cpp \
 		entity/coachview/qsfmlwidget.cpp
+=======
+		entity/contromodule/playbook/basics/playbook_followball.cpp \
+		entity/contromodule/playbook/basics/playbook_timeout.cpp \
+		entity/player/behaviour/basics/behaviour_timeout.cpp \
+		entity/contromodule/strategy/basics/sslstrategy_timeout.cpp \
+		entity/player/control/pid.cpp \
+		utils/mrctimer/mrctimer.cpp
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 QMAKE_TARGET  = Armorial-Suassuna
 DESTDIR       = 
 TARGET        = Armorial-Suassuna
@@ -516,7 +587,11 @@ TARGET        = Armorial-Suassuna
 first: all
 ####### Build rules
 
+<<<<<<< dev
 Armorial-Suassuna: ui_mainwindow.h $(OBJECTS)  
+=======
+Armorial-Suassuna:  $(OBJECTS)  
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
 Makefile: Armorial-Suassuna.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/qmake.conf /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -597,7 +672,10 @@ Makefile: Armorial-Suassuna.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		Armorial-Suassuna.pro \
+<<<<<<< dev
 		entity/coachview/rsc.qrc \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		/usr/lib/x86_64-linux-gnu/libQt5Core.prl
 	$(QMAKE) -o Makefile Armorial-Suassuna.pro
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf:
@@ -678,7 +756,10 @@ Makefile: Armorial-Suassuna.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++/
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf:
 Armorial-Suassuna.pro:
+<<<<<<< dev
 entity/coachview/rsc.qrc:
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 /usr/lib/x86_64-linux-gnu/libQt5Core.prl:
 qmake: FORCE
 	@$(QMAKE) -o Makefile Armorial-Suassuna.pro
@@ -694,11 +775,17 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
+<<<<<<< dev
 	$(COPY_FILE) --parents entity/coachview/rsc.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents entity/baseentity.h entity/entity.h entity/player/behaviour/basics/behaviour_markball.h entity/player/behaviour/basics/behaviour_penalty_cf.h entity/player/skills/basics/skill_aroundtheball.h entity/player/skills/basics/skill_dribble.h entity/player/skills/basics/skill_goto.h entity/player/skills/basics/skill_gotolookto.h entity/player/skills/basics/skill_interceptball.h entity/player/skills/basics/skill_rotateto.h entity/world/world.h entity/world/worldmapupdater.h exithandler.h include/3rd_party/netraw.h include/3rd_party/robocup_ssl_client.h include/3rd_party/util.h include/filters.h include/3rd_party/messages_robocup_ssl_detection.pb.h include/3rd_party/messages_robocup_ssl_geometry.pb.h include/3rd_party/messages_robocup_ssl_wrapper.pb.h include/3rd_party/game_event.pb.h include/3rd_party/messages_robocup_ssl_refbox_log.pb.h include/3rd_party/referee.pb.h include/3rd_party/grSim_Commands.pb.h include/3rd_party/grSim_Packet.pb.h include/3rd_party/grSim_Replacement.pb.h entity/referee/SSLReferee/sslgameinfo.h entity/referee/referee.h entity/referee/SSLReferee/sslreferee.h instancechecker.h suassuna.h utils/basics/color.hh utils/basics/competition.hh utils/basics/quadrant.hh utils/basics/side.hh utils/basics/wall.hh utils/fields/field_ssl2014.hh utils/fields/field_ssl2015.hh utils/fields/field_vss2008.hh utils/fields/fields.hh utils/fields/wrfields.hh utils/fieldside/fieldside.hh utils/freeangles/freeangles.h utils/freeangles/obstacle.h utils/graph/basegraph.hh utils/graph/edge.hh utils/graph/graph.hh utils/graph/vertex.hh utils/line/line.hh utils/utils.hh utils/wrtimer/wrtimer.hh entity/player/player.h entity/contromodule/mrcteam.h entity/player/skills/skill.h entity/locations.h entity/player/skills/skills_include.h entity/contromodule/grsSimulator/grsSimulator.h entity/contromodule/coach.h entity/player/playerbus.h entity/player/playeraccess.h entity/contromodule/strategy/strategy.h entity/contromodule/basecoach.h entity/contromodule/playersdistribution.h entity/contromodule/strategy/strategystate.h entity/contromodule/coachutils.h entity/contromodule/playbook/playbook.h entity/player/behaviour/behaviour.h entity/player/behaviour/mrcbehaviours.h entity/player/behaviour/basics/behaviour_donothing.h entity/player/skills/basics/skill_donothing.h utils/knn/knn.hh entity/contromodule/strategy/basics/mrcstrategy.h entity/contromodule/strategy/basics/sslstrategy.h entity/contromodule/controlmodule.h entity/contromodule/strategy/basics/sslstrategy_halt.h entity/contromodule/playbook/basics/playbook_donothing.h entity/contromodule/playbook/mrcplaybook.h entity/player/behaviour/basics/behaviour_followball.h entity/player/behaviour/basics/behaviour_timeout.h entity/contromodule/strategy/mrcstrategies.h entity/player/control/pid.h utils/mrctimer/mrctimer.h entity/player/skills/basics/skill_kick.h entity/player/behaviour/basics/behaviour_goalkeeper.h entity/player/skills/basics/skill_gkick.h entity/player/behaviour/basics/behaviour_receiver.h entity/player/behaviour/basics/behaviour_attacker.h entity/player/behaviour/basics/behaviour_barrier.h entity/player/behaviour/basics/behaviour_markplayer.h entity/player/behaviour/basics/behaviour_penalty_gk.h entity/player/skills/basics/skill_pushball.h entity/player/role/role.h entity/player/role/basics/role_default.h entity/player/role/mrcroles.h entity/coachview/coachview.h entity/coachview/mainwindow.h entity/coachview/samico.h entity/coachview/qsfmlwidget.h entity/coachview/ui_mainwindow.h $(DISTDIR)/
 	$(COPY_FILE) --parents entity/entity.cpp entity/player/behaviour/basics/behaviour_goalkeeper.cpp entity/player/behaviour/basics/behaviour_markball.cpp entity/player/behaviour/basics/behaviour_penalty_cf.cpp entity/player/skills/basics/skill_aroundtheball.cpp entity/player/skills/basics/skill_dribble.cpp entity/player/skills/basics/skill_goto.cpp entity/player/skills/basics/skill_gotolookto.cpp entity/player/skills/basics/skill_interceptball.cpp entity/player/skills/basics/skill_rotateto.cpp entity/world/world.cpp entity/world/worldmapupdater.cpp exithandler.cpp include/3rd_party/messages_robocup_ssl_detection.pb.cc include/3rd_party/netraw.cpp include/3rd_party/robocup_ssl_client.cpp include/3rd_party/messages_robocup_ssl_geometry.pb.cc include/3rd_party/messages_robocup_ssl_refbox_log.pb.cc include/3rd_party/messages_robocup_ssl_wrapper.pb.cc include/3rd_party/game_event.pb.cc include/3rd_party/grSim_Commands.pb.cc include/3rd_party/grSim_Packet.pb.cc include/3rd_party/grSim_Replacement.pb.cc include/3rd_party/referee.pb.cc entity/referee/SSLReferee/sslgameinfo.cpp entity/referee/referee.cpp entity/referee/SSLReferee/sslreferee.cpp instancechecker.cpp main.cpp suassuna.cpp utils/basics/color.cc utils/basics/competition.cc utils/basics/quadrant.cc utils/basics/side.cc utils/basics/wall.cc utils/fields/field_ssl2014.cc utils/fields/field_ssl2015.cc utils/fields/field_vss2008.cc utils/fields/fields.cc utils/fieldside/fieldside.cc utils/freeangles/freeangles.cpp utils/freeangles/obstacle.cpp utils/graph/edge.cc utils/graph/graph.cc utils/graph/vertex.cc utils/line/line.cc utils/utils.cc utils/wrtimer/wrtimer.cc entity/player/player.cpp entity/contromodule/mrcteam.cpp entity/player/skills/skill.cpp entity/locations.cpp entity/contromodule/grsSimulator/grsSimulator.cpp entity/contromodule/coach.cpp entity/player/playerbus.cpp entity/player/playeraccess.cpp entity/contromodule/strategy/strategy.cpp entity/contromodule/playersdistribution.cpp entity/contromodule/strategy/strategystate.cpp entity/contromodule/coachutils.cpp entity/contromodule/playbook/playbook.cpp entity/player/behaviour/behaviour.cpp entity/player/behaviour/basics/behaviour_donothing.cpp entity/player/skills/basics/skill_donothing.cpp utils/knn/knn.cc entity/contromodule/strategy/basics/mrcstrategy.cpp entity/contromodule/strategy/basics/sslstrategy.cpp entity/contromodule/controlmodule.cpp entity/contromodule/strategy/basics/sslstrategy_halt.cpp entity/contromodule/playbook/basics/playbook_donothing.cpp entity/player/behaviour/basics/behaviour_followball.cpp entity/player/behaviour/basics/behaviour_timeout.cpp entity/player/control/pid.cpp utils/mrctimer/mrctimer.cpp entity/player/skills/basics/skill_kick.cpp entity/player/skills/basics/skill_gkick.cpp entity/player/behaviour/basics/behaviour_receiver.cpp entity/player/behaviour/basics/behaviour_attacker.cpp entity/player/behaviour/basics/behaviour_barrier.cpp entity/player/behaviour/basics/behaviour_markplayer.cpp entity/player/behaviour/basics/behaviour_penalty_gk.cpp entity/player/skills/basics/skill_pushball.cpp entity/player/role/role.cpp entity/player/role/basics/role_default.cpp entity/coachview/coachview.cpp entity/coachview/mainwindow.cpp entity/coachview/samico.cpp entity/coachview/qsfmlwidget.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents entity/coachview/mainwindow.ui entity/coachview/mainwindow.ui $(DISTDIR)/
+=======
+	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents entity/baseentity.h entity/entity.h entity/player/skills/basics/skill_goto.h entity/player/skills/basics/skill_gotolookto.h entity/player/skills/basics/skill_rotateto.h entity/world/world.h entity/world/worldmapupdater.h exithandler.h include/3rd_party/netraw.h include/3rd_party/robocup_ssl_client.h include/3rd_party/util.h include/filters.h include/3rd_party/messages_robocup_ssl_detection.pb.h include/3rd_party/messages_robocup_ssl_geometry.pb.h include/3rd_party/messages_robocup_ssl_wrapper.pb.h include/3rd_party/game_event.pb.h include/3rd_party/messages_robocup_ssl_refbox_log.pb.h include/3rd_party/referee.pb.h include/3rd_party/grSim_Commands.pb.h include/3rd_party/grSim_Packet.pb.h include/3rd_party/grSim_Replacement.pb.h entity/referee/SSLReferee/sslgameinfo.h entity/referee/referee.h entity/referee/SSLReferee/sslreferee.h instancechecker.h suassuna.h utils/basics/color.hh utils/basics/competition.hh utils/basics/quadrant.hh utils/basics/side.hh utils/basics/wall.hh utils/fields/field_ssl2014.hh utils/fields/field_ssl2015.hh utils/fields/field_vss2008.hh utils/fields/fields.hh utils/fields/wrfields.hh utils/fieldside/fieldside.hh utils/graph/basegraph.hh utils/graph/edge.hh utils/graph/graph.hh utils/graph/vertex.hh utils/line/line.hh utils/utils.hh utils/wrtimer/wrtimer.hh entity/player/player.h entity/contromodule/mrcteam.h entity/player/skills/skill.h entity/locations.h entity/player/skills/skills_include.h entity/contromodule/grsSimulator/grsSimulator.h entity/contromodule/coach.h entity/player/playerbus.h entity/player/playeraccess.h entity/contromodule/strategy/strategy.h entity/contromodule/basecoach.h entity/contromodule/playersdistribution.h entity/contromodule/strategy/strategystate.h entity/contromodule/coachutils.h entity/contromodule/playbook/playbook.h entity/player/behaviour/behaviour.h entity/player/behaviour/mrcbehaviours.h entity/player/behaviour/basics/behaviour_donothing.h entity/player/skills/basics/skill_donothing.h utils/knn/knn.hh entity/contromodule/strategy/basics/mrcstrategy.h entity/contromodule/strategy/basics/sslstrategy.h entity/contromodule/controlmodule.h entity/contromodule/strategy/basics/sslstrategy_halt.h entity/contromodule/playbook/basics/playbook_donothing.h entity/contromodule/playbook/mrcplaybook.h entity/player/behaviour/basics/behaviour_followball.h entity/contromodule/playbook/basics/playbook_followball.h entity/contromodule/playbook/basics/playbook_timeout.h entity/player/behaviour/basics/behaviour_timeout.h entity/contromodule/strategy/basics/sslstrategy_timeout.h entity/contromodule/strategy/mrcstrategies.h entity/player/control/pid.h utils/mrctimer/mrctimer.h $(DISTDIR)/
+	$(COPY_FILE) --parents entity/entity.cpp entity/player/skills/basics/skill_goto.cpp entity/player/skills/basics/skill_gotolookto.cpp entity/player/skills/basics/skill_rotateto.cpp entity/world/world.cpp entity/world/worldmapupdater.cpp exithandler.cpp include/3rd_party/messages_robocup_ssl_detection.pb.cc include/3rd_party/netraw.cpp include/3rd_party/robocup_ssl_client.cpp include/3rd_party/messages_robocup_ssl_geometry.pb.cc include/3rd_party/messages_robocup_ssl_refbox_log.pb.cc include/3rd_party/messages_robocup_ssl_wrapper.pb.cc include/3rd_party/game_event.pb.cc include/3rd_party/grSim_Commands.pb.cc include/3rd_party/grSim_Packet.pb.cc include/3rd_party/grSim_Replacement.pb.cc include/3rd_party/referee.pb.cc entity/referee/SSLReferee/sslgameinfo.cpp entity/referee/referee.cpp entity/referee/SSLReferee/sslreferee.cpp instancechecker.cpp main.cpp suassuna.cpp utils/basics/color.cc utils/basics/competition.cc utils/basics/quadrant.cc utils/basics/side.cc utils/basics/wall.cc utils/fields/field_ssl2014.cc utils/fields/field_ssl2015.cc utils/fields/field_vss2008.cc utils/fields/fields.cc utils/fieldside/fieldside.cc utils/graph/edge.cc utils/graph/graph.cc utils/graph/vertex.cc utils/line/line.cc utils/utils.cc utils/wrtimer/wrtimer.cc entity/player/player.cpp entity/contromodule/mrcteam.cpp entity/player/skills/skill.cpp entity/locations.cpp entity/contromodule/grsSimulator/grsSimulator.cpp entity/contromodule/coach.cpp entity/player/playerbus.cpp entity/player/playeraccess.cpp entity/contromodule/strategy/strategy.cpp entity/contromodule/playersdistribution.cpp entity/contromodule/strategy/strategystate.cpp entity/contromodule/coachutils.cpp entity/contromodule/playbook/playbook.cpp entity/player/behaviour/behaviour.cpp entity/player/behaviour/basics/behaviour_donothing.cpp entity/player/skills/basics/skill_donothing.cpp utils/knn/knn.cc entity/contromodule/strategy/basics/mrcstrategy.cpp entity/contromodule/strategy/basics/sslstrategy.cpp entity/contromodule/controlmodule.cpp entity/contromodule/strategy/basics/sslstrategy_halt.cpp entity/contromodule/playbook/basics/playbook_donothing.cpp entity/player/behaviour/basics/behaviour_followball.cpp entity/contromodule/playbook/basics/playbook_followball.cpp entity/contromodule/playbook/basics/playbook_timeout.cpp entity/player/behaviour/basics/behaviour_timeout.cpp entity/contromodule/strategy/basics/sslstrategy_timeout.cpp entity/player/control/pid.cpp utils/mrctimer/mrctimer.cpp $(DISTDIR)/
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 
 
 clean: compiler_clean 
@@ -722,6 +809,7 @@ check: first
 
 benchmark: first
 
+<<<<<<< dev
 compiler_rcc_make_all: qrc_rsc.cpp
 compiler_rcc_clean:
 	-$(DEL_FILE) qrc_rsc.cpp
@@ -765,15 +853,25 @@ qrc_rsc.cpp: entity/coachview/rsc.qrc \
 		entity/coachview/textures/b7.png
 	/usr/lib/qt5/bin/rcc -name rsc entity/coachview/rsc.qrc -o qrc_rsc.cpp
 
+=======
+compiler_rcc_make_all:
+compiler_rcc_clean:
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -std=gnu++1y -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
+<<<<<<< dev
 compiler_moc_header_make_all: moc_playbook.cpp moc_behaviour.cpp moc_behaviour_receiver.cpp moc_behaviour_attacker.cpp moc_role.cpp moc_mainwindow.cpp moc_samico.cpp moc_qsfmlwidget.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) moc_playbook.cpp moc_behaviour.cpp moc_behaviour_receiver.cpp moc_behaviour_attacker.cpp moc_role.cpp moc_mainwindow.cpp moc_samico.cpp moc_qsfmlwidget.cpp
+=======
+compiler_moc_header_make_all: moc_playbook.cpp moc_behaviour.cpp
+compiler_moc_header_clean:
+	-$(DEL_FILE) moc_playbook.cpp moc_behaviour.cpp
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 moc_playbook.cpp: entity/contromodule/playbook/playbook.h \
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
@@ -792,14 +890,18 @@ moc_playbook.cpp: entity/contromodule/playbook/playbook.h \
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
+<<<<<<< dev
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/contromodule/playersdistribution.h \
 		entity/contromodule/basecoach.h \
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
+<<<<<<< dev
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
 		entity/player/role/role.h \
@@ -991,11 +1093,23 @@ moc_qsfmlwidget.cpp: entity/coachview/qsfmlwidget.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/zilde/Desktop/Armorial-Suassuna/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/zilde/Desktop/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include entity/coachview/qsfmlwidget.h -o moc_qsfmlwidget.cpp
+=======
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/zilde/Desktop/Armorial-Suassuna/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/zilde/Desktop/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include entity/contromodule/playbook/playbook.h -o moc_playbook.cpp
+
+moc_behaviour.cpp: entity/player/behaviour/behaviour.h \
+		entity/player/baseplayer.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/zilde/Desktop/Armorial-Suassuna/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/zilde/Desktop/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include entity/player/behaviour/behaviour.h -o moc_behaviour.cpp
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
+<<<<<<< dev
 compiler_uic_make_all: ui_mainwindow.h ui_mainwindow.h
 compiler_uic_clean:
 	-$(DEL_FILE) ui_mainwindow.h ui_mainwindow.h
@@ -1009,13 +1123,21 @@ ui_mainwindow.h: entity/coachview/mainwindow.ui \
 		samico.h
 	/usr/lib/qt5/bin/uic entity/coachview/mainwindow.ui -o ui_mainwindow.h
 
+=======
+compiler_uic_make_all:
+compiler_uic_clean:
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
 compiler_yacc_impl_make_all:
 compiler_yacc_impl_clean:
 compiler_lex_make_all:
 compiler_lex_clean:
+<<<<<<< dev
 compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_header_clean compiler_uic_clean 
+=======
+compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 
 ####### Compile
 
@@ -1023,6 +1145,7 @@ entity.o: entity/entity.cpp entity/entity.h \
 		utils/wrtimer/wrtimer.hh
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o entity.o entity/entity.cpp
 
+<<<<<<< dev
 behaviour_goalkeeper.o: entity/player/behaviour/basics/behaviour_goalkeeper.cpp entity/player/behaviour/basics/behaviour_goalkeeper.h \
 		entity/player/behaviour/behaviour.h \
 		entity/player/baseplayer.h \
@@ -1081,6 +1204,15 @@ behaviour_markball.o: entity/player/behaviour/basics/behaviour_markball.cpp enti
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
+=======
+skill_goto.o: entity/player/skills/basics/skill_goto.cpp entity/player/skills/basics/skill_goto.h \
+		entity/player/skills/skill.h \
+		entity/player/baseplayer.h \
+		entity/player/skills/skills_include.h \
+		entity/player/skills/basics/skill_donothing.h \
+		entity/player/skills/basics/skill_rotateto.h \
+		entity/player/skills/basics/skill_gotolookto.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -1098,6 +1230,7 @@ behaviour_markball.o: entity/player/behaviour/basics/behaviour_markball.cpp enti
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
+<<<<<<< dev
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
@@ -1120,6 +1253,18 @@ behaviour_penalty_cf.o: entity/player/behaviour/basics/behaviour_penalty_cf.cpp 
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
+=======
+		entity/contromodule/mrcteam.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_goto.o entity/player/skills/basics/skill_goto.cpp
+
+skill_gotolookto.o: entity/player/skills/basics/skill_gotolookto.cpp entity/player/skills/basics/skill_gotolookto.h \
+		entity/player/skills/skill.h \
+		entity/player/baseplayer.h \
+		entity/player/skills/skills_include.h \
+		entity/player/skills/basics/skill_donothing.h \
+		entity/player/skills/basics/skill_goto.h \
+		entity/player/skills/basics/skill_rotateto.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -1137,6 +1282,7 @@ behaviour_penalty_cf.o: entity/player/behaviour/basics/behaviour_penalty_cf.cpp 
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
+<<<<<<< dev
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
@@ -1146,11 +1292,18 @@ behaviour_penalty_cf.o: entity/player/behaviour/basics/behaviour_penalty_cf.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_penalty_cf.o entity/player/behaviour/basics/behaviour_penalty_cf.cpp
 
 skill_aroundtheball.o: entity/player/skills/basics/skill_aroundtheball.cpp entity/player/skills/basics/skill_aroundtheball.h \
+=======
+		entity/contromodule/mrcteam.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_gotolookto.o entity/player/skills/basics/skill_gotolookto.cpp
+
+skill_rotateto.o: entity/player/skills/basics/skill_rotateto.cpp entity/player/skills/basics/skill_rotateto.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/skills/skill.h \
 		entity/player/baseplayer.h \
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/basics/skill_goto.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
 		entity/player/skills/basics/skill_kick.h \
@@ -1158,6 +1311,9 @@ skill_aroundtheball.o: entity/player/skills/basics/skill_aroundtheball.cpp entit
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
+=======
+		entity/player/skills/basics/skill_gotolookto.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -1175,6 +1331,7 @@ skill_aroundtheball.o: entity/player/skills/basics/skill_aroundtheball.cpp entit
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
+<<<<<<< dev
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
@@ -1197,6 +1354,15 @@ skill_dribble.o: entity/player/skills/basics/skill_dribble.cpp entity/player/ski
 		entity/entity.h \
 		entity/world/world.h \
 		entity/baseentity.h \
+=======
+		entity/contromodule/mrcteam.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_rotateto.o entity/player/skills/basics/skill_rotateto.cpp
+
+world.o: entity/world/world.cpp entity/world/world.h \
+		entity/baseentity.h \
+		entity/player/baseplayer.h \
+		entity/entity.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		entity/referee/SSLReferee/sslreferee.h \
@@ -1205,6 +1371,7 @@ skill_dribble.o: entity/player/skills/basics/skill_dribble.cpp entity/player/ski
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
+<<<<<<< dev
 		utils/utils.hh \
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
@@ -1380,6 +1547,17 @@ world.o: entity/world/world.cpp entity/world/world.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o world.o entity/world/world.cpp
 
 worldmapupdater.o: entity/world/worldmapupdater.cpp entity/world/worldmapupdater.h \
+=======
+		entity/contromodule/mrcteam.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		entity/player/player.h \
+		utils/utils.hh \
+		entity/contromodule/controlmodule.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o world.o entity/world/world.cpp
+
+worldmapupdater.o: entity/world/worldmapupdater.cpp entity/world/worldmapupdater.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		utils/fields/fields.hh \
 		utils/basics/color.hh \
 		utils/utils.hh \
@@ -1482,18 +1660,24 @@ main.o: main.cpp suassuna.h \
 		entity/contromodule/mrcteam.h \
 		entity/player/player.h \
 		utils/utils.hh \
+<<<<<<< dev
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/sslplayer/sslplayer.h \
 		entity/contromodule/coach.h \
 		entity/contromodule/basecoach.h \
 		entity/contromodule/controlmodule.h \
+<<<<<<< dev
 		entity/coachview/coachview.h \
 		entity/coachview/mainwindow.h \
 		entity/coachview/samico.h \
 		entity/coachview/qsfmlwidget.h \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		exithandler.h \
 		instancechecker.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o main.cpp
@@ -1521,14 +1705,18 @@ suassuna.o: suassuna.cpp suassuna.h \
 		entity/contromodule/mrcteam.h \
 		entity/player/player.h \
 		utils/utils.hh \
+<<<<<<< dev
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/sslplayer/sslplayer.h \
 		entity/contromodule/coach.h \
 		entity/contromodule/basecoach.h \
 		entity/contromodule/controlmodule.h \
+<<<<<<< dev
 		entity/coachview/coachview.h \
 		entity/coachview/mainwindow.h \
 		entity/coachview/samico.h \
@@ -1540,12 +1728,19 @@ suassuna.o: suassuna.cpp suassuna.h \
 		entity/player/behaviour/behaviour.h \
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
+=======
+		entity/player/behaviour/mrcbehaviours.h \
+		entity/player/behaviour/basics/behaviour_donothing.h \
+		entity/player/behaviour/behaviour.h \
+		entity/player/behaviour/basics/behaviour_followball.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
 		entity/player/skills/basics/skill_goto.h \
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
 		entity/player/skills/basics/skill_gkick.h \
@@ -1567,6 +1762,11 @@ suassuna.o: suassuna.cpp suassuna.h \
 		entity/player/role/role.h \
 		entity/contromodule/playersdistribution.h \
 		utils/wrtimer/wrtimer.hh \
+=======
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/behaviour/basics/behaviour_timeout.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/contromodule/strategy/strategy.h \
 		entity/contromodule/strategy/strategystate.h \
 		entity/contromodule/strategy/basics/mrcstrategy.h \
@@ -1611,6 +1811,7 @@ fieldside.o: utils/fieldside/fieldside.cc utils/fieldside/fieldside.hh \
 		utils/basics/side.hh
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fieldside.o utils/fieldside/fieldside.cc
 
+<<<<<<< dev
 freeangles.o: utils/freeangles/freeangles.cpp utils/freeangles/freeangles.h \
 		entity/contromodule/basecoach.h \
 		utils/freeangles/obstacle.h \
@@ -1641,6 +1842,8 @@ obstacle.o: utils/freeangles/obstacle.cpp utils/freeangles/obstacle.h \
 		utils/utils.hh
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obstacle.o utils/freeangles/obstacle.cpp
 
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 edge.o: utils/graph/edge.cc utils/graph/edge.hh \
 		utils/graph/basegraph.hh
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o edge.o utils/graph/edge.cc
@@ -1660,10 +1863,17 @@ line.o: utils/line/line.cc utils/line/line.hh
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o line.o utils/line/line.cc
 
 utils.o: utils/utils.cc utils/utils.hh \
+<<<<<<< dev
 		utils/freeangles/freeangles.h \
 		entity/contromodule/basecoach.h \
 		utils/freeangles/obstacle.h \
 		utils/knn/knn.hh
+=======
+		utils/freeangles/freeangles.hh \
+		utils/freeangles/obstacle.hh \
+		utils/knn/knn.hh \
+		entity/contromodule/basecoach.h
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o utils.o utils/utils.cc
 
 wrtimer.o: utils/wrtimer/wrtimer.cc utils/wrtimer/wrtimer.hh
@@ -1683,6 +1893,7 @@ player.o: entity/player/player.cpp entity/player/player.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
+<<<<<<< dev
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
@@ -1696,6 +1907,12 @@ player.o: entity/player/player.cpp entity/player/player.h \
 		entity/contromodule/playersdistribution.h \
 		entity/contromodule/basecoach.h \
 		utils/wrtimer/wrtimer.hh \
+=======
+		entity/contromodule/mrcteam.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		entity/player/playeraccess.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/behaviour/behaviour.h \
 		entity/contromodule/grsSimulator/grsSimulator.h \
 		include/3rd_party/grSim_Packet.pb.h \
@@ -1721,9 +1938,13 @@ mrcteam.o: entity/contromodule/mrcteam.cpp entity/contromodule/mrcteam.h \
 		entity/referee/referee.h \
 		utils/utils.hh \
 		entity/locations.h \
+<<<<<<< dev
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
+=======
+		utils/basics/wall.hh
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mrcteam.o entity/contromodule/mrcteam.cpp
 
 skill.o: entity/player/skills/skill.cpp entity/player/skills/skill.h \
@@ -1745,9 +1966,13 @@ skill.o: entity/player/skills/skill.cpp entity/player/skills/skill.h \
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
+<<<<<<< dev
 		utils/utils.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
+=======
+		utils/utils.hh
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill.o entity/player/skills/skill.cpp
 
 locations.o: entity/locations.cpp entity/locations.h \
@@ -1768,9 +1993,13 @@ locations.o: entity/locations.cpp entity/locations.h \
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
+<<<<<<< dev
 		utils/utils.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
+=======
+		utils/utils.hh
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o locations.o entity/locations.cpp
 
 grsSimulator.o: entity/contromodule/grsSimulator/grsSimulator.cpp entity/contromodule/grsSimulator/grsSimulator.h \
@@ -1800,10 +2029,13 @@ coach.o: entity/contromodule/coach.cpp entity/contromodule/coach.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
+<<<<<<< dev
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/playerbus.h \
 		entity/contromodule/strategy/strategy.h \
 		entity/contromodule/coachutils.h \
@@ -1827,11 +2059,15 @@ playerbus.o: entity/player/playerbus.cpp entity/player/playerbus.h \
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
+<<<<<<< dev
 		utils/utils.hh \
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
+=======
+		utils/utils.hh
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playerbus.o entity/player/playerbus.cpp
 
 playeraccess.o: entity/player/playeraccess.cpp entity/player/playeraccess.h \
@@ -1848,6 +2084,7 @@ playeraccess.o: entity/player/playeraccess.cpp entity/player/playeraccess.h \
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
+<<<<<<< dev
 		utils/utils.hh \
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
@@ -1856,6 +2093,9 @@ playeraccess.o: entity/player/playeraccess.cpp entity/player/playeraccess.h \
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
+=======
+		utils/utils.hh
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playeraccess.o entity/player/playeraccess.cpp
 
 strategy.o: entity/contromodule/strategy/strategy.cpp entity/contromodule/strategy/strategy.h \
@@ -1879,10 +2119,13 @@ strategy.o: entity/contromodule/strategy/strategy.cpp entity/contromodule/strate
 		entity/referee/SSLReferee/sslreferee.h \
 		entity/referee/referee.h \
 		utils/utils.hh \
+<<<<<<< dev
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/contromodule/strategy/strategystate.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o strategy.o entity/contromodule/strategy/strategy.cpp
 
@@ -1907,9 +2150,13 @@ playersdistribution.o: entity/contromodule/playersdistribution.cpp entity/contro
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		entity/locations.h \
+<<<<<<< dev
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
+=======
+		utils/basics/wall.hh
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playersdistribution.o entity/contromodule/playersdistribution.cpp
 
 strategystate.o: entity/contromodule/strategy/strategystate.cpp entity/contromodule/strategy/strategystate.h \
@@ -1935,6 +2182,7 @@ strategystate.o: entity/contromodule/strategy/strategystate.cpp entity/contromod
 		utils/utils.hh \
 		entity/locations.h \
 		utils/basics/wall.hh \
+<<<<<<< dev
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
 		entity/contromodule/playbook/playbook.h \
@@ -1942,6 +2190,10 @@ strategystate.o: entity/contromodule/strategy/strategystate.cpp entity/contromod
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
 		entity/player/role/role.h
+=======
+		entity/contromodule/playbook/playbook.h \
+		entity/player/behaviour/behaviour.h
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o strategystate.o entity/contromodule/strategy/strategystate.cpp
 
 coachutils.o: entity/contromodule/coachutils.cpp entity/contromodule/coachutils.h \
@@ -1963,11 +2215,15 @@ coachutils.o: entity/contromodule/coachutils.cpp entity/contromodule/coachutils.
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
+<<<<<<< dev
 		utils/utils.hh \
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
+=======
+		utils/utils.hh
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o coachutils.o entity/contromodule/coachutils.cpp
 
 playbook.o: entity/contromodule/playbook/playbook.cpp entity/contromodule/playbook/playbook.h \
@@ -1988,6 +2244,7 @@ playbook.o: entity/contromodule/playbook/playbook.cpp entity/contromodule/playbo
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
+<<<<<<< dev
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
@@ -1999,12 +2256,21 @@ playbook.o: entity/contromodule/playbook/playbook.cpp entity/contromodule/playbo
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
 		entity/player/role/role.h
+=======
+		entity/contromodule/playersdistribution.h \
+		entity/contromodule/basecoach.h \
+		utils/wrtimer/wrtimer.hh \
+		entity/player/behaviour/behaviour.h
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playbook.o entity/contromodule/playbook/playbook.cpp
 
 behaviour.o: entity/player/behaviour/behaviour.cpp entity/player/behaviour/behaviour.h \
 		entity/player/baseplayer.h \
+<<<<<<< dev
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/skills/skill.h \
 		entity/player/player.h \
 		entity/entity.h \
@@ -2018,6 +2284,7 @@ behaviour.o: entity/player/behaviour/behaviour.cpp entity/player/behaviour/behav
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
+<<<<<<< dev
 		utils/utils.hh \
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
@@ -2026,25 +2293,34 @@ behaviour.o: entity/player/behaviour/behaviour.cpp entity/player/behaviour/behav
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
+=======
+		utils/utils.hh
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour.o entity/player/behaviour/behaviour.cpp
 
 behaviour_donothing.o: entity/player/behaviour/basics/behaviour_donothing.cpp entity/player/behaviour/basics/behaviour_donothing.h \
 		entity/player/behaviour/behaviour.h \
 		entity/player/baseplayer.h \
+<<<<<<< dev
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
 		entity/player/skills/basics/skill_goto.h \
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -2062,9 +2338,13 @@ behaviour_donothing.o: entity/player/behaviour/basics/behaviour_donothing.cpp en
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
+<<<<<<< dev
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
+=======
+		entity/contromodule/mrcteam.h
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_donothing.o entity/player/behaviour/basics/behaviour_donothing.cpp
 
 skill_donothing.o: entity/player/skills/basics/skill_donothing.cpp entity/player/skills/basics/skill_donothing.h \
@@ -2074,12 +2354,15 @@ skill_donothing.o: entity/player/skills/basics/skill_donothing.cpp entity/player
 		entity/player/skills/basics/skill_goto.h \
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -2097,9 +2380,13 @@ skill_donothing.o: entity/player/skills/basics/skill_donothing.cpp entity/player
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
+<<<<<<< dev
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
+=======
+		entity/contromodule/mrcteam.h
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_donothing.o entity/player/skills/basics/skill_donothing.cpp
 
 knn.o: utils/knn/knn.cc utils/knn/knn.hh \
@@ -2120,11 +2407,15 @@ knn.o: utils/knn/knn.cc utils/knn/knn.hh \
 		include/3rd_party/game_event.pb.h \
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
+<<<<<<< dev
 		entity/referee/referee.h \
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
+=======
+		entity/referee/referee.h
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o knn.o utils/knn/knn.cc
 
 mrcstrategy.o: entity/contromodule/strategy/basics/mrcstrategy.cpp entity/contromodule/strategy/basics/mrcstrategy.h \
@@ -2154,6 +2445,7 @@ mrcstrategy.o: entity/contromodule/strategy/basics/mrcstrategy.cpp entity/contro
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
+<<<<<<< dev
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
@@ -2168,12 +2460,21 @@ mrcstrategy.o: entity/contromodule/strategy/basics/mrcstrategy.cpp entity/contro
 		entity/player/role/basics/role_default.h \
 		entity/player/behaviour/mrcbehaviours.h \
 		entity/player/behaviour/basics/behaviour_donothing.h \
+=======
+		entity/contromodule/playersdistribution.h \
+		utils/wrtimer/wrtimer.hh \
+		entity/player/behaviour/behaviour.h \
+		entity/player/behaviour/mrcbehaviours.h \
+		entity/player/behaviour/basics/behaviour_donothing.h \
+		entity/player/behaviour/basics/behaviour_followball.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
 		entity/player/skills/basics/skill_goto.h \
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
 		entity/player/skills/basics/skill_gkick.h \
@@ -2192,6 +2493,14 @@ mrcstrategy.o: entity/contromodule/strategy/basics/mrcstrategy.cpp entity/contro
 		entity/player/behaviour/basics/behaviour_markball.h \
 		entity/player/behaviour/basics/behaviour_penalty_gk.h \
 		entity/player/behaviour/basics/behaviour_penalty_cf.h
+=======
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/behaviour/basics/behaviour_timeout.h \
+		entity/contromodule/playbook/basics/playbook_followball.h \
+		entity/contromodule/playbook/basics/playbook_timeout.h \
+		entity/contromodule/strategy/basics/sslstrategy_timeout.h
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mrcstrategy.o entity/contromodule/strategy/basics/mrcstrategy.cpp
 
 sslstrategy.o: entity/contromodule/strategy/basics/sslstrategy.cpp entity/contromodule/strategy/basics/sslstrategy.h \
@@ -2229,6 +2538,7 @@ sslstrategy_halt.o: entity/contromodule/strategy/basics/sslstrategy_halt.cpp ent
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
+<<<<<<< dev
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
@@ -2243,12 +2553,21 @@ sslstrategy_halt.o: entity/contromodule/strategy/basics/sslstrategy_halt.cpp ent
 		entity/player/role/basics/role_default.h \
 		entity/player/behaviour/mrcbehaviours.h \
 		entity/player/behaviour/basics/behaviour_donothing.h \
+=======
+		entity/contromodule/playersdistribution.h \
+		utils/wrtimer/wrtimer.hh \
+		entity/player/behaviour/behaviour.h \
+		entity/player/behaviour/mrcbehaviours.h \
+		entity/player/behaviour/basics/behaviour_donothing.h \
+		entity/player/behaviour/basics/behaviour_followball.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
 		entity/player/skills/basics/skill_goto.h \
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
 		entity/player/skills/basics/skill_gkick.h \
@@ -2267,6 +2586,13 @@ sslstrategy_halt.o: entity/contromodule/strategy/basics/sslstrategy_halt.cpp ent
 		entity/player/behaviour/basics/behaviour_markball.h \
 		entity/player/behaviour/basics/behaviour_penalty_gk.h \
 		entity/player/behaviour/basics/behaviour_penalty_cf.h
+=======
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/behaviour/basics/behaviour_timeout.h \
+		entity/contromodule/playbook/basics/playbook_followball.h \
+		entity/contromodule/playbook/basics/playbook_timeout.h
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sslstrategy_halt.o entity/contromodule/strategy/basics/sslstrategy_halt.cpp
 
 playbook_donothing.o: entity/contromodule/playbook/basics/playbook_donothing.cpp entity/contromodule/playbook/basics/playbook_donothing.h \
@@ -2288,14 +2614,18 @@ playbook_donothing.o: entity/contromodule/playbook/basics/playbook_donothing.cpp
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
+<<<<<<< dev
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/contromodule/playersdistribution.h \
 		entity/contromodule/basecoach.h \
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
+<<<<<<< dev
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
 		entity/player/role/role.h \
@@ -2303,12 +2633,18 @@ playbook_donothing.o: entity/contromodule/playbook/basics/playbook_donothing.cpp
 		entity/player/role/basics/role_default.h \
 		entity/player/behaviour/mrcbehaviours.h \
 		entity/player/behaviour/basics/behaviour_donothing.h \
+=======
+		entity/player/behaviour/mrcbehaviours.h \
+		entity/player/behaviour/basics/behaviour_donothing.h \
+		entity/player/behaviour/basics/behaviour_followball.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
 		entity/player/skills/basics/skill_goto.h \
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
 		entity/player/skills/basics/skill_gkick.h \
@@ -2327,25 +2663,36 @@ playbook_donothing.o: entity/contromodule/playbook/basics/playbook_donothing.cpp
 		entity/player/behaviour/basics/behaviour_markball.h \
 		entity/player/behaviour/basics/behaviour_penalty_gk.h \
 		entity/player/behaviour/basics/behaviour_penalty_cf.h
+=======
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/behaviour/basics/behaviour_timeout.h
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playbook_donothing.o entity/contromodule/playbook/basics/playbook_donothing.cpp
 
 behaviour_followball.o: entity/player/behaviour/basics/behaviour_followball.cpp entity/player/behaviour/basics/behaviour_followball.h \
 		entity/player/behaviour/behaviour.h \
 		entity/player/baseplayer.h \
+<<<<<<< dev
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
 		entity/player/skills/basics/skill_goto.h \
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -2363,6 +2710,7 @@ behaviour_followball.o: entity/player/behaviour/basics/behaviour_followball.cpp 
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
+<<<<<<< dev
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
@@ -2489,12 +2837,44 @@ behaviour_receiver.o: entity/player/behaviour/basics/behaviour_receiver.cpp enti
 		entity/player/baseplayer.h \
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
+=======
+		entity/contromodule/mrcteam.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_followball.o entity/player/behaviour/basics/behaviour_followball.cpp
+
+playbook_followball.o: entity/contromodule/playbook/basics/playbook_followball.cpp entity/contromodule/playbook/basics/playbook_followball.h \
+		entity/contromodule/playbook/playbook.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/referee/SSLReferee/sslreferee.h \
+		entity/referee/referee.h \
+		entity/entity.h \
+		entity/contromodule/mrcteam.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		entity/player/player.h \
+		entity/world/world.h \
+		entity/baseentity.h \
+		entity/player/baseplayer.h \
+		utils/fields/fields.hh \
+		entity/world/worldmapupdater.h \
+		utils/utils.hh \
+		entity/contromodule/playersdistribution.h \
+		entity/contromodule/basecoach.h \
+		utils/wrtimer/wrtimer.hh \
+		entity/player/behaviour/behaviour.h \
+		entity/player/behaviour/mrcbehaviours.h \
+		entity/player/behaviour/basics/behaviour_donothing.h \
+		entity/player/behaviour/basics/behaviour_followball.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
 		entity/player/skills/basics/skill_goto.h \
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
 		entity/player/skills/basics/skill_gkick.h \
@@ -2613,12 +2993,46 @@ behaviour_markplayer.o: entity/player/behaviour/basics/behaviour_markplayer.cpp 
 		entity/player/baseplayer.h \
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
+=======
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/behaviour/basics/behaviour_timeout.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playbook_followball.o entity/contromodule/playbook/basics/playbook_followball.cpp
+
+playbook_timeout.o: entity/contromodule/playbook/basics/playbook_timeout.cpp entity/contromodule/playbook/basics/playbook_timeout.h \
+		entity/contromodule/playbook/playbook.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/referee/SSLReferee/sslreferee.h \
+		entity/referee/referee.h \
+		entity/entity.h \
+		entity/contromodule/mrcteam.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		entity/player/player.h \
+		entity/world/world.h \
+		entity/baseentity.h \
+		entity/player/baseplayer.h \
+		utils/fields/fields.hh \
+		entity/world/worldmapupdater.h \
+		utils/utils.hh \
+		entity/contromodule/playersdistribution.h \
+		entity/contromodule/basecoach.h \
+		utils/wrtimer/wrtimer.hh \
+		entity/player/behaviour/behaviour.h \
+		entity/player/behaviour/mrcbehaviours.h \
+		entity/player/behaviour/basics/behaviour_donothing.h \
+		entity/player/behaviour/basics/behaviour_followball.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
 		entity/player/skills/basics/skill_goto.h \
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
 		entity/player/skills/basics/skill_gkick.h \
@@ -2652,18 +3066,31 @@ behaviour_penalty_gk.o: entity/player/behaviour/basics/behaviour_penalty_gk.cpp 
 		entity/player/baseplayer.h \
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
+=======
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/behaviour/basics/behaviour_timeout.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playbook_timeout.o entity/contromodule/playbook/basics/playbook_timeout.cpp
+
+behaviour_timeout.o: entity/player/behaviour/basics/behaviour_timeout.cpp entity/player/behaviour/basics/behaviour_timeout.h \
+		entity/player/behaviour/behaviour.h \
+		entity/player/baseplayer.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
 		entity/player/skills/basics/skill_goto.h \
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -2681,6 +3108,7 @@ behaviour_penalty_gk.o: entity/player/behaviour/basics/behaviour_penalty_gk.cpp 
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
+<<<<<<< dev
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
@@ -2727,6 +3155,21 @@ role.o: entity/player/role/role.cpp entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
 		include/3rd_party/referee.pb.h \
 		include/3rd_party/game_event.pb.h \
+=======
+		entity/contromodule/mrcteam.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_timeout.o entity/player/behaviour/basics/behaviour_timeout.cpp
+
+sslstrategy_timeout.o: entity/contromodule/strategy/basics/sslstrategy_timeout.cpp entity/contromodule/strategy/basics/sslstrategy_timeout.h \
+		entity/contromodule/strategy/strategystate.h \
+		entity/contromodule/basecoach.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/contromodule/playbook/mrcplaybook.h \
+		entity/contromodule/playbook/basics/playbook_donothing.h \
+		entity/contromodule/playbook/playbook.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/referee/SSLReferee/sslreferee.h \
 		entity/referee/referee.h \
 		entity/entity.h \
@@ -2740,6 +3183,7 @@ role.o: entity/player/role/role.cpp entity/referee/SSLReferee/sslgameinfo.h \
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
+<<<<<<< dev
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
@@ -2760,12 +3204,21 @@ role_default.o: entity/player/role/basics/role_default.cpp entity/player/role/ba
 		entity/player/baseplayer.h \
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
+=======
+		entity/contromodule/playersdistribution.h \
+		utils/wrtimer/wrtimer.hh \
+		entity/player/behaviour/behaviour.h \
+		entity/player/behaviour/mrcbehaviours.h \
+		entity/player/behaviour/basics/behaviour_donothing.h \
+		entity/player/behaviour/basics/behaviour_followball.h \
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
 		entity/player/skills/basics/skill_goto.h \
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
 		entity/player/skills/basics/skill_gkick.h \
@@ -2894,6 +3347,21 @@ qsfmlwidget.o: entity/coachview/qsfmlwidget.cpp entity/coachview/qsfmlwidget.h
 
 qrc_rsc.o: qrc_rsc.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_rsc.o qrc_rsc.cpp
+=======
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/behaviour/basics/behaviour_timeout.h \
+		entity/contromodule/playbook/basics/playbook_followball.h \
+		entity/contromodule/playbook/basics/playbook_timeout.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sslstrategy_timeout.o entity/contromodule/strategy/basics/sslstrategy_timeout.cpp
+
+pid.o: entity/player/control/pid.cpp entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o pid.o entity/player/control/pid.cpp
+
+mrctimer.o: utils/mrctimer/mrctimer.cpp utils/mrctimer/mrctimer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mrctimer.o utils/mrctimer/mrctimer.cpp
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 
 moc_playbook.o: moc_playbook.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_playbook.o moc_playbook.cpp
@@ -2901,6 +3369,7 @@ moc_playbook.o: moc_playbook.cpp
 moc_behaviour.o: moc_behaviour.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_behaviour.o moc_behaviour.cpp
 
+<<<<<<< dev
 moc_behaviour_receiver.o: moc_behaviour_receiver.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_behaviour_receiver.o moc_behaviour_receiver.cpp
 
@@ -2919,6 +3388,8 @@ moc_samico.o: moc_samico.cpp
 moc_qsfmlwidget.o: moc_qsfmlwidget.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_qsfmlwidget.o moc_qsfmlwidget.cpp
 
+=======
+>>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 ####### Install
 
 install_target: first FORCE
