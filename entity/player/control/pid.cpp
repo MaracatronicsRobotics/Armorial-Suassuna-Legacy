@@ -1,6 +1,4 @@
 #include "pid.h"
-#include <stdio.h>
-#include <math.h>
 
 PID::PID(){
     _kp = 0;
@@ -17,10 +15,10 @@ PID::PID(){
     _timer->update();
 }
 
-PID::PID(double kp, double ki, double kd, double max, double min){
+PID::PID(double kp, double kd, double ki, double max, double min){
     _kp = kp;
-    _ki = ki;
     _kd = kd;
+    _ki = ki;
 
     _max = max;
     _min = min;
@@ -33,7 +31,7 @@ PID::PID(double kp, double ki, double kd, double max, double min){
 }
 
 PID::~PID(){
-    delete _timer;
+    //delete _timer;
 }
 
 void PID::setPIDParameters(double kp, double kd, double ki, double max, double min){
@@ -53,16 +51,10 @@ void PID::setPIDParameters(double kp, double kd, double ki, double max, double m
 double PID::calculate(double desired, double actual){
     // get time interval
     _dt = _timer->getTimeInMilliSeconds();
-    _dt = _dt / 1000.0;
-
     _timer->update();
 
     // error
     double error = desired - actual;
-
-    if(fabs(error) <= 0.1){
-        _integral = 0;
-    }
 
     // Proportional term
     double P = _kp * error;
@@ -84,9 +76,6 @@ double PID::calculate(double desired, double actual){
     }else if(result < _min){
         result = _min;
     }
-
-    // Save error to previous error
-    _pre_error = error;
 
     return result;
 }
