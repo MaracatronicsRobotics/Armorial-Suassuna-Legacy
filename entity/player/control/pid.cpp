@@ -1,4 +1,6 @@
 #include "pid.h"
+#include <stdio.h>
+#include <math.h>
 
 PID::PID(){
     _kp = 0;
@@ -31,7 +33,7 @@ PID::PID(double kp, double kd, double ki, double max, double min){
 }
 
 PID::~PID(){
-    //delete _timer;
+    delete _timer;
 }
 
 void PID::setPIDParameters(double kp, double kd, double ki, double max, double min){

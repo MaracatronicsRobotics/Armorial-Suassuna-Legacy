@@ -655,6 +655,8 @@ moc_playbook.cpp: entity/contromodule/playbook/playbook.h \
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/contromodule/playersdistribution.h \
 		entity/contromodule/basecoach.h \
 		utils/wrtimer/wrtimer.hh \
@@ -709,6 +711,8 @@ skill_goto.o: entity/player/skills/basics/skill_goto.cpp entity/player/skills/ba
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
@@ -736,6 +740,8 @@ skill_gotolookto.o: entity/player/skills/basics/skill_gotolookto.cpp entity/play
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
@@ -763,6 +769,8 @@ skill_rotateto.o: entity/player/skills/basics/skill_rotateto.cpp entity/player/s
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
@@ -787,6 +795,8 @@ world.o: entity/world/world.cpp entity/world/world.h \
 		utils/basics/side.hh \
 		entity/player/player.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/contromodule/controlmodule.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o world.o entity/world/world.cpp
 
@@ -893,6 +903,8 @@ main.o: main.cpp suassuna.h \
 		entity/contromodule/mrcteam.h \
 		entity/player/player.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/player/sslplayer/sslplayer.h \
 		entity/contromodule/coach.h \
 		entity/contromodule/basecoach.h \
@@ -924,6 +936,8 @@ suassuna.o: suassuna.cpp suassuna.h \
 		entity/contromodule/mrcteam.h \
 		entity/player/player.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/player/sslplayer/sslplayer.h \
 		entity/contromodule/coach.h \
 		entity/contromodule/basecoach.h \
@@ -1027,6 +1041,8 @@ player.o: entity/player/player.cpp entity/player/player.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/contromodule/mrcteam.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
@@ -1055,6 +1071,8 @@ mrcteam.o: entity/contromodule/mrcteam.cpp entity/contromodule/mrcteam.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
 		utils/basics/wall.hh
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mrcteam.o entity/contromodule/mrcteam.cpp
@@ -1078,7 +1096,9 @@ skill.o: entity/player/skills/skill.cpp entity/player/skills/skill.h \
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
-		utils/utils.hh
+		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill.o entity/player/skills/skill.cpp
 
 locations.o: entity/locations.cpp entity/locations.h \
@@ -1099,7 +1119,9 @@ locations.o: entity/locations.cpp entity/locations.h \
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
-		utils/utils.hh
+		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o locations.o entity/locations.cpp
 
 grsSimulator.o: entity/contromodule/grsSimulator/grsSimulator.cpp entity/contromodule/grsSimulator/grsSimulator.h \
@@ -1129,6 +1151,8 @@ coach.o: entity/contromodule/coach.cpp entity/contromodule/coach.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/player/playerbus.h \
 		entity/contromodule/strategy/strategy.h \
 		entity/contromodule/coachutils.h \
@@ -1152,7 +1176,9 @@ playerbus.o: entity/player/playerbus.cpp entity/player/playerbus.h \
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
-		utils/utils.hh
+		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playerbus.o entity/player/playerbus.cpp
 
 playeraccess.o: entity/player/playeraccess.cpp entity/player/playeraccess.h \
@@ -1169,7 +1195,9 @@ playeraccess.o: entity/player/playeraccess.cpp entity/player/playeraccess.h \
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
-		utils/utils.hh
+		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playeraccess.o entity/player/playeraccess.cpp
 
 strategy.o: entity/contromodule/strategy/strategy.cpp entity/contromodule/strategy/strategy.h \
@@ -1193,6 +1221,8 @@ strategy.o: entity/contromodule/strategy/strategy.cpp entity/contromodule/strate
 		entity/referee/SSLReferee/sslreferee.h \
 		entity/referee/referee.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/contromodule/strategy/strategystate.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o strategy.o entity/contromodule/strategy/strategy.cpp
 
@@ -1216,6 +1246,8 @@ playersdistribution.o: entity/contromodule/playersdistribution.cpp entity/contro
 		entity/player/baseplayer.h \
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
 		utils/basics/wall.hh
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playersdistribution.o entity/contromodule/playersdistribution.cpp
@@ -1241,6 +1273,8 @@ strategystate.o: entity/contromodule/strategy/strategystate.cpp entity/contromod
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/contromodule/playbook/playbook.h \
@@ -1266,7 +1300,9 @@ coachutils.o: entity/contromodule/coachutils.cpp entity/contromodule/coachutils.
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
-		utils/utils.hh
+		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o coachutils.o entity/contromodule/coachutils.cpp
 
 playbook.o: entity/contromodule/playbook/playbook.cpp entity/contromodule/playbook/playbook.h \
@@ -1287,6 +1323,8 @@ playbook.o: entity/contromodule/playbook/playbook.cpp entity/contromodule/playbo
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/contromodule/playersdistribution.h \
 		entity/contromodule/basecoach.h \
 		utils/wrtimer/wrtimer.hh \
@@ -1308,7 +1346,9 @@ behaviour.o: entity/player/behaviour/behaviour.cpp entity/player/behaviour/behav
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
-		utils/utils.hh
+		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour.o entity/player/behaviour/behaviour.cpp
 
 behaviour_donothing.o: entity/player/behaviour/basics/behaviour_donothing.cpp entity/player/behaviour/basics/behaviour_donothing.h \
@@ -1333,6 +1373,8 @@ behaviour_donothing.o: entity/player/behaviour/basics/behaviour_donothing.cpp en
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
@@ -1360,6 +1402,8 @@ skill_donothing.o: entity/player/skills/basics/skill_donothing.cpp entity/player
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
@@ -1385,7 +1429,9 @@ knn.o: utils/knn/knn.cc utils/knn/knn.hh \
 		include/3rd_party/game_event.pb.h \
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
-		entity/referee/referee.h
+		entity/referee/referee.h \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o knn.o utils/knn/knn.cc
 
 mrcstrategy.o: entity/contromodule/strategy/basics/mrcstrategy.cpp entity/contromodule/strategy/basics/mrcstrategy.h \
@@ -1415,6 +1461,8 @@ mrcstrategy.o: entity/contromodule/strategy/basics/mrcstrategy.cpp entity/contro
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/contromodule/playersdistribution.h \
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
@@ -1470,6 +1518,8 @@ sslstrategy_halt.o: entity/contromodule/strategy/basics/sslstrategy_halt.cpp ent
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/contromodule/playersdistribution.h \
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
@@ -1508,6 +1558,8 @@ playbook_donothing.o: entity/contromodule/playbook/basics/playbook_donothing.cpp
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/contromodule/playersdistribution.h \
 		entity/contromodule/basecoach.h \
 		utils/wrtimer/wrtimer.hh \
@@ -1548,6 +1600,8 @@ behaviour_followball.o: entity/player/behaviour/basics/behaviour_followball.cpp 
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
@@ -1574,6 +1628,8 @@ playbook_followball.o: entity/contromodule/playbook/basics/playbook_followball.c
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/contromodule/playersdistribution.h \
 		entity/contromodule/basecoach.h \
 		utils/wrtimer/wrtimer.hh \
@@ -1611,6 +1667,8 @@ playbook_timeout.o: entity/contromodule/playbook/basics/playbook_timeout.cpp ent
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/contromodule/playersdistribution.h \
 		entity/contromodule/basecoach.h \
 		utils/wrtimer/wrtimer.hh \
@@ -1651,6 +1709,8 @@ behaviour_timeout.o: entity/player/behaviour/basics/behaviour_timeout.cpp entity
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
@@ -1681,6 +1741,8 @@ sslstrategy_timeout.o: entity/contromodule/strategy/basics/sslstrategy_timeout.c
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
 		entity/contromodule/playersdistribution.h \
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \

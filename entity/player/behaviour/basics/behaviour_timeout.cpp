@@ -7,7 +7,7 @@ QString Behaviour_TimeOut::name() {
 
 Behaviour_TimeOut::Behaviour_TimeOut() {
     _skill_GoToLookTo = NULL;
-    _distBall = 0.01;
+    _distBall = 0.1;
     _desiredPosition = Position(0.0, 0.0, 0.0, true);
 }
 
