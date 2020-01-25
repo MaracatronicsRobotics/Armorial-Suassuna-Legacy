@@ -53,6 +53,8 @@ void PID::setPIDParameters(double kp, double kd, double ki, double max, double m
 double PID::calculate(double desired, double actual){
     // get time interval
     _dt = _timer->getTimeInMilliSeconds();
+    _dt = _dt / 1000.0;
+
     _timer->update();
 
     // error
@@ -78,6 +80,9 @@ double PID::calculate(double desired, double actual){
     }else if(result < _min){
         result = _min;
     }
+
+    // Save error to previous error
+    _pre_error = error;
 
     return result;
 }
