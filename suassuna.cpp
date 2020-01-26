@@ -129,12 +129,9 @@ void Suassuna::setupOurPlayers() {
     QList<quint8> playerList = _world->getWorldMap()->players(_teamId);
     for(quint8 i=0; i<playerList.size() && i<=MAX_ROBOT_ID; i++) {
         // Create Player
-        PID *vxPID = new PID(0.6, 0.0, 0.025, 2.5, -2.5);
-        PID *vyPID = new PID(0.6, 0.0, 0.025, 2.5, -2.5);
-        //PID *vwPID = new PID(0.8, 0.0, 0.0, 2.0, -2.0);
-        //PID *vxPID = new PID(0.0, 0.0, 0.0, 0.0, 0.0);
-        //PID *vyPID = new PID(0.0, 0.0, 0.0, 0.0, 0.0);
-        PID *vwPID = new PID(0.0, 0.0, 0.0, 3.0, -3.0);
+        PID *vxPID = new PID(0.5, 0.0, 0.0, 5.0, -5.0);
+        PID *vyPID = new PID(0.5, 0.0, 0.0, 5.0, -5.0);
+        PID *vwPID = new PID(0.8, 0.01, 0.002, 3.0, -3.0);
         Player *player = new Player(_world, _ourTeam, _ctr, playerList.at(i), new Behaviour_DoNothing(), _ref, _grSimulator, vxPID, vyPID, vwPID);
         // Enable
         player->enable(true);
