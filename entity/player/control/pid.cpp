@@ -60,6 +60,10 @@ double PID::calculate(double desired, double actual){
     // error
     double error = desired - actual;
 
+    if(fabs(error) <= 0.1){
+        _integral = 0;
+    }
+
     // Proportional term
     double P = _kp * error;
 
