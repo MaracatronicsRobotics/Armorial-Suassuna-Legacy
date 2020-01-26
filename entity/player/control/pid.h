@@ -7,7 +7,7 @@ class PID
 {
 public:
     PID();
-    PID(double kp, double kd, double ki, double max, double min);
+    PID(double kp, double ki, double kd, double max, double min);
     ~PID();
     void setPIDParameters(double kp, double kd, double ki, double max, double min);
     double calculate(double desired, double actual);
