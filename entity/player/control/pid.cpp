@@ -17,10 +17,10 @@ PID::PID(){
     _timer->update();
 }
 
-PID::PID(double kp, double kd, double ki, double max, double min){
+PID::PID(double kp, double ki, double kd, double max, double min){
     _kp = kp;
-    _kd = kd;
     _ki = ki;
+    _kd = kd;
 
     _max = max;
     _min = min;
