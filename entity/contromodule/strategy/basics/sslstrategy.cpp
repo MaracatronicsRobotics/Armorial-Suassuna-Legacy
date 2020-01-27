@@ -20,8 +20,8 @@ void SSLStrategy::runStrategy() {
     if(gameState==UNDEFINED)
         return;
 
-    //Strategy::runStrategy(gameState, refState);
-    Strategy::runStrategy(HALT, SSLGameInfo::RefProcessedState::STATE_CANTMOVE);
+    Strategy::runStrategy(gameState, refState);
+    //Strategy::runStrategy(HALT, SSLGameInfo::RefProcessedState::STATE_CANTMOVE);
 
 }
 

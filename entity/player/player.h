@@ -64,18 +64,11 @@ public:
 
     // Player skills
     void setSpeed(float x, float y, float theta);
-<<<<<<< HEAD
-    std::pair<float, float> GoTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset = 0.2);
-    float RotateTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle);
-    void goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double aim_x, double aim_y, double robotAngle, double offset = 0.3);
-    void AroundTheBall(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset = 0.25);
-    void Dribble();
-=======
     std::pair<float, float> GoTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double _distBall = 0.2);
     std::pair<double, double> RotateTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle);
-    void goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double _distBall = 0.2);
+    void goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double aim_x, double aim_y, double angleOrigin2Robot, double offset = 0.2);
     void AroundTheBall(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset);
->>>>>>> createPID
+    void Kick(bool isPass);
 
     // Behaviour
     void setBehaviour(Behaviour *b);

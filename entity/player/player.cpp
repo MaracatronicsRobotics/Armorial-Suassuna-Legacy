@@ -262,6 +262,8 @@ void Player::setSpeed(float x, float y, float theta) {
 
     // tem que fazer ajustes com os pids
     _grSim->setSpeed((int)_team->teamId(), (int)playerId(), x, y, theta);
+    _grSim->setKickSpeed(_team->teamId(), playerId(), 0.0, 0.0);
+
 }
 
 // exemplo de skill
@@ -279,31 +281,25 @@ std::pair<float, float> Player::GoTo(double robot_x, double robot_y, double poin
     if(vxSaida < 0) sinal_x = -1;
     if(vySaida < 0) sinal_y = -1;
 
-<<<<<<< HEAD
-    if(moduloDistancia > offset){
-        vxSaida = std::min(fabs(vxSaida)*0.7, 1.0);
-        vySaida = std::min(fabs(vySaida)*0.7, 1.0);
-=======
     double mod = sqrt(pow(vxSaida, 2) + pow(vySaida, 2));
     double mod2 = sqrt(pow(velocity().x(), 2) + pow(velocity().y(), 2));
 
-/*
-    if(moduloDistancia > _distBall){
+
+    if(moduloDistancia > offset){
         vxSaida = std::min(fabs(vxSaida)*0.7, 2.0);
         vySaida = std::min(fabs(vySaida)*0.7, 2.0);
->>>>>>> createPID
     } else {
         vxSaida = 0;
         vySaida = 0;
     }
-*/
-    if(moduloDistancia <= _distBall){
+/*
+    if(moduloDistancia <= offset){
         vxSaida = 0;
         vySaida = 0;
 
         return std::make_pair(0.0, 0.0);
     }
-
+*/
     WR::Utils::limitValue(&vxSaida, -2.5, 2.5);
     WR::Utils::limitValue(&vySaida, -2.5, 2.5);
 
@@ -313,7 +309,8 @@ std::pair<float, float> Player::GoTo(double robot_x, double robot_y, double poin
     //setSpeed(vxSaida * sinal_x, vySaida * sinal_y, 0.0);
     //setSpeed(newVX, newVY, 0.0);
 
-    return std::make_pair(newVX, newVY);
+    //return std::make_pair(newVX, newVY);
+    return std::make_pair(vxSaida * sinal_x, vySaida * sinal_y);
 }
 
 std::pair<double, double> Player::RotateTo(double robot_x, double robot_y, double point_x, double point_y, double angleOrigin2Robot) {
@@ -333,13 +330,8 @@ std::pair<double, double> Player::RotateTo(double robot_x, double robot_y, doubl
         angleOrigin2ball = acos(vectorRobot2BallX); //angulo que a bola faz com o eixo x em relação ao robo
     }
 
-<<<<<<< HEAD
-    long double minValue = 1.7;
-    long double maxValue = 3.0;
-=======
     double minValue = 1.5;
     double maxValue = 3.0;
->>>>>>> createPID
 
     double speed = 0.0;
 
@@ -374,14 +366,15 @@ std::pair<double, double> Player::RotateTo(double robot_x, double robot_y, doubl
     //setSpeed(0.0, 0.0, speed);
     //setSpeed(0.0, 0.0, newSpeed);
 
-    return std::make_pair(angleRobot2Ball, newSpeed);
+    //return std::make_pair(angleRobot2Ball, newSpeed);
+    return std::make_pair(angleRobot2Ball, speed);
 }
 
 void Player::goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double aim_x, double aim_y, double angleOrigin2Robot, double offset){
     // Configura o robô para ir até a bola e olhar para um alvo
     std::pair<float, float> a;
-<<<<<<< HEAD
     double p_x, p_y, angle, moduloDist, final_x, final_y;
+
     if (point_x == aim_x) angle = 1.570796327;
     else angle = atan((point_y - aim_y)/(point_x - aim_x));
     if (aim_x > point_x) {
@@ -395,25 +388,10 @@ void Player::goToLookTo(double robot_x, double robot_y, double point_x, double p
     final_x = (p_x - robot_x)/moduloDist;
     final_y = (p_y - robot_y)/moduloDist;
     a = GoTo(robot_x, robot_y, p_x + offset * final_x, p_y + offset * final_y, angleOrigin2Robot, offset);
-    float theta = RotateTo(robot_x, robot_y, aim_x, aim_y, angleOrigin2Robot);
-=======
-    a = GoTo(robot_x, robot_y, point_x, point_y, angleOrigin2Robot, _distBall);
-    std::pair<double, double> w;
-    w = RotateTo(robot_x, robot_y, point_x, point_y, angleOrigin2Robot);
+    double theta = RotateTo(robot_x, robot_y, aim_x, aim_y, angleOrigin2Robot).second;
 
-    setSpeed(a.first, a.second, w.second);
-}
-
-void Player::AroundTheBall(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset){
-    // Configura o robô para ir até a bola e girar em torno dela
-    std::pair<float, float> a, b;
-    long double moduloDistancia = sqrt(pow((point_x - robot_x),2)+pow((point_y - robot_y),2));
-    a = GoTo(robot_x, robot_y, point_x, point_y, robotAngle, offset);
-    b = RotateTo(robot_x, robot_y, point_x, point_y, robotAngle);
->>>>>>> createPID
-
-    if (moduloDistancia < offset) setSpeed(0, 0.4, b.second); //3% de diferença nas velocidades
-    else setSpeed(a.first, a.second, b.second);
+    if (moduloDist < offset) setSpeed(0, 0.2, theta); //3% de diferença nas velocidades
+    else setSpeed(a.first, a.second, theta);
 }
 
 void Player::AroundTheBall(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset){
@@ -421,10 +399,17 @@ void Player::AroundTheBall(double robot_x, double robot_y, double point_x, doubl
     std::pair<float, float> a;
     long double moduloDistancia = sqrt(pow((point_x - robot_x),2)+pow((point_y - robot_y),2));
     a = GoTo(robot_x, robot_y, point_x, point_y, robotAngle, offset);
-    float theta = RotateTo(robot_x, robot_y, point_x, point_y, robotAngle);
+    float theta = RotateTo(robot_x, robot_y, point_x, point_y, robotAngle).second;
 
     if (moduloDistancia < offset) setSpeed(0, 0.2, theta); //3% de diferença nas velocidades
     else setSpeed(a.first, a.second, theta);
 }
 
-void Player::Dribble(){}
+void Player::Kick(bool isPass){
+    if(isPass)
+        _grSim->setKickSpeed(_team->teamId(), playerId(), 2.0, 0.0);
+    else
+        _grSim->setKickSpeed(_team->teamId(), playerId(), 6.0, 0.0);
+
+    _grSim->setSpeed((int)_team->teamId(), (int)playerId(), 0.0, 0.0, 0.0);
+}

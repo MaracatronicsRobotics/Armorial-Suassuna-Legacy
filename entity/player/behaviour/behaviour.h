@@ -2,6 +2,7 @@
 #define BEHAVIOUR_H
 
 #include <entity/player/baseplayer.h>
+#include <entity/player/playeraccess.h>
 #include <QObject>
 
 class Behaviour : public QObject {
