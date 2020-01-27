@@ -10,7 +10,8 @@ private:
     void run();
     Position _desiredPosition;
     Skill_GoToLookTo *_skill_GoToLookTo;
-    double _offsetBall;
+    Skill_AroundTheBall *_skill_AroundTheBall;
+    double _distBall;
 public:
     Behaviour_TimeOut();
     QString name();

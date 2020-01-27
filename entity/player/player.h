@@ -67,6 +67,7 @@ public:
     std::pair<float, float> GoTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double _distBall = 0.2);
     std::pair<double, double> RotateTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle);
     void goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double _distBall = 0.2);
+    void AroundTheBall(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset);
 
     // Behaviour
     void setBehaviour(Behaviour *b);
@@ -118,6 +119,7 @@ private:
     PID *_vxPID;
     PID *_vyPID;
     PID *_vwPID;
+
 
 };
 
