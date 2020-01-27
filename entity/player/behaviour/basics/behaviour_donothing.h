@@ -11,7 +11,9 @@ private:
 public:
     Behaviour_DoNothing();
     QString name();
-    Skill_AroundTheBall* _teste;
+
+    Skill_Kick *_teste;
+    Skill_GoToLookTo *_sk_goto;
 };
 
 #endif // BEHAVIOUR_DONOTHING_H
