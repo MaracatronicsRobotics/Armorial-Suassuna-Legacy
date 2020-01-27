@@ -1,22 +1,10 @@
-#ifndef BEHAVIOUR_TIMEOUT_H
-#define BEHAVIOUR_TIMEOUT_H
 
-#include <entity/player/behaviour/behaviour.h>
-#include <entity/player/skills/skills_include.h>
+};
 
-class Behaviour_TimeOut : public Behaviour {
-private:
-    void configure();
-    void run();
-    Position _desiredPosition;
-    Skill_GoToLookTo *_skill_GoToLookTo;
-    Skill_AroundTheBall *_skill_AroundTheBall;
-    double _distBall;
-public:
-    Behaviour_TimeOut();
-    QString name();
+#endif // BEHAVIOUR_TIMEOUT_H
 
-    void setSkillPosition(Position pos);
+    double _offsetBall;
+
 };
 
 #endif // BEHAVIOUR_TIMEOUT_H
