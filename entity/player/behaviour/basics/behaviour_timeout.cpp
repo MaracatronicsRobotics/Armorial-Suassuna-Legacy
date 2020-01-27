@@ -11,8 +11,7 @@ Behaviour_TimeOut::Behaviour_TimeOut() {
 }
 
 void Behaviour_TimeOut::configure() {
-    //usesSkill(_skill_GoToLookTo = new Skill_GoToLookTo());
-    usesSkill(_skill_AroundTheBall = new Skill_AroundTheBall());
+    usesSkill(_skill_GoToLookTo = new Skill_GoToLookTo());
 };
 
 void Behaviour_TimeOut::run() {
