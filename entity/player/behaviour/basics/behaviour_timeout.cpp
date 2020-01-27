@@ -7,7 +7,7 @@ QString Behaviour_TimeOut::name() {
 
 Behaviour_TimeOut::Behaviour_TimeOut() {
     _skill_GoToLookTo = NULL;
-    _distBall = 0.01;
+    _offsetBall = 0.01;
     _desiredPosition = Position(0.0, 0.0, 0.0, true);
 }
 
@@ -17,7 +17,7 @@ void Behaviour_TimeOut::configure() {
 
 void Behaviour_TimeOut::run() {
     _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
-    _skill_GoToLookTo->setDistToBall(_distBall);
+    _skill_GoToLookTo->setOffsetToBall(_offsetBall);
 }
 
 void Behaviour_TimeOut::setSkillPosition(Position pos){

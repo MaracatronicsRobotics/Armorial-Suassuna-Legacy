@@ -6,7 +6,7 @@ QString Behaviour_FollowBall::name() {
 
 Behaviour_FollowBall::Behaviour_FollowBall() {
     _skill_GoToLookTo = NULL;
-    _distBall = 0.6;
+    _offsetBall = 0.6;
 }
 
 void Behaviour_FollowBall::configure() {
@@ -15,6 +15,6 @@ void Behaviour_FollowBall::configure() {
 
 void Behaviour_FollowBall::run() {
     _skill_GoToLookTo->setDesiredPosition(loc()->ball());
-    _skill_GoToLookTo->setDistToBall(_distBall);
+    _skill_GoToLookTo->setOffsetToBall(_offsetBall);
 }
 

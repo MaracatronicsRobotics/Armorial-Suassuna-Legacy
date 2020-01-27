@@ -6,6 +6,7 @@ QString Skill_GoTo::name() {
 }
 
 Skill_GoTo::Skill_GoTo() {
+    _desiredPosition = Position(true, 0.0, 0.0, 0.0);
 }
 
 void Skill_GoTo::run() {

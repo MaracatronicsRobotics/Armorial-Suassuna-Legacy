@@ -9,7 +9,7 @@ private:
     void configure();
     void run();
     Skill_GoToLookTo *_skill_GoToLookTo;
-    double _distBall;
+    double _offsetBall;
 public:
     Behaviour_FollowBall();
     QString name();

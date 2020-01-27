@@ -237,7 +237,7 @@ void Player::setSpeed(float x, float y, float theta) {
 }
 
 // exemplo de skill
-std::pair<float, float> Player::GoTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double _distBall){
+std::pair<float, float> Player::GoTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset){
     // Define a velocidade do robô para chegar na bola
     long double Vx = (point_x - robot_x);
     long double Vy = (point_y - robot_y);
@@ -251,7 +251,7 @@ std::pair<float, float> Player::GoTo(double robot_x, double robot_y, double poin
     if(vxSaida < 0) sinal_x = -1;
     if(vySaida < 0) sinal_y = -1;
 
-    if(moduloDistancia > _distBall){
+    if(moduloDistancia > offset){
         vxSaida = std::min(fabs(vxSaida)*0.7, 1.0);
         vySaida = std::min(fabs(vySaida)*0.7, 1.0);
     } else {
@@ -281,7 +281,7 @@ float Player::RotateTo(double robot_x, double robot_y, double point_x, double po
         angleOrigin2ball = acos(vectorRobot2BallX); //angulo que a bola faz com o eixo x em relação ao robo
     }
 
-    long double minValue = 1.5;
+    long double minValue = 1.7;
     long double maxValue = 3.0;
 
     long double speed;
@@ -309,7 +309,7 @@ float Player::RotateTo(double robot_x, double robot_y, double point_x, double po
             }
         }
     }else{
-        speed = 0.0;
+        speed = 0;
     }
 
     setSpeed(0.0, 0.0, speed);
@@ -317,10 +317,37 @@ float Player::RotateTo(double robot_x, double robot_y, double point_x, double po
     return speed;
 }
 
-void Player::goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double angleOrigin2Robot, double _distBall){
+void Player::goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double aim_x, double aim_y, double angleOrigin2Robot, double offset){
+    // Configura o robô para ir até a bola e olhar para um alvo
     std::pair<float, float> a;
-    a = GoTo(robot_x, robot_y, point_x, point_y, angleOrigin2Robot, _distBall);
-    float theta = RotateTo(robot_x, robot_y, point_x, point_y, angleOrigin2Robot);
+    double p_x, p_y, angle, moduloDist, final_x, final_y;
+    if (point_x == aim_x) angle = 1.570796327;
+    else angle = atan((point_y - aim_y)/(point_x - aim_x));
+    if (aim_x > point_x) {
+        p_y = point_y - offset * sin(angle);
+        p_x = point_x - offset * cos(angle);
+    } else {
+        p_y = point_y + offset * sin(angle);
+        p_x = point_x + offset * cos(angle);
+    }
+    moduloDist = sqrt(pow((p_x - robot_x), 2) + pow((p_y - robot_y), 2));
+    final_x = (p_x - robot_x)/moduloDist;
+    final_y = (p_y - robot_y)/moduloDist;
+    a = GoTo(robot_x, robot_y, p_x + offset * final_x, p_y + offset * final_y, angleOrigin2Robot, offset);
+    float theta = RotateTo(robot_x, robot_y, aim_x, aim_y, angleOrigin2Robot);
 
     setSpeed(a.first, a.second, theta);
 }
+
+void Player::AroundTheBall(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset){
+    // Configura o robô para ir até a bola e girar em torno dela
+    std::pair<float, float> a;
+    long double moduloDistancia = sqrt(pow((point_x - robot_x),2)+pow((point_y - robot_y),2));
+    a = GoTo(robot_x, robot_y, point_x, point_y, robotAngle, offset);
+    float theta = RotateTo(robot_x, robot_y, point_x, point_y, robotAngle);
+
+    if (moduloDistancia < offset) setSpeed(0, 0.2, theta); //3% de diferença nas velocidades
+    else setSpeed(a.first, a.second, theta);
+}
+
+void Player::Dribble(){}
