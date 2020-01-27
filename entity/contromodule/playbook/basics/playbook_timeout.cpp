@@ -21,7 +21,7 @@ void Playbook_TimeOut::configure(int numPlayers) {
 }
 
 void Playbook_TimeOut::run(int numPlayers) {
-
+/*
     if(numPlayers == 5){
         double x = loc()->ourGoalLeftPost().x();
         double y = loc()->ourGoalLeftPost().y();
@@ -51,8 +51,9 @@ void Playbook_TimeOut::run(int numPlayers) {
             y = y - 0.5;
         }
     }
-
+*/
     for(int i=0; i<numPlayers; i++){
+        _bh_to.at(i)->setSkillPosition(loc()->ball());
         setPlayerBehaviour(dist()->getPlayer(), _bh_to.at(i));
     }
 }

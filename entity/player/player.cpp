@@ -9,7 +9,7 @@ QString Player::name(){
     return "Player #"+QString::number((int)_team->teamId())+":"+QString::number((int)_playerId);
 }
 
-Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Behaviour *defaultBehaviour, SSLReferee *ref, grsSimulator *grSim) : Entity(Entity::ENT_PLAYER){
+Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Behaviour *defaultBehaviour, SSLReferee *ref, grsSimulator *grSim, PID *vxPID, PID *vyPID, PID *vwPID) : Entity(Entity::ENT_PLAYER){
     _world = world;
     _team = team;
     _playerId = playerID;
@@ -19,6 +19,10 @@ Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Be
     _defaultBehaviour = defaultBehaviour;
     _playerAccessSelf = new PlayerAccess(true, this, team->loc());
     _playerAccessBus = new PlayerAccess(false, this, team->loc());
+
+    _vxPID = vxPID;
+    _vyPID = vyPID;
+    _vwPID = vwPID;
 
     // Idle control
     _idleCount = 0;
@@ -154,7 +158,11 @@ Angle Player::nextOrientation() const{
 }
 
 Velocity Player::velocity() const{
-    //return _team->wm()->playerVelocity(teamId(), _playerId);
+    return _team->wm()->playerVelocity(teamId(), _playerId);
+}
+
+AngularSpeed Player::angularSpeed() const{
+    return _team->wm()->playerAngularSpeed(teamId(), _playerId);
 }
 
 float Player::lastSpeed() const{
@@ -232,6 +240,26 @@ void Player::idle(){
 }
 
 void Player::setSpeed(float x, float y, float theta) {
+
+    float currSpeedAbs = sqrt(pow(x, 2) + pow(y, 2));
+    float incSpeedAbs = currSpeedAbs - _lastSpeedAbs;
+    float maxAcc = 0.5;
+
+    if(fabs(incSpeedAbs) > maxAcc && incSpeedAbs > 0){
+        float newSpeed = _lastSpeedAbs + maxAcc;
+        float angle = atan2(y, x);
+        x = newSpeed * cos(angle);
+        y = newSpeed * sin(angle);
+
+        printf("limitei a aceleracao.\n");
+    }
+
+    _lastSpeedAbs = sqrt(pow(x, 2) + pow(y, 2));
+
+    // watchdog on speed
+    WR::Utils::limitValue(&x, -5.0, 5.0);
+    WR::Utils::limitValue(&y, -5.0, 5.0);
+
     // tem que fazer ajustes com os pids
     _grSim->setSpeed((int)_team->teamId(), (int)playerId(), x, y, theta);
 }
@@ -243,37 +271,61 @@ std::pair<float, float> Player::GoTo(double robot_x, double robot_y, double poin
     long double Vy = (point_y - robot_y);
     long double theta = robotAngle;
     long double moduloDistancia = sqrt(pow(Vx,2)+pow(Vy,2));
-    double vxSaida = (Vx * cos(theta) + Vy * sin(theta));
-    double vySaida = (Vy * cos(theta) - Vx * sin(theta));
+    float vxSaida = (Vx * cos(theta) + Vy * sin(theta));
+    float vySaida = (Vy * cos(theta) - Vx * sin(theta));
     double sinal_x = 1;
     double sinal_y = 1;
 
     if(vxSaida < 0) sinal_x = -1;
     if(vySaida < 0) sinal_y = -1;
 
+<<<<<<< HEAD
     if(moduloDistancia > offset){
         vxSaida = std::min(fabs(vxSaida)*0.7, 1.0);
         vySaida = std::min(fabs(vySaida)*0.7, 1.0);
+=======
+    double mod = sqrt(pow(vxSaida, 2) + pow(vySaida, 2));
+    double mod2 = sqrt(pow(velocity().x(), 2) + pow(velocity().y(), 2));
+
+/*
+    if(moduloDistancia > _distBall){
+        vxSaida = std::min(fabs(vxSaida)*0.7, 2.0);
+        vySaida = std::min(fabs(vySaida)*0.7, 2.0);
+>>>>>>> createPID
     } else {
         vxSaida = 0;
         vySaida = 0;
     }
+*/
+    if(moduloDistancia <= _distBall){
+        vxSaida = 0;
+        vySaida = 0;
 
-    setSpeed(vxSaida * sinal_x, vySaida * sinal_y, 0.0);
+        return std::make_pair(0.0, 0.0);
+    }
 
-    return std::make_pair(vxSaida * sinal_x, vySaida * sinal_y);
+    WR::Utils::limitValue(&vxSaida, -2.5, 2.5);
+    WR::Utils::limitValue(&vySaida, -2.5, 2.5);
+
+    float newVX = _vxPID->calculate(vxSaida, velocity().x());
+    float newVY = _vyPID->calculate(vySaida, velocity().y());
+
+    //setSpeed(vxSaida * sinal_x, vySaida * sinal_y, 0.0);
+    //setSpeed(newVX, newVY, 0.0);
+
+    return std::make_pair(newVX, newVY);
 }
 
-float Player::RotateTo(double robot_x, double robot_y, double point_x, double point_y, double angleOrigin2Robot) {
+std::pair<double, double> Player::RotateTo(double robot_x, double robot_y, double point_x, double point_y, double angleOrigin2Robot) {
     // Define a velocidade angular do robô para visualizar a bola
-    long double vectorRobot2BallX = (point_x - robot_x);
-    long double vectorRobot2BallY = (point_y - robot_y);
-    long double modVectorRobot2Ball = sqrt(pow(vectorRobot2BallX, 2) + pow(vectorRobot2BallY, 2));
+    double vectorRobot2BallX = (point_x - robot_x);
+    double vectorRobot2BallY = (point_y - robot_y);
+    double modVectorRobot2Ball = sqrt(pow(vectorRobot2BallX, 2) + pow(vectorRobot2BallY, 2));
 
     vectorRobot2BallX = vectorRobot2BallX / modVectorRobot2Ball;
 
-    long double angleOrigin2ball;   //Ângulo que a bola faz com o eixo x em relação ao robô
-    long double angleRobot2Ball;    //Ângulo que a visão do robô faz com a posição da bola em relação ao robô
+    double angleOrigin2ball;   //Ângulo que a bola faz com o eixo x em relação ao robô
+    double angleRobot2Ball;    //Ângulo que a visão do robô faz com a posição da bola em relação ao robô
 
     if(vectorRobot2BallY < 0){ //terceiro e quadrante
         angleOrigin2ball = 2*M_PI - acos(vectorRobot2BallX); //angulo que a bola faz com o eixo x em relação ao robo
@@ -281,10 +333,15 @@ float Player::RotateTo(double robot_x, double robot_y, double point_x, double po
         angleOrigin2ball = acos(vectorRobot2BallX); //angulo que a bola faz com o eixo x em relação ao robo
     }
 
+<<<<<<< HEAD
     long double minValue = 1.7;
     long double maxValue = 3.0;
+=======
+    double minValue = 1.5;
+    double maxValue = 3.0;
+>>>>>>> createPID
 
-    long double speed;
+    double speed = 0.0;
 
     angleRobot2Ball = angleOrigin2Robot - angleOrigin2ball;
 
@@ -312,14 +369,18 @@ float Player::RotateTo(double robot_x, double robot_y, double point_x, double po
         speed = 0;
     }
 
-    setSpeed(0.0, 0.0, speed);
 
-    return speed;
+    double newSpeed = _vwPID->calculate(speed, angularSpeed().value());
+    //setSpeed(0.0, 0.0, speed);
+    //setSpeed(0.0, 0.0, newSpeed);
+
+    return std::make_pair(angleRobot2Ball, newSpeed);
 }
 
 void Player::goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double aim_x, double aim_y, double angleOrigin2Robot, double offset){
     // Configura o robô para ir até a bola e olhar para um alvo
     std::pair<float, float> a;
+<<<<<<< HEAD
     double p_x, p_y, angle, moduloDist, final_x, final_y;
     if (point_x == aim_x) angle = 1.570796327;
     else angle = atan((point_y - aim_y)/(point_x - aim_x));
@@ -335,8 +396,24 @@ void Player::goToLookTo(double robot_x, double robot_y, double point_x, double p
     final_y = (p_y - robot_y)/moduloDist;
     a = GoTo(robot_x, robot_y, p_x + offset * final_x, p_y + offset * final_y, angleOrigin2Robot, offset);
     float theta = RotateTo(robot_x, robot_y, aim_x, aim_y, angleOrigin2Robot);
+=======
+    a = GoTo(robot_x, robot_y, point_x, point_y, angleOrigin2Robot, _distBall);
+    std::pair<double, double> w;
+    w = RotateTo(robot_x, robot_y, point_x, point_y, angleOrigin2Robot);
 
-    setSpeed(a.first, a.second, theta);
+    setSpeed(a.first, a.second, w.second);
+}
+
+void Player::AroundTheBall(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset){
+    // Configura o robô para ir até a bola e girar em torno dela
+    std::pair<float, float> a, b;
+    long double moduloDistancia = sqrt(pow((point_x - robot_x),2)+pow((point_y - robot_y),2));
+    a = GoTo(robot_x, robot_y, point_x, point_y, robotAngle, offset);
+    b = RotateTo(robot_x, robot_y, point_x, point_y, robotAngle);
+>>>>>>> createPID
+
+    if (moduloDistancia < offset) setSpeed(0, 0.4, b.second); //3% de diferença nas velocidades
+    else setSpeed(a.first, a.second, b.second);
 }
 
 void Player::AroundTheBall(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset){

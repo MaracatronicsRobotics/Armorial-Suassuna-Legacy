@@ -6,13 +6,14 @@
 #include <utils/utils.hh>
 #include <entity/player/baseplayer.h>
 #include <bits/stdc++.h>
+#include <entity/player/control/pid.h>
 
 #define IDLE_COUNT 10
 
 class Player : public Entity
 {
 public:
-    Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Behaviour *defaultBehaviour, SSLReferee *ref, grsSimulator *grSim);
+    Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Behaviour *defaultBehaviour, SSLReferee *ref, grsSimulator *grSim, PID *vxPID, PID *vyPID, PID *vwPID);
     ~Player();
     QString name();
     void reset();
@@ -39,6 +40,7 @@ public:
     // Velocity
     Velocity velocity() const;
     float lastSpeed() const;
+    AngularSpeed angularSpeed() const;
 
     // Direction
     Angle nextDirection() const;
@@ -62,11 +64,18 @@ public:
 
     // Player skills
     void setSpeed(float x, float y, float theta);
+<<<<<<< HEAD
     std::pair<float, float> GoTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset = 0.2);
     float RotateTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle);
     void goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double aim_x, double aim_y, double robotAngle, double offset = 0.3);
     void AroundTheBall(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset = 0.25);
     void Dribble();
+=======
+    std::pair<float, float> GoTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double _distBall = 0.2);
+    std::pair<double, double> RotateTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle);
+    void goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double _distBall = 0.2);
+    void AroundTheBall(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset);
+>>>>>>> createPID
 
     // Behaviour
     void setBehaviour(Behaviour *b);
@@ -113,6 +122,12 @@ private:
 
     // grSimulator for tests
     grsSimulator *_grSim;
+
+    // PID's
+    PID *_vxPID;
+    PID *_vyPID;
+    PID *_vwPID;
+
 
 };
 
