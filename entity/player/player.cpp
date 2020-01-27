@@ -374,3 +374,14 @@ void Player::goToLookTo(double robot_x, double robot_y, double point_x, double p
 
     setSpeed(a.first, a.second, w.second);
 }
+
+void Player::AroundTheBall(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset){
+    // Configura o robô para ir até a bola e girar em torno dela
+    std::pair<float, float> a, b;
+    long double moduloDistancia = sqrt(pow((point_x - robot_x),2)+pow((point_y - robot_y),2));
+    a = GoTo(robot_x, robot_y, point_x, point_y, robotAngle, offset);
+    b = RotateTo(robot_x, robot_y, point_x, point_y, robotAngle);
+
+    if (moduloDistancia < offset) setSpeed(0, 0.4, b.second); //3% de diferença nas velocidades
+    else setSpeed(a.first, a.second, b.second);
+}
