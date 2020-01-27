@@ -285,14 +285,14 @@ std::pair<float, float> Player::goTo(double robot_x, double robot_y, double poin
 
         return std::make_pair(0.0, 0.0);
     }
-*/
-    if(moduloDistancia <= _distBall){
+/*
+    if(moduloDistancia <= offset){
         vxSaida = 0;
         vySaida = 0;
 
         return std::make_pair(0.0, 0.0);
     }
-
+*/
     WR::Utils::limitValue(&vxSaida, -2.5, 2.5);
     WR::Utils::limitValue(&vySaida, -2.5, 2.5);
 
@@ -302,7 +302,8 @@ std::pair<float, float> Player::goTo(double robot_x, double robot_y, double poin
     //setSpeed(vxSaida * sinal_x, vySaida * sinal_y, 0.0);
     //setSpeed(newVX, newVY, 0.0);
 
-    return std::make_pair(newVX, newVY);
+    //return std::make_pair(newVX, newVY);
+    return std::make_pair(vxSaida * sinal_x, vySaida * sinal_y);
 }
 
 std::pair<double, double> Player::rotateTo(double robot_x, double robot_y, double point_x, double point_y, double angleOrigin2Robot) {
@@ -358,7 +359,8 @@ std::pair<double, double> Player::rotateTo(double robot_x, double robot_y, doubl
     //setSpeed(0.0, 0.0, speed);
     //setSpeed(0.0, 0.0, newSpeed);
 
-    return std::make_pair(angleRobot2Ball, newSpeed);
+    //return std::make_pair(angleRobot2Ball, newSpeed);
+    return std::make_pair(angleRobot2Ball, speed);
 }
 
 void Player::goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double aim_x, double aim_y, double angleOrigin2Robot, double offset){
