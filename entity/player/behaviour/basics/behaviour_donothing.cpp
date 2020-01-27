@@ -9,9 +9,10 @@ Behaviour_DoNothing::Behaviour_DoNothing() {
 }
 
 void Behaviour_DoNothing::configure() {
-    usesSkill(new Skill_DoNothing());
+    usesSkill(_teste = new Skill_AroundTheBall());
 };
 
 void Behaviour_DoNothing::run() {
+    _teste->setOffsetToBall(0.75);
 }
 

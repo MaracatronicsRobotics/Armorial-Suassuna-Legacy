@@ -6,6 +6,7 @@
 #include <entity/player/skills/basics/skill_goto.h>
 #include <entity/player/skills/basics/skill_rotateto.h>
 #include <entity/player/skills/basics/skill_gotolookto.h>
+#include <entity/player/skills/basics/skill_aroundtheball.h>
 
 // normal includes
 #include <entity/player/player.h>

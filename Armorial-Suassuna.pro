@@ -25,6 +25,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
 	entity/entity.cpp \
+    entity/player/skills/basics/skill_aroundtheball.cpp \
+    entity/player/skills/basics/skill_dribble.cpp \
     entity/player/skills/basics/skill_goto.cpp \
     entity/player/skills/basics/skill_gotolookto.cpp \
     entity/player/skills/basics/skill_rotateto.cpp \
@@ -100,6 +102,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
 	entity/baseentity.h \
 	entity/entity.h \
+    entity/player/skills/basics/skill_aroundtheball.h \
+    entity/player/skills/basics/skill_dribble.h \
     entity/player/skills/basics/skill_goto.h \
     entity/player/skills/basics/skill_gotolookto.h \
     entity/player/skills/basics/skill_rotateto.h \
