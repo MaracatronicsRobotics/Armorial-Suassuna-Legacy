@@ -179,7 +179,8 @@ OBJECTS       = entity.o \
 		utils/mrctimer/mrctimer.cpp \
 		entity/player/skills/basics/skill_kick.cpp \
 		entity/player/behaviour/basics/behaviour_goalkeeper.cpp \
-		entity/player/skills/basics/skill_goalkeeper.cpp moc_playbook.cpp \
+		entity/player/skills/basics/skill_goalkeeper.cpp \
+		entity/player/skills/basics/skill_gkick.cpp moc_playbook.cpp \
 		moc_behaviour.cpp
 OBJECTS       = entity.o \
 		skill_goto.o \
@@ -287,6 +288,7 @@ OBJECTS       = entity.o \
 		skill_kick.o \
 		behaviour_goalkeeper.o \
 		skill_goalkeeper.o \
+		skill_gkick.o \
 		moc_playbook.o \
 		moc_behaviour.o
 >>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
@@ -605,8 +607,13 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 =======
 		entity/player/skills/basics/skill_kick.cpp \
 		entity/player/behaviour/basics/behaviour_goalkeeper.cpp \
+<<<<<<< dev
 		entity/player/skills/basics/skill_goalkeeper.cpp
 >>>>>>> kick, dribble e goleiro implementados
+=======
+		entity/player/skills/basics/skill_goalkeeper.cpp \
+		entity/player/skills/basics/skill_gkick.cpp
+>>>>>>> criação do GKick e limpeza do codigo
 QMAKE_TARGET  = Armorial-Suassuna
 DESTDIR       = 
 TARGET        = Armorial-Suassuna
@@ -935,6 +942,9 @@ moc_playbook.cpp: entity/contromodule/playbook/playbook.h \
 		utils/utils.hh \
 <<<<<<< dev
 <<<<<<< dev
+<<<<<<< dev
+=======
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
@@ -982,11 +992,15 @@ moc_behaviour_receiver.cpp: entity/player/behaviour/basics/behaviour_receiver.h 
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
 <<<<<<< dev
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
 =======
+=======
+		entity/player/skills/basics/skill_gkick.h \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_goalkeeper.h \
 >>>>>>> kick, dribble e goleiro implementados
@@ -1009,6 +1023,7 @@ moc_behaviour_receiver.cpp: entity/player/behaviour/basics/behaviour_receiver.h 
 		utils/basics/wall.hh \
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
+<<<<<<< dev
 		utils/mrctimer/mrctimer.h \
 		utils/freeangles/freeangles.h \
 		entity/contromodule/basecoach.h \
@@ -1016,6 +1031,10 @@ moc_behaviour_receiver.cpp: entity/player/behaviour/basics/behaviour_receiver.h 
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/zilde/Desktop/Armorial-Suassuna/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/zilde/Desktop/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include entity/player/behaviour/basics/behaviour_receiver.h -o moc_behaviour_receiver.cpp
+=======
+		utils/mrctimer/mrctimer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_aroundtheball.o entity/player/skills/basics/skill_aroundtheball.cpp
+>>>>>>> criação do GKick e limpeza do codigo
 
 moc_behaviour_attacker.cpp: entity/player/behaviour/basics/behaviour_attacker.h \
 		entity/player/behaviour/behaviour.h \
@@ -1031,11 +1050,15 @@ moc_behaviour_attacker.cpp: entity/player/behaviour/basics/behaviour_attacker.h 
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
 <<<<<<< dev
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
 =======
+=======
+		entity/player/skills/basics/skill_gkick.h \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/player/skills/basics/skill_goalkeeper.h \
 >>>>>>> kick, dribble e goleiro implementados
 		entity/player/player.h \
@@ -1057,10 +1080,15 @@ moc_behaviour_attacker.cpp: entity/player/behaviour/basics/behaviour_attacker.h 
 		utils/basics/wall.hh \
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
+<<<<<<< dev
 		utils/mrctimer/mrctimer.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/zilde/Desktop/Armorial-Suassuna/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/zilde/Desktop/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include entity/player/behaviour/basics/behaviour_attacker.h -o moc_behaviour_attacker.cpp
+=======
+		utils/mrctimer/mrctimer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_dribble.o entity/player/skills/basics/skill_dribble.cpp
+>>>>>>> criação do GKick e limpeza do codigo
 
 moc_role.cpp: entity/player/role/role.h \
 		entity/player/baseplayer.h \
@@ -1084,6 +1112,7 @@ moc_role.cpp: entity/player/role/role.h \
 		entity/player/skills/basics/skill_gotolookto.h \
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_goalkeeper.h \
 >>>>>>> kick, dribble e goleiro implementados
@@ -1127,6 +1156,7 @@ moc_mainwindow.cpp: entity/coachview/mainwindow.h \
 		entity/referee/referee.h \
 		utils/utils.hh \
 		entity/locations.h \
+<<<<<<< dev
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
@@ -1139,6 +1169,8 @@ moc_mainwindow.cpp: entity/coachview/mainwindow.h \
 moc_samico.cpp: entity/coachview/samico.h \
 		entity/coachview/qsfmlwidget.h \
 		entity/contromodule/mrcteam.h \
+=======
+>>>>>>> criação do GKick e limpeza do codigo
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		entity/player/player.h \
@@ -1157,11 +1189,18 @@ moc_samico.cpp: entity/coachview/samico.h \
 		utils/utils.hh \
 		entity/locations.h \
 		utils/basics/wall.hh \
+<<<<<<< dev
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/zilde/Desktop/Armorial-Suassuna/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/zilde/Desktop/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include entity/coachview/samico.h -o moc_samico.cpp
+=======
+		entity/contromodule/mrcteam.h \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_goto.o entity/player/skills/basics/skill_goto.cpp
+>>>>>>> criação do GKick e limpeza do codigo
 
 moc_qsfmlwidget.cpp: entity/coachview/qsfmlwidget.h \
 		moc_predefs.h \
@@ -1242,6 +1281,7 @@ skill_aroundtheball.o: entity/player/skills/basics/skill_aroundtheball.cpp entit
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
 		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_goalkeeper.h \
 		entity/player/player.h \
@@ -1257,14 +1297,19 @@ skill_aroundtheball.o: entity/player/skills/basics/skill_aroundtheball.cpp entit
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
-		entity/player/control/pid.h \
-		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
+<<<<<<< dev
 		entity/contromodule/mrcteam.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_aroundtheball.o entity/player/skills/basics/skill_aroundtheball.cpp
+=======
+		entity/contromodule/mrcteam.h \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_gotolookto.o entity/player/skills/basics/skill_gotolookto.cpp
+>>>>>>> criação do GKick e limpeza do codigo
 
 skill_dribble.o: entity/player/skills/basics/skill_dribble.cpp entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/skill.h \
@@ -1276,6 +1321,7 @@ skill_dribble.o: entity/player/skills/basics/skill_dribble.cpp entity/player/ski
 		entity/player/skills/basics/skill_gotolookto.h \
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_goalkeeper.h \
 		entity/player/player.h \
@@ -1291,14 +1337,19 @@ skill_dribble.o: entity/player/skills/basics/skill_dribble.cpp entity/player/ski
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
-		entity/player/control/pid.h \
-		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
+<<<<<<< dev
 		entity/contromodule/mrcteam.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_dribble.o entity/player/skills/basics/skill_dribble.cpp
+=======
+		entity/contromodule/mrcteam.h \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_rotateto.o entity/player/skills/basics/skill_rotateto.cpp
+>>>>>>> criação do GKick e limpeza do codigo
 
 >>>>>>> kick implementado
 skill_goto.o: entity/player/skills/basics/skill_goto.cpp entity/player/skills/basics/skill_goto.h \
@@ -2378,6 +2429,9 @@ strategy.o: entity/contromodule/strategy/strategy.cpp entity/contromodule/strate
 		utils/utils.hh \
 <<<<<<< dev
 <<<<<<< dev
+<<<<<<< dev
+=======
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
@@ -2411,8 +2465,37 @@ playersdistribution.o: entity/contromodule/playersdistribution.cpp entity/contro
 		entity/player/baseplayer.h \
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
+<<<<<<< dev
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
+=======
+		entity/contromodule/mrcteam.h \
+		entity/player/player.h \
+		utils/utils.hh \
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
+		entity/player/sslplayer/sslplayer.h \
+		entity/contromodule/coach.h \
+		entity/contromodule/basecoach.h \
+		entity/contromodule/controlmodule.h \
+		entity/player/behaviour/mrcbehaviours.h \
+		entity/player/behaviour/basics/behaviour_donothing.h \
+		entity/player/behaviour/behaviour.h \
+		entity/player/behaviour/basics/behaviour_followball.h \
+		entity/player/skills/skills_include.h \
+		entity/player/skills/basics/skill_donothing.h \
+		entity/player/skills/skill.h \
+		entity/player/skills/basics/skill_goto.h \
+		entity/player/skills/basics/skill_rotateto.h \
+		entity/player/skills/basics/skill_gotolookto.h \
+		entity/player/skills/basics/skill_aroundtheball.h \
+		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_gkick.h \
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/locations.h \
 <<<<<<< dev
 		utils/basics/wall.hh \
@@ -2431,12 +2514,34 @@ strategystate.o: entity/contromodule/strategy/strategystate.cpp entity/contromod
 		include/3rd_party/game_event.pb.h \
 		entity/referee/SSLReferee/sslreferee.h \
 		entity/referee/referee.h \
+<<<<<<< dev
 		entity/entity.h \
 		entity/contromodule/playersdistribution.h \
 		utils/wrtimer/wrtimer.hh \
 		entity/contromodule/mrcteam.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
+=======
+		utils/utils.hh \
+		entity/locations.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		utils/basics/wall.hh \
+		entity/contromodule/mrcteam.h \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
+		entity/player/playeraccess.h \
+		entity/player/behaviour/behaviour.h \
+		entity/contromodule/grsSimulator/grsSimulator.h \
+		include/3rd_party/grSim_Packet.pb.h \
+		include/3rd_party/grSim_Commands.pb.h \
+		include/3rd_party/grSim_Replacement.pb.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o player.o entity/player/player.cpp
+
+mrcteam.o: entity/contromodule/mrcteam.cpp entity/contromodule/mrcteam.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/player/player.h \
 		entity/world/world.h \
 		entity/baseentity.h \
@@ -2444,9 +2549,20 @@ strategystate.o: entity/contromodule/strategy/strategystate.cpp entity/contromod
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
-		entity/player/control/pid.h \
-		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
+<<<<<<< dev
+=======
+		utils/basics/wall.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mrcteam.o entity/contromodule/mrcteam.cpp
+
+skill.o: entity/player/skills/skill.cpp entity/player/skills/skill.h \
+		entity/player/baseplayer.h \
+		entity/locations.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+>>>>>>> criação do GKick e limpeza do codigo
 		utils/basics/wall.hh \
 <<<<<<< dev
 		entity/player/control/pid.h \
@@ -2565,10 +2681,14 @@ behaviour.o: entity/player/behaviour/behaviour.cpp entity/player/behaviour/behav
 <<<<<<< dev
 		utils/utils.hh \
 		entity/locations.h \
+<<<<<<< dev
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
 		entity/contromodule/mrcteam.h \
+=======
+		utils/basics/wall.hh \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
 =======
@@ -2625,6 +2745,8 @@ behaviour_donothing.o: entity/player/behaviour/basics/behaviour_donothing.cpp en
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
+		entity/locations.h \
+		utils/basics/wall.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
@@ -2677,6 +2799,11 @@ skill_donothing.o: entity/player/skills/basics/skill_donothing.cpp entity/player
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
+		entity/locations.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		utils/basics/wall.hh \
+		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
@@ -2713,6 +2840,10 @@ knn.o: utils/knn/knn.cc utils/knn/knn.hh \
 <<<<<<< dev
 <<<<<<< dev
 		entity/referee/referee.h \
+<<<<<<< dev
+=======
+		utils/utils.hh \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
@@ -2753,6 +2884,7 @@ mrcstrategy.o: entity/contromodule/strategy/basics/mrcstrategy.cpp entity/contro
 		entity/player/baseplayer.h \
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
+<<<<<<< dev
 		utils/utils.hh \
 <<<<<<< dev
 <<<<<<< dev
@@ -2833,6 +2965,13 @@ sslstrategy.o: entity/contromodule/strategy/basics/sslstrategy.cpp entity/contro
 		include/3rd_party/referee.pb.h \
 		include/3rd_party/game_event.pb.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sslstrategy.o entity/contromodule/strategy/basics/sslstrategy.cpp
+=======
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playersdistribution.o entity/contromodule/playersdistribution.cpp
+>>>>>>> criação do GKick e limpeza do codigo
 
 controlmodule.o: entity/contromodule/controlmodule.cpp entity/contromodule/controlmodule.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o controlmodule.o entity/contromodule/controlmodule.cpp
@@ -2862,10 +3001,17 @@ sslstrategy_halt.o: entity/contromodule/strategy/basics/sslstrategy_halt.cpp ent
 		utils/utils.hh \
 <<<<<<< dev
 <<<<<<< dev
+<<<<<<< dev
 		entity/locations.h \
 		utils/basics/wall.hh \
 <<<<<<< dev
 =======
+=======
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/contromodule/playbook/playbook.h \
 		entity/player/behaviour/behaviour.h \
 		entity/player/playeraccess.h
@@ -2891,7 +3037,12 @@ coachutils.o: entity/contromodule/coachutils.cpp entity/contromodule/coachutils.
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
+<<<<<<< dev
 >>>>>>> kick, dribble e goleiro implementados
+=======
+		entity/locations.h \
+		utils/basics/wall.hh \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
 		entity/contromodule/playersdistribution.h \
@@ -2979,6 +3130,7 @@ playbook_donothing.o: entity/contromodule/playbook/basics/playbook_donothing.cpp
 		utils/utils.hh \
 <<<<<<< dev
 <<<<<<< dev
+<<<<<<< dev
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
@@ -2986,6 +3138,10 @@ playbook_donothing.o: entity/contromodule/playbook/basics/playbook_donothing.cpp
 =======
 >>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 =======
+=======
+		entity/locations.h \
+		utils/basics/wall.hh \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
 >>>>>>> melhoria no PID, ainda sem pid pra angular
@@ -3096,6 +3252,9 @@ behaviour_followball.o: entity/player/behaviour/basics/behaviour_followball.cpp 
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
 <<<<<<< dev
+<<<<<<< dev
+=======
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
@@ -3119,11 +3278,15 @@ behaviour_timeout.o: entity/player/behaviour/basics/behaviour_timeout.cpp entity
 <<<<<<< dev
 		entity/player/skills/basics/skill_kick.h \
 <<<<<<< dev
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
 =======
+=======
+		entity/player/skills/basics/skill_gkick.h \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_goalkeeper.h \
 >>>>>>> kick, dribble e goleiro implementados
@@ -3147,7 +3310,11 @@ behaviour_timeout.o: entity/player/behaviour/basics/behaviour_timeout.cpp entity
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
+<<<<<<< dev
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_timeout.o entity/player/behaviour/basics/behaviour_timeout.cpp
+=======
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_donothing.o entity/player/behaviour/basics/behaviour_donothing.cpp
+>>>>>>> criação do GKick e limpeza do codigo
 
 pid.o: entity/player/control/pid.cpp entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
@@ -3172,6 +3339,7 @@ skill_kick.o: entity/player/skills/basics/skill_kick.cpp entity/player/skills/ba
 		entity/player/skills/basics/skill_pushball.h \
 =======
 		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_goalkeeper.h \
 >>>>>>> kick, dribble e goleiro implementados
@@ -3192,6 +3360,17 @@ skill_kick.o: entity/player/skills/basics/skill_kick.cpp entity/player/skills/ba
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
+<<<<<<< dev
+=======
+		entity/contromodule/mrcteam.h \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_donothing.o entity/player/skills/basics/skill_donothing.cpp
+
+knn.o: utils/knn/knn.cc utils/knn/knn.hh \
+		entity/contromodule/basecoach.h \
+		utils/utils.hh \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
@@ -3226,7 +3405,44 @@ skill_gkick.o: entity/player/skills/basics/skill_gkick.cpp entity/player/skills/
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
 		entity/referee/referee.h \
+<<<<<<< dev
+=======
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o knn.o utils/knn/knn.cc
+
+mrcstrategy.o: entity/contromodule/strategy/basics/mrcstrategy.cpp entity/contromodule/strategy/basics/mrcstrategy.h \
+		entity/contromodule/strategy/basics/sslstrategy.h \
+		entity/contromodule/strategy/strategy.h \
+		entity/contromodule/basecoach.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/contromodule/strategy/mrcstrategies.h \
+		entity/contromodule/strategy/basics/sslstrategy_halt.h \
+		entity/contromodule/strategy/strategystate.h \
+		entity/contromodule/playbook/mrcplaybook.h \
+		entity/contromodule/playbook/basics/playbook_donothing.h \
+		entity/contromodule/playbook/playbook.h \
+		entity/referee/SSLReferee/sslreferee.h \
+		entity/referee/referee.h \
+		entity/entity.h \
+		entity/contromodule/mrcteam.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		entity/player/player.h \
+		entity/world/world.h \
+		entity/baseentity.h \
+		entity/player/baseplayer.h \
+		utils/fields/fields.hh \
+		entity/world/worldmapupdater.h \
+>>>>>>> criação do GKick e limpeza do codigo
 		utils/utils.hh \
+		entity/locations.h \
+		utils/basics/wall.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
 <<<<<<< dev
@@ -3246,6 +3462,7 @@ skill_gkick.o: entity/player/skills/basics/skill_gkick.cpp entity/player/skills/
 		entity/player/skills/basics/skill_gotolookto.h \
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_goalkeeper.h \
 >>>>>>> kick, dribble e goleiro implementados
@@ -3304,6 +3521,8 @@ playbook_followball.o: entity/contromodule/playbook/basics/playbook_followball.c
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
+		entity/locations.h \
+		utils/basics/wall.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
 		entity/contromodule/playersdistribution.h \
@@ -3326,11 +3545,15 @@ playbook_followball.o: entity/contromodule/playbook/basics/playbook_followball.c
 		entity/player/skills/basics/skill_kick.h \
 <<<<<<< dev
 <<<<<<< dev
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
 =======
+=======
+		entity/player/skills/basics/skill_gkick.h \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_goalkeeper.h \
 		entity/locations.h \
@@ -3368,10 +3591,14 @@ playbook_donothing.o: entity/contromodule/playbook/basics/playbook_donothing.cpp
 		entity/referee/referee.h \
 		utils/utils.hh \
 		entity/locations.h \
+<<<<<<< dev
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
 		entity/contromodule/mrcteam.h \
+=======
+		utils/basics/wall.hh \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
 		utils/freeangles/freeangles.h \
@@ -3402,6 +3629,7 @@ behaviour_attacker.o: entity/player/behaviour/basics/behaviour_attacker.cpp enti
 <<<<<<< dev
 		entity/player/skills/basics/skill_kick.h \
 <<<<<<< dev
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
@@ -3420,6 +3648,9 @@ behaviour_attacker.o: entity/player/behaviour/basics/behaviour_attacker.cpp enti
 		entity/referee/referee.h \
 		utils/utils.hh \
 =======
+=======
+		entity/player/skills/basics/skill_gkick.h \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_goalkeeper.h \
 >>>>>>> kick, dribble e goleiro implementados
@@ -3452,11 +3683,15 @@ behaviour_barrier.o: entity/player/behaviour/basics/behaviour_barrier.cpp entity
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
 <<<<<<< dev
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
 =======
+=======
+		entity/player/skills/basics/skill_gkick.h \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_goalkeeper.h \
 >>>>>>> kick, dribble e goleiro implementados
@@ -3480,7 +3715,11 @@ behaviour_barrier.o: entity/player/behaviour/basics/behaviour_barrier.cpp entity
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
+<<<<<<< dev
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_barrier.o entity/player/behaviour/basics/behaviour_barrier.cpp
+=======
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_followball.o entity/player/behaviour/basics/behaviour_followball.cpp
+>>>>>>> criação do GKick e limpeza do codigo
 
 behaviour_markplayer.o: entity/player/behaviour/basics/behaviour_markplayer.cpp entity/player/behaviour/basics/behaviour_markplayer.h \
 		entity/player/behaviour/behaviour.h \
@@ -3516,6 +3755,8 @@ playbook_timeout.o: entity/contromodule/playbook/basics/playbook_timeout.cpp ent
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
+		entity/locations.h \
+		utils/basics/wall.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
 		entity/contromodule/playersdistribution.h \
@@ -3538,11 +3779,15 @@ playbook_timeout.o: entity/contromodule/playbook/basics/playbook_timeout.cpp ent
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
 <<<<<<< dev
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
 =======
+=======
+		entity/player/skills/basics/skill_gkick.h \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_goalkeeper.h \
 		entity/locations.h \
@@ -3577,10 +3822,14 @@ playbook_timeout.o: entity/contromodule/playbook/basics/playbook_timeout.cpp ent
 		entity/referee/referee.h \
 		utils/utils.hh \
 		entity/locations.h \
+<<<<<<< dev
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
 		entity/contromodule/mrcteam.h \
+=======
+		utils/basics/wall.hh \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_markplayer.o entity/player/behaviour/basics/behaviour_markplayer.cpp
@@ -3625,6 +3874,7 @@ behaviour_timeout.o: entity/player/behaviour/basics/behaviour_timeout.cpp entity
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
 <<<<<<< dev
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
@@ -3645,6 +3895,9 @@ behaviour_timeout.o: entity/player/behaviour/basics/behaviour_timeout.cpp entity
 		entity/referee/referee.h \
 		utils/utils.hh \
 =======
+=======
+		entity/player/skills/basics/skill_gkick.h \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_goalkeeper.h \
 >>>>>>> kick, dribble e goleiro implementados
@@ -3673,6 +3926,7 @@ skill_pushball.o: entity/player/skills/basics/skill_pushball.cpp entity/player/s
 		entity/player/skills/basics/skill_kick.h \
 <<<<<<< dev
 <<<<<<< dev
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
@@ -3682,6 +3936,9 @@ skill_pushball.o: entity/player/skills/basics/skill_pushball.cpp entity/player/s
 =======
 >>>>>>> kick implementado
 =======
+=======
+		entity/player/skills/basics/skill_gkick.h \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_goalkeeper.h \
 >>>>>>> kick, dribble e goleiro implementados
@@ -3698,8 +3955,6 @@ skill_pushball.o: entity/player/skills/basics/skill_pushball.cpp entity/player/s
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
-		entity/player/control/pid.h \
-		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
@@ -3707,6 +3962,7 @@ skill_pushball.o: entity/player/skills/basics/skill_pushball.cpp entity/player/s
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
+<<<<<<< dev
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_pushball.o entity/player/skills/basics/skill_pushball.cpp
 
 role.o: entity/player/role/role.cpp entity/referee/SSLReferee/sslgameinfo.h \
@@ -3715,6 +3971,8 @@ role.o: entity/player/role/role.cpp entity/referee/SSLReferee/sslgameinfo.h \
 		include/3rd_party/game_event.pb.h \
 =======
 		entity/contromodule/mrcteam.h
+=======
+>>>>>>> criação do GKick e limpeza do codigo
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_timeout.o entity/player/behaviour/basics/behaviour_timeout.cpp
 
 sslstrategy_timeout.o: entity/contromodule/strategy/basics/sslstrategy_timeout.cpp entity/contromodule/strategy/basics/sslstrategy_timeout.h \
@@ -3743,6 +4001,7 @@ sslstrategy_timeout.o: entity/contromodule/strategy/basics/sslstrategy_timeout.c
 		utils/utils.hh \
 <<<<<<< dev
 <<<<<<< dev
+<<<<<<< dev
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/control/pid.h \
@@ -3765,6 +4024,10 @@ role_default.o: entity/player/role/basics/role_default.cpp entity/player/role/ba
 		entity/player/playerbus.h \
 =======
 =======
+=======
+		entity/locations.h \
+		utils/basics/wall.hh \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
 >>>>>>> melhoria no PID, ainda sem pid pra angular
@@ -3786,6 +4049,7 @@ role_default.o: entity/player/role/basics/role_default.cpp entity/player/role/ba
 <<<<<<< dev
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
+<<<<<<< dev
 <<<<<<< dev
 <<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
@@ -3921,6 +4185,9 @@ qrc_rsc.o: qrc_rsc.cpp
 =======
 >>>>>>> kick implementado
 =======
+=======
+		entity/player/skills/basics/skill_gkick.h \
+>>>>>>> criação do GKick e limpeza do codigo
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_goalkeeper.h \
 >>>>>>> kick, dribble e goleiro implementados
@@ -3949,6 +4216,7 @@ skill_kick.o: entity/player/skills/basics/skill_kick.cpp entity/player/skills/ba
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
 		entity/player/skills/basics/skill_aroundtheball.h \
+		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_goalkeeper.h \
 		entity/player/player.h \
@@ -3964,13 +4232,13 @@ skill_kick.o: entity/player/skills/basics/skill_kick.cpp entity/player/skills/ba
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
-		entity/player/control/pid.h \
-		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
-		entity/contromodule/mrcteam.h
+		entity/contromodule/mrcteam.h \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_kick.o entity/player/skills/basics/skill_kick.cpp
 
 behaviour_goalkeeper.o: entity/player/behaviour/basics/behaviour_goalkeeper.cpp entity/player/behaviour/basics/behaviour_goalkeeper.h \
@@ -3985,6 +4253,7 @@ behaviour_goalkeeper.o: entity/player/behaviour/basics/behaviour_goalkeeper.cpp 
 		entity/player/skills/basics/skill_gotolookto.h \
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_goalkeeper.h \
 		entity/player/player.h \
@@ -4000,13 +4269,16 @@ behaviour_goalkeeper.o: entity/player/behaviour/basics/behaviour_goalkeeper.cpp 
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
-		entity/player/control/pid.h \
-		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
-		entity/contromodule/mrcteam.h
+		entity/contromodule/mrcteam.h \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
+		utils/knn/knn.hh \
+		entity/contromodule/basecoach.h \
+		entity/player/playerbus.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_goalkeeper.o entity/player/behaviour/basics/behaviour_goalkeeper.cpp
 
 skill_goalkeeper.o: entity/player/skills/basics/skill_goalkeeper.cpp entity/player/skills/basics/skill_goalkeeper.h \
@@ -4019,6 +4291,7 @@ skill_goalkeeper.o: entity/player/skills/basics/skill_goalkeeper.cpp entity/play
 		entity/player/skills/basics/skill_gotolookto.h \
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/player.h \
 		entity/entity.h \
@@ -4033,14 +4306,48 @@ skill_goalkeeper.o: entity/player/skills/basics/skill_goalkeeper.cpp entity/play
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
-		entity/player/control/pid.h \
-		utils/mrctimer/mrctimer.h \
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
-		entity/contromodule/mrcteam.h
+		entity/contromodule/mrcteam.h \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_goalkeeper.o entity/player/skills/basics/skill_goalkeeper.cpp
+
+skill_gkick.o: entity/player/skills/basics/skill_gkick.cpp entity/player/skills/basics/skill_gkick.h \
+		entity/player/skills/skill.h \
+		entity/player/baseplayer.h \
+		entity/player/skills/skills_include.h \
+		entity/player/skills/basics/skill_donothing.h \
+		entity/player/skills/basics/skill_goto.h \
+		entity/player/skills/basics/skill_rotateto.h \
+		entity/player/skills/basics/skill_gotolookto.h \
+		entity/player/skills/basics/skill_aroundtheball.h \
+		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+		entity/player/player.h \
+		entity/entity.h \
+		entity/world/world.h \
+		entity/baseentity.h \
+		utils/fields/fields.hh \
+		entity/world/worldmapupdater.h \
+		entity/referee/SSLReferee/sslreferee.h \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		entity/referee/referee.h \
+		utils/utils.hh \
+		entity/locations.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		utils/basics/wall.hh \
+		entity/contromodule/mrcteam.h \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_gkick.o entity/player/skills/basics/skill_gkick.cpp
 
 moc_playbook.o: moc_playbook.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_playbook.o moc_playbook.cpp
