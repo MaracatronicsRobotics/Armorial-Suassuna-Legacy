@@ -95,7 +95,9 @@ SOURCES += \
     entity/contromodule/strategy/basics/sslstrategy_timeout.cpp \
     entity/player/control/pid.cpp \
 	utils/mrctimer/mrctimer.cpp \
-    entity/player/skills/basics/skill_kick.cpp
+    entity/player/skills/basics/skill_kick.cpp \
+    entity/player/behaviour/basics/behaviour_goalkeeper.cpp \
+    entity/player/skills/basics/skill_goalkeeper.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -183,4 +185,6 @@ HEADERS += \
     entity/contromodule/strategy/mrcstrategies.h \
     entity/player/control/pid.h \
 	utils/mrctimer/mrctimer.h \
-    entity/player/skills/basics/skill_kick.h
+    entity/player/skills/basics/skill_kick.h \
+    entity/player/behaviour/basics/behaviour_goalkeeper.h \
+    entity/player/skills/basics/skill_goalkeeper.h

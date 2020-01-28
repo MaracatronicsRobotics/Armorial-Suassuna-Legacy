@@ -6,6 +6,7 @@
 #include <utils/utils.hh>
 #include <entity/player/baseplayer.h>
 #include <bits/stdc++.h>
+#include <entity/locations.h>
 #include <entity/player/control/pid.h>
 
 #define IDLE_COUNT 10
