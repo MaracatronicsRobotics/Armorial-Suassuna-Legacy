@@ -20,15 +20,24 @@ void Behaviour_DoNothing::configure() {
 
 void Behaviour_DoNothing::run() {
 
-    _sk_goto->setDesiredPosition(Position(true, loc()->ball().x(), loc()->ball().y(), 0.0));
+    Position _testPosition = WR::Utils::threePoints(loc()->ball(), loc()->ourGoal(), 0.1, GEARSystem::Angle::pi);
+    _sk_goto->setDesiredPosition(_testPosition);
+    //_sk_goto->setDesiredPosition(Position(true, loc()->ball().x(), loc()->ball().y(), 0.0));
     _sk_goto->setAimPosition(loc()->ourGoal());
 
     double modDist = sqrt(pow((player()->position().x() - loc()->ball().x()), 2) + pow((player()->position().y() - loc()->ball().y()), 2));
 
+    Position posBall = loc()->ball();
+    Position posPlayer = player()->position();
+    float anglePlayer = WR::Utils::getAngle(posBall, posPlayer);
+    float angleDest = WR::Utils::getAngle(posBall, loc()->ourGoal());
+    float diff = WR::Utils::angleDiff(anglePlayer, angleDest);
+    bool isBehindBall = (diff>GEARSystem::Angle::pi/2.0f);
+
     switch(_state){
     case STATE_GOTO:
         _sk_goto->setOffsetToBall(0.15);
-        if(modDist <= 0.2){
+        if(isBehindBall){
             _teste->setIsPass(false);
             enableTransition(0);
             _state = STATE_KICK;
@@ -46,4 +55,3 @@ void Behaviour_DoNothing::run() {
     break;
     }
 }
-
