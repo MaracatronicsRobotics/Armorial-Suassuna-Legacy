@@ -6,10 +6,10 @@ QString Skill_GoToLookTo::name() {
 }
 
 Skill_GoToLookTo::Skill_GoToLookTo() {
-    _ballPosition = Position(true, 0.0, 0.0, 0.0);
-    _desiredPosition = Position(true, 3.0, 3.0, 0.0);
+    _aimPosition = Position(true, 0.0, 0.0, 0.0);
+    _desiredPosition = Position(true, 0.0, 0.0, 0.0);
 }
 
 void Skill_GoToLookTo::run() {
-    player()->goToLookTo(player()->position().x(), player()->position().y(), _ballPosition.x(), _ballPosition.y(), _desiredPosition.x(), _desiredPosition.y(), player()->orientation().value(), _offsetBall);
+    player()->goToLookTo(player()->position().x(), player()->position().y(), _desiredPosition.x(), _desiredPosition.y(), _aimPosition.x(), _aimPosition.y(), player()->orientation().value(), _offsetBall);
 }

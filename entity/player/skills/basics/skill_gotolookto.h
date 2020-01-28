@@ -6,15 +6,15 @@
 class Skill_GoToLookTo : public Skill {
 private:
     void run();
-    Position _ballPosition;
     Position _desiredPosition;
+    Position _aimPosition;
     double _offsetBall;
 public:
     Skill_GoToLookTo();
     QString name();
 
-    void setBallPosition(Position pos) { _ballPosition = pos; }
     void setDesiredPosition(Position pos) { _desiredPosition = pos; }
+    void setAimPosition(Position pos) { _aimPosition = pos; }
     void setOffsetToBall(double value) { _offsetBall = value; }
 };
 

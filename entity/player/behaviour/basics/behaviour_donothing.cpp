@@ -15,22 +15,35 @@ void Behaviour_DoNothing::configure() {
     addTransition(1, _teste, _sk_goto);
     setInitialSkill(_sk_goto);
 
-
+    _state = STATE_GOTO;
 };
 
 void Behaviour_DoNothing::run() {
-    _teste->setIsPass(false);
 
-    _sk_goto->setOffsetToBall(0.12);
-    _sk_goto->setBallPosition(Position(true, loc()->ball().x() - 0.1, loc()->ball().y() + 0.1, 0.0));
-    _sk_goto->setDesiredPosition(loc()->theirGoal());
+    _sk_goto->setDesiredPosition(Position(true, loc()->ball().x(), loc()->ball().y(), 0.0));
+    _sk_goto->setAimPosition(loc()->ourGoal());
 
     double modDist = sqrt(pow((player()->position().x() - loc()->ball().x()), 2) + pow((player()->position().y() - loc()->ball().y()), 2));
 
-    if(modDist <= 0.12){
-        enableTransition(0);
-    }else{
-        enableTransition(1);
+    switch(_state){
+    case STATE_GOTO:
+        _sk_goto->setOffsetToBall(0.15);
+        if(modDist <= 0.2){
+            _teste->setIsPass(false);
+            enableTransition(0);
+            _state = STATE_KICK;
+        }
+    break;
+    case STATE_KICK:
+        if(loc()->ballVelocity().abs() >= 0.3){
+            enableTransition(1);
+            _state = STATE_GOTO;
+        }else{
+            _sk_goto->setOffsetToBall(0.01);
+            enableTransition(1);
+            _state = STATE_GOTO;
+        }
+    break;
     }
 }
 
