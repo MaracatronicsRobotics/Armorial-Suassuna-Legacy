@@ -10,7 +10,7 @@ private:
     void run();
     Skill_GoalKeeper *_skill_GoalKeeper;
     Skill_GoToLookTo *_skill_goToLookTo;
-    Skill_Kick *_skill_kick;
+    Skill_GKick *_skill_gkick;
     double _offsetBall;
 
     // Parameters
