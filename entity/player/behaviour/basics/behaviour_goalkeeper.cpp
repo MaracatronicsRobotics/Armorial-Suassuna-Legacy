@@ -12,7 +12,7 @@ QString Behaviour_GoalKeeper::name() {
 
 Behaviour_GoalKeeper::Behaviour_GoalKeeper() {
     _skill_GoalKeeper = NULL;
-    _skill_kick = NULL;
+    _skill_gkick = NULL;
     _skill_goToLookTo = NULL;
 
     setRadius(0.3); // raio que define posse de bola para o goleiro dar takeout
@@ -24,20 +24,20 @@ Behaviour_GoalKeeper::Behaviour_GoalKeeper() {
 void Behaviour_GoalKeeper::configure() {
     usesSkill(_skill_GoalKeeper = new Skill_GoalKeeper());
     usesSkill(_skill_goToLookTo = new Skill_GoToLookTo());
-    usesSkill(_skill_kick = new Skill_Kick());
+    usesSkill(_skill_gkick = new Skill_GKick());
 
     // goto
     setInitialSkill(_skill_goToLookTo);
 
     // todas as combinações
-    addTransition(STATE_KICK, _skill_goToLookTo, _skill_kick);
-    addTransition(STATE_KICK, _skill_GoalKeeper, _skill_kick);
+    addTransition(STATE_KICK, _skill_goToLookTo, _skill_gkick);
+    addTransition(STATE_KICK, _skill_GoalKeeper, _skill_gkick);
     //
-    addTransition(STATE_GK, _skill_kick, _skill_GoalKeeper);
+    addTransition(STATE_GK, _skill_gkick, _skill_GoalKeeper);
     addTransition(STATE_GK, _skill_goToLookTo, _skill_GoalKeeper);
     //
     addTransition(STATE_GOTO, _skill_GoalKeeper, _skill_goToLookTo);
-    addTransition(STATE_GOTO, _skill_kick, _skill_goToLookTo);
+    addTransition(STATE_GOTO, _skill_gkick, _skill_goToLookTo);
 };
 
 void Behaviour_GoalKeeper::run() {
@@ -45,7 +45,7 @@ void Behaviour_GoalKeeper::run() {
     _skill_GoalKeeper->setInterceptAdvance(true);
     _skill_GoalKeeper->setPositionToLook(loc()->ball());
 
-    _skill_kick->setIsPass(false);
+    _skill_gkick->setIsPass(false);
 
     // goToLookTo (posicionamento do goleiro
     Position desiredPosition = getAttackerInterceptPosition();
