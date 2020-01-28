@@ -97,7 +97,8 @@ SOURCES += \
 	utils/mrctimer/mrctimer.cpp \
     entity/player/skills/basics/skill_kick.cpp \
     entity/player/behaviour/basics/behaviour_goalkeeper.cpp \
-    entity/player/skills/basics/skill_goalkeeper.cpp
+    entity/player/skills/basics/skill_goalkeeper.cpp \
+    entity/player/skills/basics/skill_gkick.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -187,4 +188,5 @@ HEADERS += \
 	utils/mrctimer/mrctimer.h \
     entity/player/skills/basics/skill_kick.h \
     entity/player/behaviour/basics/behaviour_goalkeeper.h \
-    entity/player/skills/basics/skill_goalkeeper.h
+    entity/player/skills/basics/skill_goalkeeper.h \
+    entity/player/skills/basics/skill_gkick.h
