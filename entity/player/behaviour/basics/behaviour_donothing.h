@@ -19,7 +19,7 @@ public:
     enum{
         STATE_GOTO,
         STATE_KICK,
-        STATE_KICKED
+        STATE_FORCEGOTO
     };
 };
 
