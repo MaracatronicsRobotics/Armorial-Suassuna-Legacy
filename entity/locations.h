@@ -94,6 +94,10 @@ public:
     bool isNearOpponent(const Position &pos, float distance);
     Position ourAreaMargin(const Position &reference, float distance);
     Position theirAreaMargin(const Position &reference, float distance);
+    //
+    QHash<quint8, Player*> getOpPlayers();
+    QHash<quint8, Player*> getMRCPlayers();
+
 private:
     // Team access
     MRCTeam *_team;

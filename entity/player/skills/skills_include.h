@@ -8,6 +8,8 @@
 #include <entity/player/skills/basics/skill_gotolookto.h>
 #include <entity/player/skills/basics/skill_aroundtheball.h>
 #include <entity/player/skills/basics/skill_kick.h>
+#include <entity/player/skills/basics/skill_dribble.h>
+#include <entity/player/skills/basics/skill_goalkeeper.h>
 
 // normal includes
 #include <entity/player/player.h>

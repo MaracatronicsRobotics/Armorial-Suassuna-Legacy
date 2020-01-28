@@ -6,6 +6,7 @@
 #include <utils/utils.hh>
 #include <entity/player/baseplayer.h>
 #include <bits/stdc++.h>
+#include <entity/locations.h>
 #include <entity/player/control/pid.h>
 
 #define IDLE_COUNT 10
@@ -69,6 +70,8 @@ public:
     void goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double aim_x, double aim_y, double angleOrigin2Robot, double offset = 0.2);
     void AroundTheBall(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset);
     void Kick(bool isPass);
+    void Dribble(bool isActive);
+    void GoalKeeper(double robot_x, double robot_y, double ball_x, double ball_y, double opRobot_x, double opRobot_y);
 
     // Behaviour
     void setBehaviour(Behaviour *b);
