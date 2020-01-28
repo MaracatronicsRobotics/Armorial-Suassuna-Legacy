@@ -177,7 +177,9 @@ OBJECTS       = entity.o \
 		entity/contromodule/strategy/basics/sslstrategy_timeout.cpp \
 		entity/player/control/pid.cpp \
 		utils/mrctimer/mrctimer.cpp \
-		entity/player/skills/basics/skill_kick.cpp moc_playbook.cpp \
+		entity/player/skills/basics/skill_kick.cpp \
+		entity/player/behaviour/basics/behaviour_goalkeeper.cpp \
+		entity/player/skills/basics/skill_goalkeeper.cpp moc_playbook.cpp \
 		moc_behaviour.cpp
 OBJECTS       = entity.o \
 		skill_goto.o \
@@ -283,6 +285,8 @@ OBJECTS       = entity.o \
 		pid.o \
 		mrctimer.o \
 		skill_kick.o \
+		behaviour_goalkeeper.o \
+		skill_goalkeeper.o \
 		moc_playbook.o \
 		moc_behaviour.o
 >>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
@@ -592,11 +596,17 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 =======
 		utils/mrctimer/mrctimer.cpp \
 <<<<<<< dev
+<<<<<<< dev
 		entity/player/skills/basics/skill_aroundtheball.cpp
 >>>>>>> PID ajustado e aroundtheball inserido
 =======
 		entity/player/skills/basics/skill_kick.cpp
 >>>>>>> kick implementado
+=======
+		entity/player/skills/basics/skill_kick.cpp \
+		entity/player/behaviour/basics/behaviour_goalkeeper.cpp \
+		entity/player/skills/basics/skill_goalkeeper.cpp
+>>>>>>> kick, dribble e goleiro implementados
 QMAKE_TARGET  = Armorial-Suassuna
 DESTDIR       = 
 TARGET        = Armorial-Suassuna
@@ -936,9 +946,13 @@ moc_playbook.cpp: entity/contromodule/playbook/playbook.h \
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
 <<<<<<< dev
+<<<<<<< dev
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
 		entity/player/role/role.h \
+=======
+		entity/player/playeraccess.h \
+>>>>>>> kick, dribble e goleiro implementados
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/zilde/Desktop/Armorial-Suassuna/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/zilde/Desktop/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include entity/contromodule/playbook/playbook.h -o moc_playbook.cpp
@@ -946,7 +960,10 @@ moc_playbook.cpp: entity/contromodule/playbook/playbook.h \
 moc_behaviour.cpp: entity/player/behaviour/behaviour.h \
 		entity/player/baseplayer.h \
 		entity/player/playeraccess.h \
+<<<<<<< dev
 		entity/player/playerbus.h \
+=======
+>>>>>>> kick, dribble e goleiro implementados
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/zilde/Desktop/Armorial-Suassuna/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/zilde/Desktop/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include entity/player/behaviour/behaviour.h -o moc_behaviour.cpp
@@ -964,10 +981,15 @@ moc_behaviour_receiver.cpp: entity/player/behaviour/basics/behaviour_receiver.h 
 		entity/player/skills/basics/skill_gotolookto.h \
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
+=======
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -1008,10 +1030,14 @@ moc_behaviour_attacker.cpp: entity/player/behaviour/basics/behaviour_attacker.h 
 		entity/player/skills/basics/skill_gotolookto.h \
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
+=======
+		entity/player/skills/basics/skill_goalkeeper.h \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -1038,6 +1064,7 @@ moc_behaviour_attacker.cpp: entity/player/behaviour/basics/behaviour_attacker.h 
 
 moc_role.cpp: entity/player/role/role.h \
 		entity/player/baseplayer.h \
+<<<<<<< dev
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
 		entity/referee/SSLReferee/sslgameinfo.h \
@@ -1050,6 +1077,16 @@ moc_role.cpp: entity/player/role/role.h \
 		entity/contromodule/mrcteam.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
+=======
+		entity/player/skills/skills_include.h \
+		entity/player/skills/basics/skill_donothing.h \
+		entity/player/skills/basics/skill_rotateto.h \
+		entity/player/skills/basics/skill_gotolookto.h \
+		entity/player/skills/basics/skill_aroundtheball.h \
+		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/player/player.h \
 		entity/world/world.h \
 		entity/baseentity.h \
@@ -1205,6 +1242,8 @@ skill_aroundtheball.o: entity/player/skills/basics/skill_aroundtheball.cpp entit
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
 		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -1237,6 +1276,8 @@ skill_dribble.o: entity/player/skills/basics/skill_dribble.cpp entity/player/ski
 		entity/player/skills/basics/skill_gotolookto.h \
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -1907,6 +1948,7 @@ suassuna.o: suassuna.cpp suassuna.h \
 <<<<<<< dev
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
@@ -1938,6 +1980,14 @@ suassuna.o: suassuna.cpp suassuna.h \
 		utils/basics/wall.hh \
 		entity/player/behaviour/basics/behaviour_timeout.h \
 >>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
+=======
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/behaviour/basics/behaviour_timeout.h \
+		entity/player/behaviour/basics/behaviour_goalkeeper.h \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/contromodule/strategy/strategy.h \
 		entity/contromodule/strategy/strategystate.h \
 		entity/contromodule/strategy/basics/mrcstrategy.h \
@@ -2814,6 +2864,34 @@ sslstrategy_halt.o: entity/contromodule/strategy/basics/sslstrategy_halt.cpp ent
 <<<<<<< dev
 		entity/locations.h \
 		utils/basics/wall.hh \
+<<<<<<< dev
+=======
+		entity/contromodule/playbook/playbook.h \
+		entity/player/behaviour/behaviour.h \
+		entity/player/playeraccess.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o strategystate.o entity/contromodule/strategy/strategystate.cpp
+
+coachutils.o: entity/contromodule/coachutils.cpp entity/contromodule/coachutils.h \
+		utils/knn/knn.hh \
+		entity/contromodule/basecoach.h \
+		entity/contromodule/mrcteam.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		entity/player/player.h \
+		entity/entity.h \
+		entity/world/world.h \
+		entity/baseentity.h \
+		entity/player/baseplayer.h \
+		utils/fields/fields.hh \
+		entity/world/worldmapupdater.h \
+		entity/referee/SSLReferee/sslreferee.h \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		entity/referee/referee.h \
+		utils/utils.hh \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
 		entity/contromodule/playersdistribution.h \
@@ -2916,6 +2994,7 @@ playbook_donothing.o: entity/contromodule/playbook/basics/playbook_donothing.cpp
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
 <<<<<<< dev
+<<<<<<< dev
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
 		entity/player/role/role.h \
@@ -2966,10 +3045,15 @@ playbook_donothing.o: entity/contromodule/playbook/basics/playbook_donothing.cpp
 		entity/player/behaviour/basics/behaviour_timeout.h
 >>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playbook_donothing.o entity/contromodule/playbook/basics/playbook_donothing.cpp
+=======
+		entity/player/playeraccess.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playbook.o entity/contromodule/playbook/playbook.cpp
+>>>>>>> kick, dribble e goleiro implementados
 
 behaviour_followball.o: entity/player/behaviour/basics/behaviour_followball.cpp entity/player/behaviour/basics/behaviour_followball.h \
 		entity/player/behaviour/behaviour.h \
 		entity/player/baseplayer.h \
+<<<<<<< dev
 <<<<<<< dev
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
@@ -2977,6 +3061,9 @@ behaviour_followball.o: entity/player/behaviour/basics/behaviour_followball.cpp 
 >>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
+=======
+		entity/player/playeraccess.h \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/player/skills/skill.h \
 		entity/player/skills/basics/skill_goto.h \
 		entity/player/skills/basics/skill_rotateto.h \
@@ -3018,7 +3105,10 @@ behaviour_timeout.o: entity/player/behaviour/basics/behaviour_timeout.cpp entity
 		entity/player/behaviour/behaviour.h \
 		entity/player/baseplayer.h \
 		entity/player/playeraccess.h \
+<<<<<<< dev
 		entity/player/playerbus.h \
+=======
+>>>>>>> kick, dribble e goleiro implementados
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
@@ -3028,10 +3118,15 @@ behaviour_timeout.o: entity/player/behaviour/basics/behaviour_timeout.cpp entity
 		entity/player/skills/basics/skill_aroundtheball.h \
 <<<<<<< dev
 		entity/player/skills/basics/skill_kick.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
+=======
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -3070,10 +3165,16 @@ skill_kick.o: entity/player/skills/basics/skill_kick.cpp entity/player/skills/ba
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
 		entity/player/skills/basics/skill_aroundtheball.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
+=======
+		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -3128,14 +3229,52 @@ skill_gkick.o: entity/player/skills/basics/skill_gkick.cpp entity/player/skills/
 		utils/utils.hh \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
+<<<<<<< dev
+=======
+		entity/contromodule/playersdistribution.h \
+		utils/wrtimer/wrtimer.hh \
+		entity/player/behaviour/behaviour.h \
+		entity/player/playeraccess.h \
+		entity/player/behaviour/mrcbehaviours.h \
+		entity/player/behaviour/basics/behaviour_donothing.h \
+		entity/player/behaviour/basics/behaviour_followball.h \
+		entity/player/skills/skills_include.h \
+		entity/player/skills/basics/skill_donothing.h \
+		entity/player/skills/skill.h \
+		entity/player/skills/basics/skill_goto.h \
+		entity/player/skills/basics/skill_rotateto.h \
+		entity/player/skills/basics/skill_gotolookto.h \
+		entity/player/skills/basics/skill_aroundtheball.h \
+		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
 		utils/basics/wall.hh \
+<<<<<<< dev
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_gkick.o entity/player/skills/basics/skill_gkick.cpp
+=======
+		entity/player/behaviour/basics/behaviour_timeout.h \
+		entity/player/behaviour/basics/behaviour_goalkeeper.h \
+		entity/contromodule/playbook/basics/playbook_followball.h \
+		entity/contromodule/playbook/basics/playbook_timeout.h \
+		entity/contromodule/strategy/basics/sslstrategy_timeout.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mrcstrategy.o entity/contromodule/strategy/basics/mrcstrategy.cpp
+
+sslstrategy.o: entity/contromodule/strategy/basics/sslstrategy.cpp entity/contromodule/strategy/basics/sslstrategy.h \
+		entity/contromodule/strategy/strategy.h \
+		entity/contromodule/basecoach.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sslstrategy.o entity/contromodule/strategy/basics/sslstrategy.cpp
+>>>>>>> kick, dribble e goleiro implementados
 
 behaviour_receiver.o: entity/player/behaviour/basics/behaviour_receiver.cpp entity/player/behaviour/basics/behaviour_receiver.h \
 		entity/player/behaviour/behaviour.h \
@@ -3171,6 +3310,7 @@ playbook_followball.o: entity/contromodule/playbook/basics/playbook_followball.c
 		entity/contromodule/basecoach.h \
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
+		entity/player/playeraccess.h \
 		entity/player/behaviour/mrcbehaviours.h \
 		entity/player/behaviour/basics/behaviour_donothing.h \
 		entity/player/behaviour/basics/behaviour_followball.h \
@@ -3185,10 +3325,35 @@ playbook_followball.o: entity/contromodule/playbook/basics/playbook_followball.c
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
 <<<<<<< dev
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
+=======
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/behaviour/basics/behaviour_timeout.h \
+		entity/player/behaviour/basics/behaviour_goalkeeper.h \
+		entity/contromodule/playbook/basics/playbook_followball.h \
+		entity/contromodule/playbook/basics/playbook_timeout.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sslstrategy_halt.o entity/contromodule/strategy/basics/sslstrategy_halt.cpp
+
+playbook_donothing.o: entity/contromodule/playbook/basics/playbook_donothing.cpp entity/contromodule/playbook/basics/playbook_donothing.h \
+		entity/contromodule/playbook/playbook.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/referee/SSLReferee/sslreferee.h \
+		entity/referee/referee.h \
+		entity/entity.h \
+		entity/contromodule/mrcteam.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -3217,9 +3382,16 @@ playbook_followball.o: entity/contromodule/playbook/basics/playbook_followball.c
 
 behaviour_attacker.o: entity/player/behaviour/basics/behaviour_attacker.cpp entity/player/behaviour/basics/behaviour_attacker.h \
 		entity/player/behaviour/behaviour.h \
+<<<<<<< dev
 		entity/player/baseplayer.h \
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
+=======
+		entity/player/playeraccess.h \
+		entity/player/behaviour/mrcbehaviours.h \
+		entity/player/behaviour/basics/behaviour_donothing.h \
+		entity/player/behaviour/basics/behaviour_followball.h \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
@@ -3229,6 +3401,7 @@ behaviour_attacker.o: entity/player/behaviour/basics/behaviour_attacker.cpp enti
 		entity/player/skills/basics/skill_aroundtheball.h \
 <<<<<<< dev
 		entity/player/skills/basics/skill_kick.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
@@ -3246,6 +3419,10 @@ behaviour_attacker.o: entity/player/behaviour/basics/behaviour_attacker.cpp enti
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
+=======
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
@@ -3262,7 +3439,10 @@ behaviour_barrier.o: entity/player/behaviour/basics/behaviour_barrier.cpp entity
 		entity/player/behaviour/behaviour.h \
 		entity/player/baseplayer.h \
 		entity/player/playeraccess.h \
+<<<<<<< dev
 		entity/player/playerbus.h \
+=======
+>>>>>>> kick, dribble e goleiro implementados
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
@@ -3271,10 +3451,15 @@ behaviour_barrier.o: entity/player/behaviour/basics/behaviour_barrier.cpp entity
 		entity/player/skills/basics/skill_gotolookto.h \
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
+=======
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -3337,6 +3522,7 @@ playbook_timeout.o: entity/contromodule/playbook/basics/playbook_timeout.cpp ent
 		entity/contromodule/basecoach.h \
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
+		entity/player/playeraccess.h \
 		entity/player/behaviour/mrcbehaviours.h \
 		entity/player/behaviour/basics/behaviour_donothing.h \
 		entity/player/behaviour/basics/behaviour_followball.h \
@@ -3351,10 +3537,32 @@ playbook_timeout.o: entity/contromodule/playbook/basics/playbook_timeout.cpp ent
 <<<<<<< dev
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
 		entity/player/skills/basics/skill_pushball.h \
+=======
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/behaviour/basics/behaviour_timeout.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playbook_followball.o entity/contromodule/playbook/basics/playbook_followball.cpp
+
+playbook_timeout.o: entity/contromodule/playbook/basics/playbook_timeout.cpp entity/contromodule/playbook/basics/playbook_timeout.h \
+		entity/contromodule/playbook/playbook.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/referee/SSLReferee/sslreferee.h \
+		entity/referee/referee.h \
+		entity/entity.h \
+		entity/contromodule/mrcteam.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -3379,6 +3587,7 @@ playbook_timeout.o: entity/contromodule/playbook/basics/playbook_timeout.cpp ent
 
 behaviour_penalty_gk.o: entity/player/behaviour/basics/behaviour_penalty_gk.cpp entity/player/behaviour/basics/behaviour_penalty_gk.h \
 		entity/player/behaviour/behaviour.h \
+<<<<<<< dev
 		entity/player/baseplayer.h \
 		entity/player/playeraccess.h \
 		entity/player/playerbus.h \
@@ -3399,6 +3608,12 @@ behaviour_timeout.o: entity/player/behaviour/basics/behaviour_timeout.cpp entity
 		entity/player/behaviour/behaviour.h \
 		entity/player/baseplayer.h \
 >>>>>>> PID funcionando (impreciso porque ainda é necessário descobrir as constantes kp, ki e kd), é possível alterar tudo em suassuna.cpp, onde são instanciados os jogadores
+=======
+		entity/player/playeraccess.h \
+		entity/player/behaviour/mrcbehaviours.h \
+		entity/player/behaviour/basics/behaviour_donothing.h \
+		entity/player/behaviour/basics/behaviour_followball.h \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
@@ -3409,6 +3624,7 @@ behaviour_timeout.o: entity/player/behaviour/basics/behaviour_timeout.cpp entity
 <<<<<<< dev
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
+<<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_interceptball.h \
@@ -3428,6 +3644,10 @@ behaviour_timeout.o: entity/player/behaviour/basics/behaviour_timeout.cpp entity
 		utils/basics/color.hh \
 		entity/referee/referee.h \
 		utils/utils.hh \
+=======
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/locations.h \
 		utils/fieldside/fieldside.hh \
 		utils/basics/side.hh \
@@ -3443,6 +3663,7 @@ behaviour_timeout.o: entity/player/behaviour/basics/behaviour_timeout.cpp entity
 skill_pushball.o: entity/player/skills/basics/skill_pushball.cpp entity/player/skills/basics/skill_pushball.h \
 		entity/player/skills/skill.h \
 		entity/player/baseplayer.h \
+		entity/player/playeraccess.h \
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/basics/skill_goto.h \
@@ -3450,6 +3671,7 @@ skill_pushball.o: entity/player/skills/basics/skill_pushball.cpp entity/player/s
 		entity/player/skills/basics/skill_gotolookto.h \
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
+<<<<<<< dev
 <<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
@@ -3459,6 +3681,10 @@ skill_pushball.o: entity/player/skills/basics/skill_pushball.cpp entity/player/s
 >>>>>>> PID ajustado e aroundtheball inserido
 =======
 >>>>>>> kick implementado
+=======
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -3545,6 +3771,7 @@ role_default.o: entity/player/role/basics/role_default.cpp entity/player/role/ba
 		entity/contromodule/playersdistribution.h \
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
+		entity/player/playeraccess.h \
 		entity/player/behaviour/mrcbehaviours.h \
 		entity/player/behaviour/basics/behaviour_donothing.h \
 		entity/player/behaviour/basics/behaviour_followball.h \
@@ -3559,6 +3786,7 @@ role_default.o: entity/player/role/basics/role_default.cpp entity/player/role/ba
 <<<<<<< dev
 		entity/player/skills/basics/skill_aroundtheball.h \
 		entity/player/skills/basics/skill_kick.h \
+<<<<<<< dev
 <<<<<<< dev
 		entity/player/skills/basics/skill_gkick.h \
 		entity/player/skills/basics/skill_dribble.h \
@@ -3692,9 +3920,14 @@ qrc_rsc.o: qrc_rsc.cpp
 >>>>>>> PID ajustado e aroundtheball inserido
 =======
 >>>>>>> kick implementado
+=======
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+>>>>>>> kick, dribble e goleiro implementados
 		entity/locations.h \
 		utils/basics/wall.hh \
 		entity/player/behaviour/basics/behaviour_timeout.h \
+		entity/player/behaviour/basics/behaviour_goalkeeper.h \
 		entity/contromodule/playbook/basics/playbook_followball.h \
 		entity/contromodule/playbook/basics/playbook_timeout.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sslstrategy_timeout.o entity/contromodule/strategy/basics/sslstrategy_timeout.cpp
@@ -3716,6 +3949,8 @@ skill_kick.o: entity/player/skills/basics/skill_kick.cpp entity/player/skills/ba
 		entity/player/skills/basics/skill_rotateto.h \
 		entity/player/skills/basics/skill_gotolookto.h \
 		entity/player/skills/basics/skill_aroundtheball.h \
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
 		entity/player/player.h \
 		entity/entity.h \
 		entity/world/world.h \
@@ -3737,6 +3972,75 @@ skill_kick.o: entity/player/skills/basics/skill_kick.cpp entity/player/skills/ba
 		utils/basics/wall.hh \
 		entity/contromodule/mrcteam.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_kick.o entity/player/skills/basics/skill_kick.cpp
+
+behaviour_goalkeeper.o: entity/player/behaviour/basics/behaviour_goalkeeper.cpp entity/player/behaviour/basics/behaviour_goalkeeper.h \
+		entity/player/behaviour/behaviour.h \
+		entity/player/baseplayer.h \
+		entity/player/playeraccess.h \
+		entity/player/skills/skills_include.h \
+		entity/player/skills/basics/skill_donothing.h \
+		entity/player/skills/skill.h \
+		entity/player/skills/basics/skill_goto.h \
+		entity/player/skills/basics/skill_rotateto.h \
+		entity/player/skills/basics/skill_gotolookto.h \
+		entity/player/skills/basics/skill_aroundtheball.h \
+		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+		entity/player/player.h \
+		entity/entity.h \
+		entity/world/world.h \
+		entity/baseentity.h \
+		utils/fields/fields.hh \
+		entity/world/worldmapupdater.h \
+		entity/referee/SSLReferee/sslreferee.h \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		entity/referee/referee.h \
+		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
+		entity/locations.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		utils/basics/wall.hh \
+		entity/contromodule/mrcteam.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_goalkeeper.o entity/player/behaviour/basics/behaviour_goalkeeper.cpp
+
+skill_goalkeeper.o: entity/player/skills/basics/skill_goalkeeper.cpp entity/player/skills/basics/skill_goalkeeper.h \
+		entity/player/skills/skill.h \
+		entity/player/baseplayer.h \
+		entity/player/skills/skills_include.h \
+		entity/player/skills/basics/skill_donothing.h \
+		entity/player/skills/basics/skill_goto.h \
+		entity/player/skills/basics/skill_rotateto.h \
+		entity/player/skills/basics/skill_gotolookto.h \
+		entity/player/skills/basics/skill_aroundtheball.h \
+		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/player.h \
+		entity/entity.h \
+		entity/world/world.h \
+		entity/baseentity.h \
+		utils/fields/fields.hh \
+		entity/world/worldmapupdater.h \
+		entity/referee/SSLReferee/sslreferee.h \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		entity/referee/referee.h \
+		utils/utils.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
+		entity/locations.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		utils/basics/wall.hh \
+		entity/contromodule/mrcteam.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_goalkeeper.o entity/player/skills/basics/skill_goalkeeper.cpp
 
 moc_playbook.o: moc_playbook.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_playbook.o moc_playbook.cpp
