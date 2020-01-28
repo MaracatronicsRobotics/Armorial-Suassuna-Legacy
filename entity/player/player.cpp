@@ -285,22 +285,11 @@ std::pair<float, float> Player::goTo(double robot_x, double robot_y, double poin
 
         return std::make_pair(0.0, 0.0);
     }
-*/
-    if(moduloDistancia <= offset){
-        vxSaida = 0;
-        vySaida = 0;
-
-        return std::make_pair(0.0, 0.0);
-    }
 
     float newVX = _vxPID->calculate(vxSaida, velocity().x());
     float newVY = _vyPID->calculate(vySaida, velocity().y());
 
-    //setSpeed(vxSaida * sinal_x, vySaida * sinal_y, 0.0);
-    //setSpeed(newVX, newVY, 0.0);
-
     return std::make_pair(newVX, newVY);
-    //return std::make_pair(vxSaida * sinal_x, vySaida * sinal_y);
 }
 
 std::pair<double, double> Player::rotateTo(double robot_x, double robot_y, double point_x, double point_y, double angleOrigin2Robot) {
@@ -353,11 +342,8 @@ std::pair<double, double> Player::rotateTo(double robot_x, double robot_y, doubl
 
 
     double newSpeed = _vwPID->calculate(speed, angularSpeed().value());
-    //setSpeed(0.0, 0.0, speed);
-    //setSpeed(0.0, 0.0, newSpeed);
 
     return std::make_pair(angleRobot2Ball, newSpeed);
-    //return std::make_pair(angleRobot2Ball, speed);
 }
 
 void Player::goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double aim_x, double aim_y, double angleOrigin2Robot, double offset){
@@ -417,52 +403,4 @@ void Player::kick(bool isPass, float kickZPower){
 
 void Player::dribble(bool isActive){
     _grSim->setDribble(_team->teamId(), playerId(), isActive);
-}
-
-void Player::GoalKeeper(double robot_x, double robot_y, double ball_x, double ball_y, double opRobot_x, double opRobot_y){
-    /*double m,d1,d2,d3,d4,ang;
-    float xm,ym,xn,yn;
-    float limite = 0.5;
-
-    xm=4;
-    d1=abs(ball_x)-xm;
-    if(ball_x != robot_x){
-       m=float(ball_y - robot_y)/float(abs(ball_x - robot_x));
-    }
-    if(m!=0) d2=d1*m;else d2=0;
-    ym=ball_y-d2;
-    if(ym > limite) ym = limite;
-    if(ym < -limite) ym = -limite;
-    if(ball_y>1){
-        yn = limite;
-        d3 = yn - ball_y;
-        if(m!=0) d4 = -d3/m;
-        else d4=0;
-        xn = abs(ball_x) - d4;
-        if(xn>4.3) xn=4.3;
-    }
-    if(ball_y<-1){
-        yn = -limite;
-        d3=yn-ball_y;
-        if(m!=0) d4=-d3/m;else d4=0;
-        xn = abs(ball_x) - d4;
-        if(xn > 4.3) xn = 4.3;}
-
-
-    if(ball_y>1||ball_y<-1){
-        if(xn > 4){
-            xm = xn;
-            ym = yn;
-        }
-    }
-
-
-    return std::make_pair(xm, ym);*/
-    double tang = (opRobot_y - ball_y)/(opRobot_x - ball_x);
-    double move = (ball_x - robot_x) * tang;
-
-    std::pair<float, float> a;
-    a = GoTo(robot_x, robot_y, robot_x + move, robot_y, 0.0, 0.0);
-
-    setSpeed(a.first, a.second, 0.0);
 }
