@@ -6,8 +6,9 @@ QString Skill_Dribble::name() {
 }
 
 Skill_Dribble::Skill_Dribble() {
+    _isActive = false;
 }
 
 void Skill_Dribble::run() {
-    player()->idle();
+    player()->Dribble(_isActive);
 }

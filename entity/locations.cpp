@@ -307,3 +307,12 @@ Position Locations::theirAreaMargin(const Position &reference, float distance) {
     Position projected = WR::Utils::projectPointAtSegment(midR, midL, reference);
     return WR::Utils::threePoints(projected, reference, fieldDefenseRadius()+distance, 0.0);
 }
+
+QHash<quint8, Player*> Locations::getOpPlayers(){
+    return _team->opTeam()->avPlayers();
+}
+
+QHash<quint8, Player*> Locations::getMRCPlayers(){
+    return _team->avPlayers();
+}
+
