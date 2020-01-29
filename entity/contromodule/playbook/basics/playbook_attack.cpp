@@ -24,6 +24,8 @@ void Playbook_Attack::configure(int numPlayers) {
 
     _bh_atk = new Behaviour_Attacker();
     usesBehaviour(_bh_atk);
+
+
 }
 
 void Playbook_Attack::run(int numPlayers) {
