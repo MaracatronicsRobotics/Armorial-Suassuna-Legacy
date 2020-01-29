@@ -9,8 +9,6 @@ Skill_GKick::Skill_GKick() {
 }
 
 void Skill_GKick::run() {
-    if(loc()->isInsideOurArea(loc()->ball())){
-        player()->goToLookTo(player()->position().x(), player()->position().y(), loc()->ball().x(), loc()->ball().y(), loc()->ball().x(), loc()->ball().y(), player()->orientation().value(), 0.1);
-        player()->Kick(_isPass);
-    }
+    player()->goToLookTo(player()->position().x(), player()->position().y(), loc()->ball().x(), loc()->ball().y(), loc()->ball().x(), loc()->ball().y(), player()->orientation().value(), 0.1);
+    player()->Kick(_isPass);
 }
