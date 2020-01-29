@@ -2,13 +2,14 @@
 #include <entity/player/skills/skills_include.h>
 
 QString Skill_GKick::name() {
-    return "Skill_Kick";
+    return "Skill_GKick";
 }
 
 Skill_GKick::Skill_GKick() {
+    _aimPosition = loc()->ball();
 }
 
 void Skill_GKick::run() {
-    player()->goToLookTo(player()->position().x(), player()->position().y(), loc()->ball().x(), loc()->ball().y(), loc()->ball().x(), loc()->ball().y(), player()->orientation().value(), 0.1);
+    player()->goToLookTo(player()->position().x(), player()->position().y(), loc()->ball().x(), loc()->ball().y(), _aimPosition.x(), _aimPosition.y(), player()->orientation().value(), 0.01);
     player()->Kick(_isPass);
 }

@@ -3,6 +3,7 @@
 
 #include <entity/player/baseplayer.h>
 #include <entity/player/playeraccess.h>
+#include <entity/player/playerbus.h>
 #include <QObject>
 
 class Behaviour : public QObject {
