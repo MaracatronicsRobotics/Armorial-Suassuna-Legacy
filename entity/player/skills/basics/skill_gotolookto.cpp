@@ -8,6 +8,7 @@ QString Skill_GoToLookTo::name() {
 Skill_GoToLookTo::Skill_GoToLookTo() {
     _aimPosition = Position(true, 0.0, 0.0, 0.0);
     _desiredPosition = Position(true, 0.0, 0.0, 0.0);
+    _offsetBall = 0.2;
 }
 
 void Skill_GoToLookTo::run() {

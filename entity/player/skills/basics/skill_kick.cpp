@@ -6,6 +6,7 @@ QString Skill_Kick::name() {
 }
 
 Skill_Kick::Skill_Kick() {
+    _isPass = false;
 }
 
 void Skill_Kick::run() {

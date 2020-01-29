@@ -9,18 +9,11 @@ private:
     void configure();
     void run();
     int _state;
+
+    Skill_DoNothing *_skill_doNothing;
 public:
     Behaviour_DoNothing();
     QString name();
-
-    Skill_Kick *_teste;
-    Skill_GoToLookTo *_sk_goto;
-
-    enum{
-        STATE_GOTO,
-        STATE_KICK,
-        STATE_FORCEGOTO
-    };
 };
 
 #endif // BEHAVIOUR_DONOTHING_H
