@@ -9,6 +9,9 @@ private:
     void configure();
     void run();
     int _state;
+
+    QList<quint8> _recvs;
+
 public:
     Behaviour_Attacker();
     QString name();
@@ -20,6 +23,16 @@ public:
         STATE_GOTO,
         STATE_KICK
     };
+
+    void addReceiver(quint8 recvId) { _recvs.push_back(recvId); }
+    void clearReceivers() { _recvs.clear(); }
+    quint8 getBestReceiver();
+
+    bool isBehindBall(Position posObjective);
+
+signals:
+    void goingToShoot(Position pos);
+    void shooted();
 };
 
 #endif // BEHAVIOUR_ATTACKER_H

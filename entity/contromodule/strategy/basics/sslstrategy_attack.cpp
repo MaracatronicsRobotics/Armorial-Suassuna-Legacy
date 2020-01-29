@@ -15,7 +15,7 @@ void SSLStrategy_Attack::configure(int numOurPlayers) {
 }
 
 void SSLStrategy_Attack::run(int numOurPlayers) {
-    int attackerId = dist()->getPlayer();
+    int attackerId = dist()->getKNN(1, loc()->ball()).at(0);
     if(attackerId != DIST_INVALID_ID){
         _pb_attack->setAttacker(attackerId);
         _pb_attack->addPlayer(attackerId); // set kicker
