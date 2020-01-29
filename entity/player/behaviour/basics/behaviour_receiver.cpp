@@ -42,7 +42,7 @@ void Behaviour_Receiver::run() {
     break;
     }
 
-    _skill_GoToLookTo->setAimPosition(_desiredPosition);
+    _skill_GoToLookTo->setAimPosition(PlayerBus::ourPlayer(_attackerId)->position());
     _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
 
 }

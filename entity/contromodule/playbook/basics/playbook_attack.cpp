@@ -23,15 +23,22 @@ void Playbook_Attack::configure(int numPlayers) {
 
     _bh_atk = new Behaviour_Attacker();
     usesBehaviour(_bh_atk);
+
+
 }
 
 void Playbook_Attack::run(int numPlayers) {
-    if(_attackerId != -1)
+    if(_attackerId != -1){
         setPlayerBehaviour(_attackerId, _bh_atk);
+        _bh_atk->clearReceivers();
+    }
 
     for(int i=0; i<numPlayers-1; i++){
         _bh_rcv.at(i)->setFollowAttacker(true);
         _bh_rcv.at(i)->setAttackerId(_attackerId);
-        setPlayerBehaviour(dist()->getPlayer(), _bh_rcv.at(i));
+
+        double player = dist()->getPlayer();
+        _bh_atk->addReceiver(player);
+        setPlayerBehaviour(player, _bh_rcv.at(i));
     }
 }
