@@ -7,6 +7,7 @@ QString Skill_AroundTheBall::name() {
 
 Skill_AroundTheBall::Skill_AroundTheBall() {
     _desiredPosition = Position(true, 0.0, 0.0, 0.0);
+    _offsetBall = 0.1;
 }
 
 void Skill_AroundTheBall::run() {
