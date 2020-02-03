@@ -57,7 +57,6 @@ bool Suassuna::start() {
     // Setup team players
     setupOurPlayers();
     setupOppPlayers(opTeamId);
-    FreeAngles::initialize(_ourTeam, _theirTeam);
 
     // Create coach
     _coach = new Coach(_ref, _ourTeam, _theirTeam);
