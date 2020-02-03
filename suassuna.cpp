@@ -54,7 +54,6 @@ bool Suassuna::start() {
     // Setup team players
     setupOurPlayers();
     setupOppPlayers(opTeamId);
-    FreeAngles::initialize(_ourTeam, _theirTeam);
 
     // Setup GUI
     _ourGUI->setTeams(_ourTeam, _theirTeam);
