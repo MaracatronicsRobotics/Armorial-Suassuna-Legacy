@@ -40,5 +40,9 @@ void Playbook_Attack::run(int numPlayers) {
         double player = dist()->getPlayer();
         _bh_atk->addReceiver(player);
         setPlayerBehaviour(player, _bh_rcv.at(i));
+
+        // conecta as funções
+        connect(_bh_atk, SIGNAL(goingToShoot(quint8)), _bh_rcv.at(i), SLOT(goingToReceive(quint8)), Qt::DirectConnection);
+        connect(_bh_atk, SIGNAL(shooted(quint8)), _bh_rcv.at(i), SLOT(attackerShooted(quint8)), Qt::DirectConnection);
     }
 }

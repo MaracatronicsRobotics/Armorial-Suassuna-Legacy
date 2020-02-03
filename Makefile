@@ -124,7 +124,9 @@ SOURCES       = entity/entity.cpp \
 		entity/player/behaviour/basics/behaviour_receiver.cpp \
 		entity/player/behaviour/basics/behaviour_attacker.cpp \
 		entity/contromodule/strategy/basics/sslstrategy_attack.cpp moc_playbook.cpp \
-		moc_behaviour.cpp
+		moc_behaviour.cpp \
+		moc_behaviour_receiver.cpp \
+		moc_behaviour_attacker.cpp
 OBJECTS       = entity.o \
 		skill_aroundtheball.o \
 		skill_dribble.o \
@@ -205,7 +207,9 @@ OBJECTS       = entity.o \
 		behaviour_attacker.o \
 		sslstrategy_attack.o \
 		moc_playbook.o \
-		moc_behaviour.o
+		moc_behaviour.o \
+		moc_behaviour_receiver.o \
+		moc_behaviour_attacker.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -610,9 +614,9 @@ compiler_moc_predefs_clean:
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -std=gnu++1y -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_playbook.cpp moc_behaviour.cpp
+compiler_moc_header_make_all: moc_playbook.cpp moc_behaviour.cpp moc_behaviour_receiver.cpp moc_behaviour_attacker.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_playbook.cpp moc_behaviour.cpp
+	-$(DEL_FILE) moc_playbook.cpp moc_behaviour.cpp moc_behaviour_receiver.cpp moc_behaviour_attacker.cpp
 moc_playbook.cpp: entity/contromodule/playbook/playbook.h \
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
@@ -642,8 +646,122 @@ moc_playbook.cpp: entity/contromodule/playbook/playbook.h \
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
 		entity/player/playeraccess.h \
-		entity/player/behaviour/mrcbehaviours.h \
-		entity/player/behaviour/basics/behaviour_donothing.h \
+		entity/player/playerbus.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/zilde/Desktop/Armorial-Suassuna/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/zilde/Desktop/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include entity/contromodule/playbook/playbook.h -o moc_playbook.cpp
+
+moc_behaviour.cpp: entity/player/behaviour/behaviour.h \
+		entity/player/baseplayer.h \
+		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/zilde/Desktop/Armorial-Suassuna/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/zilde/Desktop/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include entity/player/behaviour/behaviour.h -o moc_behaviour.cpp
+
+moc_behaviour_receiver.cpp: entity/player/behaviour/basics/behaviour_receiver.h \
+		entity/player/behaviour/behaviour.h \
+		entity/player/baseplayer.h \
+		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
+		entity/player/skills/skills_include.h \
+		entity/player/skills/basics/skill_donothing.h \
+		entity/player/skills/skill.h \
+		entity/player/skills/basics/skill_goto.h \
+		entity/player/skills/basics/skill_rotateto.h \
+		entity/player/skills/basics/skill_gotolookto.h \
+		entity/player/skills/basics/skill_aroundtheball.h \
+		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_gkick.h \
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+		entity/player/player.h \
+		entity/entity.h \
+		entity/world/world.h \
+		entity/baseentity.h \
+		utils/fields/fields.hh \
+		entity/world/worldmapupdater.h \
+		entity/referee/SSLReferee/sslreferee.h \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		entity/referee/referee.h \
+		utils/utils.hh \
+		entity/locations.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		utils/basics/wall.hh \
+		entity/contromodule/mrcteam.h \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/zilde/Desktop/Armorial-Suassuna/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/zilde/Desktop/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include entity/player/behaviour/basics/behaviour_receiver.h -o moc_behaviour_receiver.cpp
+
+moc_behaviour_attacker.cpp: entity/player/behaviour/basics/behaviour_attacker.h \
+		entity/player/behaviour/behaviour.h \
+		entity/player/baseplayer.h \
+		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
+		entity/player/skills/skills_include.h \
+		entity/player/skills/basics/skill_donothing.h \
+		entity/player/skills/skill.h \
+		entity/player/skills/basics/skill_goto.h \
+		entity/player/skills/basics/skill_rotateto.h \
+		entity/player/skills/basics/skill_gotolookto.h \
+		entity/player/skills/basics/skill_aroundtheball.h \
+		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_gkick.h \
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+		entity/player/player.h \
+		entity/entity.h \
+		entity/world/world.h \
+		entity/baseentity.h \
+		utils/fields/fields.hh \
+		entity/world/worldmapupdater.h \
+		entity/referee/SSLReferee/sslreferee.h \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		entity/referee/referee.h \
+		utils/utils.hh \
+		entity/locations.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		utils/basics/wall.hh \
+		entity/contromodule/mrcteam.h \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/zilde/Desktop/Armorial-Suassuna/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/zilde/Desktop/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include entity/player/behaviour/basics/behaviour_attacker.h -o moc_behaviour_attacker.cpp
+
+compiler_moc_objc_header_make_all:
+compiler_moc_objc_header_clean:
+compiler_moc_source_make_all:
+compiler_moc_source_clean:
+compiler_uic_make_all:
+compiler_uic_clean:
+compiler_yacc_decl_make_all:
+compiler_yacc_decl_clean:
+compiler_yacc_impl_make_all:
+compiler_yacc_impl_clean:
+compiler_lex_make_all:
+compiler_lex_clean:
+compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean 
+
+####### Compile
+
+entity.o: entity/entity.cpp entity/entity.h \
+		utils/wrtimer/wrtimer.hh
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o entity.o entity/entity.cpp
+
+skill_aroundtheball.o: entity/player/skills/basics/skill_aroundtheball.cpp entity/player/skills/basics/skill_aroundtheball.h \
+		entity/player/skills/skill.h \
+		entity/player/baseplayer.h \
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
@@ -707,6 +825,7 @@ behaviour_goalkeeper.o: entity/player/behaviour/basics/behaviour_goalkeeper.cpp 
 		entity/player/behaviour/behaviour.h \
 		entity/player/baseplayer.h \
 		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
@@ -727,6 +846,8 @@ behaviour_goalkeeper.o: entity/player/behaviour/basics/behaviour_goalkeeper.cpp 
 		entity/contromodule/strategy/strategystate.h \
 		entity/contromodule/strategy/basics/mrcstrategy.h \
 		entity/contromodule/strategy/basics/sslstrategy.h \
+		utils/freeangles/freeangles.hh \
+		utils/freeangles/obstacle.hh \
 		entity/contromodule/grsSimulator/grsSimulator.h \
 		include/3rd_party/grSim_Packet.pb.h \
 		include/3rd_party/grSim_Commands.pb.h \
@@ -787,9 +908,9 @@ line.o: utils/line/line.cc utils/line/line.hh
 
 utils.o: utils/utils.cc utils/utils.hh \
 		utils/freeangles/freeangles.hh \
+		entity/contromodule/basecoach.h \
 		utils/freeangles/obstacle.hh \
-		utils/knn/knn.hh \
-		entity/contromodule/basecoach.h
+		utils/knn/knn.hh
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o utils.o utils/utils.cc
 
 wrtimer.o: utils/wrtimer/wrtimer.cc utils/wrtimer/wrtimer.hh
@@ -818,6 +939,7 @@ player.o: entity/player/player.cpp entity/player/player.h \
 		utils/mrctimer/mrctimer.h \
 		entity/player/playeraccess.h \
 		entity/player/behaviour/behaviour.h \
+		entity/player/playerbus.h \
 		entity/contromodule/grsSimulator/grsSimulator.h \
 		include/3rd_party/grSim_Packet.pb.h \
 		include/3rd_party/grSim_Commands.pb.h \
@@ -847,14 +969,189 @@ mrcteam.o: entity/contromodule/mrcteam.cpp entity/contromodule/mrcteam.h \
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
+		entity/player/playerbus.h \
+		entity/contromodule/strategy/strategy.h \
+		entity/contromodule/coachutils.h \
+		utils/knn/knn.hh
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o coach.o entity/contromodule/coach.cpp
+
+playerbus.o: entity/player/playerbus.cpp entity/player/playerbus.h \
+		entity/player/baseplayer.h \
+		entity/contromodule/mrcteam.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		entity/player/player.h \
+		entity/entity.h \
+		entity/world/world.h \
+		entity/baseentity.h \
+		utils/fields/fields.hh \
+		entity/world/worldmapupdater.h \
+		entity/referee/SSLReferee/sslreferee.h \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		entity/referee/referee.h \
+		utils/utils.hh \
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playerbus.o entity/player/playerbus.cpp
+
+playeraccess.o: entity/player/playeraccess.cpp entity/player/playeraccess.h \
+		entity/player/baseplayer.h \
+		entity/player/player.h \
+		entity/entity.h \
+		entity/world/world.h \
+		entity/baseentity.h \
+		utils/fields/fields.hh \
+		entity/world/worldmapupdater.h \
+		entity/referee/SSLReferee/sslreferee.h \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		entity/referee/referee.h \
+		utils/utils.hh \
+		entity/locations.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		utils/basics/wall.hh \
+		entity/contromodule/mrcteam.h \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playeraccess.o entity/player/playeraccess.cpp
+
+strategy.o: entity/contromodule/strategy/strategy.cpp entity/contromodule/strategy/strategy.h \
+		entity/contromodule/basecoach.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/contromodule/playersdistribution.h \
+		utils/wrtimer/wrtimer.hh \
+		entity/contromodule/mrcteam.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		entity/player/player.h \
+		entity/entity.h \
+		entity/world/world.h \
+		entity/baseentity.h \
+		entity/player/baseplayer.h \
+		utils/fields/fields.hh \
+		entity/world/worldmapupdater.h \
+		entity/referee/SSLReferee/sslreferee.h \
+		entity/referee/referee.h \
+		utils/utils.hh \
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
+		entity/contromodule/strategy/strategystate.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o strategy.o entity/contromodule/strategy/strategy.cpp
+
+playersdistribution.o: entity/contromodule/playersdistribution.cpp entity/contromodule/playersdistribution.h \
+		entity/contromodule/basecoach.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		utils/wrtimer/wrtimer.hh \
+		utils/utils.hh \
+		entity/referee/SSLReferee/sslreferee.h \
+		entity/referee/referee.h \
+		entity/entity.h \
+		entity/contromodule/mrcteam.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		entity/player/player.h \
+		entity/world/world.h \
+		entity/baseentity.h \
+		entity/player/baseplayer.h \
+		utils/fields/fields.hh \
+		entity/world/worldmapupdater.h \
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playersdistribution.o entity/contromodule/playersdistribution.cpp
+
+strategystate.o: entity/contromodule/strategy/strategystate.cpp entity/contromodule/strategy/strategystate.h \
+		entity/contromodule/basecoach.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/referee/SSLReferee/sslreferee.h \
+		entity/referee/referee.h \
+		entity/entity.h \
+		entity/contromodule/playersdistribution.h \
+		utils/wrtimer/wrtimer.hh \
+		entity/contromodule/mrcteam.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		entity/player/player.h \
+		entity/world/world.h \
+		entity/baseentity.h \
+		entity/player/baseplayer.h \
+		utils/fields/fields.hh \
+		entity/world/worldmapupdater.h \
+		utils/utils.hh \
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
+		entity/contromodule/playbook/playbook.h \
+		entity/player/behaviour/behaviour.h \
+		entity/player/playeraccess.h \
+		entity/player/playerbus.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o strategystate.o entity/contromodule/strategy/strategystate.cpp
+
+coachutils.o: entity/contromodule/coachutils.cpp entity/contromodule/coachutils.h \
 		utils/knn/knn.hh \
 		entity/contromodule/basecoach.h \
 		entity/player/playerbus.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_goalkeeper.o entity/player/behaviour/basics/behaviour_goalkeeper.cpp
 
-skill_goalkeeper.o: entity/player/skills/basics/skill_goalkeeper.cpp entity/player/skills/basics/skill_goalkeeper.h \
+playbook.o: entity/contromodule/playbook/playbook.cpp entity/contromodule/playbook/playbook.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/referee/SSLReferee/sslreferee.h \
+		entity/referee/referee.h \
+		entity/entity.h \
+		entity/contromodule/mrcteam.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		entity/player/player.h \
+		entity/world/world.h \
+		entity/baseentity.h \
+		entity/player/baseplayer.h \
+		utils/fields/fields.hh \
+		entity/world/worldmapupdater.h \
+		utils/utils.hh \
+		entity/locations.h \
+		utils/basics/wall.hh \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h \
+		entity/contromodule/playersdistribution.h \
+		entity/contromodule/basecoach.h \
+		utils/wrtimer/wrtimer.hh \
+		entity/player/behaviour/behaviour.h \
+		entity/player/playeraccess.h \
+		entity/player/playerbus.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playbook.o entity/contromodule/playbook/playbook.cpp
+
+behaviour.o: entity/player/behaviour/behaviour.cpp entity/player/behaviour/behaviour.h \
+		entity/player/baseplayer.h \
+		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
 		entity/player/skills/skill.h \
 		entity/player/baseplayer.h \
+		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/basics/skill_goto.h \
@@ -958,6 +1255,7 @@ mrcstrategy.o: entity/contromodule/strategy/basics/mrcstrategy.cpp entity/contro
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
 		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
 		entity/player/behaviour/mrcbehaviours.h \
 		entity/player/behaviour/basics/behaviour_donothing.h \
 		entity/player/skills/skills_include.h \
@@ -1021,6 +1319,7 @@ sslstrategy_halt.o: entity/contromodule/strategy/basics/sslstrategy_halt.cpp ent
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
 		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
 		entity/player/behaviour/mrcbehaviours.h \
 		entity/player/behaviour/basics/behaviour_donothing.h \
 		entity/player/skills/skills_include.h \
@@ -1072,6 +1371,7 @@ playbook_donothing.o: entity/contromodule/playbook/basics/playbook_donothing.cpp
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
 		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
 		entity/player/behaviour/mrcbehaviours.h \
 		entity/player/behaviour/basics/behaviour_donothing.h \
 		entity/player/skills/skills_include.h \
@@ -1092,7 +1392,43 @@ playbook_donothing.o: entity/contromodule/playbook/basics/playbook_donothing.cpp
 		entity/player/behaviour/basics/behaviour_receiver.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playbook_donothing.o entity/contromodule/playbook/basics/playbook_donothing.cpp
 
-install: install_target  FORCE
+behaviour_followball.o: entity/player/behaviour/basics/behaviour_followball.cpp entity/player/behaviour/basics/behaviour_followball.h \
+		entity/player/behaviour/behaviour.h \
+		entity/player/baseplayer.h \
+		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
+		entity/player/skills/skills_include.h \
+		entity/player/skills/basics/skill_donothing.h \
+		entity/player/skills/skill.h \
+		entity/player/skills/basics/skill_goto.h \
+		entity/player/skills/basics/skill_rotateto.h \
+		entity/player/skills/basics/skill_gotolookto.h \
+		entity/player/skills/basics/skill_aroundtheball.h \
+		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_gkick.h \
+		entity/player/skills/basics/skill_dribble.h \
+		entity/player/skills/basics/skill_goalkeeper.h \
+		entity/player/player.h \
+		entity/entity.h \
+		entity/world/world.h \
+		entity/baseentity.h \
+		utils/fields/fields.hh \
+		entity/world/worldmapupdater.h \
+		entity/referee/SSLReferee/sslreferee.h \
+		include/3rd_party/referee.pb.h \
+		include/3rd_party/game_event.pb.h \
+		entity/referee/SSLReferee/sslgameinfo.h \
+		utils/basics/color.hh \
+		entity/referee/referee.h \
+		utils/utils.hh \
+		entity/locations.h \
+		utils/fieldside/fieldside.hh \
+		utils/basics/side.hh \
+		utils/basics/wall.hh \
+		entity/contromodule/mrcteam.h \
+		entity/player/control/pid.h \
+		utils/mrctimer/mrctimer.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_followball.o entity/player/behaviour/basics/behaviour_followball.cpp
 
 playbook_followball.o: entity/contromodule/playbook/basics/playbook_followball.cpp entity/contromodule/playbook/basics/playbook_followball.h \
 		entity/contromodule/playbook/playbook.h \
@@ -1122,6 +1458,7 @@ playbook_followball.o: entity/contromodule/playbook/basics/playbook_followball.c
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
 		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
 		entity/player/behaviour/mrcbehaviours.h \
 		entity/player/behaviour/basics/behaviour_donothing.h \
 		entity/player/skills/skills_include.h \
@@ -1170,6 +1507,7 @@ playbook_timeout.o: entity/contromodule/playbook/basics/playbook_timeout.cpp ent
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
 		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
 		entity/player/behaviour/mrcbehaviours.h \
 		entity/player/behaviour/basics/behaviour_donothing.h \
 		entity/player/skills/skills_include.h \
@@ -1190,7 +1528,21 @@ playbook_timeout.o: entity/contromodule/playbook/basics/playbook_timeout.cpp ent
 		entity/player/behaviour/basics/behaviour_receiver.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o playbook_timeout.o entity/contromodule/playbook/basics/playbook_timeout.cpp
 
-
+behaviour_timeout.o: entity/player/behaviour/basics/behaviour_timeout.cpp entity/player/behaviour/basics/behaviour_timeout.h \
+		entity/player/behaviour/behaviour.h \
+		entity/player/baseplayer.h \
+		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
+		entity/player/skills/skills_include.h \
+		entity/player/skills/basics/skill_donothing.h \
+		entity/player/skills/skill.h \
+		entity/player/skills/basics/skill_goto.h \
+		entity/player/skills/basics/skill_rotateto.h \
+		entity/player/skills/basics/skill_gotolookto.h \
+		entity/player/skills/basics/skill_aroundtheball.h \
+		entity/player/skills/basics/skill_kick.h \
+		entity/player/skills/basics/skill_gkick.h \
+		entity/player/skills/basics/skill_dribble.h \
 		entity/player/skills/basics/skill_goalkeeper.h \
 		entity/player/skills/basics/skill_gkick.h entity/entity.cpp \
 	$(COPY_FILE) --parents entity/baseentity.h entity/entity.h entity/player/skills/basics/skill_aroundtheball.h entity/player/skills/basics/skill_dribble.h entity/player/skills/basics/skill_goto.h entity/player/skills/basics/skill_gotolookto.h entity/player/skills/basics/skill_rotateto.h entity/world/world.h entity/world/worldmapupdater.h exithandler.h include/3rd_party/netraw.h include/3rd_party/robocup_ssl_client.h include/3rd_party/util.h include/filters.h include/3rd_party/messages_robocup_ssl_detection.pb.h include/3rd_party/messages_robocup_ssl_geometry.pb.h include/3rd_party/messages_robocup_ssl_wrapper.pb.h include/3rd_party/game_event.pb.h include/3rd_party/messages_robocup_ssl_refbox_log.pb.h include/3rd_party/referee.pb.h include/3rd_party/grSim_Commands.pb.h include/3rd_party/grSim_Packet.pb.h include/3rd_party/grSim_Replacement.pb.h entity/referee/SSLReferee/sslgameinfo.h entity/referee/referee.h entity/referee/SSLReferee/sslreferee.h instancechecker.h suassuna.h utils/basics/color.hh utils/basics/competition.hh utils/basics/quadrant.hh utils/basics/side.hh utils/basics/wall.hh utils/fields/field_ssl2014.hh utils/fields/field_ssl2015.hh utils/fields/field_vss2008.hh utils/fields/fields.hh utils/fields/wrfields.hh utils/fieldside/fieldside.hh utils/graph/basegraph.hh utils/graph/edge.hh utils/graph/graph.hh utils/graph/vertex.hh utils/line/line.hh utils/utils.hh utils/wrtimer/wrtimer.hh entity/player/player.h entity/contromodule/mrcteam.h entity/player/skills/skill.h entity/locations.h entity/player/skills/skills_include.h entity/contromodule/grsSimulator/grsSimulator.h entity/contromodule/coach.h entity/player/playerbus.h entity/player/playeraccess.h entity/contromodule/strategy/strategy.h entity/contromodule/basecoach.h entity/contromodule/playersdistribution.h entity/contromodule/strategy/strategystate.h entity/contromodule/coachutils.h entity/contromodule/playbook/playbook.h entity/player/behaviour/behaviour.h entity/player/behaviour/mrcbehaviours.h entity/player/behaviour/basics/behaviour_donothing.h entity/player/skills/basics/skill_donothing.h utils/knn/knn.hh entity/contromodule/strategy/basics/mrcstrategy.h entity/contromodule/strategy/basics/sslstrategy.h entity/contromodule/controlmodule.h entity/contromodule/strategy/basics/sslstrategy_halt.h entity/contromodule/playbook/basics/playbook_donothing.h entity/contromodule/playbook/mrcplaybook.h entity/player/behaviour/basics/behaviour_followball.h entity/contromodule/playbook/basics/playbook_followball.h entity/contromodule/playbook/basics/playbook_timeout.h entity/player/behaviour/basics/behaviour_timeout.h entity/contromodule/strategy/basics/sslstrategy_timeout.h entity/contromodule/strategy/mrcstrategies.h entity/player/control/pid.h utils/mrctimer/mrctimer.h entity/player/skills/basics/skill_kick.h entity/player/behaviour/basics/behaviour_goalkeeper.h entity/player/skills/basics/skill_goalkeeper.h entity/player/skills/basics/skill_gkick.h $(DISTDIR)/
@@ -1245,6 +1597,7 @@ sslstrategy_timeout.o: entity/contromodule/strategy/basics/sslstrategy_timeout.c
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
 		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
 		entity/player/behaviour/mrcbehaviours.h \
 		entity/player/behaviour/basics/behaviour_donothing.h \
 		entity/player/skills/skills_include.h \
@@ -1313,6 +1666,7 @@ behaviour_goalkeeper.o: entity/player/behaviour/basics/behaviour_goalkeeper.cpp 
 		entity/player/behaviour/behaviour.h \
 		entity/player/baseplayer.h \
 		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
@@ -1345,8 +1699,7 @@ behaviour_goalkeeper.o: entity/player/behaviour/basics/behaviour_goalkeeper.cpp 
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
 		utils/knn/knn.hh \
-		entity/contromodule/basecoach.h \
-		entity/player/playerbus.h
+		entity/contromodule/basecoach.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_goalkeeper.o entity/player/behaviour/basics/behaviour_goalkeeper.cpp
 
 skill_goalkeeper.o: entity/player/skills/basics/skill_goalkeeper.cpp entity/player/skills/basics/skill_goalkeeper.h \
@@ -1445,6 +1798,7 @@ playbook_attack.o: entity/contromodule/playbook/basics/playbook_attack.cpp entit
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
 		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
 		entity/player/behaviour/mrcbehaviours.h \
 		entity/player/behaviour/basics/behaviour_donothing.h \
 		entity/player/skills/skills_include.h \
@@ -1469,6 +1823,7 @@ behaviour_receiver.o: entity/player/behaviour/basics/behaviour_receiver.cpp enti
 		entity/player/behaviour/behaviour.h \
 		entity/player/baseplayer.h \
 		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
@@ -1499,14 +1854,14 @@ behaviour_receiver.o: entity/player/behaviour/basics/behaviour_receiver.cpp enti
 		utils/basics/wall.hh \
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
-		utils/mrctimer/mrctimer.h \
-		entity/player/playerbus.h
+		utils/mrctimer/mrctimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_receiver.o entity/player/behaviour/basics/behaviour_receiver.cpp
 
 behaviour_attacker.o: entity/player/behaviour/basics/behaviour_attacker.cpp entity/player/behaviour/basics/behaviour_attacker.h \
 		entity/player/behaviour/behaviour.h \
 		entity/player/baseplayer.h \
 		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
 		entity/player/skills/skills_include.h \
 		entity/player/skills/basics/skill_donothing.h \
 		entity/player/skills/skill.h \
@@ -1571,6 +1926,7 @@ sslstrategy_attack.o: entity/contromodule/strategy/basics/sslstrategy_attack.cpp
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
 		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
 		entity/player/behaviour/mrcbehaviours.h \
 		entity/player/behaviour/basics/behaviour_donothing.h \
 		entity/player/skills/skills_include.h \
@@ -1599,6 +1955,12 @@ moc_playbook.o: moc_playbook.cpp
 
 moc_behaviour.o: moc_behaviour.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_behaviour.o moc_behaviour.cpp
+
+moc_behaviour_receiver.o: moc_behaviour_receiver.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_behaviour_receiver.o moc_behaviour_receiver.cpp
+
+moc_behaviour_attacker.o: moc_behaviour_attacker.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_behaviour_attacker.o moc_behaviour_attacker.cpp
 
 ####### Install
 

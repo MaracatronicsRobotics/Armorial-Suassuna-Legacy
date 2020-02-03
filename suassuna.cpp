@@ -4,6 +4,7 @@
 #include <entity/contromodule/strategy/strategystate.h>
 #include <entity/contromodule/strategy/basics/mrcstrategy.h>
 #include <entity/player/control/pid.h>
+#include <utils/freeangles/freeangles.hh>
 
 #include <entity/contromodule/grsSimulator/grsSimulator.h>
 
@@ -56,6 +57,7 @@ bool Suassuna::start() {
     // Setup team players
     setupOurPlayers();
     setupOppPlayers(opTeamId);
+    FreeAngles::initialize(_ourTeam, _theirTeam);
 
     // Create coach
     _coach = new Coach(_ref, _ourTeam, _theirTeam);

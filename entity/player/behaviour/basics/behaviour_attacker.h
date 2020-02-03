@@ -5,6 +5,7 @@
 #include <entity/player/skills/skills_include.h>
 
 class Behaviour_Attacker : public Behaviour {
+    Q_OBJECT
 private:
     void configure();
     void run();
@@ -31,8 +32,8 @@ public:
     bool isBehindBall(Position posObjective);
 
 signals:
-    void goingToShoot(Position pos);
-    void shooted();
+    void goingToShoot(quint8 id);
+    void shooted(quint8 id);
 };
 
 #endif // BEHAVIOUR_ATTACKER_H
