@@ -13,12 +13,17 @@ private:
     void run(int numPlayers);
     int maxNumPlayer();
 
-    int _attackerId;
+    quint8 _attackerId;
+    QList <quint8> _receiversList;
+    QMutex _mutex;
+
 public:
     Playbook_Attack();
     QString name();
 
-    void setAttacker(int attackerId) { _attackerId = attackerId; }
+    void setAttacker(quint8 attackerId) { _attackerId = attackerId; }
+    void addReceiver(quint8 receiverId) { _receiversList.push_back(receiverId); }
+    void clearReceivers() { _receiversList.clear(); }
 };
 
 #endif // PLAYBOOK_ATTACK_H

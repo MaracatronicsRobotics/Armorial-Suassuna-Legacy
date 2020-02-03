@@ -1,5 +1,8 @@
 #include "behaviour_attacker.h"
 
+#define KICK_POWER 8.0f
+#define RECEIVER_INVALID_ID 200
+
 QString Behaviour_Attacker::name() {
     return "Behaviour_Attacker";
 }
@@ -8,66 +11,101 @@ Behaviour_Attacker::Behaviour_Attacker() {
 }
 
 void Behaviour_Attacker::configure() {
-    usesSkill(_teste = new Skill_Kick());
+    usesSkill(_sk_kick = new Skill_Kick());
     usesSkill(_sk_goto = new Skill_GoToLookTo());
 
-    addTransition(0, _sk_goto, _teste);
-    addTransition(1, _teste, _sk_goto);
+    addTransition(0, _sk_goto, _sk_kick);
+    addTransition(1, _sk_kick, _sk_goto);
     setInitialSkill(_sk_goto);
 
-    _state = STATE_GOTO;
+    _state = STATE_ATTACK;
+
+
+    _timer = new MRCTimer(1000.0f);
 };
 
 void Behaviour_Attacker::run() {
 
-    Position _objective;
-    // por trás da bola
-    Position _testPosition = WR::Utils::threePoints(loc()->ball(), loc()->ourGoal(), 0.1, GEARSystem::Angle::pi);
-    _sk_goto->setDesiredPosition(_testPosition);
-    _sk_goto->setAimPosition(loc()->ourGoal());
-    _objective = loc()->ourGoal();
-
-    double modDist = sqrt(pow((player()->position().x() - loc()->ball().x()), 2) + pow((player()->position().y() - loc()->ball().y()), 2));
-
-    quint8 bestReceiver = getBestReceiver();
-    if(bestReceiver != 200){
-        _sk_goto->setDesiredPosition(WR::Utils::threePoints(loc()->ball(), PlayerBus::ourPlayer(bestReceiver)->position(), 0.1, GEARSystem::Angle::pi));
-        _sk_goto->setAimPosition(PlayerBus::ourPlayer(bestReceiver)->position());
-        _objective = PlayerBus::ourPlayer(bestReceiver)->position();
+    if(player()->canKickBall() == false){ // if can't kick ball
+        //_state = STATE_WAIT;
     }
 
     switch(_state){
-    case STATE_GOTO:
-        _sk_goto->setOffsetToBall(0.05);
-        if(isBehindBall(_objective) && bestReceiver != 200){
-            _teste->setIsPass(true);
-            enableTransition(0);
-            _state = STATE_KICK;
-        }else if(isBehindBall(_objective)){
-            _teste->setIsPass(false);
-            enableTransition(0);
-            _state = STATE_KICK;
+    case STATE_WAIT: {
+        Position waitPosition;
+
+        /* condicoes aqui para que o atacante não voe encima da bola */
+        /* mandar ele ficar a uma distancia, sei la */
+
+        if(player()->canKickBall()){
+            _state = STATE_ATTACK;
         }
+    }
     break;
-    case STATE_KICK:
-        if(bestReceiver != 200){
-            //emit goingToShoot(bestReceiver);
+    case STATE_ATTACK:{
+        enableTransition(1);
+        _bestReceiver = RECEIVER_INVALID_ID;
+        _kickPosition = loc()->ourGoal();
+
+        _bestReceiver = getBestReceiver();
+        if(_bestReceiver != RECEIVER_INVALID_ID){
+            Position receiverPosition = PlayerBus::ourPlayer(_bestReceiver)->position();
+            if(receiverPosition.isUnknown() == false){
+                _kickPosition = receiverPosition;
+            }
         }
-        if(loc()->ballVelocity().abs() >= 0.3){
-            //if(bestReceiver != 200) emit shooted(bestReceiver);
-            enableTransition(1);
-            _state = STATE_GOTO;
-        }else{
-            _sk_goto->setOffsetToBall(0.01);
-            enableTransition(1);
-            _state = STATE_GOTO;
+
+        Position behindBall = WR::Utils::threePoints(loc()->ball(), loc()->ourGoal(), 0.1, GEARSystem::Angle::pi); // por trás da bola
+        if(_bestReceiver != RECEIVER_INVALID_ID && player()->distBall() < 0.3f && isBehindBall(behindBall) == false)
+            emit goingToShoot(_bestReceiver);
+
+        _sk_goto->setDesiredPosition(behindBall);
+        _sk_goto->setAimPosition(_kickPosition);
+
+        // change state to kick
+        Angle anglePlayerBall = player()->angleTo(loc()->ball());
+        float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
+        if (diff <= atan(0.7)){ // can kick (behind ball, certainly) (atan(0.7) = 35deg
+            _state = STATE_KICK;
+            _timer->update();
         }
+    }
+    break;
+    case STATE_KICK:{
+        enableTransition(1); // move transition
+        if(_bestReceiver != RECEIVER_INVALID_ID){ // if shoot is for a receiver
+            if(PlayerBus::ourPlayerAvailable(_bestReceiver)){ // if receiver is available already
+                _kickPosition = PlayerBus::ourPlayer(_bestReceiver)->position(); // update kickPosition (delay from loop)
+            }
+        }
+
+        if(player()->isLookingTo(_kickPosition, 0.06)){ // 0.06 is angle error
+            _sk_kick->setIsPass(true);
+            _sk_kick->setAim(_kickPosition);
+            enableTransition(0); // shoot transiction
+        }
+
+        Angle anglePlayerBall = player()->angleTo(loc()->ball());
+        float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
+        if (!(diff <= atan(0.7)) || player()->distBall() > 0.4f){ // isn't in front or ball shooted (atan(0.7) = 35deg
+            if(_bestReceiver != RECEIVER_INVALID_ID)
+                emit shooted(_bestReceiver);
+
+            _state = STATE_ATTACK;
+        }
+
+        if(_timer->getTimeInSeconds() >= 0.1){ // reposition of player
+            _state = STATE_ATTACK;
+        }
+    }
     break;
     }
+
+
 }
 
 quint8 Behaviour_Attacker::getBestReceiver(){
-    quint8 bestRcv = 200;
+    quint8 bestRcv = RECEIVER_INVALID_ID;
     double dist = INFINITY;
     for(int x = 0; x < _recvs.size(); x++){
         double distToAtk = sqrt(pow(player()->position().x() - PlayerBus::ourPlayer(_recvs.at(x))->position().x(), 2) + pow(player()->position().y() - PlayerBus::ourPlayer(_recvs.at(x))->position().y(), 2));

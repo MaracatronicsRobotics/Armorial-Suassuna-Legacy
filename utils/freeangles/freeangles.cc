@@ -22,13 +22,12 @@
 #include "freeangles.hh"
 #include <iostream>
 #include <GEARSystem/gearsystem.hh>
-#include <WRCoach/entity/controlmodule/coach/wrteam.hh>
-#include <WRCoach/entity/player/player.hh>
-#include <WRCoach/utils/utils.hh>
-#include <WRCoach/const/globalconstants.hh>
+#include <entity/contromodule/mrcteam.h>
+#include <entity/player/player.h>
+#include <utils/utils.hh>
 
-WRTeam* FreeAngles::_ourTeam = NULL;
-WRTeam* FreeAngles::_opTeam = NULL;
+MRCTeam* FreeAngles::_ourTeam = NULL;
+MRCTeam* FreeAngles::_opTeam = NULL;
 
 QList<Obstacle> FreeAngles::getObstacles(const Position &watcher, float distanceRadius) {
     if(_ourTeam==NULL || _opTeam==NULL) {
@@ -40,9 +39,9 @@ QList<Obstacle> FreeAngles::getObstacles(const Position &watcher, float distance
 
     // Fill obstacles
     for(int team=0; team<2; team++) {
-        WRTeam *wrTeam = (team==0? _ourTeam : _opTeam);
+        MRCTeam *mrcTeam = (team==0? _ourTeam : _opTeam);
 
-        const QList<Player*> players = wrTeam->avPlayers().values();
+        const QList<Player*> players = mrcTeam->avPlayers().values();
         QList<Player*>::const_iterator it;
         for(it=players.constBegin(); it!=players.constEnd(); it++) {
             const Player *player = *it;
@@ -64,7 +63,8 @@ QList<Obstacle> FreeAngles::getObstacles(const Position &watcher, float distance
             obst.id() = player->playerId();
             obst.team() = player->teamId();
             obst.position() = player->position();
-            obst.radius() = player->robotRadius();
+            obst.radius() = 0.09f;
+            //obst.radius() = player->robotRadius();
 
             // Push to list
             obstacles.push_back(obst);
@@ -296,9 +296,9 @@ QList<Obstacle> FreeAngles::calcObstaclesObstruction(const Position &watcher, co
 }
 
 QList<Obstacle> FreeAngles::getObstacles(const Position &watcher) {
-    return FreeAngles::getObstacles(watcher, GlobalConstants::highDistance());
+    return FreeAngles::getObstacles(watcher, 1000.0f);
 }
 
 QList<Obstacle> FreeAngles::getObstacles() {
-    return FreeAngles::getObstacles(Position(false, 0.0, 0.0, 0.0), GlobalConstants::highDistance());
+    return FreeAngles::getObstacles(Position(false, 0.0, 0.0, 0.0), 1000.0f);
 }
