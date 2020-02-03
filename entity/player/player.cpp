@@ -17,6 +17,7 @@ Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Be
     _ctr = ctr;
     _behaviour = NULL;
     _defaultBehaviour = defaultBehaviour;
+
     _playerAccessSelf = new PlayerAccess(true, this, team->loc());
     _playerAccessBus = new PlayerAccess(false, this, team->loc());
 
@@ -202,7 +203,7 @@ bool Player::hasBallPossession() const{
 }
 
 bool Player::canKickBall() const{
-    //return _ref->getGameInfo(_team->teamColor())->canKickBall();
+    return _ref->getGameInfo(_team->teamColor())->canKickBall();
 }
 
 float Player::distanceTo(const Position &pos) const{

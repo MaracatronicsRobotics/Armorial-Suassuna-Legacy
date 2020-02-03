@@ -1,6 +1,8 @@
 #include "behaviour_receiver.h"
 #include <entity/player/playerbus.h>
 
+#define DIST_TO_ATK 1.5f
+
 QString Behaviour_Receiver::name() {
     return "Behaviour_Receiver";
 }
@@ -27,7 +29,7 @@ void Behaviour_Receiver::run() {
 
     switch(_state){
     case STATE_FOLLOW:
-        if(_followAttacker && modDistToAttacker > 1.0){
+        if(_followAttacker && modDistToAttacker > DIST_TO_ATK){
             _desiredPosition = PlayerBus::ourPlayer(_attackerId)->position();
         }else{
             _desiredPosition = player()->position();
@@ -36,7 +38,7 @@ void Behaviour_Receiver::run() {
     break;
     case STATE_STOP:
         _desiredPosition = player()->position(); // stay here
-        if(_followAttacker && modDistToAttacker > 1.0){
+        if(_followAttacker && modDistToAttacker > DIST_TO_ATK){
             _state = STATE_FOLLOW;
         }
     break;

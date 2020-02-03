@@ -23,7 +23,7 @@
 #define FREEANGLES_H
 
 #include <GEARSystem/gearsystem.hh>
-//#include <WRCoach/entity/controlmodule/coach/basecoach.hh>
+#include <entity/contromodule/basecoach.h>
 #include "obstacle.hh"
 
 class FreeAngles {
@@ -49,14 +49,14 @@ public:
         bool obstructed() const { return _obstructed; }
     };
 private:
-    //static WRTeam *_ourTeam;
-    //static WRTeam *_opTeam;
+    static MRCTeam *_ourTeam;
+    static MRCTeam *_opTeam;
 
     static QList<Interval> _getFreeAngles(const Position &watcher, float initialPosAngle, float finalPosAngle, const QList<Obstacle> &obstacles, bool returnObstructed = false);
 
     static QList<Obstacle> calcObstaclesObstruction(const Position &watcher, const QList<Obstacle> &obstacles);
 public:
-    //static void initialize(WRTeam *ourTeam, WRTeam *opTeam) { FreeAngles::_ourTeam = ourTeam; FreeAngles::_opTeam = opTeam; }
+    static void initialize(MRCTeam *ourTeam, MRCTeam *opTeam) { FreeAngles::_ourTeam = ourTeam; FreeAngles::_opTeam = opTeam; }
 
     static QList<Obstacle> getObstacles();
     static QList<Obstacle> getObstacles(const Position &watcher);
