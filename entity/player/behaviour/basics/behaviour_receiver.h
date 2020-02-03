@@ -5,6 +5,7 @@
 #include <entity/player/skills/skills_include.h>
 
 class Behaviour_Receiver : public Behaviour {
+    Q_OBJECT
 private:
     void configure();
     void run();
@@ -25,6 +26,10 @@ public:
 
     void setFollowAttacker(bool followAttacker) { _followAttacker = followAttacker; }
     void setAttackerId (quint8 attackerId) { _attackerId = attackerId; }
+
+public slots:
+    void goingToReceive(quint8 id);
+    void attackerShooted(quint8 id);
 };
 
 #endif // BEHAVIOUR_RECEIVER_H

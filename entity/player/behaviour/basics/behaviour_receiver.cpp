@@ -47,3 +47,14 @@ void Behaviour_Receiver::run() {
 
 }
 
+void Behaviour_Receiver::goingToReceive(quint8 id){
+    if(id == player()->playerId()){
+        _state = STATE_FOLLOW; // tem q ser estado de recepção (interceptBall)
+    }
+}
+
+void Behaviour_Receiver::attackerShooted(quint8 id){
+    if(id == player()->playerId()){
+        _state = STATE_STOP; // criar estado p verificar se ta em posicao boa p receber (mover caso n esteja)
+    }
+}
