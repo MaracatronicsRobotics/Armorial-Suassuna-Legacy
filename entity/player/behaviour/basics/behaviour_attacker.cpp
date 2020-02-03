@@ -51,10 +51,10 @@ void Behaviour_Attacker::run() {
     break;
     case STATE_KICK:
         if(bestReceiver != 200){
-            //emit goingToShoot(PlayerBus::ourPlayer(bestReceiver)->position());
+            //emit goingToShoot(bestReceiver);
         }
         if(loc()->ballVelocity().abs() >= 0.3){
-            //emit shooted();
+            //if(bestReceiver != 200) emit shooted(bestReceiver);
             enableTransition(1);
             _state = STATE_GOTO;
         }else{
