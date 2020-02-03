@@ -6,6 +6,7 @@ QString Skill_GKick::name() {
 }
 
 Skill_GKick::Skill_GKick() {
+    _isPass = false;
     _aimPosition = loc()->ball();
 }
 

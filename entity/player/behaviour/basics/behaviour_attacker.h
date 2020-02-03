@@ -3,6 +3,7 @@
 
 #include <entity/player/behaviour/behaviour.h>
 #include <entity/player/skills/skills_include.h>
+#include <utils/mrctimer/mrctimer.h>
 
 class Behaviour_Attacker : public Behaviour {
     Q_OBJECT
@@ -12,16 +13,21 @@ private:
     int _state;
 
     QList<quint8> _recvs;
+    MRCTimer *_timer;
+
+    quint8 _bestReceiver;
+    Position _kickPosition;
 
 public:
     Behaviour_Attacker();
     QString name();
 
-    Skill_Kick *_teste;
+    Skill_Kick *_sk_kick;
     Skill_GoToLookTo *_sk_goto;
 
     enum{
-        STATE_GOTO,
+        STATE_ATTACK,
+        STATE_WAIT,
         STATE_KICK
     };
 

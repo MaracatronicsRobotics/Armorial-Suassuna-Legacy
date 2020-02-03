@@ -4,11 +4,17 @@ void Player::goToLookTo(double robot_x, double robot_y, double point_x, double p
     // Configura o robô para ir até a bola e olhar para um alvo
     std::pair<float, float> a;
 
-void Player::goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double aim_x, double aim_y, double angleOrigin2Robot, double offset){
-    // Configura o robô para ir até a bola e olhar para um alvo
-    std::pair<float, float> a;
-    a = GoTo(robot_x, robot_y, point_x, point_y, angleOrigin2Robot, _distBall);
-    float theta = RotateTo(robot_x, robot_y, point_x, point_y, angleOrigin2Robot);
+Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Behaviour *defaultBehaviour, SSLReferee *ref, grsSimulator *grSim, PID *vxPID, PID *vyPID, PID *vwPID) : Entity(Entity::ENT_PLAYER){
+    _world = world;
+    _team = team;
+    _playerId = playerID;
+    _ref = ref;
+    _ctr = ctr;
+    _behaviour = NULL;
+    _defaultBehaviour = defaultBehaviour;
+
+    _playerAccessSelf = new PlayerAccess(true, this, team->loc());
+    _playerAccessBus = new PlayerAccess(false, this, team->loc());
 
     setSpeed(a.first, a.second, w.second);
 }
@@ -171,7 +177,7 @@ bool Player::hasBallPossession() const{
 }
 
 bool Player::canKickBall() const{
-    //return _ref->getGameInfo(_team->teamColor())->canKickBall();
+    return _ref->getGameInfo(_team->teamColor())->canKickBall();
 }
 
 float Player::distanceTo(const Position &pos) const{

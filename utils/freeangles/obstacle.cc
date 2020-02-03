@@ -22,6 +22,7 @@
 #include "obstacle.hh"
 #include <utils/utils.hh>
 #include <math.h>
+#include <iostream>
 
 Obstacle::Obstacle() {
     _position.setUnknown();
