@@ -15,6 +15,7 @@ void SSLStrategy_Halt::configure(int numOurPlayers) {
 }
 
 void SSLStrategy_Halt::run(int numOurPlayers) {
-    if(!dist()->getAllPlayers().isEmpty())
-        _pb_doNothing->addPlayers(dist()->getAllPlayers());
+    QList<quint8> allPlayers = dist()->getAllPlayers();
+    if(!allPlayers.isEmpty())
+        _pb_doNothing->addPlayers(allPlayers);
 }
