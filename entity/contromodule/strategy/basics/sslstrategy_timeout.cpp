@@ -15,5 +15,7 @@ void SSLStrategy_TimeOut::configure(int numOurPlayers) {
 }
 
 void SSLStrategy_TimeOut::run(int numOurPlayers) {
-    _pb_timeOut->addPlayers(dist()->getAllPlayers());
+    QList<quint8> allPlayers = dist()->getAllPlayers();
+    if(!allPlayers.isEmpty())
+        _pb_timeOut->addPlayers(allPlayers);
 }
