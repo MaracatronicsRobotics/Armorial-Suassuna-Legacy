@@ -186,3 +186,9 @@ float Utils::distanceToSegment(const Position &s1, const Position &s2, const Pos
         return (d1<=d2)? d1 : d2;
     }
 }
+
+float Utils::getPerpendicularCoefficient(const Position &s1, const Position &s2) {
+    float coefAngular= (s2.y()-s1.y())/(s2.x()-s1.x());
+    float perpendicularCoef = -(1/coefAngular);
+    return perpendicularCoef;
+}

@@ -1,13 +1,13 @@
 #ifndef NAVIGATION_H
 #define NAVIGATION_H
 
-#include <WRCoach/entity/player/baseplayer.hh>
-#include <WRCoach/entity/player/navigation/navigationalgorithm/navigationalgorithm.hh>
-#include <WRCoach/entity/player/navigation/controlalgorithm/controlalgorithm.hh>
+#include <entity/player/baseplayer.h>
+#include <entity/player/navigation/navalgorithm.h>
+
 
 class Navigation {
 public:
-    Navigation(Player *player, NavigationAlgorithm *navAlg, ControlAlgorithm *linCtrAlg, ControlAlgorithm *angCtrAlg);
+    Navigation(Player *player, NavAlgorithm *navAlg, ControlAlgorithm *linCtrAlg, ControlAlgorithm *angCtrAlg);
 
     virtual ~Navigation();
 
@@ -51,8 +51,8 @@ private:
     NavigationAlgorithm *_navAlg;
 
     // Secondary access
-    WRTeam *_ourTeam;
-    WRTeam *_opTeam;
+    MRCTeam *_ourTeam;
+    MRCTeam *_opTeam;
     Locations *_loc;
 
     // Internal

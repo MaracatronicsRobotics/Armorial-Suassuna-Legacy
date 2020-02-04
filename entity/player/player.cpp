@@ -293,6 +293,7 @@ std::pair<float, float> Player::goTo(double robot_x, double robot_y, double poin
     float newVY = _vyPID->calculate(vySaida, velocity().y());
 
     return std::make_pair(newVX, newVY);
+    }
 }
 
 std::pair<double, double> Player::rotateTo(double robot_x, double robot_y, double point_x, double point_y, double angleOrigin2Robot) {
@@ -393,9 +394,6 @@ void Player::aroundTheBall(double robot_x, double robot_y, double point_x, doubl
     a = goTo(robot_x, robot_y, point_x, point_y, robotAngle, offset);
     float theta = rotateTo(robot_x, robot_y, point_x, point_y, robotAngle).second;
 
-    if (moduloDistancia < offset) setSpeed(0, 0.2, theta); //3% de diferença nas velocidades
-    else setSpeed(a.first, a.second, theta);
-}
 
 void Player::kick(bool isPass, float kickZPower){
     if(isPass){
