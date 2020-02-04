@@ -24,10 +24,10 @@ Behaviour_GoalKeeper::Behaviour_GoalKeeper() {
 void Behaviour_GoalKeeper::configure() {
     usesSkill(_skill_GoalKeeper = new Skill_GoalKeeper());
     usesSkill(_skill_goToLookTo = new Skill_GoToLookTo());
-    usesSkill(_skill_gkick = new Skill_GKick());
+    usesSkill(_skill_gkick = new Skill_Kick());
 
     // goto
-    setInitialSkill(_skill_goToLookTo);
+    setInitialSkill(_skill_GoalKeeper);
 
     // todas as combinações
     addTransition(STATE_KICK, _skill_goToLookTo, _skill_gkick);
@@ -44,15 +44,16 @@ void Behaviour_GoalKeeper::run() {
 
     _skill_GoalKeeper->setInterceptAdvance(true);
     _skill_GoalKeeper->setPositionToLook(loc()->ball());
-
-    _skill_gkick->setIsPass(false);
+    //_skill_gkick->setIsPass(false);
 
     // goToLookTo (posicionamento do goleiro
     Position desiredPosition = getAttackerInterceptPosition();
+
     if(loc()->ourSide().isRight() && desiredPosition.x() > loc()->ourGoal().x()-GOALPOSTS_ERROR)        // cobrir angulos certos (manter goleiro na area do gol!)
         desiredPosition.setPosition(loc()->ourGoal().x()-GOALPOSTS_ERROR, desiredPosition.y(), 0.0);     // varia de lado pra lado, com erros nas barras p precisao
     else if(loc()->ourSide().isLeft() && desiredPosition.x() < loc()->ourGoal().x()+GOALPOSTS_ERROR)
         desiredPosition.setPosition(loc()->ourGoal().x()+GOALPOSTS_ERROR, desiredPosition.y(), 0.0);
+
 
     _skill_goToLookTo->setDesiredPosition(desiredPosition);
     _skill_goToLookTo->setAimPosition(loc()->ball());
@@ -123,17 +124,17 @@ Position Behaviour_GoalKeeper::getAttackerInterceptPosition() {
 }
 
 Position Behaviour_GoalKeeper::calcAttackerBallImpact() {
+   // return loc()->ourGoal();
     // fazer logica para calcular o impacto da bola
     // verificar se esta suficientemente perto da bola, se a bola ta na frente dele e ver se o caminho p o chute dele está livre, anyway posicionado para nosso gol pra testar impacto centrado
     //int poss = -1, size = loc()->getOpPlayers().size();
-    int poss = -1, size = loc()->getMRCPlayers().size();
-    for(int x = 0; x < size; x++){
-        /*if(loc()->getOpPlayers()[x]->hasBallPossession()){
-            poss = x;
-            break;
-        }*/
-        if(loc()->getMRCPlayers()[x]->hasBallPossession()){
-            poss = x;
+    QHash<quint8, Player*>::iterator it;
+    QHash<quint8, Player*> avPlayers = loc()->getMRCPlayers();
+    int poss = -1, size = avPlayers.size();
+
+    for(it=avPlayers.begin(); it!=avPlayers.end(); it++){
+        if((*it)->hasBallPossession() && (*it)->playerId() != player()->playerId()){
+            poss = (*it)->playerId();
             break;
         }
     }
@@ -142,7 +143,7 @@ Position Behaviour_GoalKeeper::calcAttackerBallImpact() {
         return loc()->ourGoal();
 
     /* calculando posicao de impacto no y */
-    Angle angleAtk = PlayerBus::theirPlayer(poss)->orientation();
+    Angle angleAtk = PlayerBus::theirPlayer(quint8(poss))->orientation();
     Position posImpact; // impacto no nosso gol (pegar x da barra)
 
     float angleValue = angleAtk.value();
