@@ -2,12 +2,13 @@
 #include <entity/player/skills/skills_include.h>
 
 QString Skill_Dribble::name() {
-    return "Skill_DoNothing";
+    return "Skill_Dribble";
 }
 
 Skill_Dribble::Skill_Dribble() {
+    _isActive = false;
 }
 
 void Skill_Dribble::run() {
-    player()->Dribble();
+    player()->Dribble(_isActive);
 }

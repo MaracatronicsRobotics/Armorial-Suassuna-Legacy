@@ -97,6 +97,37 @@ void grsSimulator::setSpeed(quint8 teamId, quint8 robotId, float vx, float vy, f
 
 }
 
+void grsSimulator::setKickSpeed(quint8 teamId, quint8 robotId, float kickx, float kickz){
+    if(!(teamId < MAX_TEAMS)){
+        std::cout << "[GRSIM ACTUATOR] Invalid team id." << std::endl;
+        return;
+    }
+    if(!(robotId < MAX_ROBOTS)){
+        std::cout << "[GRSIM ACTUATOR] Invalid robot id." << std::endl;
+        return ;
+    }
+
+    _writeMutex.lock();
+    packets[teamId][robotId].kickspeedx = kickx;
+    packets[teamId][robotId].kickspeedz = kickz;
+    _writeMutex.unlock();
+}
+
+void grsSimulator::setDribble(quint8 teamId, quint8 robotId, bool active){
+    if(!(teamId < MAX_TEAMS)){
+        std::cout << "[GRSIM ACTUATOR] Invalid team id." << std::endl;
+        return;
+    }
+    if(!(robotId < MAX_ROBOTS)){
+        std::cout << "[GRSIM ACTUATOR] Invalid robot id." << std::endl;
+        return ;
+    }
+
+    _writeMutex.lock();
+    packets[teamId][robotId].spinner = active;
+    _writeMutex.unlock();
+}
+
 void grsSimulator::initialization(){
     std::cout << "[GRSIM ACTUATOR] Thread started." << std::endl;
 }

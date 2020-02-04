@@ -8,10 +8,12 @@ class Behaviour_DoNothing : public Behaviour {
 private:
     void configure();
     void run();
+    int _state;
+
+    Skill_DoNothing *_skill_doNothing;
 public:
     Behaviour_DoNothing();
     QString name();
-    Skill_AroundTheBall* _teste;
 };
 
 #endif // BEHAVIOUR_DONOTHING_H

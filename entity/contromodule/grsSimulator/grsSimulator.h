@@ -46,6 +46,8 @@ public:
     QString name();
     void sendPacket(grs_robot robot);
     void setSpeed(quint8 teamId, quint8 robotId, float vx, float vy, float theta);
+    void setKickSpeed(quint8 teamId, quint8 robotId, float kickx, float kickz);
+    void setDribble(quint8 teamId, quint8 robotId, bool active);
 private:
     QMutex _writeMutex;
     QUdpSocket _socket;
