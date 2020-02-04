@@ -55,7 +55,7 @@ void Behaviour_Attacker::run() {
             }
         }
 
-        Position behindBall = WR::Utils::threePoints(loc()->ball(), loc()->ourGoal(), 0.1, GEARSystem::Angle::pi); // por trás da bola
+        Position behindBall = WR::Utils::threePoints(loc()->ball(), _kickPosition, 0.2, GEARSystem::Angle::pi); // por trás da bola
         if(_bestReceiver != RECEIVER_INVALID_ID && player()->distBall() < 0.3f && isBehindBall(behindBall) == false)
             emit goingToShoot(_bestReceiver);
 
@@ -79,7 +79,7 @@ void Behaviour_Attacker::run() {
             }
         }
 
-        if(player()->isLookingTo(_kickPosition, 0.06)){ // 0.06 is angle error
+        if(player()->isLookingTo(_kickPosition, 0.1)){ // 0.06 is angle error
             _sk_kick->setIsPass(true);
             _sk_kick->setAim(_kickPosition);
             enableTransition(0); // shoot transiction
@@ -94,7 +94,7 @@ void Behaviour_Attacker::run() {
             _state = STATE_ATTACK;
         }
 
-        if(_timer->getTimeInSeconds() >= 0.1){ // reposition of player
+        if(_timer->getTimeInSeconds() >= 0.2){ // reposition of player after 0.2 sec
             _state = STATE_ATTACK;
         }
     }
