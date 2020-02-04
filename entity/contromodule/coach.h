@@ -28,6 +28,9 @@ private:
     QMutex _mutexStrategy;
     Strategy *_strat;
     Strategy* strategy();
+
+    // Debug
+    bool _showBehaviours;
 };
 
 #endif // CONTROLLER_H
