@@ -1,3 +1,17 @@
+QT -= gui
+
+
+TEMPLATE = app
+DESTDIR  = ../bin
+TARGET   = Armorial-Suassuna
+VERSION  = 0.0.5
+
+# Temporary dirs
+OBJECTS_DIR = tmp/obj
+MOC_DIR = tmp/moc
+UI_DIR = tmp/moc
+RCC_DIR = tmp/rc
+
 CONFIG += c++14 console
 CONFIG -= app_bundle
 QT += core \
