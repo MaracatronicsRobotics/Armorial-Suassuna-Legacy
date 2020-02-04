@@ -102,7 +102,8 @@ SOURCES += \
     entity/contromodule/playbook/basics/playbook_attack.cpp \
     entity/player/behaviour/basics/behaviour_receiver.cpp \
     entity/player/behaviour/basics/behaviour_attacker.cpp \
-	entity/contromodule/strategy/basics/sslstrategy_attack.cpp
+	entity/contromodule/strategy/basics/sslstrategy_attack.cpp \
+    entity/player/behaviour/basics/behaviour_barrier.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -197,4 +198,5 @@ HEADERS += \
     entity/contromodule/playbook/basics/playbook_attack.h \
     entity/player/behaviour/basics/behaviour_receiver.h \
     entity/player/behaviour/basics/behaviour_attacker.h \
-	entity/contromodule/strategy/basics/sslstrategy_attack.h
+	entity/contromodule/strategy/basics/sslstrategy_attack.h \
+    entity/player/behaviour/basics/behaviour_barrier.h
