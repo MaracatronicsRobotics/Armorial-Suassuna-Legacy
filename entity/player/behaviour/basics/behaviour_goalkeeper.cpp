@@ -17,7 +17,7 @@ Behaviour_GoalKeeper::Behaviour_GoalKeeper() {
 
     setRadius(0.3); // raio que define posse de bola para o goleiro dar takeout
     setTakeoutEnabled(true); // avançar na bola quando ela estiver na margem de aceitação (takeout vai dar goto e kick na bola)
-    setTakeoutFactor(1.3); // fator de erro pra largura do gol
+    setTakeoutFactor(1.0); // fator de erro pra largura do gol (avançar na bola)
     useAttackerOri(true); // pra levar o atacante em consideração na projeção no gol
 }
 
@@ -44,7 +44,7 @@ void Behaviour_GoalKeeper::run() {
 
     _skill_GoalKeeper->setInterceptAdvance(true);
     _skill_GoalKeeper->setPositionToLook(loc()->ball());
-    //_skill_gkick->setIsPass(false);
+    _skill_gkick->setAim(loc()->ball());
 
     // goToLookTo (posicionamento do goleiro
     Position desiredPosition = getAttackerInterceptPosition();
@@ -65,7 +65,7 @@ void Behaviour_GoalKeeper::run() {
         if(loc()->isInsideOurArea(loc()->ball(), _takeoutFactor)){ // ve se ta na nossa area com fator de takeout (uma area maiorzinha)
             enableTransition(STATE_KICK); // se tiver perto e na nossa area, chuta!!!!
         }else if(loc()->isInsideOurArea(loc()->ball(), 1.1 * _takeoutFactor) == false){ // evitar oscilação (ruido) do visao
-            enableTransition(STATE_GOTO); // goTo na bolota
+            enableTransition(STATE_GOTO); // goTo na bolota se n estiver na are
         }
     }else{
         enableTransition(STATE_GOTO); // caso n usemos takeout, fica dando só goToLookTo mesmo (tentativa de dominar bola)
