@@ -9,5 +9,6 @@
 #include <entity/player/behaviour/basics/behaviour_receiver.h>
 #include <entity/player/behaviour/basics/behaviour_barrier.h>
 #include <entity/player/behaviour/basics/behaviour_markplayer.h>
+#include <entity/player/behaviour/basics/behaviour_marker.h>
 
 #endif // MRCBEHAVIOURS_H
