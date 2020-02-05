@@ -8,5 +8,6 @@
 #include <entity/player/behaviour/basics/behaviour_attacker.h>
 #include <entity/player/behaviour/basics/behaviour_receiver.h>
 #include <entity/player/behaviour/basics/behaviour_barrier.h>
+#include <entity/player/behaviour/basics/behaviour_markplayer.h>
 
 #endif // MRCBEHAVIOURS_H
