@@ -8,9 +8,7 @@ class Playbook_DoNothing : public Playbook {
 private:
     // Behaviors
     QList<Behaviour_DoNothing*> _bh_doNothing;
-    Behaviour_GoalKeeper *_bh_gk;
-    Behaviour_Barrier *_bh_bar;
-    Behaviour_Barrier *_bh_bar2;
+
     void configure(int numPlayers);
     void run(int numPlayers);
     int maxNumPlayer();
