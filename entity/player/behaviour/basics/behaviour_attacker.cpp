@@ -26,6 +26,8 @@ void Behaviour_Attacker::configure() {
 
 void Behaviour_Attacker::run() {
 
+    _sk_kick->setIsPass(false);
+
     if(player()->canKickBall() == false){ // if can't kick ball
         //_state = STATE_WAIT;
     }
@@ -80,7 +82,7 @@ void Behaviour_Attacker::run() {
         }
 
         if(player()->isLookingTo(_kickPosition, 0.1)){ // 0.06 is angle error
-            _sk_kick->setIsPass(true);
+            //_sk_kick->setIsPass(true);
             _sk_kick->setAim(_kickPosition);
             enableTransition(0); // shoot transiction
         }
