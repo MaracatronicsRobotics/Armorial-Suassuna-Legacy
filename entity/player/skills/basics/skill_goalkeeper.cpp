@@ -31,5 +31,5 @@ void Skill_GoalKeeper::run() {
         objectivePos = WR::Utils::projectPointAtLine(posBall, ballVelocityLine, player()->position());
     }
 
-    player()->goToLookTo(player()->position().x(), player()->position().y(), objectivePos.x(), objectivePos.y(), loc()->ball().x(), loc()->ball().y(), player()->orientation().value(), 0.1);
+    player()->goToLookTo(player()->position().x(), player()->position().y(), objectivePos.x(), objectivePos.y(), loc()->ball().x(), loc()->ball().y(), player()->orientation().value(), 0.01);
 }

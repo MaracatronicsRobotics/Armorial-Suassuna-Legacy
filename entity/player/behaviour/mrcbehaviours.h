@@ -10,5 +10,6 @@
 #include <entity/player/behaviour/basics/behaviour_barrier.h>
 #include <entity/player/behaviour/basics/behaviour_markplayer.h>
 #include <entity/player/behaviour/basics/behaviour_marker.h>
+#include <entity/player/behaviour/basics/behaviour_penalty_gk.h>
 
 #endif // MRCBEHAVIOURS_H

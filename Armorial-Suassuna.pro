@@ -105,7 +105,8 @@ SOURCES += \
 	entity/contromodule/strategy/basics/sslstrategy_attack.cpp \
     entity/player/behaviour/basics/behaviour_barrier.cpp \
     entity/player/behaviour/basics/behaviour_markplayer.cpp \
-    entity/player/behaviour/basics/behaviour_marker.cpp
+    entity/player/behaviour/basics/behaviour_marker.cpp \
+    entity/player/behaviour/basics/behaviour_penalty_gk.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -203,4 +204,5 @@ HEADERS += \
 	entity/contromodule/strategy/basics/sslstrategy_attack.h \
     entity/player/behaviour/basics/behaviour_barrier.h \
     entity/player/behaviour/basics/behaviour_markplayer.h \
-    entity/player/behaviour/basics/behaviour_marker.h
+    entity/player/behaviour/basics/behaviour_marker.h \
+    entity/player/behaviour/basics/behaviour_penalty_gk.h
