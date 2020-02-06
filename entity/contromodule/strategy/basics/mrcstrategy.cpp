@@ -10,7 +10,7 @@ MRCStrategy::MRCStrategy() {
 }
 
 void MRCStrategy::configure() {
-    setStrategyState(HALT, new SSLStrategy_Halt());
+    setStrategyState(HALT, new SSLStrategy_Attack());
     setStrategyState(GAMEOFF, new SSLStrategy_Halt());
     setStrategyState(GAMEON, new SSLStrategy_Halt());
     setStrategyState(OURPENALTY, new SSLStrategy_Halt());

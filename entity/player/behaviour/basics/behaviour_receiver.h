@@ -10,6 +10,7 @@ private:
     void configure();
     void run();
     Skill_GoToLookTo *_skill_GoToLookTo;
+    Skill_GoalKeeper *_skill_Receiver;
     bool _followAttacker;
     int _attackerId;
     int _state;
@@ -18,6 +19,11 @@ private:
         STATE_FOLLOW,
         STATE_RECEIVE,
         STATE_STOP
+    };
+
+    enum{
+        SK_GOTO,
+        SK_RECV
     };
 
 public:
