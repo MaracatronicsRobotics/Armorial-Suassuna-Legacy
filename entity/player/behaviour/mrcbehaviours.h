@@ -11,5 +11,6 @@
 #include <entity/player/behaviour/basics/behaviour_markplayer.h>
 #include <entity/player/behaviour/basics/behaviour_marker.h>
 #include <entity/player/behaviour/basics/behaviour_penalty_gk.h>
+#include <entity/player/behaviour/basics/behaviour_penalty_cf.h>
 
 #endif // MRCBEHAVIOURS_H

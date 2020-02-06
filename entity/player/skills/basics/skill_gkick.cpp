@@ -12,5 +12,5 @@ Skill_GKick::Skill_GKick() {
 
 void Skill_GKick::run() {
     player()->goToLookTo(player()->position().x(), player()->position().y(), loc()->ball().x(), loc()->ball().y(), _aimPosition.x(), _aimPosition.y(), player()->orientation().value(), 0.01);
-    player()->Kick(_isPass);
+    player()->kick(_isPass);
 }

@@ -395,7 +395,7 @@ void Player::AroundTheBall(double robot_x, double robot_y, double point_x, doubl
     else setSpeed(a.first, a.second, theta);
 }
 
-void Player::Kick(bool isPass){
+void Player::kick(bool isPass){
     if(isPass)
         _grSim->setKickSpeed(_team->teamId(), playerId(), 2.0, 0.0);
     else
