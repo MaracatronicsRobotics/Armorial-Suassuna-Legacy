@@ -15,13 +15,24 @@ Behaviour_Receiver::Behaviour_Receiver() {
 
 void Behaviour_Receiver::configure() {
     usesSkill(_skill_GoToLookTo = new Skill_GoToLookTo());
+    usesSkill(_skill_Receiver = new Skill_GoalKeeper());
+
+    setInitialSkill(_skill_GoToLookTo);
+
+    addTransition(SK_GOTO, _skill_GoToLookTo, _skill_Receiver);
+    addTransition(SK_RECV, _skill_Receiver, _skill_GoToLookTo);
 
     _state = STATE_FOLLOW;
 };
 
 void Behaviour_Receiver::run() {
     if(_attackerId == -1){
-        std::cout << "Attacker isn't set.\n" << std::endl;
+        printf("[BEHAVIOUR RECEIVER] Attacker isn't set (Receiver ID: %u)\n", player()->playerId());
+        return ;
+    }
+    if(!PlayerBus::ourPlayerAvailable(_attackerId)){
+        printf("[BEHAVIOUR RECEIVER] Attacker isn't available (Receiver ID: %u)\n", player()->playerId());
+        return ;
     }
 
     Position _desiredPosition = player()->position();
@@ -29,6 +40,7 @@ void Behaviour_Receiver::run() {
 
     switch(_state){
     case STATE_FOLLOW:
+        //enableTransition(SK_RECV);
         if(_followAttacker && modDistToAttacker > DIST_TO_ATK){
             _desiredPosition = PlayerBus::ourPlayer(_attackerId)->position();
         }else{
@@ -37,6 +49,7 @@ void Behaviour_Receiver::run() {
         }
     break;
     case STATE_STOP:
+        //enableTransition(SK_GOTO);
         _desiredPosition = player()->position(); // stay here
         if(_followAttacker && modDistToAttacker > DIST_TO_ATK){
             _state = STATE_FOLLOW;

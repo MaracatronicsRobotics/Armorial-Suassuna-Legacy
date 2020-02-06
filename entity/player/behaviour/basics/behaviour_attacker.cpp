@@ -110,10 +110,12 @@ quint8 Behaviour_Attacker::getBestReceiver(){
     quint8 bestRcv = RECEIVER_INVALID_ID;
     double dist = INFINITY;
     for(int x = 0; x < _recvs.size(); x++){
-        double distToAtk = sqrt(pow(player()->position().x() - PlayerBus::ourPlayer(_recvs.at(x))->position().x(), 2) + pow(player()->position().y() - PlayerBus::ourPlayer(_recvs.at(x))->position().y(), 2));
-        if(distToAtk < dist){
-            dist = distToAtk;
-            bestRcv = _recvs.at(x);
+        if(PlayerBus::ourPlayerAvailable(_recvs.at(x))){
+            double distToAtk = sqrt(pow(player()->position().x() - PlayerBus::ourPlayer(_recvs.at(x))->position().x(), 2) + pow(player()->position().y() - PlayerBus::ourPlayer(_recvs.at(x))->position().y(), 2));
+            if(distToAtk < dist){
+                dist = distToAtk;
+                bestRcv = _recvs.at(x);
+            }
         }
     }
 
