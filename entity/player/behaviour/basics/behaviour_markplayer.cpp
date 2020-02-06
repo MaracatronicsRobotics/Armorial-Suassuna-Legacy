@@ -5,7 +5,7 @@ QString Behaviour_MarkPlayer::name() {
 }
 
 Behaviour_MarkPlayer::Behaviour_MarkPlayer() {
-    _markBetweenBall = false;
+    _markBetweenBall = true;
     _targetID = -1;
     _markDistance = 0.5;
 }
@@ -17,11 +17,11 @@ void Behaviour_MarkPlayer::configure() {
 void Behaviour_MarkPlayer::run() {
     /* avoid segfaults */
     if(_targetID == -1){
-        printf("Target not set in MarkPlayer (Player id: %u)\n", player()->playerId());
+        printf("[BEHAVIOUR MARKPLAYER] Target not set in MarkPlayer (Player id: %u)\n", player()->playerId());
         return ;
     }
     if(PlayerBus::theirPlayerAvailable(quint8(_targetID)) == false){
-        printf("Target set is not available in MarkPlayer (Player id: %u)\n", player()->playerId());
+        printf("[BEHAVIOUR MARKPLAYER] Target set is not available in MarkPlayer (Player id: %u)\n", player()->playerId());
         return ;
     }
 
