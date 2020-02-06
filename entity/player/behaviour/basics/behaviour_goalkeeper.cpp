@@ -54,7 +54,6 @@ void Behaviour_GoalKeeper::run() {
     else if(loc()->ourSide().isLeft() && desiredPosition.x() < loc()->ourGoal().x()+GOALPOSTS_ERROR)
         desiredPosition.setPosition(loc()->ourGoal().x()+GOALPOSTS_ERROR, desiredPosition.y(), 0.0);
 
-
     _skill_goToLookTo->setDesiredPosition(desiredPosition);
     _skill_goToLookTo->setAimPosition(loc()->ball());
 
