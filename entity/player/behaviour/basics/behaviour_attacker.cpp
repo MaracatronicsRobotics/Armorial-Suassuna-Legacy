@@ -13,9 +13,11 @@ Behaviour_Attacker::Behaviour_Attacker() {
 void Behaviour_Attacker::configure() {
     usesSkill(_sk_kick = new Skill_Kick());
     usesSkill(_sk_goto = new Skill_GoToLookTo());
+    usesSkill(_sk_push = new Skill_PushBall());
 
     addTransition(0, _sk_goto, _sk_kick);
     addTransition(1, _sk_kick, _sk_goto);
+    addTransition(2, _sk_goto, _sk_push);
     setInitialSkill(_sk_goto);
 
     _state = STATE_ATTACK;
