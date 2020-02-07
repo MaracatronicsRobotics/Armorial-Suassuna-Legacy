@@ -9,6 +9,15 @@ private:
     bool _isPass;
     Position _aimPosition;
 
+    enum{
+        STATE_POS,
+        STATE_KICK
+    };
+
+    int _state;
+    bool isBehindBall(Position posObjective);
+    bool isBallInFront();
+
 public:
     Skill_Kick();
     QString name();
