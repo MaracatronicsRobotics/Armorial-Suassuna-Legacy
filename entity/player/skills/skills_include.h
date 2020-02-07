@@ -11,6 +11,7 @@
 #include <entity/player/skills/basics/skill_gkick.h>
 #include <entity/player/skills/basics/skill_dribble.h>
 #include <entity/player/skills/basics/skill_goalkeeper.h>
+#include <entity/player/skills/basics/skill_pushball.h>
 
 // normal includes
 #include <entity/player/player.h>
