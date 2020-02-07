@@ -24,6 +24,7 @@ public:
 
     Skill_Kick *_sk_kick;
     Skill_GoToLookTo *_sk_goto;
+    Skill_PushBall *_sk_push;
 
     enum{
         STATE_ATTACK,
