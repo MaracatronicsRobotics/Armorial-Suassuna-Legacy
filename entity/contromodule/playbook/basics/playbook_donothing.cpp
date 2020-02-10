@@ -14,7 +14,7 @@ int Playbook_DoNothing::maxNumPlayer() {
 void Playbook_DoNothing::configure(int numPlayers) {
     _bh_doNothing.clear();
 
-    _bh_pgk = new Behaviour_Penalty_GK();
+    _bh_pgk = new Behaviour_GoalKeeper();
     _bh_atk = new Behaviour_Attacker();
     usesBehaviour(_bh_pgk);
     usesBehaviour(_bh_atk);
