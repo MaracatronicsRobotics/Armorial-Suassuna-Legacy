@@ -49,10 +49,12 @@ void Behaviour_GoalKeeper::run() {
     // goToLookTo (posicionamento do goleiro
     Position desiredPosition = getAttackerInterceptPosition();
 
-    if(loc()->ourSide().isRight() && desiredPosition.x() > loc()->ourGoal().x()-GOALPOSTS_ERROR)        // cobrir angulos certos (manter goleiro na area do gol!)
+    if(loc()->ourSide().isRight() && desiredPosition.x() > loc()->ourGoal().x()-GOALPOSTS_ERROR){        // cobrir angulos certos (manter goleiro na area do gol!)
         desiredPosition.setPosition(loc()->ourGoal().x()-GOALPOSTS_ERROR, desiredPosition.y(), 0.0);     // varia de lado pra lado, com erros nas barras p precisao
-    else if(loc()->ourSide().isLeft() && desiredPosition.x() < loc()->ourGoal().x()+GOALPOSTS_ERROR)
+    }
+    else if(loc()->ourSide().isLeft() && desiredPosition.x() < loc()->ourGoal().x()+GOALPOSTS_ERROR){
         desiredPosition.setPosition(loc()->ourGoal().x()+GOALPOSTS_ERROR, desiredPosition.y(), 0.0);
+    }
 
     _skill_goToLookTo->setDesiredPosition(desiredPosition);
     _skill_goToLookTo->setAimPosition(loc()->ball());
@@ -64,7 +66,8 @@ void Behaviour_GoalKeeper::run() {
         if(loc()->isInsideOurArea(loc()->ball(), _takeoutFactor)){ // ve se ta na nossa area com fator de takeout (uma area maiorzinha)
             enableTransition(STATE_KICK); // se tiver perto e na nossa area, chuta!!!!
         }else if(loc()->isInsideOurArea(loc()->ball(), 1.1 * _takeoutFactor) == false){ // evitar oscilação (ruido) do visao
-            enableTransition(STATE_GOTO); // goTo na bolota se n estiver na are
+            enableTransition(STATE_GOTO); // goTo na bolota se n estiver na area
+            std::cout << desiredPosition.x() << " " << desiredPosition.y() << std::endl;
         }
     }else{
         enableTransition(STATE_GOTO); // caso n usemos takeout, fica dando só goToLookTo mesmo (tentativa de dominar bola)
@@ -143,7 +146,6 @@ Position Behaviour_GoalKeeper::calcAttackerBallImpact() {
 
     /* calculando posicao de impacto no y */
     Angle angleAtk = PlayerBus::ourPlayer(quint8(poss))->orientation();
-    Position posImpact; // impacto no nosso gol (pegar x da barra)
 
     float angleValue = angleAtk.value();
 
@@ -170,8 +172,13 @@ Position Behaviour_GoalKeeper::calcAttackerBallImpact() {
 
     // Impact point
     float impact_y = loc()->ball().y() + y;
-    posImpact = Position(true, loc()->ourGoal().x(), impact_y, 0.0); // posicao de impacto (mudando só o y em teoria)
+    float impact_x = loc()->ourGoal().x();
+
+    const Position posImpact(true, impact_x, impact_y, 0.0); // posicao de impacto (mudando só o y em teoria)
                                                                       // verificar dps a ideia de mover ele pra frente e reduzir angulação
+
+
+    std::cout << posImpact.x() << " " << posImpact.y() << std::endl;
     /* calculando posicao de impacto no y */
 
     return posImpact; // retorna o impacto, em caso de alguem ter posse da bola
