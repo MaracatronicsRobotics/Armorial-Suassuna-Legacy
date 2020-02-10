@@ -1,4 +1,4 @@
-#include "behaviour_penalty_gk.h"
+﻿#include "behaviour_penalty_gk.h"
 #include <utils/knn/knn.hh>
 #include <entity/player/playerbus.h>
 
@@ -129,7 +129,6 @@ Position Behaviour_Penalty_GK::calcAttackerBallImpact() {
 
     /* calculando posicao de impacto no y */
     Angle angleAtk = PlayerBus::ourPlayer(quint8(poss))->orientation();
-    Position posImpact; // impacto no nosso gol (pegar x da barra)
 
     float angleValue = angleAtk.value();
 
@@ -156,7 +155,9 @@ Position Behaviour_Penalty_GK::calcAttackerBallImpact() {
 
     // Impact point
     float impact_y = loc()->ball().y() + y;
-    posImpact = Position(true, loc()->ourGoal().x(), impact_y, 0.0); // posicao de impacto (mudando só o y em teoria)
+    float impact_x = loc()->ourGoal().x();
+
+    const Position posImpact(true, impact_x, impact_y, 0.0); // posicao de impacto (mudando só o y em teoria)
                                                                       // verificar dps a ideia de mover ele pra frente e reduzir angulação
     /* calculando posicao de impacto no y */
 
