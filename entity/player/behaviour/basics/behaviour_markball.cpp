@@ -1,18 +1,18 @@
-#include "behaviour_marker.h"
+#include "behaviour_markball.h"
 
-QString Behaviour_Marker::name() {
+QString Behaviour_MarkBall::name() {
     return "Behaviour_Marker";
 }
 
-Behaviour_Marker::Behaviour_Marker() {
+Behaviour_MarkBall::Behaviour_MarkBall() {
     _sk_GoToLookTo = NULL;
 }
 
-void Behaviour_Marker::configure() {
+void Behaviour_MarkBall::configure() {
     usesSkill(_sk_GoToLookTo = new Skill_GoToLookTo());
 };
 
-void Behaviour_Marker::run() {
+void Behaviour_MarkBall::run() {
     _sk_GoToLookTo->setOffsetToBall(0.15);
     _sk_GoToLookTo->setDesiredPosition(loc()->ball());
     for (int id = 0; id < 6; id++) {
@@ -22,3 +22,4 @@ void Behaviour_Marker::run() {
         } else _sk_GoToLookTo->setAimPosition(loc()->ball());
     }
 }
+

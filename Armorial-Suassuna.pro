@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
 	entity/entity.cpp \
+    entity/player/behaviour/basics/behaviour_markball.cpp \
     entity/player/behaviour/basics/behaviour_penalty_cf.cpp \
     entity/player/skills/basics/skill_aroundtheball.cpp \
     entity/player/skills/basics/skill_dribble.cpp \
@@ -106,7 +107,6 @@ SOURCES += \
 	entity/contromodule/strategy/basics/sslstrategy_attack.cpp \
     entity/player/behaviour/basics/behaviour_barrier.cpp \
     entity/player/behaviour/basics/behaviour_markplayer.cpp \
-    entity/player/behaviour/basics/behaviour_marker.cpp \
     entity/player/behaviour/basics/behaviour_penalty_gk.cpp \
     entity/player/skills/basics/skill_pushball.cpp
 
@@ -118,6 +118,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
 	entity/baseentity.h \
 	entity/entity.h \
+    entity/player/behaviour/basics/behaviour_markball.h \
     entity/player/behaviour/basics/behaviour_penalty_cf.h \
     entity/player/skills/basics/skill_aroundtheball.h \
     entity/player/skills/basics/skill_dribble.h \
@@ -207,6 +208,5 @@ HEADERS += \
 	entity/contromodule/strategy/basics/sslstrategy_attack.h \
     entity/player/behaviour/basics/behaviour_barrier.h \
     entity/player/behaviour/basics/behaviour_markplayer.h \
-    entity/player/behaviour/basics/behaviour_marker.h \
     entity/player/behaviour/basics/behaviour_penalty_gk.h \
     entity/player/skills/basics/skill_pushball.h
