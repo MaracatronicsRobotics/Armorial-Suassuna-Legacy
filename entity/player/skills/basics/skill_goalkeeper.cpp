@@ -2,15 +2,15 @@
 #include <entity/player/skills/skills_include.h>
 #include <bits/stdc++.h>
 
-QString Skill_GoalKeeper::name() {
-    return "Skill_GoalKeeper";
+QString Skill_Goalkeeper::name() {
+    return "Skill_Goalkeeper";
 }
 
-Skill_GoalKeeper::Skill_GoalKeeper() {
+Skill_Goalkeeper::Skill_Goalkeeper() {
     setInterceptAdvance(false);
 }
 
-void Skill_GoalKeeper::run() {
+void Skill_Goalkeeper::run() {
     /* calculating projection of ball */
     Position objectivePos; // Position where the goalkeeper should be
 

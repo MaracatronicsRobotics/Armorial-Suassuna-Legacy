@@ -8,7 +8,7 @@ class Behaviour_Penalty_GK : public Behaviour {
 private:
     void configure();
     void run();
-    Skill_GoalKeeper *_skill_GoalKeeper;
+    Skill_Goalkeeper *_skill_Goalkeeper;
     Skill_GoToLookTo *_skill_goToLookTo;
     double _offsetBall;
 

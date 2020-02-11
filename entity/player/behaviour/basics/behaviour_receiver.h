@@ -10,7 +10,7 @@ private:
     void configure();
     void run();
     Skill_GoToLookTo *_skill_GoToLookTo;
-    Skill_GoalKeeper *_skill_Receiver;
+    Skill_Goalkeeper *_skill_Receiver;
     bool _followAttacker;
     int _attackerId;
     int _state;

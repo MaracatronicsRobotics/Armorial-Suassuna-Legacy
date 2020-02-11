@@ -15,7 +15,7 @@ Behaviour_Receiver::Behaviour_Receiver() {
 
 void Behaviour_Receiver::configure() {
     usesSkill(_skill_GoToLookTo = new Skill_GoToLookTo());
-    usesSkill(_skill_Receiver = new Skill_GoalKeeper());
+    usesSkill(_skill_Receiver = new Skill_Goalkeeper());
 
     setInitialSkill(_skill_GoToLookTo);
 

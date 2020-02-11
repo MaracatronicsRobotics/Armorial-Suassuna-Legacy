@@ -265,7 +265,6 @@ void Player::setSpeed(float x, float y, float theta) {
 
 }
 
-// exemplo de skill
 std::pair<float, float> Player::goTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset){
     // Define a velocidade do robô para chegar na bola
     long double Vx = (point_x - robot_x);
