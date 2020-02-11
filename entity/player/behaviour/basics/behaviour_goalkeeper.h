@@ -4,11 +4,11 @@
 #include <entity/player/behaviour/behaviour.h>
 #include <entity/player/skills/skills_include.h>
 
-class Behaviour_GoalKeeper : public Behaviour {
+class Behaviour_Goalkeeper : public Behaviour {
 private:
     void configure();
     void run();
-    Skill_GoalKeeper *_skill_GoalKeeper;
+    Skill_Goalkeeper *_skill_Goalkeeper;
     Skill_GoToLookTo *_skill_goToLookTo;
     Skill_Kick *_skill_gkick;
     double _offsetBall;
@@ -33,7 +33,7 @@ private:
 
 
 public:
-    Behaviour_GoalKeeper();
+    Behaviour_Goalkeeper();
     QString name();
 
     void setRadius(float radius) { _radius = radius; }

@@ -11,7 +11,7 @@ QString Behaviour_Penalty_GK::name() {
 }
 
 Behaviour_Penalty_GK::Behaviour_Penalty_GK() {
-    _skill_GoalKeeper = NULL;
+    _skill_Goalkeeper = NULL;
     _skill_goToLookTo = NULL;
 
     setRadius(0.8); // raio que define posse de bola para o goleiro dar takeout
@@ -21,21 +21,21 @@ Behaviour_Penalty_GK::Behaviour_Penalty_GK() {
 }
 
 void Behaviour_Penalty_GK::configure() {
-    usesSkill(_skill_GoalKeeper = new Skill_GoalKeeper());
+    usesSkill(_skill_Goalkeeper = new Skill_Goalkeeper());
     usesSkill(_skill_goToLookTo = new Skill_GoToLookTo());
 
     // goto
-    setInitialSkill(_skill_GoalKeeper);
+    setInitialSkill(_skill_Goalkeeper);
 
     // todas as combinações
-    addTransition(STATE_GK, _skill_goToLookTo, _skill_GoalKeeper);
-    addTransition(STATE_GOTO, _skill_GoalKeeper, _skill_goToLookTo);
+    addTransition(STATE_GK, _skill_goToLookTo, _skill_Goalkeeper);
+    addTransition(STATE_GOTO, _skill_Goalkeeper, _skill_goToLookTo);
 };
 
 void Behaviour_Penalty_GK::run() {
 
-    _skill_GoalKeeper->setInterceptAdvance(true);
-    _skill_GoalKeeper->setPositionToLook(loc()->ball());
+    _skill_Goalkeeper->setInterceptAdvance(true);
+    _skill_Goalkeeper->setPositionToLook(loc()->ball());
 
     // goToLookTo (posicionamento do goleiro
     Position desiredPosition = getAttackerInterceptPosition();

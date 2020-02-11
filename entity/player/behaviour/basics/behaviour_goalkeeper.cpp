@@ -6,12 +6,12 @@
 #define GOALPOSTS_ERROR 0.05f
 #define INTERCEPT_MINBALLVELOCITY 0.2f
 
-QString Behaviour_GoalKeeper::name() {
+QString Behaviour_Goalkeeper::name() {
     return "Behaviour_GoalKeeper";
 }
 
-Behaviour_GoalKeeper::Behaviour_GoalKeeper() {
-    _skill_GoalKeeper = NULL;
+Behaviour_Goalkeeper::Behaviour_Goalkeeper() {
+    _skill_Goalkeeper = NULL;
     _skill_gkick = NULL;
     _skill_goToLookTo = NULL;
 
@@ -21,29 +21,29 @@ Behaviour_GoalKeeper::Behaviour_GoalKeeper() {
     useAttackerOri(true); // pra levar o atacante em consideração na projeção no gol
 }
 
-void Behaviour_GoalKeeper::configure() {
-    usesSkill(_skill_GoalKeeper = new Skill_GoalKeeper());
+void Behaviour_Goalkeeper::configure() {
+    usesSkill(_skill_Goalkeeper = new Skill_Goalkeeper());
     usesSkill(_skill_goToLookTo = new Skill_GoToLookTo());
     usesSkill(_skill_gkick = new Skill_Kick());
 
     // goto
-    setInitialSkill(_skill_GoalKeeper);
+    setInitialSkill(_skill_Goalkeeper);
 
     // todas as combinações
     addTransition(STATE_KICK, _skill_goToLookTo, _skill_gkick);
-    addTransition(STATE_KICK, _skill_GoalKeeper, _skill_gkick);
+    addTransition(STATE_KICK, _skill_Goalkeeper, _skill_gkick);
     //
-    addTransition(STATE_GK, _skill_gkick, _skill_GoalKeeper);
-    addTransition(STATE_GK, _skill_goToLookTo, _skill_GoalKeeper);
+    addTransition(STATE_GK, _skill_gkick, _skill_Goalkeeper);
+    addTransition(STATE_GK, _skill_goToLookTo, _skill_Goalkeeper);
     //
-    addTransition(STATE_GOTO, _skill_GoalKeeper, _skill_goToLookTo);
+    addTransition(STATE_GOTO, _skill_Goalkeeper, _skill_goToLookTo);
     addTransition(STATE_GOTO, _skill_gkick, _skill_goToLookTo);
 };
 
-void Behaviour_GoalKeeper::run() {
+void Behaviour_Goalkeeper::run() {
 
-    _skill_GoalKeeper->setInterceptAdvance(true);
-    _skill_GoalKeeper->setPositionToLook(loc()->ball());
+    _skill_Goalkeeper->setInterceptAdvance(true);
+    _skill_Goalkeeper->setPositionToLook(loc()->ball());
     _skill_gkick->setAim(loc()->ball());
 
     // goToLookTo (posicionamento do goleiro
@@ -74,7 +74,7 @@ void Behaviour_GoalKeeper::run() {
 
 }
 
-bool Behaviour_GoalKeeper::isBallComingToGoal(float minSpeed, float postsFactor){
+bool Behaviour_Goalkeeper::isBallComingToGoal(float minSpeed, float postsFactor){
     // postFactor é caso queiramos alongar mais a posição y da barra (margem de erro)
     const Position posBall = loc()->ball();
     const Position posRightPost(true, loc()->ourGoalRightPost().x(), loc()->ourGoalRightPost().y()*postsFactor, 0.0);
@@ -97,7 +97,7 @@ bool Behaviour_GoalKeeper::isBallComingToGoal(float minSpeed, float postsFactor)
     return (angDiffRight<angDiffPosts && angDiffLeft<angDiffPosts);
 }
 
-Position Behaviour_GoalKeeper::getAttackerInterceptPosition() {
+Position Behaviour_Goalkeeper::getAttackerInterceptPosition() {
     // Defense position
     Position interceptPosition = WR::Utils::threePoints(loc()->ourGoal(), loc()->ball(), _radius, 0.0);
     if(_useAttackerOri==false)
@@ -124,7 +124,7 @@ Position Behaviour_GoalKeeper::getAttackerInterceptPosition() {
     return interceptPosition;
 }
 
-Position Behaviour_GoalKeeper::calcAttackerBallImpact() {
+Position Behaviour_Goalkeeper::calcAttackerBallImpact() {
    // return loc()->ourGoal();
     // fazer logica para calcular o impacto da bola
     // verificar se esta suficientemente perto da bola, se a bola ta na frente dele e ver se o caminho p o chute dele está livre, anyway posicionado para nosso gol pra testar impacto centrado

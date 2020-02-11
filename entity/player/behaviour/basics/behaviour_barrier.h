@@ -16,7 +16,7 @@ private:
 
     // Sk
     Skill_GoToLookTo *_sk_goto;
-    Skill_GoalKeeper *_sk_gk;
+    Skill_Goalkeeper *_sk_gk;
     Skill_Kick *_sk_kick;
 
     // Transitions
