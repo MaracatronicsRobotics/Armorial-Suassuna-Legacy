@@ -1,5 +1,5 @@
-#ifndef BAHAVIOUR_MARKBALL_H
-#define BAHAVIOUR_MARKBALL_H
+#ifndef BEHAVIOUR_MARKBALL_H
+#define BEHAVIOUR_MARKBALL_H
 
 #include <entity/player/behaviour/behaviour.h>
 #include <entity/player/skills/skills_include.h>
@@ -16,4 +16,4 @@ public:
     QString name();
 };
 
-#endif // BAHAVIOUR_MARKBALL_H
+#endif // BEHAVIOUR_MARKBALL_H
