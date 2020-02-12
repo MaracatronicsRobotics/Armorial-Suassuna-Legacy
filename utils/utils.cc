@@ -21,7 +21,7 @@
 
 #include "utils.hh"
 #include <GEARSystem/worldmap.hh>
-#include <utils/freeangles/freeangles.hh>
+#include <utils/freeangles/freeangles.h>
 #include <utils/knn/knn.hh>
 
 using namespace WR;

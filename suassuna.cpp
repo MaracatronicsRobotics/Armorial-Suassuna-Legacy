@@ -4,7 +4,7 @@
 #include <entity/contromodule/strategy/strategystate.h>
 #include <entity/contromodule/strategy/basics/mrcstrategy.h>
 #include <entity/player/control/pid.h>
-#include <utils/freeangles/freeangles.hh>
+#include <utils/freeangles/freeangles.h>
 
 #include <entity/contromodule/grsSimulator/grsSimulator.h>
 
