@@ -70,8 +70,8 @@ void Behaviour_Penalty_CF::run() {
 
     //Position behindBall = WR::Utils::threePoints(loc()->ball(), _kickPosition, 0.2, GEARSystem::Angle::pi); // por trás da bola
     Position Aim;
-    if (isGKRight()) Aim = loc()->ourGoalLeftPost();
-    else Aim = loc()->ourGoalRightPost();
+    if (isGKRight() == true) Aim = Position(true, loc()->ourGoalLeftPost().x(), loc()->ourGoalLeftPost().y() - 0.1, 0.0);
+    else Aim = Position(true, loc()->ourGoalRightPost().x(), loc()->ourGoalRightPost().y() + 0.1, 0.0);
 
     _skill_goToLookTo->setAimPosition(Aim);
     _skill_kick->setAim(Aim);
