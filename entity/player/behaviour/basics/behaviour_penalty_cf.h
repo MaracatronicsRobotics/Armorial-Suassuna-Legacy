@@ -11,6 +11,7 @@ private:
     Skill_GoToLookTo *_skill_goToLookTo;
     Skill_Kick *_skill_kick;
     int _state;
+    Position _kickPosition;
 
     // Auxiliary
     bool isGKRight();
