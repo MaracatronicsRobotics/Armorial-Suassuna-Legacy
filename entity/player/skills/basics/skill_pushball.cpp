@@ -23,7 +23,7 @@ void Skill_PushBall::run(){
         std::cout << "[WARNING]" << name().toStdString() << ": destination not set!\n";
 
     // Calc behind ball
-    Position behindBall = WR::Utils::threePoints(loc()->ball(), _destination, 0.16f, GEARSystem::Angle::pi);
+    Position behindBall = WR::Utils::threePoints(loc()->ball(), _destination, 0.2f, GEARSystem::Angle::pi);
 
     if(loc()->ballVelocity().abs() > BALLPREVISION_MINVELOCITY){
         // Calc unitary vector of velocity
