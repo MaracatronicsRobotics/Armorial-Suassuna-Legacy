@@ -62,6 +62,8 @@ SOURCES += \
 	utils/fields/field_vss2008.cc \
 	utils/fields/fields.cc \
 	utils/fieldside/fieldside.cc \
+    utils/freeangles/freeangles.cpp \
+    utils/freeangles/obstacle.cpp \
 	utils/graph/edge.cc \
 	utils/graph/graph.cc \
 	utils/graph/vertex.cc \
@@ -157,6 +159,8 @@ HEADERS += \
 	utils/fields/fields.hh \
 	utils/fields/wrfields.hh \
 	utils/fieldside/fieldside.hh \
+    utils/freeangles/freeangles.h \
+    utils/freeangles/obstacle.h \
 	utils/graph/basegraph.hh \
 	utils/graph/edge.hh \
 	utils/graph/graph.hh \
