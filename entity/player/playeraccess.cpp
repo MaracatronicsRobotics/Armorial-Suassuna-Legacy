@@ -10,13 +10,12 @@ PlayerAccess::PlayerAccess(bool self, Player *player, Locations *loc) {
 PlayerAccess::~PlayerAccess() {
 
 }
-/*
+
 void PlayerAccess::kick(float power) {
-    if(_self==false)
-        return;
-    _player->kick(power);
+    //if(_self==false)
+    //    return;
+    _player->kick(false);
 }
-*/
 
 quint8 PlayerAccess::playerId() const {
     return _player->playerId();

@@ -14,9 +14,9 @@ int Playbook_DoNothing::maxNumPlayer() {
 void Playbook_DoNothing::configure(int numPlayers) {
     _bh_doNothing.clear();
 
-    _bh_pcf = new Behaviour_Penalty_CF();
+    _bh_atk = new Behaviour_Attacker();
     _bh_gk = new Behaviour_Goalkeeper();
-    usesBehaviour(_bh_pcf);
+    usesBehaviour(_bh_atk);
     usesBehaviour(_bh_gk);
 
     for(int i=0; i<numPlayers; i++) {
@@ -28,7 +28,7 @@ void Playbook_DoNothing::configure(int numPlayers) {
 
 void Playbook_DoNothing::run(int numPlayers) {
     QList<quint8> allPlayers = dist()->getAllPlayers();
-    setPlayerBehaviour(allPlayers.at(0), _bh_pcf);
+    setPlayerBehaviour(allPlayers.at(0), _bh_atk);
     setPlayerBehaviour(allPlayers.at(1), _bh_gk);
 
     //setPlayerBehaviour(allPlayers.at(2), _bh_mkp);

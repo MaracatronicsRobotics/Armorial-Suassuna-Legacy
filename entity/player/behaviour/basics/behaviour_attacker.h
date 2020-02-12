@@ -17,6 +17,11 @@ private:
 
     quint8 _bestReceiver;
     Position _kickPosition;
+    QMutex _mutex;
+
+    Position getBestKickPosition();
+    bool isBehindBall(Position posObjective);
+    quint8 getBestReceiver();
 
 public:
     Behaviour_Attacker();
@@ -29,14 +34,12 @@ public:
     enum{
         STATE_ATTACK,
         STATE_WAIT,
-        STATE_KICK
+        STATE_KICK,
+        STATE_PUSH
     };
 
     void addReceiver(quint8 recvId) { _recvs.push_back(recvId); }
     void clearReceivers() { _recvs.clear(); }
-    quint8 getBestReceiver();
-
-    bool isBehindBall(Position posObjective);
 
 signals:
     void goingToShoot(quint8 id);

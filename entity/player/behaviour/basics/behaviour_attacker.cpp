@@ -1,7 +1,10 @@
 #include "behaviour_attacker.h"
 
+#include <utils/freeangles/freeangles.h>
+
 #define KICK_POWER 8.0f
 #define RECEIVER_INVALID_ID 200
+#define MAX_DIST_KICK 2.5f
 
 QString Behaviour_Attacker::name() {
     return "Behaviour_Attacker";
@@ -17,95 +20,107 @@ void Behaviour_Attacker::configure() {
 
     addTransition(0, _sk_goto, _sk_kick);
     addTransition(1, _sk_kick, _sk_goto);
+
     addTransition(2, _sk_goto, _sk_push);
+    addTransition(2, _sk_kick, _sk_push);
+    addTransition(3, _sk_push, _sk_kick);
+
     setInitialSkill(_sk_goto);
 
-    _state = STATE_ATTACK;
+    _state = STATE_PUSH;
 
 
     _timer = new MRCTimer(1000.0f);
 };
 
 void Behaviour_Attacker::run() {
-
-    _sk_kick->setIsPass(false);
-
     if(player()->canKickBall() == false){ // if can't kick ball
         //_state = STATE_WAIT;
     }
 
     switch(_state){
-    case STATE_WAIT: {
-        Position waitPosition;
-
-        /* condicoes aqui para que o atacante não voe encima da bola */
-        /* mandar ele ficar a uma distancia, sei la */
-
-        if(player()->canKickBall()){
-            _state = STATE_ATTACK;
-        }
-    }
-    break;
-    case STATE_ATTACK:{
-        enableTransition(1);
+    case STATE_PUSH:{
+        enableTransition(2);
         _bestReceiver = RECEIVER_INVALID_ID;
         _kickPosition = loc()->ourGoal();
 
-        _bestReceiver = getBestReceiver();
-        if(_bestReceiver != RECEIVER_INVALID_ID){
-            Position receiverPosition = PlayerBus::ourPlayer(_bestReceiver)->position();
-            if(receiverPosition.isUnknown() == false){
-                _kickPosition = receiverPosition;
+        Position bestKickPosition = getBestKickPosition();
+        if(!bestKickPosition.isUnknown()){ // checar isso dps
+            _kickPosition = bestKickPosition;
+        }else{
+            // descobrindo o melhor receiver
+            _mutex.lock();
+
+            _bestReceiver = getBestReceiver();
+            if(_bestReceiver != RECEIVER_INVALID_ID){
+                Position receiverPosition = PlayerBus::ourPlayer(_bestReceiver)->position();
+                if(!receiverPosition.isUnknown()){
+                    _kickPosition = receiverPosition;
+                }
             }
+
+            _mutex.unlock();
+        }
+        // Setting push position
+        _sk_push->setDestination(_kickPosition);
+
+        // Emitting signal for receivers
+        Position behindBall = WR::Utils::threePoints(loc()->ball(), _kickPosition, 0.2, GEARSystem::Angle::pi);
+        if(_bestReceiver != RECEIVER_INVALID_ID && player()->distBall() < 0.3f && isBehindBall(behindBall) == false){
+            emit goingToShoot(_bestReceiver);
         }
 
-        Position behindBall = WR::Utils::threePoints(loc()->ball(), _kickPosition, 0.2, GEARSystem::Angle::pi); // por trás da bola
-        if(_bestReceiver != RECEIVER_INVALID_ID && player()->distBall() < 0.3f && isBehindBall(behindBall) == false)
-            emit goingToShoot(_bestReceiver);
+        // Change state to kick
 
-        _sk_goto->setDesiredPosition(behindBall);
-        _sk_goto->setAimPosition(_kickPosition);
-
-        // change state to kick
+        // check if ball is in front
         Angle anglePlayerBall = player()->angleTo(loc()->ball());
         float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
-        if (diff <= atan(0.7)){ // can kick (behind ball, certainly) (atan(0.7) = 35deg
+        bool ans = (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
+
+        float distToKickPosition = player()->distanceTo(_kickPosition);
+        if(distToKickPosition < MAX_DIST_KICK && player()->distBall() < 0.3f && ans){
+            _timer->update(); // reset timer
             _state = STATE_KICK;
-            _timer->update();
         }
     }
     break;
     case STATE_KICK:{
-        enableTransition(1); // move transition
-        if(_bestReceiver != RECEIVER_INVALID_ID){ // if shoot is for a receiver
-            if(PlayerBus::ourPlayerAvailable(_bestReceiver)){ // if receiver is available already
-                _kickPosition = PlayerBus::ourPlayer(_bestReceiver)->position(); // update kickPosition (delay from loop)
+        enableTransition(2);
+        if(_bestReceiver != RECEIVER_INVALID_ID){
+            if(PlayerBus::ourPlayerAvailable(_bestReceiver)){
+                _kickPosition = PlayerBus::ourPlayer(_bestReceiver)->position(); // update to avoid delay
             }
         }
 
-        if(player()->isLookingTo(_kickPosition, 0.1)){ // 0.1 is angle error
-            //_sk_kick->setIsPass(true);
+        // Enable kick
+        if(player()->isLookingTo(_kickPosition, 0.015)){
             _sk_kick->setAim(_kickPosition);
-            enableTransition(0); // shoot transiction
+            _sk_kick->setIsPass(false);
+            enableTransition(3);
         }
 
+        // check if ball is in front
         Angle anglePlayerBall = player()->angleTo(loc()->ball());
         float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
-        if (!(diff <= atan(0.7)) || player()->distBall() > 0.4f){ // isn't in front or ball shooted (atan(0.7) = 35deg
-            if(_bestReceiver != RECEIVER_INVALID_ID)
-                emit shooted(_bestReceiver);
+        bool ans = (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
 
-            _state = STATE_ATTACK;
+        if(!ans || player()->distBall() > 0.4f){
+            // emit ball kicked
+            if(_bestReceiver != RECEIVER_INVALID_ID){
+                emit shooted(_bestReceiver);
+            }
+
+            _state = STATE_PUSH;
         }
 
-        if(_timer->getTimeInSeconds() >= 0.05){ // reposition of player after 0.05 sec
-            _state = STATE_ATTACK;
+        if(_timer->getTimeInSeconds() >= 0.2f){
+            _state = STATE_PUSH;
         }
     }
     break;
     }
 
-
+    std::cout << "Kick pos: " << _kickPosition.x() << " " << _kickPosition.y() << std::endl;
 }
 
 quint8 Behaviour_Attacker::getBestReceiver(){
@@ -132,4 +147,60 @@ bool Behaviour_Attacker::isBehindBall(Position posObjective){
     float diff = WR::Utils::angleDiff(anglePlayer, angleDest);
 
     return (diff>GEARSystem::Angle::pi/2.0f);
+}
+
+Position Behaviour_Attacker::getBestKickPosition(){
+    const Position goalRightPost = loc()->ourGoalRightPost();
+    const Position goalLeftPost = loc()->ourGoalLeftPost();
+    const Position goalCenter = loc()->ourGoal();
+
+    // calculating angles
+    float minAngle = WR::Utils::getAngle(loc()->ball(), goalRightPost);
+    float maxAngle = WR::Utils::getAngle(loc()->ball(), goalLeftPost);
+
+    std::cout << "min: " << minAngle << " max: " << maxAngle << std::endl;
+
+    // generating list of freeAngles to goal
+    QList<FreeAngles> freeAngles = FreeAngles::getFreeAngles(loc()->ball(), minAngle, maxAngle, 2, 10.0);
+
+    float largestAngle, largestMid;
+
+    // get the largest interval
+    if(freeAngles.size() == 0){
+        return Position(false, 0.0, 0.0, 0.0); // debugar isso dps
+    }else{
+        QList<FreeAngles>::iterator it;
+        for(it = freeAngles.begin(); it != freeAngles.end(); it++){
+            float initAngle = it->getInitialAngle();
+            float endAngle = it->getFinalAngle();
+
+            float dif = endAngle - initAngle;
+            if(dif > largestAngle){
+                largestAngle = dif;
+                largestMid = endAngle - dif/2;
+            }
+        }
+    }
+
+    std::cout << std::endl;
+
+    // Triangularization
+    float x = goalCenter.x() - loc()->ball().x();
+    float tg = tan(largestMid);
+    float y = tg * x;
+
+    // Impact point
+    float pos_y = loc()->ball().y() + y;
+    Position impactPosition(true, goalCenter.x(), pos_y, 0.0);
+
+    // Check if impact position has space for ball radius
+    const float distImpactPos = WR::Utils::distance(loc()->ball(), impactPosition);
+    const float radiusAngle = largestAngle/2.0;
+    const float distR = radiusAngle * distImpactPos;
+
+    if(distR < (1.5 * 0.025)){ // 1.5 * raioDaBola
+        return Position(false, 0.0, 0.0, 0.0); // bola n passa, debugar isso dps
+    }
+
+    return impactPosition;
 }
