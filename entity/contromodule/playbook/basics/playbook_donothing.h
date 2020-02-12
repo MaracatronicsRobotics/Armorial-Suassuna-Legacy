@@ -7,7 +7,7 @@
 class Playbook_DoNothing : public Playbook {
 private:
     // Behaviors
-    Behaviour_Penalty_CF *_bh_pcf;
+    Behaviour_Attacker *_bh_atk;
     Behaviour_Goalkeeper *_bh_gk;
     QList<Behaviour_DoNothing*> _bh_doNothing;
 

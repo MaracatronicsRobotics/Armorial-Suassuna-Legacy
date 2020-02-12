@@ -67,6 +67,8 @@ bool Suassuna::start() {
     strategy = new MRCStrategy();
     _coach->setStrategy(strategy);
 
+    FreeAngles::initialize(_ourTeam, _theirTeam);
+
     // Start world
     _world->start();
 
