@@ -26,7 +26,7 @@ void FastPathPlanning::addGoalArea(const Position &pos){
     this->addColisionPosition(pos, true);
 };
 
-void FastPathPlanning::run(){
+void FastPathPlanning::run(){ // pego o ponto inicial e final
 
 
 };
@@ -67,10 +67,10 @@ std::pair<Position, Position> FastPathPlanning::findPoint(Position colisionPoint
 
 }
 
-Position FastPathPlanning::hasCollision(Position newPoint){
+Position FastPathPlanning::hasCollisionAtLine(){
     bool hasColision = false;
     for (int i=0; i < _colisionPosition.size() && !hasColision; ++i) { //se a distancia de qualquer jogador ate a reta for menor que 36cm, tem colisao
-        float distanceLine = WR::Utils::distanceToSegment(_path.back(),goalPos(), newPoint);
+        float distanceLine = WR::Utils::distanceToSegment(_path.back(),goalPos(), _colisionPosition[i].first);
         if (!_colisionPosition[i].second && distanceLine<0.38f) { // se for robô
             hasColision = true;
             return Position(hasColision, _colisionPosition[i].first.x(), _colisionPosition[i].first.y(), 0.0);
