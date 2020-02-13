@@ -67,5 +67,7 @@ CMakeLists.txt.user*
 bin/
 
 *.user
+*.pb.h
+*.pb.cc
 
 build/
