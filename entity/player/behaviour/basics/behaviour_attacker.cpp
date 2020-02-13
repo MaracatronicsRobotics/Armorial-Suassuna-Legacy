@@ -119,8 +119,6 @@ void Behaviour_Attacker::run() {
     }
     break;
     }
-
-    std::cout << "Kick pos: " << _kickPosition.x() << " " << _kickPosition.y() << std::endl;
 }
 
 quint8 Behaviour_Attacker::getBestReceiver(){
@@ -158,19 +156,17 @@ Position Behaviour_Attacker::getBestKickPosition(){
     float minAngle = WR::Utils::getAngle(loc()->ball(), goalRightPost);
     float maxAngle = WR::Utils::getAngle(loc()->ball(), goalLeftPost);
 
-    std::cout << "min: " << minAngle << " max: " << maxAngle << std::endl;
-
     // generating list of freeAngles to goal
-    QList<FreeAngles> freeAngles = FreeAngles::getFreeAngles(loc()->ball(), minAngle, maxAngle, 2, 10.0);
+    QList<FreeAngles> freeAngles = FreeAngles::getFreeAngles(loc()->ball(), minAngle, maxAngle, 2, 1000.0);
 
     float largestAngle, largestMid;
-
     // get the largest interval
     if(freeAngles.size() == 0){
         return Position(false, 0.0, 0.0, 0.0); // debugar isso dps
     }else{
         QList<FreeAngles>::iterator it;
         for(it = freeAngles.begin(); it != freeAngles.end(); it++){
+            if(it->getObstruced()) continue;
             float initAngle = it->getInitialAngle();
             float endAngle = it->getFinalAngle();
 
@@ -180,9 +176,8 @@ Position Behaviour_Attacker::getBestKickPosition(){
                 largestMid = endAngle - dif/2;
             }
         }
-    }
 
-    std::cout << std::endl;
+    }
 
     // Triangularization
     float x = goalCenter.x() - loc()->ball().x();
