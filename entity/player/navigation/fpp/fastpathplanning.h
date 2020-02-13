@@ -23,9 +23,8 @@ public:
     QLinkedList<Position> getPath() const;
 
 private:
-    std::pair<Position, Position>findAnotherPoint(Position colisionPoint);
-    Position hasCollision();
-    float distrp(int x1, int y1, int x2, int y2,int px, int py);
+    std::pair<Position, Position>findPoint(Position colisionPoint,int iteratorPoints);
+    Position hasCollision(Position newPoint);
     void addColisionPosition(Position _pos, Boolean _isBall);
     QList<std::pair<Position, Boolean>> _colisionPosition;
     QLinkedList<Position> _path;
