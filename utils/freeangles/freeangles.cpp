@@ -71,12 +71,13 @@ QList<Obstacle> FreeAngles::getObstacles(const Position &watcher, float distance
 }
 
 QList<FreeAngles> FreeAngles::getFreeAngles(const Position &watcher, float angleMin, float angleMax, int defineObstacle, float distanceRadius){
-
     QList<Obstacle> obstacles = getObstacles(watcher, distanceRadius, defineObstacle);
     //Redefine o valor de angleMin, caso esse seja maior que o angleMax
+
     if(angleMin > angleMax){
         angleMin -= twoPi;
     }
+
     
     QList<FreeAngles> Intervals; //Lista que será retornada
     FreeAngles interval; //Elemento auxiliar
