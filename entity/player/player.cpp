@@ -294,7 +294,7 @@ std::pair<float, float> Player::goTo(double robot_x, double robot_y, double poin
 
     return std::make_pair(newVX, newVY);
     }
-}
+
 
 std::pair<double, double> Player::rotateTo(double robot_x, double robot_y, double point_x, double point_y, double angleOrigin2Robot) {
     // Define a velocidade angular do robô para visualizar a bola
@@ -394,6 +394,7 @@ void Player::aroundTheBall(double robot_x, double robot_y, double point_x, doubl
     a = goTo(robot_x, robot_y, point_x, point_y, robotAngle, offset);
     float theta = rotateTo(robot_x, robot_y, point_x, point_y, robotAngle).second;
 
+}
 
 void Player::kick(bool isPass, float kickZPower){
     if(isPass){
