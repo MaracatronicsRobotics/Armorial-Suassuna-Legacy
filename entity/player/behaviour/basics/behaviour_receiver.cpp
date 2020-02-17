@@ -1,7 +1,7 @@
 #include "behaviour_receiver.h"
 #include <entity/player/playerbus.h>
 
-#define DIST_TO_ATK 1.5f
+#define DIST_TO_ATK 1.0f
 
 QString Behaviour_Receiver::name() {
     return "Behaviour_Receiver";
@@ -10,7 +10,7 @@ QString Behaviour_Receiver::name() {
 Behaviour_Receiver::Behaviour_Receiver() {
     _skill_GoToLookTo = NULL;
     _attackerId = -1;
-    _followAttacker = false;
+    _followAttacker = true;
 }
 
 void Behaviour_Receiver::configure() {
@@ -40,16 +40,15 @@ void Behaviour_Receiver::run() {
 
     switch(_state){
     case STATE_FOLLOW:
-        //enableTransition(SK_RECV);
+        enableTransition(SK_RECV);
         if(_followAttacker && modDistToAttacker > DIST_TO_ATK){
             _desiredPosition = PlayerBus::ourPlayer(_attackerId)->position();
         }else{
             _desiredPosition = player()->position();
-            _state = STATE_STOP;
         }
     break;
     case STATE_STOP:
-        //enableTransition(SK_GOTO);
+        enableTransition(SK_GOTO);
         _desiredPosition = player()->position(); // stay here
         if(_followAttacker && modDistToAttacker > DIST_TO_ATK){
             _state = STATE_FOLLOW;

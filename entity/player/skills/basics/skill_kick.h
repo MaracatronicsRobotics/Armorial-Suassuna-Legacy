@@ -15,6 +15,7 @@ private:
     };
 
     int _state;
+    float _zPower;
     bool isBehindBall(Position posObjective);
     bool isBallInFront();
 
@@ -24,6 +25,7 @@ public:
 
     void setIsPass(bool isPass) { _isPass = isPass; }
     void setAim (Position pos) { _aimPosition = pos; }
+    void setZPower(float power) { _zPower = power; }
 };
 
 #endif // SKILL_KICK_H
