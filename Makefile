@@ -2607,7 +2607,9 @@ behaviour_attacker.o: entity/player/behaviour/basics/behaviour_attacker.cpp enti
 		utils/basics/wall.hh \
 		entity/contromodule/mrcteam.h \
 		entity/player/control/pid.h \
-		utils/mrctimer/mrctimer.h
+		utils/mrctimer/mrctimer.h \
+		utils/freeangles/freeangles.h \
+		utils/freeangles/obstacle.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_attacker.o entity/player/behaviour/basics/behaviour_attacker.cpp
 
 sslstrategy_attack.o: entity/contromodule/strategy/basics/sslstrategy_attack.cpp entity/contromodule/strategy/basics/sslstrategy_attack.h \

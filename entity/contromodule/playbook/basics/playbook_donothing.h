@@ -9,6 +9,7 @@ private:
     // Behaviors
     Behaviour_Attacker *_bh_atk;
     Behaviour_Goalkeeper *_bh_gk;
+    Behaviour_Receiver *_bh_rcv;
     QList<Behaviour_DoNothing*> _bh_doNothing;
 
     void configure(int numPlayers);
