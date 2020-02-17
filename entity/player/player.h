@@ -69,7 +69,7 @@ public:
     std::pair<double, double> rotateTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle);
     void goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double aim_x, double aim_y, double angleOrigin2Robot, double offset = 0.2);
     void aroundTheBall(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset);
-    void kick(bool isPass);
+    void kick(bool isPass, float kickZPower = 0.0);
     void dribble(bool isActive);
 
     // Behaviour

@@ -153,8 +153,8 @@ Position Behaviour_Attacker::getBestKickPosition(){
     const Position goalCenter = loc()->ourGoal();
 
     // calculating angles
-    const float minAngle = WR::Utils::getAngle(loc()->ball(), goalRightPost);
-    const float maxAngle = WR::Utils::getAngle(loc()->ball(), goalLeftPost);
+    float minAngle = WR::Utils::getAngle(loc()->ball(), goalRightPost);
+    float maxAngle = WR::Utils::getAngle(loc()->ball(), goalLeftPost);
 
     // generating list of freeAngles to goal
     QList<FreeAngles::Interval> freeAngles = FreeAngles::getFreeAngles(loc()->ball(), minAngle, maxAngle);
@@ -183,13 +183,13 @@ Position Behaviour_Attacker::getBestKickPosition(){
     }
 
     // Triangularization
-    const float x = goalCenter.x() - loc()->ball().x();
-    const float tg = tan(largestMid);
-    const float y = tg * x;
+    float x = goalCenter.x() - loc()->ball().x();
+    float tg = tan(largestMid);
+    float y = tg * x;
 
     // Impact point
-    const float pos_y = loc()->ball().y() + y;
-    const Position impactPosition(true, goalCenter.x(), pos_y, 0.0);
+    float pos_y = loc()->ball().y() + y;
+    Position impactPosition(true, goalCenter.x(), pos_y, 0.0);
 
     // Check if impact position has space for ball radius
     const float distImpactPos = WR::Utils::distance(loc()->ball(), impactPosition);

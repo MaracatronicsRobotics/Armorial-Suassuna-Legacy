@@ -45,6 +45,7 @@ void Behaviour_Goalkeeper::run() {
     _skill_Goalkeeper->setInterceptAdvance(true);
     _skill_Goalkeeper->setPositionToLook(loc()->ball());
     _skill_gkick->setAim(loc()->ball());
+    _skill_gkick->setZPower(4.0);
 
     // goToLookTo (posicionamento do goleiro
     Position desiredPosition = getAttackerInterceptPosition();

@@ -394,11 +394,11 @@ void Player::aroundTheBall(double robot_x, double robot_y, double point_x, doubl
     else setSpeed(a.first, a.second, theta);
 }
 
-void Player::kick(bool isPass){
+void Player::kick(bool isPass, float kickZPower){
     if(isPass)
-        _grSim->setKickSpeed(_team->teamId(), playerId(), 2.0, 0.0);
+        _grSim->setKickSpeed(_team->teamId(), playerId(), 2.0, kickZPower);
     else
-        _grSim->setKickSpeed(_team->teamId(), playerId(), 6.0, 0.0);
+        _grSim->setKickSpeed(_team->teamId(), playerId(), 6.0, kickZPower);
 }
 
 void Player::dribble(bool isActive){

@@ -1352,6 +1352,7 @@ fieldside.o: utils/fieldside/fieldside.cc utils/fieldside/fieldside.hh \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o fieldside.o utils/fieldside/fieldside.cc
 
 freeangles.o: utils/freeangles/freeangles.cpp utils/freeangles/freeangles.h \
+		entity/contromodule/basecoach.h \
 		utils/freeangles/obstacle.h \
 		entity/contromodule/mrcteam.h \
 		utils/fieldside/fieldside.hh \
@@ -1400,29 +1401,9 @@ line.o: utils/line/line.cc utils/line/line.hh
 
 utils.o: utils/utils.cc utils/utils.hh \
 		utils/freeangles/freeangles.h \
+		entity/contromodule/basecoach.h \
 		utils/freeangles/obstacle.h \
-		entity/contromodule/mrcteam.h \
-		utils/fieldside/fieldside.hh \
-		utils/basics/side.hh \
-		entity/player/player.h \
-		entity/entity.h \
-		entity/world/world.h \
-		entity/baseentity.h \
-		entity/player/baseplayer.h \
-		utils/fields/fields.hh \
-		entity/world/worldmapupdater.h \
-		entity/referee/SSLReferee/sslreferee.h \
-		include/3rd_party/referee.pb.h \
-		include/3rd_party/game_event.pb.h \
-		entity/referee/SSLReferee/sslgameinfo.h \
-		utils/basics/color.hh \
-		entity/referee/referee.h \
-		entity/locations.h \
-		utils/basics/wall.hh \
-		entity/player/control/pid.h \
-		utils/mrctimer/mrctimer.h \
-		utils/knn/knn.hh \
-		entity/contromodule/basecoach.h
+		utils/knn/knn.hh
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o utils.o utils/utils.cc
 
 wrtimer.o: utils/wrtimer/wrtimer.cc utils/wrtimer/wrtimer.hh
@@ -2609,6 +2590,7 @@ behaviour_attacker.o: entity/player/behaviour/basics/behaviour_attacker.cpp enti
 		entity/player/control/pid.h \
 		utils/mrctimer/mrctimer.h \
 		utils/freeangles/freeangles.h \
+		entity/contromodule/basecoach.h \
 		utils/freeangles/obstacle.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o behaviour_attacker.o entity/player/behaviour/basics/behaviour_attacker.cpp
 
