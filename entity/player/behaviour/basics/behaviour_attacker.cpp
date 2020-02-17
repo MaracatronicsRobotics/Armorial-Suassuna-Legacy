@@ -153,24 +153,27 @@ Position Behaviour_Attacker::getBestKickPosition(){
     const Position goalCenter = loc()->ourGoal();
 
     // calculating angles
-    float minAngle = WR::Utils::getAngle(loc()->ball(), goalRightPost);
-    float maxAngle = WR::Utils::getAngle(loc()->ball(), goalLeftPost);
+    const float minAngle = WR::Utils::getAngle(loc()->ball(), goalRightPost);
+    const float maxAngle = WR::Utils::getAngle(loc()->ball(), goalLeftPost);
 
     // generating list of freeAngles to goal
-    QList<FreeAngles> freeAngles = FreeAngles::getFreeAngles(loc()->ball(), minAngle, maxAngle, 2, 1000.0);
+    QList<FreeAngles::Interval> freeAngles = FreeAngles::getFreeAngles(loc()->ball(), minAngle, maxAngle);
 
     float largestAngle, largestMid;
     // get the largest interval
     if(freeAngles.size() == 0){
         return Position(false, 0.0, 0.0, 0.0); // debugar isso dps
     }else{
-        QList<FreeAngles>::iterator it;
+        QList<FreeAngles::Interval>::iterator it;
         for(it = freeAngles.begin(); it != freeAngles.end(); it++){
-            if(it->getObstruced()) continue;
-            float initAngle = it->getInitialAngle();
-            float endAngle = it->getFinalAngle();
+            if(it->obstructed()) continue;
+            float initAngle = it->angInitial();
+            float endAngle = it->angFinal();
+            WR::Utils::angleLimitZeroTwoPi(&initAngle);
+            WR::Utils::angleLimitZeroTwoPi(&endAngle);
 
             float dif = endAngle - initAngle;
+            WR::Utils::angleLimitZeroTwoPi(&dif);
             if(dif > largestAngle){
                 largestAngle = dif;
                 largestMid = endAngle - dif/2;
@@ -180,20 +183,20 @@ Position Behaviour_Attacker::getBestKickPosition(){
     }
 
     // Triangularization
-    float x = goalCenter.x() - loc()->ball().x();
-    float tg = tan(largestMid);
-    float y = tg * x;
+    const float x = goalCenter.x() - loc()->ball().x();
+    const float tg = tan(largestMid);
+    const float y = tg * x;
 
     // Impact point
-    float pos_y = loc()->ball().y() + y;
-    Position impactPosition(true, goalCenter.x(), pos_y, 0.0);
+    const float pos_y = loc()->ball().y() + y;
+    const Position impactPosition(true, goalCenter.x(), pos_y, 0.0);
 
     // Check if impact position has space for ball radius
     const float distImpactPos = WR::Utils::distance(loc()->ball(), impactPosition);
     const float radiusAngle = largestAngle/2.0;
     const float distR = radiusAngle * distImpactPos;
 
-    if(distR < (1.5 * 0.025)){ // 1.5 * raioDaBola
+    if(distR < (1.5 * 0.025)){ // 1.5 * raioDaBola (ruido ft. tristeza)
         return Position(false, 0.0, 0.0, 0.0); // bola n passa, debugar isso dps
     }
 
