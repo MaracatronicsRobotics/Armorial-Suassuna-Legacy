@@ -55,4 +55,4 @@ script:
   - mkdir build
   - cd build
   - qmake ..
-  - make
+  - make -j8
