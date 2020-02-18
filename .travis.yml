@@ -1,0 +1,57 @@
+language: cpp
+
+compiler:
+  - gcc
+
+# by default Ubuntu Precise is included
+# this results on 3 build configurations:
+# Ubuntu Precise and Trusty + Latest OSX image
+matrix:
+    - os: linux
+      dist: bionic
+      sudo: required
+    - os: linux
+      dist: xenial
+      sudo: required
+
+addons:
+  apt:
+    packages:
+      - cmake
+      - qt5-default
+      - libqt5opengl5-dev
+      - libgl1-mesa-dev
+      - libglu1-mesa-dev
+      - libprotobuf-dev 
+      - protobuf-compiler 
+      - libode-dev
+      - libboost-dev
+      - omniorb
+      - omniidl
+      - omniorb-nameserver
+      - libomniorb4-dev
+      - build-essential 
+      - libsfml-dev 
+      - g++
+  homebrew:
+    taps: robotology/formulae
+    packages:
+      - qt5
+      - protobuf
+      - robotology/formulae/ode
+install:
+#GEARSystem
+  - git clone https://github.com/maracatronics/GEARSystem.git
+  - cd GEARSystem && cd trunk
+  - sh build/corba_skeletons.sh
+  - qmake install_path=/usr/lib/
+  - make -j4
+  - sudo sh install.sh
+
+script:
+  # grsim
+  - cd $TRAVIS_BUILD_DIR
+  - sudo protobuf.sh
+  - mkdir build && cd build
+  - qmake ..
+  - make
