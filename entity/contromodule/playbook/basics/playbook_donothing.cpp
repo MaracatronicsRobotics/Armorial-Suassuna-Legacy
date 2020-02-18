@@ -14,12 +14,16 @@ int Playbook_DoNothing::maxNumPlayer() {
 void Playbook_DoNothing::configure(int numPlayers) {
     _bh_doNothing.clear();
 
-    _bh_atk = new Behaviour_Attacker();
-    _bh_gk = new Behaviour_Goalkeeper();
-    _bh_rcv = new Behaviour_Receiver();
-    usesBehaviour(_bh_atk);
-    usesBehaviour(_bh_gk);
-    usesBehaviour(_bh_rcv);
+    //_bh_atk = new Behaviour_Attacker();
+    //_bh_gk = new Behaviour_Goalkeeper();
+    //_bh_rcv = new Behaviour_Receiver();
+    _bh_penaltyCF = new Behaviour_Penalty_CF();
+    _bh_penaltyGK = new Behaviour_Penalty_GK();
+    //usesBehaviour(_bh_atk);
+    //usesBehaviour(_bh_gk);
+    //usesBehaviour(_bh_rcv);
+    usesBehaviour(_bh_penaltyCF);
+    usesBehaviour(_bh_penaltyGK);
 
     for(int i=0; i<numPlayers; i++) {
         Behaviour_DoNothing *bh_doNothing = new Behaviour_DoNothing();
@@ -30,15 +34,16 @@ void Playbook_DoNothing::configure(int numPlayers) {
 
 void Playbook_DoNothing::run(int numPlayers) {
     QList<quint8> allPlayers = dist()->getAllPlayers();
-    setPlayerBehaviour(allPlayers.at(0), _bh_atk);
-    setPlayerBehaviour(allPlayers.at(1), _bh_gk);
-
-    setPlayerBehaviour(allPlayers.at(2), _bh_rcv);
+    //setPlayerBehaviour(allPlayers.at(0), _bh_atk);
+    //setPlayerBehaviour(allPlayers.at(1), _bh_gk);
+    //setPlayerBehaviour(allPlayers.at(2), _bh_rcv);
+    setPlayerBehaviour(allPlayers.at(0), _bh_penaltyCF);
+    setPlayerBehaviour(allPlayers.at(1), _bh_penaltyGK);
     // setting attacker
-    _bh_rcv->setAttackerId(allPlayers.at(0));
+    //_bh_rcv->setAttackerId(allPlayers.at(0));
     // setting receivers
-    _bh_atk->clearReceivers();
-    _bh_atk->addReceiver(allPlayers.at(2));
+    //_bh_atk->clearReceivers();
+    //_bh_atk->addReceiver(allPlayers.at(2));
     /*
     for(int i=0; i<numPlayers; i++)
         setPlayerBehaviour(dist()->getPlayer(), _bh_doNothing.at(i));
