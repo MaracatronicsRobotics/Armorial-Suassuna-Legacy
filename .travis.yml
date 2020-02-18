@@ -49,7 +49,7 @@ install:
   - sudo sh install.sh
 
 script:
-  # grsim
+  # Suassuna
   - cd $TRAVIS_BUILD_DIR
   - sudo protobuf.sh
   - mkdir build && cd build
