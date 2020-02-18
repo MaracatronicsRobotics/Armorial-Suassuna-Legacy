@@ -3,6 +3,7 @@
 
 #include <entity/player/behaviour/behaviour.h>
 #include <entity/player/skills/skills_include.h>
+#include <utils/freeangles/freeangles.h>
 
 class Behaviour_Penalty_CF : public Behaviour {
 private:
@@ -12,6 +13,7 @@ private:
     Skill_Kick *_skill_kick;
     int _state;
     Position _kickPosition;
+    Position getBestKickPosition();
 
     // Auxiliary
     bool isGKRight();

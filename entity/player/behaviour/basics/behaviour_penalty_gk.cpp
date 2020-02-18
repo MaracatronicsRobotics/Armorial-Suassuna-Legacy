@@ -41,9 +41,9 @@ void Behaviour_Penalty_GK::run() {
     Position desiredPosition = getAttackerInterceptPosition();
 
     if(loc()->ourSide().isRight() && desiredPosition.x() > loc()->ourGoal().x()-GOALPOSTS_ERROR)        // cobrir angulos certos (manter goleiro na area do gol!)
-        desiredPosition.setPosition(loc()->ourGoal().x()-GOALPOSTS_ERROR, desiredPosition.y(), 0.0);     // varia de lado pra lado, com erros nas barras p precisao
+        desiredPosition.setPosition(loc()->ourGoal().x(), desiredPosition.y(), 0.0);     // varia de lado pra lado, com erros nas barras p precisao
     else if(loc()->ourSide().isLeft() && desiredPosition.x() < loc()->ourGoal().x()+GOALPOSTS_ERROR)
-        desiredPosition.setPosition(loc()->ourGoal().x()+GOALPOSTS_ERROR, desiredPosition.y(), 0.0);
+        desiredPosition.setPosition(loc()->ourGoal().x(), desiredPosition.y(), 0.0);
 
 
     _skill_goToLookTo->setDesiredPosition(desiredPosition);
