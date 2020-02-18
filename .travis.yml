@@ -51,7 +51,7 @@ install:
 script:
   # Suassuna
   - cd $TRAVIS_BUILD_DIR
-  - sudo protobuf.sh
+  - sudo ./protobuf.sh
   - mkdir build && cd build
   - qmake ..
   - make
