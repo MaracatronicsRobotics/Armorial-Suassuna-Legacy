@@ -24,7 +24,7 @@ public:
 
 private:
     std::pair<Position, Position>findPoint(Position colisionPoint,int iteratorPoints);
-    Position hasCollision(Position newPoint);
+    Position hasCollisionAtLine();
     void addColisionPosition(Position _pos, Boolean _isBall);
     QList<std::pair<Position, Boolean>> _colisionPosition;
     QLinkedList<Position> _path;
