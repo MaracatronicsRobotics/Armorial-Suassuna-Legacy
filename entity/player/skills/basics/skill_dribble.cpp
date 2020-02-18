@@ -10,5 +10,5 @@ Skill_Dribble::Skill_Dribble() {
 }
 
 void Skill_Dribble::run() {
-    player()->Dribble(_isActive);
+    player()->dribble(_isActive);
 }

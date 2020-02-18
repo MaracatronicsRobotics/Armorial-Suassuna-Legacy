@@ -1,8 +1,13 @@
+#include "player.h"
+#include <entity/contromodule/mrcteam.h>
+#include <entity/player/playeraccess.h>
+#include <entity/player/behaviour/behaviour.h>
 
+#include <entity/contromodule/grsSimulator/grsSimulator.h>
 
-void Player::goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double aim_x, double aim_y, double angleOrigin2Robot, double offset){
-    // Configura o robô para ir até a bola e olhar para um alvo
-    std::pair<float, float> a;
+QString Player::name(){
+    return "Player #"+QString::number((int)_team->teamId())+":"+QString::number((int)_playerId);
+}
 
 Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Behaviour *defaultBehaviour, SSLReferee *ref, grsSimulator *grSim, PID *vxPID, PID *vyPID, PID *vwPID) : Entity(Entity::ENT_PLAYER){
     _world = world;
@@ -16,22 +21,43 @@ Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Be
     _playerAccessSelf = new PlayerAccess(true, this, team->loc());
     _playerAccessBus = new PlayerAccess(false, this, team->loc());
 
-    setSpeed(a.first, a.second, w.second);
+    _vxPID = vxPID;
+    _vyPID = vyPID;
+    _vwPID = vwPID;
+
+    // Idle control
+    _idleCount = 0;
+
+    // Reset player
+    reset();
+
+    // grSimulator for test
+    _grSim = grSim;
 }
 
-void Player::AroundTheBall(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset){
-    // Configura o robô para ir até a bola e girar em torno dela
-    std::pair<float, float> a;
-    long double moduloDistancia = sqrt(pow((point_x - robot_x),2)+pow((point_y - robot_y),2));
-    a = GoTo(robot_x, robot_y, point_x, point_y, robotAngle, offset);
-    float theta = RotateTo(robot_x, robot_y, point_x, point_y, robotAngle);
-
-    if (moduloDistancia < offset) setSpeed(0, 0.2, theta); //3% de diferença nas velocidades
-    else setSpeed(a.first, a.second, theta);
+Player::~Player(){
+    if(_defaultBehaviour != NULL)
+        delete _defaultBehaviour;
+    if(_playerAccessSelf != NULL)
+        delete _playerAccessSelf;
+    if(_playerAccessBus != NULL)
+        delete _playerAccessBus;
 }
 
-void Player::Dribble(){}
+PlayerAccess* Player::access() const {
+    return _playerAccessBus;
+}
 
+void Player::reset(){
+    // Errors
+    _lError = 0.015;
+    _aError = Angle::toRadians(4.0);
+}
+
+/* player info methods */
+quint8 Player::playerId() const{
+    return _playerId;
+}
 
 quint8 Player::teamId() const{
     return _team->teamId();
@@ -239,8 +265,7 @@ void Player::setSpeed(float x, float y, float theta) {
 
 }
 
-// exemplo de skill
-std::pair<float, float> Player::GoTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset){
+std::pair<float, float> Player::goTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset){
     // Define a velocidade do robô para chegar na bola
     long double Vx = (point_x - robot_x);
     long double Vy = (point_y - robot_y);
@@ -267,7 +292,7 @@ std::pair<float, float> Player::GoTo(double robot_x, double robot_y, double poin
     return std::make_pair(newVX, newVY);
 }
 
-std::pair<double, double> Player::RotateTo(double robot_x, double robot_y, double point_x, double point_y, double angleOrigin2Robot) {
+std::pair<double, double> Player::rotateTo(double robot_x, double robot_y, double point_x, double point_y, double angleOrigin2Robot) {
     // Define a velocidade angular do robô para visualizar a bola
     double vectorRobot2BallX = (point_x - robot_x);
     double vectorRobot2BallY = (point_y - robot_y);
@@ -338,8 +363,8 @@ void Player::goToLookTo(double robot_x, double robot_y, double point_x, double p
     moduloDist = sqrt(pow((p_x - robot_x), 2) + pow((p_y - robot_y), 2));
     final_x = (p_x - robot_x)/moduloDist;
     final_y = (p_y - robot_y)/moduloDist;
-    a = GoTo(robot_x, robot_y, p_x + offset * final_x, p_y + offset * final_y, angleOrigin2Robot, offset);
-    double theta = RotateTo(robot_x, robot_y, aim_x, aim_y, angleOrigin2Robot).second;
+    a = goTo(robot_x, robot_y, p_x + offset * final_x, p_y + offset * final_y, angleOrigin2Robot, offset);
+    double theta = rotateTo(robot_x, robot_y, aim_x, aim_y, angleOrigin2Robot).second;
 
     if(fabs(a.first) <= 0.1){
         if(a.first < 0) a.first = -0.1;
@@ -358,24 +383,24 @@ void Player::goToLookTo(double robot_x, double robot_y, double point_x, double p
     setSpeed(a.first, a.second, theta);
 }
 
-void Player::AroundTheBall(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset){
+void Player::aroundTheBall(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset){
     // Configura o robô para ir até a bola e girar em torno dela
     std::pair<float, float> a;
     long double moduloDistancia = sqrt(pow((point_x - robot_x),2)+pow((point_y - robot_y),2));
-    a = GoTo(robot_x, robot_y, point_x, point_y, robotAngle, offset);
-    float theta = RotateTo(robot_x, robot_y, point_x, point_y, robotAngle).second;
+    a = goTo(robot_x, robot_y, point_x, point_y, robotAngle, offset);
+    float theta = rotateTo(robot_x, robot_y, point_x, point_y, robotAngle).second;
 
     if (moduloDistancia < offset) setSpeed(0, 0.2, theta); //3% de diferença nas velocidades
     else setSpeed(a.first, a.second, theta);
 }
 
-void Player::Kick(bool isPass){
+void Player::kick(bool isPass, float kickZPower){
     if(isPass)
-        _grSim->setKickSpeed(_team->teamId(), playerId(), 2.0, 0.0);
+        _grSim->setKickSpeed(_team->teamId(), playerId(), 2.0, kickZPower);
     else
-        _grSim->setKickSpeed(_team->teamId(), playerId(), 6.0, 0.0);
+        _grSim->setKickSpeed(_team->teamId(), playerId(), 6.0, kickZPower);
 }
 
-void Player::Dribble(bool isActive){
+void Player::dribble(bool isActive){
     _grSim->setDribble(_team->teamId(), playerId(), isActive);
 }
