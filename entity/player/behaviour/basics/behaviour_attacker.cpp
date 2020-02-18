@@ -179,7 +179,6 @@ Position Behaviour_Attacker::getBestKickPosition(){
                 largestMid = endAngle - dif/2;
             }
         }
-
     }
 
     // Triangularization

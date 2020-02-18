@@ -23,55 +23,29 @@ void Behaviour_Penalty_CF::run() {
 
     _skill_kick->setIsPass(false);
 
-    /*switch(_state){
-    case STATE_ATTACK:{
-        enableTransition(1);
-        _kickPosition = loc()->ourGoal();
+    /*const float minAngle = WR::Utils::getAngle(loc()->ball(), loc()->ourGoalRightPost());
+    const float maxAngle = WR::Utils::getAngle(loc()->ball(), loc()->ourGoalLeftPost());
 
-        Position behindBall = WR::Utils::threePoints(loc()->ball(), _kickPosition, 0.2, GEARSystem::Angle::pi); // por trás da bola
+    QList<FreeAngles::Interval> freeAngles = FreeAngles::getFreeAngles(player()->position(), minAngle, maxAngle, false);
+    QList<FreeAngles::Interval>::iterator it;
 
-        _sk_goto->setDesiredPosition(behindBall);
-        _sk_goto->setAimPosition(_kickPosition);
+    for(it = freeAngles.begin(); it != freeAngles.end(); it++){
+        if(it->obstructed()) continue;
+        float initAngle = it->angInitial();
+        float endAngle = it->angFinal();
+        WR::Utils::angleLimitZeroTwoPi(&initAngle);
+        WR::Utils::angleLimitZeroTwoPi(&endAngle);
 
-        // change state to kick
-        Angle anglePlayerBall = player()->angleTo(loc()->ball());
-        float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
-        if (diff <= atan(0.7)){ // can kick (behind ball, certainly) (atan(0.7) = 35deg
-            _state = STATE_KICK;
-            _timer->update();
+        float dif = endAngle - initAngle;
+        WR::Utils::angleLimitZeroTwoPi(&dif);
+        if(dif > largestAngle){
+            largestAngle = dif;
+            largestMid = endAngle - dif/2;
         }
-    }
-    break;
-    case STATE_KICK:{
-        enableTransition(1); // move transition
-
-        if(player()->isLookingTo(_kickPosition, 0.1)){ // 0.1 is angle error
-            //_sk_kick->setIsPass(true);
-            _sk_kick->setAim(_kickPosition);
-            enableTransition(0); // shoot transiction
-        }
-
-        Angle anglePlayerBall = player()->angleTo(loc()->ball());
-        float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
-        if (!(diff <= atan(0.7)) || player()->distBall() > 0.4f){ // isn't in front or ball shooted (atan(0.7) = 35deg
-            _state = STATE_ATTACK;
-        }
-
-        if(_timer->getTimeInSeconds() >= 0.05){ // reposition of player after 0.05 sec
-            _state = STATE_ATTACK;
-        }
-    }
-    break;
     }*/
 
-
-
-
-
     //Position behindBall = WR::Utils::threePoints(loc()->ball(), _kickPosition, 0.2, GEARSystem::Angle::pi); // por trás da bola
-    Position Aim;
-    if (isGKRight() == true) Aim = Position(true, loc()->ourGoalLeftPost().x(), loc()->ourGoalLeftPost().y() - 0.1, 0.0);
-    else Aim = Position(true, loc()->ourGoalRightPost().x(), loc()->ourGoalRightPost().y() + 0.1, 0.0);
+    Position Aim = getBestKickPosition();
 
     _skill_goToLookTo->setAimPosition(Aim);
     _skill_kick->setAim(Aim);
@@ -84,26 +58,57 @@ void Behaviour_Penalty_CF::run() {
     else enableTransition(STATE_GOTO);
 }
 
-bool Behaviour_Penalty_CF::isGKRight() {
-    int side;
+Position Behaviour_Penalty_CF::getBestKickPosition(){
+    const Position goalRightPost = loc()->ourGoalRightPost();
+    const Position goalLeftPost = loc()->ourGoalLeftPost();
+    const Position goalCenter = loc()->ourGoal();
 
-    //Descomente para usar no campo
-    /*if (loc()->ourSide().isLeft() == true) side = 1;
-    else side = -1;*/
+    // calculating angles
+    const float minAngle = WR::Utils::getAngle(loc()->ball(), goalRightPost);
+    const float maxAngle = WR::Utils::getAngle(loc()->ball(), goalLeftPost);
 
-    //Descomente para usar no teste
-    if (loc()->ourSide().isLeft() == true) side = -1;
-    else side = 1;
+    // generating list of freeAngles to goal
+    QList<FreeAngles::Interval> freeAngles = FreeAngles::getFreeAngles(loc()->ball(), minAngle, maxAngle);
 
-    QList<Player*> opPlayers = loc()->getOpPlayers().values();
-    QList<Player*>::iterator id;
-    for(id = opPlayers.begin(); id != opPlayers.end(); id++){
-        if(loc()->isInsideTheirArea((*id)->position())){
-            bool _right;
-            if (PlayerBus::ourPlayerAvailable((*id)->playerId()) == true) {
-                if (side * (PlayerBus::theirPlayer((*id)->playerId())->position().y() - player()->position().y()) < 0.0) return true;
-                else return false;
+    float largestAngle, largestMid;
+    // get the largest interval
+    if(freeAngles.size() == 0){
+        return Position(false, 0.0, 0.0, 0.0); // debugar isso dps
+    }else{
+        QList<FreeAngles::Interval>::iterator it;
+        for(it = freeAngles.begin(); it != freeAngles.end(); it++){
+            if(it->obstructed()) continue;
+            float initAngle = it->angInitial();
+            float endAngle = it->angFinal();
+            WR::Utils::angleLimitZeroTwoPi(&initAngle);
+            WR::Utils::angleLimitZeroTwoPi(&endAngle);
+
+            float dif = endAngle - initAngle;
+            WR::Utils::angleLimitZeroTwoPi(&dif);
+            if(dif > largestAngle){
+                largestAngle = dif;
+                largestMid = endAngle - dif/2;
             }
         }
     }
+
+    // Triangularization
+    const float x = goalCenter.x() - loc()->ball().x();
+    const float tg = tan(largestMid);
+    const float y = tg * x;
+
+    // Impact point
+    const float pos_y = loc()->ball().y() + y;
+    const Position impactPosition(true, goalCenter.x(), pos_y, 0.0);
+
+    // Check if impact position has space for ball radius
+    const float distImpactPos = WR::Utils::distance(loc()->ball(), impactPosition);
+    const float radiusAngle = largestAngle/2.0;
+    const float distR = radiusAngle * distImpactPos;
+
+    if(distR < (1.5 * 0.025)){ // 1.5 * raioDaBola (ruido ft. tristeza)
+        return Position(false, 0.0, 0.0, 0.0); // bola n passa, debugar isso dps
+    }
+
+    return impactPosition;
 }
