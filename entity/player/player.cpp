@@ -256,8 +256,8 @@ void Player::setSpeed(float x, float y, float theta) {
     _lastSpeedAbs = sqrt(pow(x, 2) + pow(y, 2));
 
     // watchdog on speed
-    WR::Utils::limitValue(&x, -5.0, 5.0);
-    WR::Utils::limitValue(&y, -5.0, 5.0);
+    WR::Utils::limitValue(&x, -2.5, 2.5);
+    WR::Utils::limitValue(&y, -2.5, 2.5);
 
     // tem que fazer ajustes com os pids
     _grSim->setSpeed((int)_team->teamId(), (int)playerId(), x, y, theta);
