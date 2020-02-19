@@ -19,7 +19,7 @@ Behaviour_Barrier::Behaviour_Barrier() {
 
 void Behaviour_Barrier::configure() {
     usesSkill(_sk_goto = new Skill_GoToLookTo());
-    usesSkill(_sk_gk = new Skill_Goalkeeper());
+    usesSkill(_sk_gk = new Skill_InterceptBall());
     usesSkill(_sk_kick = new Skill_Kick());
 
     // Setting initial skill

@@ -25,12 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
 	entity/entity.cpp \
+    entity/player/behaviour/basics/behaviour_goalkeeper.cpp \
     entity/player/behaviour/basics/behaviour_markball.cpp \
     entity/player/behaviour/basics/behaviour_penalty_cf.cpp \
     entity/player/skills/basics/skill_aroundtheball.cpp \
     entity/player/skills/basics/skill_dribble.cpp \
     entity/player/skills/basics/skill_goto.cpp \
     entity/player/skills/basics/skill_gotolookto.cpp \
+    entity/player/skills/basics/skill_interceptball.cpp \
     entity/player/skills/basics/skill_rotateto.cpp \
 	entity/world/world.cpp \
 	entity/world/worldmapupdater.cpp \
@@ -100,8 +102,6 @@ SOURCES += \
     entity/player/control/pid.cpp \
 	utils/mrctimer/mrctimer.cpp \
     entity/player/skills/basics/skill_kick.cpp \
-    entity/player/behaviour/basics/behaviour_goalkeeper.cpp \
-    entity/player/skills/basics/skill_goalkeeper.cpp \
     entity/player/skills/basics/skill_gkick.cpp \
     entity/contromodule/playbook/basics/playbook_attack.cpp \
     entity/player/behaviour/basics/behaviour_receiver.cpp \
@@ -126,6 +126,7 @@ HEADERS += \
     entity/player/skills/basics/skill_dribble.h \
     entity/player/skills/basics/skill_goto.h \
     entity/player/skills/basics/skill_gotolookto.h \
+    entity/player/skills/basics/skill_interceptball.h \
     entity/player/skills/basics/skill_rotateto.h \
 	entity/world/world.h \
 	entity/world/worldmapupdater.h \
@@ -204,7 +205,6 @@ HEADERS += \
 	utils/mrctimer/mrctimer.h \
     entity/player/skills/basics/skill_kick.h \
     entity/player/behaviour/basics/behaviour_goalkeeper.h \
-    entity/player/skills/basics/skill_goalkeeper.h \
     entity/player/skills/basics/skill_gkick.h \
     entity/contromodule/playbook/basics/playbook_attack.h \
     entity/player/behaviour/basics/behaviour_receiver.h \

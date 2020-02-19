@@ -20,7 +20,7 @@ Behaviour_Receiver::Behaviour_Receiver() {
 
 void Behaviour_Receiver::configure() {
     usesSkill(_skill_GoToLookTo = new Skill_GoToLookTo());
-    usesSkill(_skill_Receiver = new Skill_Goalkeeper());
+    usesSkill(_skill_Receiver = new Skill_InterceptBall());
 
     setInitialSkill(_skill_GoToLookTo);
 
@@ -46,9 +46,17 @@ void Behaviour_Receiver::run() {
 
     // fazer machine state aqui
 
-    _skill_GoToLookTo->setAimPosition(PlayerBus::ourPlayer(_attackerId)->position());
-    _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
-
+    /*switch (_state) {
+    case STATE_POSITION:
+        enableTransition(SK_GOTO);
+        _skill_GoToLookTo->setAimPosition(PlayerBus::ourPlayer(_attackerId)->position());
+        _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
+        break;
+    case STATE_WAIT:
+    case STATE_RECEIVE:
+        enableTransition(SK_RECV);
+        if (loc()->b)
+    }*/
 }
 
 void Behaviour_Receiver::goingToReceive(quint8 id){
@@ -77,7 +85,7 @@ Position Behaviour_Receiver::getReceiverBestPosition(int quadrant, quint8 attack
     const Position attackerPos = PlayerBus::ourPlayer(attackerId)->position(); // Pegar posicao do attacker
     const float distToAttacker = WR::Utils::distance(player()->position(), attackerPos); // Distancia até o atacante
     const std::pair<Position, Position> quadrantPosition = getQuadrantInitialPosition(_quadrant); // Par de posições do quadrante
-    float radius = minRadius + (maxRadius - minRadius)/2.0; // pegar raio médio pra atuação
+    float radius = (minRadius + maxRadius)/2.0; // pegar raio médio pra atuação
 
     //
     //    PARTE DO GOL   //

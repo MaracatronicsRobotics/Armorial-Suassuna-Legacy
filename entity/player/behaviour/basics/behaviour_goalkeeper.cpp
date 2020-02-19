@@ -22,7 +22,7 @@ Behaviour_Goalkeeper::Behaviour_Goalkeeper() {
 }
 
 void Behaviour_Goalkeeper::configure() {
-    usesSkill(_skill_Goalkeeper = new Skill_Goalkeeper());
+    usesSkill(_skill_Goalkeeper = new Skill_InterceptBall());
     usesSkill(_skill_goToLookTo = new Skill_GoToLookTo());
     usesSkill(_skill_gkick = new Skill_Kick());
 
