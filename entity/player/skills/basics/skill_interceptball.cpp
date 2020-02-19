@@ -1,16 +1,16 @@
-#include "skill_goalkeeper.h"
+#include "skill_interceptball.h"
 #include <entity/player/skills/skills_include.h>
 #include <bits/stdc++.h>
 
-QString Skill_Goalkeeper::name() {
-    return "Skill_Goalkeeper";
+QString Skill_InterceptBall::name() {
+    return "Skill_interceptBall";
 }
 
-Skill_Goalkeeper::Skill_Goalkeeper() {
+Skill_InterceptBall::Skill_InterceptBall() {
     setInterceptAdvance(false);
 }
 
-void Skill_Goalkeeper::run() {
+void Skill_InterceptBall::run() {
     /* calculating projection of ball */
     Position objectivePos; // Position where the goalkeeper should be
 
@@ -28,7 +28,7 @@ void Skill_Goalkeeper::run() {
         Position ballVelocityLine = Position(true, posBall.x()+unitaryBallVelocity.x(), posBall.y()+unitaryBallVelocity.y(), 0.0);
 
         // Call utils to get projection
-        objectivePos = WR::Utils::projectPointAtLine(posBall, ballVelocityLine, player()->position());
+        objectivePos = WR::Utils::projectPointAtLine(posBall, ballVelocityLine, player()->position()); //Intercepta em 90 graus
     }
 
     player()->goToLookTo(player()->position().x(), player()->position().y(), objectivePos.x(), objectivePos.y(), loc()->ball().x(), loc()->ball().y(), player()->orientation().value(), 0.01);

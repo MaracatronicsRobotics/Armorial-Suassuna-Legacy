@@ -13,7 +13,7 @@ private:
 
     // Skills
     Skill_GoToLookTo *_skill_GoToLookTo;
-    Skill_Goalkeeper *_skill_Receiver;
+    Skill_InterceptBall *_skill_Receiver;
 
     // Parameters
     bool _followAttacker;

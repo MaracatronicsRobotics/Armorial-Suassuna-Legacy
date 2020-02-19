@@ -21,7 +21,7 @@ Behaviour_Penalty_GK::Behaviour_Penalty_GK() {
 }
 
 void Behaviour_Penalty_GK::configure() {
-    usesSkill(_skill_Goalkeeper = new Skill_Goalkeeper());
+    usesSkill(_skill_Goalkeeper = new Skill_InterceptBall());
     usesSkill(_skill_goToLookTo = new Skill_GoToLookTo());
 
     // goto
