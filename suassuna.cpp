@@ -134,7 +134,7 @@ void Suassuna::setupOurPlayers() {
         // Create Player
         PID *vxPID = new PID(0.5, 0.01, 0.0, 2.5, -2.5);
         PID *vyPID = new PID(0.5, 0.01, 0.0, 2.5, -2.5);
-        PID *vwPID = new PID(0.5, 0.01, 0.002, 3.0, -3.0);
+        PID *vwPID = new PID(0.5, 0.01, 0.003, 3.0, -3.0);
         Player *player = new Player(_world, _ourTeam, _ctr, playerList.at(i), new Behaviour_DoNothing(), _ref, _grSimulator, vxPID, vyPID, vwPID);
         // Enable
         player->enable(true);

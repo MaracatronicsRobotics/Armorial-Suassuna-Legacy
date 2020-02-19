@@ -15,7 +15,7 @@ Behaviour_Goalkeeper::Behaviour_Goalkeeper() {
     _skill_gkick = NULL;
     _skill_goToLookTo = NULL;
 
-    setRadius(0.2); // raio que define posse de bola para o goleiro dar takeout
+    setRadius(0.4); // raio que define posse de bola para o goleiro dar takeout
     setTakeoutEnabled(true); // avançar na bola quando ela estiver na margem de aceitação (takeout vai dar goto e kick na bola)
     setTakeoutFactor(1.0); // fator de erro pra largura do gol (avançar na bola)
     useAttackerOri(true); // pra levar o atacante em consideração na projeção no gol
