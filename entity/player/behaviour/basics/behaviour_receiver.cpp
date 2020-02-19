@@ -12,7 +12,7 @@ QString Behaviour_Receiver::name() {
 
 Behaviour_Receiver::Behaviour_Receiver() {
     _skill_GoToLookTo = NULL;
-    _attackerId = -1;
+    _attackerId = NO_ATTACKER;
     setQuadrant(NO_QUADRANT);
     setFollowAttacker(true);
     setActionRadius(2.5, 4.5);
