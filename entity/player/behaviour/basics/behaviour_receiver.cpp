@@ -12,7 +12,7 @@ QString Behaviour_Receiver::name() {
 
 Behaviour_Receiver::Behaviour_Receiver() {
     _skill_GoToLookTo = NULL;
-    setAttackerId(NO_ATTACKER);
+    _attackerId = -1;
     setQuadrant(NO_QUADRANT);
     setFollowAttacker(true);
     setActionRadius(2.5, 4.5);
@@ -31,7 +31,7 @@ void Behaviour_Receiver::configure() {
 };
 
 void Behaviour_Receiver::run() {
-    setQuadrant(QUADRANT_UP);
+    setQuadrant(QUADRANT_UPMID);
     if(_attackerId == NO_ATTACKER){
         printf("[BEHAVIOUR RECEIVER] Attacker isn't set (Receiver ID: %u)\n", player()->playerId());
         return ;
