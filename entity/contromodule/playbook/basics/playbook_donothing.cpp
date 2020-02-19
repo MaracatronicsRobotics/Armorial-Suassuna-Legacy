@@ -33,10 +33,12 @@ void Playbook_DoNothing::configure(int numPlayers) {
 }
 
 void Playbook_DoNothing::run(int numPlayers) {
+    quint8 gkId = dist()->getGK();
     QList<quint8> allPlayers = dist()->getAllPlayers();
+
+    setPlayerBehaviour(gkId, _bh_gk);
     setPlayerBehaviour(allPlayers.at(0), _bh_atk);
-    setPlayerBehaviour(allPlayers.at(1), _bh_gk);
-    setPlayerBehaviour(allPlayers.at(2), _bh_rcv);
+    setPlayerBehaviour(allPlayers.at(1), _bh_rcv);
     //setPlayerBehaviour(allPlayers.at(0), _bh_penaltyCF);
     //setPlayerBehaviour(allPlayers.at(1), _bh_penaltyGK);
 
