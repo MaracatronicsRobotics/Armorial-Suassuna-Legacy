@@ -110,7 +110,8 @@ SOURCES += \
     entity/player/behaviour/basics/behaviour_barrier.cpp \
     entity/player/behaviour/basics/behaviour_markplayer.cpp \
     entity/player/behaviour/basics/behaviour_penalty_gk.cpp \
-    entity/player/skills/basics/skill_pushball.cpp
+    entity/player/skills/basics/skill_pushball.cpp \
+    entity/player/role/role.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -213,4 +214,5 @@ HEADERS += \
     entity/player/behaviour/basics/behaviour_barrier.h \
     entity/player/behaviour/basics/behaviour_markplayer.h \
     entity/player/behaviour/basics/behaviour_penalty_gk.h \
-    entity/player/skills/basics/skill_pushball.h
+    entity/player/skills/basics/skill_pushball.h \
+    entity/player/role/role.h
