@@ -29,6 +29,7 @@ class PlayerAccess;
 class Behaviour;
 class Skill;
 class Navigation;
+class Role;
 class NavigationAlgorithm;
 class ControlAlgorithm;
 class PlayerUtils;

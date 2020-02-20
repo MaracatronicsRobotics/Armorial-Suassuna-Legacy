@@ -14,7 +14,7 @@
 class Player : public Entity
 {
 public:
-    Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Behaviour *defaultBehaviour, SSLReferee *ref, grsSimulator *grSim, PID *vxPID, PID *vyPID, PID *vwPID);
+    Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Role *defaultRole, SSLReferee *ref, grsSimulator *grSim, PID *vxPID, PID *vyPID, PID *vwPID);
     ~Player();
     QString name();
     void reset();
@@ -73,8 +73,8 @@ public:
     void dribble(bool isActive);
 
     // Behaviour
-    void setBehaviour(Behaviour *b);
-    QString getBehaviourName();
+    void setRole(Role *b);
+    QString getRoleName();
 
 private:
     // Entity inherit virtual methods
@@ -106,10 +106,10 @@ private:
     // Controller
     Controller *_ctr;
 
-    // Behaviour
-    Behaviour *_behaviour;
-    Behaviour *_defaultBehaviour;
-    QMutex _mutexBehaviour;
+    // Role
+    Role *_role;
+    Role *_defaultRole;
+    QMutex _mutexRole;
 
     // errors
     float _lError;

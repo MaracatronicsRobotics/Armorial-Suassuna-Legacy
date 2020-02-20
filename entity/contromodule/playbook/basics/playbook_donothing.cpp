@@ -12,43 +12,14 @@ int Playbook_DoNothing::maxNumPlayer() {
 }
 
 void Playbook_DoNothing::configure(int numPlayers) {
-    _bh_doNothing.clear();
-
-    _bh_atk = new Behaviour_Attacker();
-    _bh_gk = new Behaviour_Goalkeeper();
-    _bh_rcv = new Behaviour_Receiver();
-    //_bh_penaltyCF = new Behaviour_Penalty_CF();
-    //_bh_penaltyGK = new Behaviour_Penalty_GK();
-    usesBehaviour(_bh_atk);
-    usesBehaviour(_bh_gk);
-    usesBehaviour(_bh_rcv);
-    //usesBehaviour(_bh_penaltyCF);
-    //usesBehaviour(_bh_penaltyGK);
-
     for(int i=0; i<numPlayers; i++) {
-        Behaviour_DoNothing *bh_doNothing = new Behaviour_DoNothing();
-        usesBehaviour(bh_doNothing);
-        _bh_doNothing.push_back(bh_doNothing);
+        Role_Default *rl_def = new Role_Default();
+        usesRole(rl_def);
+        _rl_def.push_back(rl_def);
     }
 }
 
 void Playbook_DoNothing::run(int numPlayers) {
-    quint8 gkId = dist()->getGK();
-    QList<quint8> allPlayers = dist()->getAllPlayers();
-
-    setPlayerBehaviour(gkId, _bh_gk);
-    setPlayerBehaviour(allPlayers.at(0), _bh_atk);
-    setPlayerBehaviour(allPlayers.at(1), _bh_rcv);
-    //setPlayerBehaviour(allPlayers.at(0), _bh_penaltyCF);
-    //setPlayerBehaviour(allPlayers.at(1), _bh_penaltyGK);
-
-    // setting attacker
-    _bh_rcv->setAttackerId(allPlayers.at(0));
-    // setting receivers
-    _bh_atk->clearReceivers();
-    _bh_atk->addReceiver(allPlayers.at(2));
-    /*
     for(int i=0; i<numPlayers; i++)
-        setPlayerBehaviour(dist()->getPlayer(), _bh_doNothing.at(i));
-        */
+        setPlayerRole(dist()->getPlayer(), _rl_def.at(i));
 }
