@@ -30,7 +30,7 @@ private:
     Strategy* strategy();
 
     // Debug
-    bool _showBehaviours;
+    bool _showRoles;
 };
 
 #endif // CONTROLLER_H

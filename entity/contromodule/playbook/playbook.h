@@ -7,6 +7,7 @@
 #include <entity/contromodule/mrcteam.h>
 #include <entity/contromodule/playersdistribution.h>
 #include <entity/player/behaviour/behaviour.h>
+#include <entity/player/role/role.h>
 
 class Playbook : public QObject {
     Q_OBJECT
@@ -20,7 +21,7 @@ public:
 
     // Called in StrategyState loop
     void runPlaybook(QString strategyState);
-    void clearOldBehaviours();
+    void clearOldRoles();
 
     // Players manipulation
     void addPlayer(quint8 id);
@@ -31,10 +32,10 @@ public:
 protected:
     // Players on this playbook access
     bool hasPlayer(quint8 id);
-    void setPlayerBehaviour(quint8 id, Behaviour *behaviour);
+    void setPlayerRole(quint8 id, Role *role);
 
     // Behaviour functions
-    void usesBehaviour(Behaviour *behaviour);
+    void usesRole(Role *role);
 
     // canKickBall access (normal start)
     bool canKickBall() const;
@@ -52,11 +53,11 @@ private:
     // Configure info
     bool _configureEnabled;
     int _lastNumPlayers;
-    void updatePlayersBehaviours();
+    void updatePlayersRoles();
 
     // Behaviours garbage collector
-    QList<Behaviour*> _oldBehaviours;
-    void setCurrBehavioursToOld();
+    QList<Role*> _oldRoles;
+    void setCurrRolesToOld();
 
     // Game info
     MRCTeam *_ourTeam;
@@ -67,8 +68,8 @@ private:
     // Players in this playbook list
     PlayersDistribution *_dist;
     QList<quint8> _players;
-    QHash<quint8,Behaviour*> _assignmentTable;
-    QList<Behaviour*> _behavioursList;
+    QHash<quint8,Role*> _assignmentTable;
+    QList<Role*> _rolesList;
 
     // Playbook initialized
     bool _initialized;

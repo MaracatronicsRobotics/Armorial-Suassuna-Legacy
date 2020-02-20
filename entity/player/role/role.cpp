@@ -1,3 +1,9 @@
+#include <entity/referee/SSLReferee/sslgameinfo.h>
+#include <entity/referee/SSLReferee/sslreferee.h>
+#include <entity/contromodule/mrcteam.h>
+#include <entity/contromodule/playersdistribution.h>
+#include <entity/player/behaviour/behaviour.h>
+
 #include "role.h"
 
 Role::Role() {
@@ -22,11 +28,10 @@ Locations* Role::loc() {
     return _ourTeam->loc();
 }
 
-void Role::initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc, CoachUtils *utils, SSLReferee *ref){
+void Role::initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc, SSLReferee *ref){
     _ourTeam = ourTeam;
     _theirTeam = theirTeam;
     _loc = loc;
-    _utils = utils;
     _ref = ref;
 
     // Configure Role
@@ -94,11 +99,4 @@ PlayerAccess* Role::player(){
         std::cout << "[ERROR] " << name().toStdString() << ", requesting player(), playerAccess not set!\n";
     }
     return _playerAccess;
-}
-
-Locations* Behaviour::loc() {
-    if(_loc == NULL){
-        std::cout << "[ERROR] " << name().toStdString() << ", requesting loc(), loc not initialized!\n";
-    }
-    return _loc;
 }
