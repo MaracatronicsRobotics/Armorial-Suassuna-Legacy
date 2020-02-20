@@ -3,17 +3,17 @@
 #include <math.h>
 
 PID::PID(){
-    _kp = 0;
-    _kd = 0;
-    _ki = 0;
+    _kp = 0.0;
+    _kd = 0.0;
+    _ki = 0.0;
 
-    _max = 0;
-    _min = 0;
+    _max = 0.0;
+    _min = 0.0;
 
-    _pre_error = 0;
-    _integral = 0;
+    _pre_error = 0.0;
+    _integral = 0.0;
 
-    _timer = new MRCTimer(100);
+    _timer = new MRCTimer(1000.0);
     _timer->update();
 }
 
@@ -25,8 +25,8 @@ PID::PID(double kp, double ki, double kd, double max, double min){
     _max = max;
     _min = min;
 
-    _pre_error = 0;
-    _integral = 0;
+    _pre_error = 0.0;
+    _integral = 0.0;
 
     _timer = new MRCTimer(100);
     _timer->update();
@@ -44,8 +44,8 @@ void PID::setPIDParameters(double kp, double kd, double ki, double max, double m
     _max = max;
     _min = min;
 
-    _pre_error = 0;
-    _integral = 0;
+    _pre_error = 0.0;
+    _integral = 0.0;
 
     _timer->update();
 }
@@ -61,7 +61,7 @@ double PID::calculate(double desired, double actual){
     double error = desired - actual;
 
     if(fabs(error) <= 0.1){
-        _integral = 0;
+        _integral = 0.0;
     }
 
     // Proportional term
