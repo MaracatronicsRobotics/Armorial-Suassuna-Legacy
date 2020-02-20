@@ -1,7 +1,7 @@
 #include "player.h"
 #include <entity/contromodule/mrcteam.h>
 #include <entity/player/playeraccess.h>
-#include <entity/player/behaviour/behaviour.h>
+#include <entity/player/role/role.h>
 
 #include <entity/contromodule/grsSimulator/grsSimulator.h>
 
@@ -9,14 +9,14 @@ QString Player::name(){
     return "Player #"+QString::number((int)_team->teamId())+":"+QString::number((int)_playerId);
 }
 
-Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Behaviour *defaultBehaviour, SSLReferee *ref, grsSimulator *grSim, PID *vxPID, PID *vyPID, PID *vwPID) : Entity(Entity::ENT_PLAYER){
+Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Role *defaultRole, SSLReferee *ref, grsSimulator *grSim, PID *vxPID, PID *vyPID, PID *vwPID) : Entity(Entity::ENT_PLAYER){
     _world = world;
     _team = team;
     _playerId = playerID;
     _ref = ref;
     _ctr = ctr;
-    _behaviour = NULL;
-    _defaultBehaviour = defaultBehaviour;
+    _role = NULL;
+    _defaultRole = defaultRole;
 
     _playerAccessSelf = new PlayerAccess(true, this, team->loc());
     _playerAccessBus = new PlayerAccess(false, this, team->loc());
@@ -36,8 +36,8 @@ Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Be
 }
 
 Player::~Player(){
-    if(_defaultBehaviour != NULL)
-        delete _defaultBehaviour;
+    if(_defaultRole != NULL)
+        delete _defaultRole;
     if(_playerAccessSelf != NULL)
         delete _playerAccessSelf;
     if(_playerAccessBus != NULL)
@@ -85,49 +85,49 @@ void Player::loop(){
     else{
         _idleCount = 0;
 
-        _mutexBehaviour.lock();
-        if(_behaviour != NULL){
-            if(_behaviour->isInitialized() == false){
-                _behaviour->initialize(_team->loc());
+        _mutexRole.lock();
+        if(_role != NULL){
+            if(_role->isInitialized() == false){
+                _role->initialize(_world->ourTeam(), _world->theirTeam(), _team->loc(), _ref);
             }
-            _behaviour->setPlayer(this, _playerAccessSelf);
-            _behaviour->runBehaviour();
-        }else if(_defaultBehaviour != NULL){
-            if(_defaultBehaviour->isInitialized() == false){
-                _defaultBehaviour->initialize(_team->loc());
+            _role->setPlayer(this, _playerAccessSelf);
+            _role->runRole();
+        }else if(_defaultRole != NULL){
+            if(_defaultRole->isInitialized() == false){
+                _defaultRole->initialize(_world->ourTeam(), _world->theirTeam(), _team->loc(), _ref);
             }
-            _defaultBehaviour->setPlayer(this, _playerAccessSelf);
-            _defaultBehaviour->runBehaviour();
+            _defaultRole->setPlayer(this, _playerAccessSelf);
+            _defaultRole->runRole();
         }else{
-            std::cout << "[ERROR] No behaviour found for player #" << (int)playerId() << "!" << std::endl;
+            std::cout << "[ERROR] No role found for player #" << (int)playerId() << "!" << std::endl;
         }
-        _mutexBehaviour.unlock();
+        _mutexRole.unlock();
     }
 
     // Unlock wm for read
     _world->wmUnlock();
 }
 
-QString Player::getBehaviourName() {
-    _mutexBehaviour.lock();
-    QString behaviourName;
-    if(_behaviour == NULL)
-        behaviourName = "UNKNOWN";
+QString Player::getRoleName() {
+    _mutexRole.lock();
+    QString roleName;
+    if(_role == NULL)
+        roleName = "UNKNOWN";
     else
-        behaviourName = _behaviour->name();
-    _mutexBehaviour.unlock();
-    return behaviourName;
+        roleName = _role->name();
+    _mutexRole.unlock();
+    return roleName;
 }
 
-void Player::setBehaviour(Behaviour* b) {
+void Player::setRole(Role* b) {
     // Check same behavior
-    if(b==_behaviour)
+    if(b==_role)
         return;
     // Set new
-    _mutexBehaviour.lock();
-    _behaviour = b;
+    _mutexRole.lock();
+    _role = b;
     this->reset();
-    _mutexBehaviour.unlock();
+    _mutexRole.unlock();
 }
 
 void Player::finalization(){

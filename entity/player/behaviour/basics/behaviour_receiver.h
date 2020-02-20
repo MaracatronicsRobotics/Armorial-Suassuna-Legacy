@@ -4,6 +4,7 @@
 #include <entity/player/behaviour/behaviour.h>
 #include <entity/player/skills/skills_include.h>
 #include <utils/freeangles/freeangles.h>
+#include <QObject>
 
 class Behaviour_Receiver : public Behaviour {
     Q_OBJECT

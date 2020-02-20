@@ -25,7 +25,7 @@ Coach::Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam)
     _strat = NULL;
 
     // debug
-    _showBehaviours = true;
+    _showRoles = true;
 }
 
 Coach::~Coach(){
@@ -50,12 +50,12 @@ void Coach::run(){
             strat->initialize(_ref, _ourTeam, _theirTeam, _utils);
         }
         strat->runStrategy();
-        if(_showBehaviours){
+        if(_showRoles){
             // debug behaviours
             for(int x = 0; x < _ourTeam->avPlayersSize(); x++){
-                std::cout << "Player " << (int) _ourTeam->avPlayers().values().at(x)->playerId() << " has behaviour " << _ourTeam->avPlayers().values().at(x)->getBehaviourName().toStdString() << std::endl;
+                std::cout << "Player " << (int) _ourTeam->avPlayers().values().at(x)->playerId() << " has role " << _ourTeam->avPlayers().values().at(x)->getRoleName().toStdString() << std::endl;
             }
-            _showBehaviours = false;
+            _showRoles = false;
         }
     }
 
@@ -71,7 +71,7 @@ void Coach::setStrategy(Strategy *strat){
 
     //setting new
     _strat = strat;
-    _showBehaviours = true;
+    _showRoles = true;
 
     _mutexStrategy.unlock();
 }

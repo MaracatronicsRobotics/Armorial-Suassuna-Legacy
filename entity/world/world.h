@@ -28,6 +28,10 @@ public:
     void wmLockRead();
     void wmUnlock();
 
+    // Team pointer returns
+    MRCTeam* ourTeam() { return _ourTeam; }
+    MRCTeam* theirTeam() { return _theirTeam; }
+
     // Controller/WorldMap access
     Controller* getController() const { return _ctr; }
     WorldMap* getWorldMap() const { return _wm; }
