@@ -1,11 +1,15 @@
 #ifndef ROLE_H
 #define ROLE_H
 
+#include <entity/player/baseplayer.h>
+#include <entity/player/playeraccess.h>
+#include <entity/player/playerbus.h>
 #include <entity/referee/SSLReferee/sslgameinfo.h>
 #include <entity/referee/SSLReferee/sslreferee.h>
 #include <entity/contromodule/mrcteam.h>
 #include <entity/contromodule/playersdistribution.h>
 #include <entity/player/behaviour/behaviour.h>
+#include <QObject>
 
 class Role : public QObject {
         Q_OBJECT
@@ -15,7 +19,7 @@ public:
 
     // Initialization
     bool isInitialized() { return _initialized; }
-    void initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc, CoachUtils *utils, SSLReferee *ref);
+    void initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc, SSLReferee *ref);
     void setPlayer(Player *player, PlayerAccess *playerAccess);
 
     // Called in Playbook loop
@@ -31,7 +35,6 @@ protected:
     bool canKickBall() const;
 
     // Utils, loc and player access
-    CoachUtils* utils() { return _utils; }
     PlayerAccess* player();
     Locations* loc();
 

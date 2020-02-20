@@ -10,8 +10,8 @@ Playbook::Playbook() {
 }
 
 Playbook::~Playbook() {
-    setCurrBehavioursToOld();
-    clearOldBehaviours();
+    setCurrRolesToOld();
+    clearOldRoles();
     if(_dist!=NULL)
         delete _dist;
 }
@@ -38,7 +38,7 @@ void Playbook::runPlaybook(QString strategyState) {
     // Run configure(numPlayers) if num of players in this playbook changed
     if(_lastNumPlayers != _players.size()) {
         _lastNumPlayers = _players.size();
-        setCurrBehavioursToOld();
+        setCurrRolesToOld();
         _configureEnabled = true;
         configure(_lastNumPlayers);
         _configureEnabled = false;
@@ -60,83 +60,83 @@ void Playbook::runPlaybook(QString strategyState) {
         std::cout << "[WARNING] " << strategyState.toStdString() << "->" << name().toStdString() << " has excessive players (num=" << _players.size() << ", max=" << maxNumPlayer() << ").\n";
     }
     // Run playbook (implemented by child)
-    // This will update assignment table with current desired player-behaviour pairs
+    // This will update assignment table with current desired player-role pairs
     run(_lastNumPlayers);
-    // Ensure players on this playbook has behaviours assigned to them
-    updatePlayersBehaviours();
+    // Ensure players on this playbook has roles assigned to them
+    updatePlayersRoles();
 }
 
-void Playbook::updatePlayersBehaviours() {
-    QHash<quint8,Behaviour*>::const_iterator it;
+void Playbook::updatePlayersRoles() {
+    QHash<quint8,Role*>::const_iterator it;
     for(it=_assignmentTable.constBegin(); it!=_assignmentTable.constEnd(); it++) {
         quint8 id = it.key();
-        Behaviour *behaviour = it.value();
+        Role *role = it.value();
         // Check invalid id
         if(id==DIST_INVALID_ID)
             continue;
         // Get list of available players
         QHash<quint8,Player*> avPlayers = _ourTeam->avPlayers();
         Player *player = avPlayers.value(id);
-        // Effectivelly set behaviour to player
-        player->setBehaviour(behaviour);
+        // Effectivelly set role to player
+        player->setRole(role);
         // Warning to inform that some player isn't being used on playbook
-        if(behaviour==NULL)
-            std::cout << "[WARNING] " << name().toStdString() << ", player #" << (int)id << " has no Behaviour assigned!\n";
+        if(role==NULL)
+            std::cout << "[WARNING] " << name().toStdString() << ", player #" << (int)id << " has no Role assigned!\n";
     }
 }
 
-void Playbook::setCurrBehavioursToOld() {
-    while(_behavioursList.empty()==false)
-        _oldBehaviours.push_back(_behavioursList.takeFirst());
+void Playbook::setCurrRolesToOld() {
+    while(_rolesList.empty()==false)
+        _oldRoles.push_back(_rolesList.takeFirst());
 }
 
-void Playbook::clearOldBehaviours() {
-    while(_oldBehaviours.empty()==false)
-        delete _oldBehaviours.takeFirst();
+void Playbook::clearOldRoles() {
+    while(_oldRoles.empty()==false)
+        delete _oldRoles.takeFirst();
 }
 
-void Playbook::usesBehaviour(Behaviour *behaviour) {
+void Playbook::usesRole(Role *role) {
     // Check if call is inside configure()
     if(_configureEnabled==false) {
-        std::cout << "[WARNING] Blocked playbook '" << name().toStdString() << "' setting Behaviour to use outside configure().\n";
+        std::cout << "[WARNING] Blocked playbook '" << name().toStdString() << "' setting Role to use outside configure().\n";
         return;
     }
     // Check null pointer
-    if(behaviour==NULL) {
-        std::cout << "[ERROR] " << name().toStdString() << "::usesBehaviour(NULL), &behaviour==NULL.\n";
+    if(role==NULL) {
+        std::cout << "[ERROR] " << name().toStdString() << "::usesRole(NULL), &role==NULL.\n";
         return;
     }
-    // Add behaviour
-    if(_behavioursList.contains(behaviour)==false)
-        _behavioursList.push_back(behaviour);
+    // Add role
+    if(_rolesList.contains(role)==false)
+        _rolesList.push_back(role);
 }
 
-void Playbook::setPlayerBehaviour(quint8 id, Behaviour *behaviour) {
+void Playbook::setPlayerRole(quint8 id, Role *role) {
     if(id==200)
         return;
     // Check if player is on this playbook
     if(_players.contains(id)==false) {
-        std::cout << "[ERROR] " << name().toStdString() << "::setPlayerBehaviour(" << (int)id << ", " << behaviour->name().toStdString() << "), player #" << (int)id << " wasn't added to this playbook!\n";
+        std::cout << "[ERROR] " << name().toStdString() << "::setPlayerRole(" << (int)id << ", " << role->name().toStdString() << "), player #" << (int)id << " wasn't added to this playbook!\n";
         return;
     }
     // Check pointer
-    if(behaviour==NULL) {
-        std::cout << "[ERROR] " << name().toStdString() << "::setPlayerBehaviour(" << (int)id << ", NULL), &behaviour==NULL!\n";
+    if(role==NULL) {
+        std::cout << "[ERROR] " << name().toStdString() << "::setPlayerRole(" << (int)id << ", NULL), &role==NULL!\n";
         return;
     }
-    // Check if behaviour is on this playbook
-    if(_behavioursList.contains(behaviour)==false) {
-        std::cout << "[ERROR] " << name().toStdString() << "::setPlayerBehaviour(" << (int)id << ", " << behaviour->name().toStdString() << "), behaviour " << behaviour->name().toStdString() << " wasn't added to this playbook!\n";
+    // Check if role is on this playbook
+    if(_rolesList.contains(role)==false) {
+        std::cout << "[ERROR] " << name().toStdString() << "::setPlayerRole(" << (int)id << ", " << role->name().toStdString() << "), role " << role->name().toStdString() << " wasn't added to this playbook!\n";
         return;
     }
-    // Check if old player still has the behaviour
-    if(_assignmentTable.values().contains(behaviour)) {
-        quint8 oldID = _assignmentTable.key(behaviour);
+    // Check if old player still has the role
+    if(_assignmentTable.values().contains(role)) {
+        quint8 oldID = _assignmentTable.key(role);
         if(_players.contains(oldID))
             _assignmentTable.insert(oldID, NULL);
     }
-    // Assign behaviour
-    _assignmentTable.insert(id, behaviour);
+    // Assign role
+    _assignmentTable.insert(id, role);
 }
 
 bool Playbook::hasPlayer(quint8 id) {

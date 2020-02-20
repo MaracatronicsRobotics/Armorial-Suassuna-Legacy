@@ -74,13 +74,13 @@ void StrategyState::runStrategyState() {
     while(_dist->hasPlayersAvailable()) {
         quint8 id = _dist->getPlayer();
         Player* player = avPlayers.value(id);
-        player->setBehaviour(NULL);
+        player->setRole(NULL);
         std::cout << "[WARNING] " << name().toStdString() << ", player #" << (int)id << " wasn't allocated in a Playbook!\n";
     }
-    // Cleanup playbook old behaviors
+    // Cleanup playbook old roles
     for(it = _playbookList.begin(); it != _playbookList.end(); it++) {
         if((*it)->numPlayers()!=0)
-            (*it)->clearOldBehaviours();
+            (*it)->clearOldRoles();
     }
     // Clear old playbook
     clearOldPlaybook();

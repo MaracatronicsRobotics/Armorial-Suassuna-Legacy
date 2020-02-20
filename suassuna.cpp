@@ -1,5 +1,5 @@
 #include "suassuna.h"
-#include <entity/player/behaviour/mrcbehaviours.h>
+#include <entity/player/role/mrcroles.h>
 #include <entity/contromodule/strategy/strategy.h>
 #include <entity/contromodule/strategy/strategystate.h>
 #include <entity/contromodule/strategy/basics/mrcstrategy.h>
@@ -135,7 +135,7 @@ void Suassuna::setupOurPlayers() {
         PID *vxPID = new PID(0.5, 0.01, 0.0, 2.5, -2.5);
         PID *vyPID = new PID(0.5, 0.01, 0.0, 2.5, -2.5);
         PID *vwPID = new PID(0.5, 0.01, 0.003, 3.0, -3.0);
-        Player *player = new Player(_world, _ourTeam, _ctr, playerList.at(i), new Behaviour_DoNothing(), _ref, _grSimulator, vxPID, vyPID, vwPID);
+        Player *player = new Player(_world, _ourTeam, _ctr, playerList.at(i), new Role_Default(), _ref, _grSimulator, vxPID, vyPID, vwPID);
         // Enable
         player->enable(true);
         // Add to team
