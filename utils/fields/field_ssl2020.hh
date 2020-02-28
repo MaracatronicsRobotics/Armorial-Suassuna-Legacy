@@ -19,12 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef WRFIELDS_HH
-#define WRFIELDS_HH
+#include <utils/fields/fields.hh>
 
-#include <utils/fields/field_ssl2014.hh>
-#include <utils/fields/field_ssl2015.hh>
-#include <utils/fields/field_ssl2020.hh>
-#include <utils/fields/field_vss2008.hh>
+namespace Fields {
 
-#endif // WRFIELDS_HH
+class SSL2020 : public Field {
+public:
+    QString name() const;
+    float length() const;
+    float width() const;
+    float goalWidth() const;
+    float goalDepth() const;
+    float areaWidth() const;
+    float areaDepth() const;
+    float centerRadius() const;
+    float defenseRadius() const;
+    float defenseStretch() const;
+};
+
+}

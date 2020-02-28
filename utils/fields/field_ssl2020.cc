@@ -19,12 +19,46 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef WRFIELDS_HH
-#define WRFIELDS_HH
+#include "field_ssl2020.hh"
 
-#include <utils/fields/field_ssl2014.hh>
-#include <utils/fields/field_ssl2015.hh>
-#include <utils/fields/field_ssl2020.hh>
-#include <utils/fields/field_vss2008.hh>
+using namespace Fields;
 
-#endif // WRFIELDS_HH
+QString SSL2020::name() const {
+    return "SSL 2020";
+}
+
+float SSL2020::length() const {
+    return 9.00;
+}
+
+float SSL2020::width() const {
+    return 6.00;
+}
+
+float SSL2020::goalWidth() const {
+    return 1.00;
+}
+
+float SSL2020::goalDepth() const {
+    return 0.20;
+}
+
+float SSL2020::areaWidth() const {
+    return 2.00;
+}
+
+float SSL2020::areaDepth() const {
+    return 1.00;
+}
+
+float SSL2020::centerRadius() const {
+    return 0.50;
+}
+
+float SSL2020::defenseRadius() const {
+    return 1.50;
+}
+
+float SSL2020::defenseStretch() const {
+    return 0.50;
+}

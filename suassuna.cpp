@@ -15,7 +15,7 @@ Suassuna::Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide)
     _ourGUI = new CoachView();
     
     // Default field setup
-    _defaultField = new Fields::SSL2015();
+    _defaultField = new Fields::SSL2020();
 
     // Initialize default values
     this->setServerAddress("localhost", 0);

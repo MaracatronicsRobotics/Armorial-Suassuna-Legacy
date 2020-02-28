@@ -76,6 +76,7 @@ SOURCES += \
 	utils/basics/wall.cc \
 	utils/fields/field_ssl2014.cc \
 	utils/fields/field_ssl2015.cc \
+    utils/fields/field_ssl2020.cc \
 	utils/fields/field_vss2008.cc \
 	utils/fields/fields.cc \
 	utils/fieldside/fieldside.cc \
@@ -176,6 +177,7 @@ HEADERS += \
 	utils/basics/wall.hh \
 	utils/fields/field_ssl2014.hh \
 	utils/fields/field_ssl2015.hh \
+    utils/fields/field_ssl2020.hh \
 	utils/fields/field_vss2008.hh \
 	utils/fields/fields.hh \
 	utils/fields/wrfields.hh \
