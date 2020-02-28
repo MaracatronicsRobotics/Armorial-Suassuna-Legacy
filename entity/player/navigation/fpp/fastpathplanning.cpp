@@ -69,13 +69,13 @@ std::pair<Position, Position> FastPathPlanning::findPoint(Position colisionPoint
 
 Position FastPathPlanning::hasCollisionAtLine(){
     bool hasColision = false;
-    for (int i=0; i < _colisionPosition.size() && !hasColision; ++i) { //se a distancia de qualquer jogador ate a reta for menor que 36cm, tem colisao
-        float distanceLine = WR::Utils::distanceToSegment(_path.back(),goalPos(), _colisionPosition[i].first);
-        if (!_colisionPosition[i].second && distanceLine<0.38f) { // se for robô
+    for (int i=0; i < _colisionPosition.size() && !hasColision; ++i) {
+        float distanceLine = WR::Utils::distanceToSegment(_path.back(),goalPos(), _colisionPosition[i].first); // calcula a distancia do ponto ao segmento
+        if (!_colisionPosition[i].second && distanceLine<0.38f) { //se a distancia de qualquer jogador ate a reta for menor que 38cm, tem colisao
             hasColision = true;
             return Position(hasColision, _colisionPosition[i].first.x(), _colisionPosition[i].first.y(), 0.0);
         }
-        if (_colisionPosition[i].second && distanceLine<0.20f) { // se for robô
+        if (_colisionPosition[i].second && distanceLine<0.20f) { // se for bola e a distancia dela ate a linha for menor que 20cm
             hasColision = true;
             return Position(hasColision, _colisionPosition[i].first.x(), _colisionPosition[i].first.y(), 0.0);
         }

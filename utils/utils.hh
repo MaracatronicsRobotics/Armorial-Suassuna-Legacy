@@ -45,6 +45,7 @@ namespace WR {
         static float scalarProduct(const Position &A, const Position &B);
         static float crossProduct(const Position &A, const Position &B);
         static float getPerpendicularCoefficient(const Position &s1, const Position &s2);
+        static Position hasInterceptionSegments(const Position &s1, const Position &s2, const Position &s3, const Position &s4);
 
         static float getAngle(const Position &a, const Position &b);
         static float angleDiff(const float A, const Angle &B);
