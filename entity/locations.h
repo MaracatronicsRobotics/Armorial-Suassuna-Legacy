@@ -45,6 +45,11 @@ public:
     Position ourGoalLeftPost() const;
     Position ourGoalLeftMidPost() const;
     Position ourPenaltyMark() const;
+    Position ourAreaPostLeft() const;
+    Position ourAreaPostRight() const;
+    Position ourAreaPostLeftInside() const;
+    Position ourAreaPostRightInside() const;
+
     Position theirFieldTopCorner() const;
     Position theirFieldBottomCorner() const;
     Position theirGoal() const;
@@ -53,6 +58,11 @@ public:
     Position theirGoalLeftPost() const;
     Position theirGoalLeftMidPost() const;
     Position theirPenaltyMark() const;
+    Position theirAreaPostLeft() const;
+    Position theirAreaPostRight() const;
+    Position theirAreaPostLeftInside() const;
+    Position theirAreaPostRightInside() const;
+
     // Field
     float fieldMinX() const;
     float fieldMaxX() const;
