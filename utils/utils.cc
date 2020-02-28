@@ -192,3 +192,29 @@ float Utils::getPerpendicularCoefficient(const Position &s1, const Position &s2)
     float perpendicularCoef = -(1/coefAngular);
     return perpendicularCoef;
 }
+
+Position Utils::hasInterceptionSegments(const Position &s1, const Position &s2, const Position &s3, const Position &s4){
+    float denominador = (s4.y()-s3.y())*(s2.x() - s1.x()) - (s4.x() - s3.x())*(s2.y()-s1.y());
+
+    if (denominador!=0.0f){ // segmentos se interceptam
+        float u = ((s4.x() - s3.x())*(s1.y() - s3.y()) - (s4.y() - s3.y())*(s1.x() - s3.x()));
+        float v = ((s2.x() - s1.x())*(s1.y() - s3.y()) - (s2.y() - s1.y())*(s1.x() - s3.x()));
+
+        if(u !=0.0f){
+            float xIntersec = s1.x() + (u/denominador)*(s2.x()-s1.x());
+            float yIntersec = s1.y() + (u/denominador)*(s2.y()-s1.y());
+            return Position(true, xIntersec, yIntersec, 0.0f);
+        }else if(v !=0.0f){
+            float xIntersec = s3.x() + (v/denominador)*(s4.x()-s3.x());
+            float yIntersec = s3.y() + (v/denominador)*(s4.y()-s3.y());
+            return Position(true, xIntersec, yIntersec, 0.0f);
+        }else{ // caso especial -> as linhas sao coincidentes
+            return Position(true, s1.x(), s1.y(), 0.0f);
+        }
+
+    }else{ //Os segmentos sao paralelos
+        return Position(false, 0.0f,0.0f,0.0f);
+    }
+
+
+}
