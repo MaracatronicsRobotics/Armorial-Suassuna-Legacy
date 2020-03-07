@@ -10,9 +10,11 @@
 #include <entity/world/worldmapupdater.h>
 #include <entity/referee/SSLReferee/sslreferee.h>
 
+#include <entity/coachview/coachview.h>
+
 class World : public Entity {
 public:
-    World(Controller *ctr, Fields::Field *defaultField);
+    World(Controller *ctr, Fields::Field *defaultField, CoachView *ourGUI);
     ~World();
     QString name();
 
@@ -66,6 +68,9 @@ private:
     // Internal
     void setupWorldMap();
     void stopAndDeleteEntities();
+
+    // GUI
+    CoachView *_ourGUI;
 };
 
 #endif // WORLD_HH
