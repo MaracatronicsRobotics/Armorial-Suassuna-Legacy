@@ -110,8 +110,7 @@ SOURCES += \
     entity/coachview/coachview.cpp \
     entity/coachview/mainwindow.cpp \
     entity/coachview/samico.cpp \
-    entity/coachview/qsfmlwidget.cpp \
-    entity/player/skills/basics/skill_sample.cpp
+    entity/coachview/qsfmlwidget.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -218,8 +217,7 @@ HEADERS += \
     entity/coachview/mainwindow.h \
     entity/coachview/samico.h \
 	entity/coachview/qsfmlwidget.h \
-    entity/coachview/ui_mainwindow.h \
-    entity/player/skills/basics/skill_sample.h
+    entity/coachview/ui_mainwindow.h
 
 FORMS += \
 	entity/coachview/mainwindow.ui
