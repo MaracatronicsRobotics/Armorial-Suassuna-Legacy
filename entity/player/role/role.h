@@ -24,12 +24,18 @@ public:
 
     // Called in Playbook loop
     void runRole();
+
+    // Initialize
+    virtual void initializeBehaviours() = 0;
+
+    // Public functions
+    void setBehaviour(Behaviour *behaviour);
+    QList<Behaviour*> getBehaviours();
     virtual QString name() = 0;
 
 protected:
     // Behaviour list functions
     void usesBehaviour(Behaviour *behaviour);
-    void setBehaviour(Behaviour *behaviour);
 
     // canKickBall (for parameters)
     bool canKickBall() const;

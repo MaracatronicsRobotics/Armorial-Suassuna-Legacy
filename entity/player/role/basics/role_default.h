@@ -9,6 +9,7 @@ class Role_Default : public Role
 private:
     // Behaviours
     Behaviour_DoNothing *_bh_dn;
+    Behaviour_Barrier *_bh_def;
 
     // Inherited functions
     void configure();
@@ -19,6 +20,7 @@ private:
 
 public:
     Role_Default();
+    void initializeBehaviours();
     QString name();
 };
 
