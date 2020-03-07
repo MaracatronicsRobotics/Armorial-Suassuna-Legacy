@@ -3,7 +3,6 @@
 #include <bits/stdc++.h>
 #include <QVBoxLayout>
 #include <QScrollArea>
-#include <entity/coachview/samico.h>
 
 void MainWindow::resetRobots(){
     for(int x = 0; x < maxRobots; x++){
