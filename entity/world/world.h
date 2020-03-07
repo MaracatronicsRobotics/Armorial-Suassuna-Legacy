@@ -13,6 +13,8 @@
 
 #include <entity/coachview/coachview.h>
 
+#include <entity/coachview/coachview.h>
+
 class World : public Entity {
 public:
     World(Controller *ctr, Fields::Field *defaultField, CoachView *ourGUI);
