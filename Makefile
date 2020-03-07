@@ -831,6 +831,9 @@ moc_behaviour_attacker.cpp: entity/player/behaviour/basics/behaviour_attacker.h 
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/zilde/Desktop/Armorial-Suassuna/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/zilde/Desktop/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include entity/player/behaviour/basics/behaviour_attacker.h -o moc_behaviour_attacker.cpp
 
 moc_role.cpp: entity/player/role/role.h \
+		entity/player/baseplayer.h \
+		entity/player/playeraccess.h \
+		entity/player/playerbus.h \
 		entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
 		include/3rd_party/referee.pb.h \
@@ -844,7 +847,6 @@ moc_role.cpp: entity/player/role/role.h \
 		entity/player/player.h \
 		entity/world/world.h \
 		entity/baseentity.h \
-		entity/player/baseplayer.h \
 		utils/fields/fields.hh \
 		entity/world/worldmapupdater.h \
 		utils/utils.hh \
@@ -856,8 +858,6 @@ moc_role.cpp: entity/player/role/role.h \
 		entity/contromodule/basecoach.h \
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
-		entity/player/playeraccess.h \
-		entity/player/playerbus.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/zilde/Desktop/Armorial-Suassuna/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/zilde/Desktop/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/9/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include entity/player/role/role.h -o moc_role.cpp
@@ -1543,11 +1543,11 @@ player.o: entity/player/player.cpp entity/player/player.h \
 		utils/mrctimer/mrctimer.h \
 		entity/player/playeraccess.h \
 		entity/player/role/role.h \
+		entity/player/playerbus.h \
 		entity/contromodule/playersdistribution.h \
 		entity/contromodule/basecoach.h \
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
-		entity/player/playerbus.h \
 		entity/contromodule/grsSimulator/grsSimulator.h \
 		include/3rd_party/grSim_Packet.pb.h \
 		include/3rd_party/grSim_Commands.pb.h \
@@ -2574,8 +2574,7 @@ skill_pushball.o: entity/player/skills/basics/skill_pushball.cpp entity/player/s
 		utils/mrctimer/mrctimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skill_pushball.o entity/player/skills/basics/skill_pushball.cpp
 
-role.o: entity/player/role/role.cpp entity/player/role/role.h \
-		entity/referee/SSLReferee/sslgameinfo.h \
+role.o: entity/player/role/role.cpp entity/referee/SSLReferee/sslgameinfo.h \
 		utils/basics/color.hh \
 		include/3rd_party/referee.pb.h \
 		include/3rd_party/game_event.pb.h \
@@ -2601,7 +2600,8 @@ role.o: entity/player/role/role.cpp entity/player/role/role.h \
 		utils/wrtimer/wrtimer.hh \
 		entity/player/behaviour/behaviour.h \
 		entity/player/playeraccess.h \
-		entity/player/playerbus.h
+		entity/player/playerbus.h \
+		entity/player/role/role.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o role.o entity/player/role/role.cpp
 
 role_default.o: entity/player/role/basics/role_default.cpp entity/player/role/basics/role_default.h \

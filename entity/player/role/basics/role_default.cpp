@@ -7,9 +7,14 @@ QString Role_Default::name(){
 Role_Default::Role_Default() {
 }
 
-void Role_Default::configure(){
+void Role_Default::initializeBehaviours(){
     // Aqui são inseridos os behaviours possíveis de serem usados
-    usesBehaviour(_bh_dn = new Behaviour_DoNothing);
+    usesBehaviour(_bh_dn = new Behaviour_DoNothing());
+    usesBehaviour(_bh_def = new Behaviour_Barrier());
+}
+
+void Role_Default::configure(){
+    // Aqui são setados parametros que devem ser configurados
 }
 
 void Role_Default::run(){
