@@ -22,7 +22,7 @@
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QWidget>
-#include "samico.h"
+#include "entity/coachview/samico.h"
 
 QT_BEGIN_NAMESPACE
 
