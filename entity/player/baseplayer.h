@@ -35,4 +35,5 @@ class ControlAlgorithm;
 class PlayerUtils;
 class Locations;
 class grsSimulator;
+class CoachView;
 #endif // BASEPLAYER_HH

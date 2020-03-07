@@ -41,7 +41,7 @@ bool Suassuna::start() {
         return false;
 
     // Create World
-    _world = new World(_ctr, _defaultField);
+    _world = new World(_ctr, _defaultField, _ourGUI);
 
     // Create SSLReferee
     _ref = new SSLReferee();

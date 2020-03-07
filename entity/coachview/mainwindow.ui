@@ -14,7 +14,7 @@
    <string>Suassuna UI</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="rsc.qrc">
+   <iconset resource="../../rsc.qrc">
     <normaloff>:/textures/textures/armorial.ico</normaloff>:/textures/textures/armorial.ico</iconset>
   </property>
   <property name="autoFillBackground">
@@ -86,7 +86,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/battery.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/battery.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -105,7 +105,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/connect.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/connect.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -160,7 +160,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/dribble.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/dribble.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -179,7 +179,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/none.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/none.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -266,7 +266,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/battery.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/battery.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -339,7 +339,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/dribble.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/dribble.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -358,7 +358,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/none.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/none.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -377,7 +377,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/connect.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/connect.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -446,7 +446,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/battery.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/battery.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -519,7 +519,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/connect.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/connect.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -538,7 +538,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/none.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/none.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -557,7 +557,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/dribble.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/dribble.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -626,7 +626,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/battery.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/battery.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -699,7 +699,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/dribble.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/dribble.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -718,7 +718,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/none.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/none.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -737,7 +737,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/connect.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/connect.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -806,7 +806,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/battery.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/battery.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -879,7 +879,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/dribble.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/dribble.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -898,7 +898,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/none.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/none.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -917,7 +917,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/connect.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/connect.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -986,7 +986,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/battery.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/battery.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1059,7 +1059,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/connect.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/connect.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1078,7 +1078,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/none.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/none.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1097,7 +1097,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="rsc.qrc">:/textures/textures/dribble.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/dribble.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1712,7 +1712,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="rsc.qrc">
+      <iconset resource="../../rsc.qrc">
        <normaloff>:/textures/textures/play.png</normaloff>:/textures/textures/play.png</iconset>
      </property>
      <property name="iconSize">
@@ -1735,7 +1735,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset resource="rsc.qrc">
+      <iconset resource="../../rsc.qrc">
        <normaloff>:/textures/textures/stop.png</normaloff>:/textures/textures/stop.png</iconset>
      </property>
      <property name="iconSize">
@@ -1776,12 +1776,12 @@
   <customwidget>
    <class>MyCanvas</class>
    <extends>QWidget</extends>
-   <header>samico.h</header>
+   <header>entity/coachview/samico.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="rsc.qrc"/>
+  <include location="../../rsc.qrc"/>
  </resources>
  <connections/>
 </ui>

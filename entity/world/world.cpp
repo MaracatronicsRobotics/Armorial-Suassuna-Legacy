@@ -7,7 +7,7 @@ QString World::name() {
     return (_ctrModule==NULL? "World" : _ctrModule->name());
 }
 
-World::World(Controller *ctr, Fields::Field *defaultField) : Entity(ENT_WORLD) {
+World::World(Controller *ctr, Fields::Field *defaultField, CoachView *ourGUI) : Entity(ENT_WORLD) {
 
     _ctr = ctr;
     _ourTeam = _theirTeam = NULL;
@@ -15,9 +15,12 @@ World::World(Controller *ctr, Fields::Field *defaultField) : Entity(ENT_WORLD) {
     // Create WorldMap
     _wm = new WorldMap();
 
+    // GUI
+    _ourGUI = ourGUI;
+
     setupWorldMap();
     // Create WorldMapUpdater
-    _wmUpdater = new WorldMapUpdater(ctr, defaultField);
+    _wmUpdater = new WorldMapUpdater(ctr, defaultField, _ourGUI);
     _wmUpdater->setDefaultFieldGeometry(_wm);
 
     // Set self loop time
@@ -25,7 +28,6 @@ World::World(Controller *ctr, Fields::Field *defaultField) : Entity(ENT_WORLD) {
 
     // Initialize
     _ctrModule = NULL;
-
 }
 
 World::~World() {
@@ -45,7 +47,6 @@ void World::setTeams(MRCTeam *ourTeam, MRCTeam *theirTeam) {
     _ourTeam = ourTeam;
     _theirTeam = theirTeam;
 }
-
 
 void World::initialization() {
     std::cout << "[WORLD] thread started.\n";
