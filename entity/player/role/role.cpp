@@ -12,7 +12,7 @@ Role::Role() {
     _playerAccess = NULL;
     _loc = NULL;
     _initialized = false;
-    _configureEnabled = false;
+    _configureEnabled = true; // for set behaviours
 }
 
 Role::~Role() {
@@ -50,7 +50,7 @@ void Role::setPlayer(Player *player, PlayerAccess *playerAccess){
 
 void Role::runRole(){
     if(_behaviourList.size() == 0){
-        std::cout << "[ERROR] " << name().toStdString() << " has no behaviours set!\n";
+        //std::cout << "[ERROR] " << name().toStdString() << " has no behaviours set!\n";
         return ;
     }
 
@@ -67,6 +67,10 @@ void Role::runRole(){
 
 bool Role::canKickBall() const {
     return _ref->getGameInfo(_ourTeam->teamColor())->canKickBall();
+}
+
+QList<Behaviour*> Role::getBehaviours(){
+    return _behaviourList;
 }
 
 void Role::usesBehaviour(Behaviour *behaviour){
