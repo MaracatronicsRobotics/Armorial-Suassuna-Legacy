@@ -1,6 +1,5 @@
 #include "coachview.h"
-#include <entity/coachview/mainwindow.h>
-#include <const/constants.h>
+#define THREAD_FREQUENCY 30
 
 QString CoachView::name(){
     return "Coach View";
@@ -25,10 +24,11 @@ MainWindow* CoachView::getUI(){
 
 CoachView::~CoachView(){
     _suassunaUI->close();
+    delete _suassunaUI;
 }
 
 void CoachView::initialization(){
-    this->setLoopFrequency(MRCConstants::threadFrequency());
+    this->setLoopFrequency(THREAD_FREQUENCY);
 }
 
 void CoachView::loop(){
