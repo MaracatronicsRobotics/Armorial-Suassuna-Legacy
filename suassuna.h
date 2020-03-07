@@ -16,6 +16,7 @@
 #include <entity/contromodule/mrcteam.h>
 #include <entity/player/sslplayer/sslplayer.h>
 #include <entity/contromodule/coach.h>
+#include <entity/coachview/coachview.h>
 
 #define MAX_ROBOT_ID 6
 
@@ -60,5 +61,8 @@ private:
     // Times
     MRCTeam *_ourTeam;
     MRCTeam *_theirTeam;
+
+    // GUI
+    CoachView *_ourGUI;
 };
 #endif // SUASSUNA_H

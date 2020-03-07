@@ -24,6 +24,7 @@ public:
     quint8 teamId() const;
     quint8 opTeamId() const;
     PlayerAccess* access() const;
+    Colors::Color teamColor() const;
 
     // Robot locomotion
     // algoritmos de controle básicos ficam aqui
