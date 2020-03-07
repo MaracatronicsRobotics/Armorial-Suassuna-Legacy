@@ -1,0 +1,40 @@
+<RCC>
+    <qresource prefix="/textures">
+        <file>textures/y11.png</file>
+        <file>textures/y10.png</file>
+        <file>textures/y9.png</file>
+        <file>textures/y8.png</file>
+        <file>textures/y7.png</file>
+        <file>textures/y6.png</file>
+        <file>textures/y5.png</file>
+        <file>textures/y4.png</file>
+        <file>textures/y3.png</file>
+        <file>textures/y2.png</file>
+        <file>textures/y1.png</file>
+        <file>textures/y0.png</file>
+        <file>textures/grass.png</file>
+        <file>textures/b11.png</file>
+        <file>textures/b10.png</file>
+        <file>textures/b9.png</file>
+        <file>textures/b8.png</file>
+        <file>textures/b7.png</file>
+        <file>textures/b6.png</file>
+        <file>textures/b5.png</file>
+        <file>textures/b4.png</file>
+        <file>textures/b3.png</file>
+        <file>textures/b2.png</file>
+        <file>textures/b1.png</file>
+        <file>textures/b0.png</file>
+        <file>textures/battery.png</file>
+        <file>textures/armorial.ico</file>
+        <file>textures/connect.png</file>
+        <file>textures/dribble.png</file>
+        <file>textures/gk.png</file>
+        <file>textures/bar.png</file>
+        <file>textures/atk.png</file>
+        <file>textures/sup.png</file>
+        <file>textures/none.png</file>
+        <file>textures/stop.png</file>
+        <file>textures/play.png</file>
+    </qresource>
+</RCC>

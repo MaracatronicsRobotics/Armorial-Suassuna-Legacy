@@ -12,6 +12,9 @@ Suassuna::Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide)
     : _teamId(teamId), _teamColor(teamColor), _fieldSide(fieldSide){
     // Create controller
     _ctr = new Controller();
+
+    // Create GUI
+    _ourGUI = new CoachView();
     
     // Default field setup
     _defaultField = new Fields::SSL2015();
@@ -57,6 +60,10 @@ bool Suassuna::start() {
     // Setup team players
     setupOurPlayers();
     setupOppPlayers(opTeamId);
+
+    // Setup GUI
+    _ourGUI->setTeams(_ourTeam, _theirTeam);
+    _world->addEntity(_ourGUI, 2);
 
     // Create coach
     _coach = new Coach(_ref, _ourTeam, _theirTeam);

@@ -42,6 +42,7 @@ public:
     // WorldMap access
     WorldMap *wm() { return _wm; }
     Locations* loc() { return _loc; }
+    Position ballPosition();
 
 private:
     // Team id

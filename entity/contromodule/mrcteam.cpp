@@ -17,6 +17,10 @@ Colors::Color MRCTeam::teamColor() const{
     return _teamColor;
 }
 
+Position MRCTeam::ballPosition(){
+    return loc()->ball();
+}
+
 FieldSide MRCTeam::fieldSide() const{
     QMutexLocker locker(&_mutexFieldSide);
     return _fieldSide;

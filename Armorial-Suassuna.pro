@@ -1,5 +1,3 @@
-QT -= gui
-
 CONFIG += c++14 console
 CONFIG -= app_bundle
 QT += core \
@@ -107,7 +105,11 @@ SOURCES += \
     entity/player/behaviour/basics/behaviour_penalty_gk.cpp \
     entity/player/skills/basics/skill_pushball.cpp \
     entity/player/role/role.cpp \
-    entity/player/role/basics/role_default.cpp
+    entity/player/role/basics/role_default.cpp \
+    entity/coachview/coachview.cpp \
+    entity/coachview/mainwindow.cpp \
+    entity/coachview/samico.cpp \
+    entity/coachview/qsfmlwidget.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -208,4 +210,15 @@ HEADERS += \
     entity/player/skills/basics/skill_pushball.h \
     entity/player/role/role.h \
     entity/player/role/basics/role_default.h \
-    entity/player/role/mrcroles.h
+    entity/player/role/mrcroles.h \
+    entity/coachview/coachview.h \
+    entity/coachview/mainwindow.h \
+    entity/coachview/samico.h \
+	entity/coachview/qsfmlwidget.h \
+    entity/coachview/ui_mainwindow.h
+
+FORMS += \
+	entity/coachview/mainwindow.ui
+
+RESOURCES += \
+    rsc.qrc
