@@ -3,7 +3,6 @@
 
 #include <entity/entity.h>
 #include <entity/baseentity.h>
-#include <entity/coachview/mainwindow.h>
 
 class CoachView : public Entity
 {
@@ -14,6 +13,7 @@ public:
     QString name();
     MainWindow* getUI();
     void setTeams(MRCTeam *our, MRCTeam *their);
+    MRCTeam* getOurTeam() { return _ourTeam; }
 
 private:
     void initialization();
