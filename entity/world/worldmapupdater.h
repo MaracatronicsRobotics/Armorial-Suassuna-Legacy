@@ -22,7 +22,7 @@
 #ifndef WORLDMAPUPDATER_HH
 #define WORLDMAPUPDATER_HH
 
-//#include <WRCoach/entity/player/baseplayer.hh>
+#include <entity/player/baseplayer.h>
 #include <utils/fields/fields.hh>
 #include <GEARSystem/gearsystem.hh>
 
@@ -31,7 +31,7 @@
 
 class WorldMapUpdater {
 public:
-    WorldMapUpdater(Controller *ctr, Fields::Field  *defaultField);
+    WorldMapUpdater(Controller *ctr, Fields::Field  *defaultField, CoachView *ourGUI);
     ~WorldMapUpdater();
     void setDefaultFieldGeometry(WorldMap *wm);
     void update(WorldMap *wm);
@@ -50,6 +50,9 @@ private:
 
     // Internal
     Position _lastBallPosition;
+
+    // GUI
+    CoachView *_ourGUI;
 };
 
 #endif // WORLDMAPUPDATER_HH
