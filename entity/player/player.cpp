@@ -48,6 +48,10 @@ PlayerAccess* Player::access() const {
     return _playerAccessBus;
 }
 
+Colors::Color Player::teamColor() const{
+    return _team->teamColor();
+}
+
 void Player::reset(){
     // Errors
     _lError = 0.015;
