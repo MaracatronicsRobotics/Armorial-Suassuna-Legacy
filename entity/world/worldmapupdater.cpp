@@ -26,11 +26,16 @@
 #include <utils/fields/fields.hh>
 #include <utils/fields/wrfields.hh>
 
-WorldMapUpdater::WorldMapUpdater(Controller *ctr, Fields::Field *defaultField) {
+#include <entity/coachview/coachview.h>
+
+WorldMapUpdater::WorldMapUpdater(Controller *ctr, Fields::Field *defaultField, CoachView *ourGUI) {
     _ctr = ctr;
     _defaultField = defaultField;
     // Initialize
     _lastBallPosition.setUnknown();
+
+    // GUI
+    _ourGUI = ourGUI;
 }
 
 WorldMapUpdater::~WorldMapUpdater() {
@@ -105,6 +110,11 @@ void WorldMapUpdater::updateTeam(WorldMap *wm, quint8 teamId) {
     for(it=ctrPlayers.constBegin(); it!=ctrPlayers.end(); it++) {
         const quint8 player = *it;
         // Pos, ori and vel
+        if(_ourGUI->getOurTeam()->teamId() == teamId && _ctr->playerPosition(teamId, player).isUnknown()){
+            _ourGUI->getUI()->disableRobot(player);
+        }else if(_ourGUI->getOurTeam()->teamId() == teamId && !_ctr->playerPosition(teamId, player).isUnknown()){
+            _ourGUI->getUI()->enableRobot(player);
+        }
         wm->setPlayerPosition(teamId, player, _ctr->playerPosition(teamId, player));
         wm->setPlayerOrientation(teamId, player, _ctr->playerOrientation(teamId, player));
         wm->setPlayerVelocity(teamId, player, _ctr->playerVelocity(teamId, player));

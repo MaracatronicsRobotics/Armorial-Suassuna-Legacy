@@ -30,5 +30,7 @@ class Referee;
 class SSLReferee;
 class World;
 class WorldMapUpdater;
+class MainWindow;
+class MRCTeam;
 
 #endif // BASEENTITY_HH

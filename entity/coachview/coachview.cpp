@@ -1,4 +1,6 @@
 #include "coachview.h"
+#include <entity/coachview/mainwindow.h>
+
 #define THREAD_FREQUENCY 30
 
 QString CoachView::name(){
