@@ -27,6 +27,8 @@
 #include <utils/fields/wrfields.hh>
 
 #include <entity/coachview/coachview.h>
+#include <entity/contromodule/mrcteam.h>
+#include <entity/coachview/mainwindow.h>
 
 WorldMapUpdater::WorldMapUpdater(Controller *ctr, Fields::Field *defaultField, CoachView *ourGUI) {
     _ctr = ctr;
