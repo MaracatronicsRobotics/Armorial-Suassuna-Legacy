@@ -3,6 +3,7 @@
 #include <bits/stdc++.h>
 #include <QVBoxLayout>
 #include <QScrollArea>
+#include <chrono>
 
 void MainWindow::resetRobots(){
     for(int x = 0; x < maxRobots; x++){
@@ -37,21 +38,20 @@ void MainWindow::setRadioConnect(quint8 id, bool isOnline){
 
 void MainWindow::setPlayerRole(quint8 id, QString role){
     QPixmap pixmp;
-    playerRoles.at(id).second->setStyleSheet("color: black");
 
-    if(role.toLower() == "goalkeeper"){
+    if(role.toLower() == "role_default"){ // teste
         pixmp.load(":/textures/textures/gk.png");
         playerRoles.at(id).first->setPixmap(pixmp);
         playerRoles.at(id).second->setText(role);
-    }else if(role.toLower() == "barrier"){
+    }else if(role.toLower() == "role_barrier"){
         pixmp.load(":/textures/textures/bar.png");
         playerRoles.at(id).first->setPixmap(pixmp);
         playerRoles.at(id).second->setText(role);
-    }else if(role.toLower() == "attacker"){
+    }else if(role.toLower() == "role_attacker"){
         pixmp.load(":/textures/textures/atk.png");
         playerRoles.at(id).first->setPixmap(pixmp);
         playerRoles.at(id).second->setText(role);
-    }else if(role.toLower() == "support"){
+    }else if(role.toLower() == "role_support"){
         pixmp.load(":/textures/textures/sup.png");
         playerRoles.at(id).first->setPixmap(pixmp);
         playerRoles.at(id).second->setText(role);
@@ -59,7 +59,6 @@ void MainWindow::setPlayerRole(quint8 id, QString role){
         pixmp.load(":/textures/textures/none.png");
         playerRoles.at(id).first->setPixmap(pixmp);
         playerRoles.at(id).second->setText("Undefined");
-        playerRoles.at(id).second->setStyleSheet("color: red");
     }
 }
 
