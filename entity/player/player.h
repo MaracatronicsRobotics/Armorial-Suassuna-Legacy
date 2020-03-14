@@ -73,7 +73,7 @@ public:
     void kick(bool isPass, float kickZPower = 0.0);
     void dribble(bool isActive);
 
-    // Behaviour
+    // Role
     void setRole(Role *b);
     QString getRoleName();
 
