@@ -93,7 +93,6 @@ void Suassuna::stop() {
 
     // Delete modules
     delete _world;
-    //delete _ref; // causes segfault (?)
     delete _coach;
 
     // Disconnect controller
