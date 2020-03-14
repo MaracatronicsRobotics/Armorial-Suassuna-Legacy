@@ -6,6 +6,7 @@ QString Skill_DoNothing::name() {
 }
 
 Skill_DoNothing::Skill_DoNothing() {
+    posicao = new Position(false, 0, 0, 0);
 }
 
 void Skill_DoNothing::run() {
