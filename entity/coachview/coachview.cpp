@@ -26,7 +26,6 @@ MainWindow* CoachView::getUI(){
 
 CoachView::~CoachView(){
     _suassunaUI->close();
-    delete _suassunaUI;
 }
 
 void CoachView::initialization(){
