@@ -100,6 +100,10 @@ float PlayerAccess::distTheirGoal() const {
 Angle PlayerAccess::angleTo(const Position &pos) const {
     return _player->angleTo(pos);
 }
+
+QString PlayerAccess::roleName(){
+    return _player->getRoleName();
+}
 /*
 float PlayerAccess::lError() const {
     return _player->lError();

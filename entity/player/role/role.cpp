@@ -13,11 +13,12 @@ Role::Role() {
     _loc = NULL;
     _initialized = false;
     _configureEnabled = true; // for set behaviours
+
 }
 
 Role::~Role() {
     // Delete behaviours
-    QList<Behaviour*>:: iterator it;
+    QHash<int, Behaviour*>:: iterator it;
     for(it = _behaviourList.begin(); it != _behaviourList.end(); it++){
         delete *it;
     }
@@ -36,6 +37,7 @@ void Role::initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc, SSLR
 
     // Configure Role
     _configureEnabled = true;
+    initializeBehaviours();
     configure();
     _configureEnabled = false;
 
@@ -50,7 +52,7 @@ void Role::setPlayer(Player *player, PlayerAccess *playerAccess){
 
 void Role::runRole(){
     if(_behaviourList.size() == 0){
-        //std::cout << "[ERROR] " << name().toStdString() << " has no behaviours set!\n";
+        std::cout << "[ERROR] " << name().toStdString() << " has no behaviours set!\n";
         return ;
     }
 
@@ -69,32 +71,41 @@ bool Role::canKickBall() const {
     return _ref->getGameInfo(_ourTeam->teamColor())->canKickBall();
 }
 
-QList<Behaviour*> Role::getBehaviours(){
+QHash<int, Behaviour*> Role::getBehaviours(){
     return _behaviourList;
 }
 
-void Role::usesBehaviour(Behaviour *behaviour){
+void Role::usesBehaviour(int id, Behaviour *behaviour){
     if(_configureEnabled == false){
         std::cout << "[WARNING] Blocked '" << name().toStdString() << "' setting Behaviour to use outside configure().\n";
         return ;
     }
 
-    if(_behaviourList.contains(behaviour) == false){
+    if(_behaviourList.contains(id) == false){
         // Add to list
-        _behaviourList.push_back(behaviour);
+        _behaviourList.insertMulti(id, behaviour);
 
-        // If don't have initial skill, put it as initial skill
+        // If don't have initial behaviour, put it as initial behaviour
         if(_behaviour == NULL){
             _behaviour = behaviour;
+            _actualBehaviour = id;
         }
+    }else{
+        std::cout << "[WARNING] Blocked '" << name().toStdString() << "' adding behaviours with same id!\n";
     }
+
 }
 
-void Role::setBehaviour(Behaviour *behaviour){
-    if(_behaviourList.contains(behaviour)){
-        _behaviour = behaviour;
+int Role::getActualBehaviour(){
+    return _actualBehaviour;
+}
+
+void Role::setBehaviour(int behaviour_id){
+    if(_behaviourList.contains(behaviour_id)){
+        _behaviour = _behaviourList.value(behaviour_id);
+        _actualBehaviour = behaviour_id;
     }else{
-        std::cout << "[ERROR] " << name().toStdString() << " setting behaviour '" << behaviour->name().toStdString() << "' that isn't at behaviours list.\n";
+        std::cout << "[ERROR] " << name().toStdString() << " setting behaviour with id '" << behaviour_id << "' that isn't at behaviours list.\n";
     }
 }
 

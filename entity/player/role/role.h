@@ -29,13 +29,14 @@ public:
     virtual void initializeBehaviours() = 0;
 
     // Public functions
-    void setBehaviour(Behaviour *behaviour);
-    QList<Behaviour*> getBehaviours();
+    void setBehaviour(int behaviour_id);
+    QHash<int, Behaviour*> getBehaviours();
     virtual QString name() = 0;
+    int getActualBehaviour();
 
 protected:
     // Behaviour list functions
-    void usesBehaviour(Behaviour *behaviour);
+    void usesBehaviour(int id, Behaviour *behaviour);
 
     // canKickBall (for parameters)
     bool canKickBall() const;
@@ -63,8 +64,9 @@ private:
     SSLReferee *_ref;
 
     // Behaviours list
-    QList<Behaviour*> _behaviourList;
+    QHash<int, Behaviour*> _behaviourList;
     Behaviour *_behaviour;
+    int _actualBehaviour;
 
 };
 
