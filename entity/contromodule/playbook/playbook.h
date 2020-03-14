@@ -34,7 +34,7 @@ protected:
     bool hasPlayer(quint8 id);
     void setPlayerRole(quint8 id, Role *role);
 
-    // Behaviour functions
+    // Role functions
     void usesRole(Role *role);
 
     // canKickBall access (normal start)
