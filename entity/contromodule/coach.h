@@ -33,6 +33,11 @@ private:
     // Suassuna UI
     CoachView *_ourGUI;
     bool _updateRoles;
+
+    // Agressivity
+    QHash<std::string, std::vector<double>> _agressivityClusters;
+    void loadClusters();
+    std::string calculateAgressivity(std::vector<double> &distributions);
 };
 
 #endif // CONTROLLER_H

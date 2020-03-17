@@ -20,6 +20,9 @@ Coach::Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam, CoachView *o
     // Initialize PlayerBus
     PlayerBus::initialize(ourTeam, theirTeam);
 
+    // Load agressivity constraints
+    loadClusters();
+
     // Coach utils
     _utils = new CoachUtils(ourTeam);
 
@@ -38,6 +41,62 @@ Coach::~Coach(){
         delete _strat;
 
     delete _utils;
+}
+
+void Coach::loadClusters(){
+    QString settings;
+    QFile file;
+    file.setFileName("../constraints/agressivity_clusters.json");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    settings = file.readAll();
+    file.close();
+
+    QJsonDocument sd = QJsonDocument::fromJson(settings.toUtf8());
+    QJsonObject sett2 = sd.object();
+
+    QStringList keys = sett2.keys();
+    for(int x = 0; x < keys.size(); x++){
+        QJsonObject structure = (sett2.value(keys.at(x))).toObject();
+        QJsonArray data = structure.take("clusters").toArray();
+        for(int y = 0; y < data.size(); y++){
+            QJsonValue parse_data = data.at(y);
+            QJsonArray parse_data_arr = parse_data.toObject().value(QString("values")).toArray();
+            std::vector<double> vec_aux;
+            for(int z = 0; z < parse_data_arr.size(); z++){
+                vec_aux.push_back(parse_data_arr.at(z).toDouble());
+            }
+            _agressivityClusters.insert(keys.at(x).toStdString(), vec_aux);
+        }
+    }
+
+    std::cout << "[COACH] Agressivity clusters loaded." << std::endl;
+}
+
+namespace std
+{
+  int inline qHash(const std::string& key, uint seed = 0)
+  {
+    return qHash(QByteArray::fromRawData(key.data(), key.length()), seed);
+  }
+}
+
+std::string Coach::calculateAgressivity(std::vector<double> &distributions){
+    QHash<std::string, std::vector<double>>::iterator it;
+    std::string best_ans = "";
+    double dist = 1e9;
+    for(it = _agressivityClusters.begin(); it != _agressivityClusters.end(); it++){
+        double dist_now = 0.0;
+        for(int x = 0; x < distributions.size(); x++){
+            dist_now += pow((distributions.at(x) - it.value().at(x)), 2);
+        }
+        dist_now = sqrt(dist_now);
+        if(dist_now < dist){
+            dist = dist_now;
+            best_ans = it.key();
+        }
+    }
+
+    return best_ans;
 }
 
 void Coach::run(){
