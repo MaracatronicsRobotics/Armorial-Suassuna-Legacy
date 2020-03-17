@@ -226,3 +226,6 @@ FORMS += \
 
 RESOURCES += \
     rsc.qrc
+
+DISTFILES += \
+	constraints/agressivity_clusters.json
