@@ -22,6 +22,7 @@ Coach::Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam, CoachView *o
 
     // Load agressivity constraints
     loadClusters();
+    _lastAgressivity = "";
 
     // Coach utils
     _utils = new CoachUtils(ourTeam);
@@ -41,6 +42,48 @@ Coach::~Coach(){
         delete _strat;
 
     delete _utils;
+}
+
+std::vector<double> Coach::getEnemyProportionsInAreas(){
+    std::vector<double> proportions;
+    for(int x = 0; x < 3; x++) proportions.push_back(0.0);
+
+    if(_ourTeam->fieldSide().isLeft()){
+        QList<Player*> enemyPlayers = _theirTeam->avPlayers().values();
+        QList<Player*>::iterator it;
+        for(it = enemyPlayers.begin(); it != enemyPlayers.end(); it++){
+            if((*it)->position().x() <= 0.0 && (*it)->position().x() >= -1.5){
+                proportions[0] += 1.0;
+            }
+            else if((*it)->position().x() < 1.5 && (*it)->position().x() >= -3.0){
+                proportions[1] += 1.0;
+            }
+            else if((*it)->position().x() < 3.0 && (*it)->position().x() >= -4.5){
+                proportions[2] += 1.0;
+            }
+        }
+    }
+    else{
+        QList<Player*> enemyPlayers = _theirTeam->avPlayers().values();
+        QList<Player*>::iterator it;
+        for(it = enemyPlayers.begin(); it != enemyPlayers.end(); it++){
+            if((*it)->position().x() >= 0.0 && (*it)->position().x() <= 1.5){
+                proportions[0] += 1.0;
+            }
+            else if((*it)->position().x() > 1.5 && (*it)->position().x() <= 3.0){
+                proportions[1] += 1.0;
+            }
+            else if((*it)->position().x() > 3.0 && (*it)->position().x() <= 4.5){
+                proportions[2] += 1.0;
+            }
+        }
+    }
+
+    for(int x = 0; x < 3; x++){
+        proportions[x] = proportions[x] / _theirTeam->avPlayers().values().size();
+    }
+
+    return proportions;
 }
 
 void Coach::loadClusters(){
@@ -90,6 +133,11 @@ std::string Coach::calculateAgressivity(std::vector<double> &distributions){
             dist_now += pow((distributions.at(x) - it.value().at(x)), 2);
         }
         dist_now = sqrt(dist_now);
+        if(dist_now > 0.2){
+            std::cout << "[OUTLIER] ";
+            for(int x = 0; x < distributions.size(); x++) std::cout << distributions[x] << " ";
+            std::cout << std::endl;
+        }
         if(dist_now < dist){
             dist = dist_now;
             best_ans = it.key();
@@ -104,6 +152,16 @@ void Coach::run(){
         std::cout << "[COACH] No players available!" << std::endl;
         return ;
     }
+
+    std::vector<double> proportions = getEnemyProportionsInAreas();
+    std::string agressivity = calculateAgressivity(proportions);
+    if(agressivity != _lastAgressivity){
+        _lastAgressivity = agressivity;
+        std::cout << "[AGRESSIVITY] " << _lastAgressivity << "\n";
+        for(int x = 0; x < 3; x++) std::cout << proportions[x] << " ";
+        std::cout << "\n";
+    }
+
 
     // get strategy
     Strategy *strat = strategy();
