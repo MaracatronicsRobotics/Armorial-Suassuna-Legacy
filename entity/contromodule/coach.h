@@ -35,7 +35,7 @@ private:
     bool _updateRoles;
 
     // Agressivity
-    QHash<std::string, std::vector<double>> _agressivityClusters;
+    QHash<std::string, std::vector<std::vector<double>>> _agressivityClusters;
     void loadClusters();
     std::string calculateAgressivity(std::vector<double> &distributions);
     std::vector<double> getEnemyProportionsInAreas();
