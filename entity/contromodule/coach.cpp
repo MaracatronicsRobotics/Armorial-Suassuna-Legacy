@@ -101,6 +101,7 @@ void Coach::loadClusters(){
     for(int x = 0; x < keys.size(); x++){
         QJsonObject structure = (sett2.value(keys.at(x))).toObject();
         QJsonArray data = structure.take("clusters").toArray();
+        std::vector<std::vector<double>> all_vec;
         for(int y = 0; y < data.size(); y++){
             QJsonValue parse_data = data.at(y);
             QJsonArray parse_data_arr = parse_data.toObject().value(QString("values")).toArray();
@@ -108,8 +109,9 @@ void Coach::loadClusters(){
             for(int z = 0; z < parse_data_arr.size(); z++){
                 vec_aux.push_back(parse_data_arr.at(z).toDouble());
             }
-            _agressivityClusters.insert(keys.at(x).toStdString(), vec_aux);
+            all_vec.push_back(vec_aux);
         }
+        _agressivityClusters.insert(keys.at(x).toStdString(), all_vec);
     }
 
     std::cout << "[COACH] Agressivity clusters loaded." << std::endl;
@@ -124,23 +126,21 @@ namespace std
 }
 
 std::string Coach::calculateAgressivity(std::vector<double> &distributions){
-    QHash<std::string, std::vector<double>>::iterator it;
+    QHash<std::string, std::vector<std::vector<double>>>::iterator it;
     std::string best_ans = "";
     double dist = 1e9;
     for(it = _agressivityClusters.begin(); it != _agressivityClusters.end(); it++){
         double dist_now = 0.0;
-        for(int x = 0; x < distributions.size(); x++){
-            dist_now += pow((distributions.at(x) - it.value().at(x)), 2);
-        }
-        dist_now = sqrt(dist_now);
-        if(dist_now > 0.2){
-            std::cout << "[OUTLIER] ";
-            for(int x = 0; x < distributions.size(); x++) std::cout << distributions[x] << " ";
-            std::cout << std::endl;
-        }
-        if(dist_now < dist){
-            dist = dist_now;
-            best_ans = it.key();
+        for(int x = 0; x < it.value().size(); x++){
+            dist_now = 0;
+            for(int y = 0; y < distributions.size(); y++){
+                dist_now += pow((distributions.at(y) - it.value().at(x).at(y)), 2);
+            }
+            dist_now = sqrt(dist_now);
+            if(dist_now < dist){
+                dist = dist_now;
+                best_ans = it.key();
+            }
         }
     }
 
@@ -157,7 +157,7 @@ void Coach::run(){
     std::string agressivity = calculateAgressivity(proportions);
     if(agressivity != _lastAgressivity){
         _lastAgressivity = agressivity;
-        std::cout << "[AGRESSIVITY] " << _lastAgressivity << "\n";
+        std::cout << "[AGRESSIVITY] Defense_" << _lastAgressivity << "\n";
         for(int x = 0; x < 3; x++) std::cout << proportions[x] << " ";
         std::cout << "\n";
     }
