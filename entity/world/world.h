@@ -9,6 +9,7 @@
 #include <utils/fields/fields.hh>
 #include <entity/world/worldmapupdater.h>
 #include <entity/referee/SSLReferee/sslreferee.h>
+#include <const/constants.h>
 
 #include <entity/coachview/coachview.h>
 

@@ -24,7 +24,7 @@ World::World(Controller *ctr, Fields::Field *defaultField, CoachView *ourGUI) : 
     _wmUpdater->setDefaultFieldGeometry(_wm);
 
     // Set self loop time
-    this->setLoopFrequency(60);
+    this->setLoopFrequency(MRCConstants::threadFrequency());
 
     // Initialize
     _ctrModule = NULL;
@@ -61,7 +61,7 @@ void World::initialization() {
         QList<Entity*> ents = entities->values();
         // Start entity thread
         for(QList<Entity*>::const_iterator ie=ents.constBegin(); ie!=ents.constEnd(); ie++) {
-            (*ie)->setLoopFrequency(60);
+            (*ie)->setLoopFrequency(MRCConstants::threadFrequency());
             (*ie)->start();
         }
     }
