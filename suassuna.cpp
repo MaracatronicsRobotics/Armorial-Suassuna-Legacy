@@ -44,7 +44,7 @@ bool Suassuna::start() {
     _world = new World(_ctr, _defaultField, _ourGUI);
 
     // Create SSLReferee
-    _ref = new SSLReferee();
+    _ref = new SSLReferee(_ourGUI);
     _ref->addGameInfo(Colors::YELLOW);
     _ref->addGameInfo(Colors::BLUE);
     _world->addEntity(_ref, 0);
@@ -66,7 +66,7 @@ bool Suassuna::start() {
     _world->addEntity(_ourGUI, 2);
 
     // Create coach
-    _coach = new Coach(_ref, _ourTeam, _theirTeam);
+    _coach = new Coach(_ref, _ourTeam, _theirTeam, _ourGUI);
     _world->setControlModule(_coach);
 
     // Setup strategy for coach

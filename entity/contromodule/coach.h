@@ -3,11 +3,12 @@
 
 #include <entity/contromodule/basecoach.h>
 #include <entity/contromodule/controlmodule.h>
+#include <entity/coachview/coachview.h>
 
 class Coach : public ControlModule
 {
 public:
-    Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam);
+    Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam, CoachView *ourGUI);
     virtual ~Coach();
     QString name();
 
@@ -29,8 +30,9 @@ private:
     Strategy *_strat;
     Strategy* strategy();
 
-    // Debug
-    bool _showRoles;
+    // Suassuna UI
+    CoachView *_ourGUI;
+    bool _updateRoles;
 };
 
 #endif // CONTROLLER_H
