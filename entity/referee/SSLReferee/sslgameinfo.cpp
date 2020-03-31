@@ -22,6 +22,9 @@
 #include "sslgameinfo.h"
 #include <iostream>
 
+#include <entity/coachview/coachview.h>
+#include <entity/coachview/mainwindow.h>
+
 const int SSLGameInfo::GAME_ON;
 const int SSLGameInfo::GAME_OFF;
 const int SSLGameInfo::HALTED;
@@ -213,6 +216,13 @@ void SSLGameInfo::processCommand() {
     if(_color==Colors::YELLOW) { // Avoid printing for both yellow and blue
         std::string strcommand = refCommandToString(ref_command);
         std::cout << "[SSLGameInfo] Processed SSLReferee command: " << strcommand.c_str() << "\n";
+        _ourGUI->getUI()->updateRefereeCommand(strcommand.c_str());
+        if(_color== Colors::BLUE){
+            _ourGUI->getUI()->updateScores(theirTeamInfo().goalie(), theirTeamInfo().yellow_cards(), theirTeamInfo().red_cards(), theirTeamInfo().timeouts(), ourTeamInfo().goalie(), ourTeamInfo().yellow_cards(), ourTeamInfo().red_cards(), ourTeamInfo().timeouts());
+        }
+        else{
+            _ourGUI->getUI()->updateScores(ourTeamInfo().goalie(), ourTeamInfo().yellow_cards(), ourTeamInfo().red_cards(), ourTeamInfo().timeouts(), theirTeamInfo().goalie(), theirTeamInfo().yellow_cards(), theirTeamInfo().red_cards(), theirTeamInfo().timeouts());
+        }
     }
 }
 
