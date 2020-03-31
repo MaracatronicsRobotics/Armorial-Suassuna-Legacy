@@ -5,11 +5,13 @@
 #include <entity/contromodule/strategy/strategy.h>
 #include <entity/contromodule/coachutils.h>
 
+#include <entity/coachview/mainwindow.h>
+
 QString Coach::name(){
     std::cout << "Coach" << std::endl;
 }
 
-Coach::Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam)
+Coach::Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam, CoachView *ourGUI)
 {
     _ref = ref;
     _ourTeam = ourTeam;
@@ -24,8 +26,11 @@ Coach::Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam)
     // null strat
     _strat = NULL;
 
+    // suassuna ui
+    _ourGUI = ourGUI;
+
     // debug
-    _showRoles = true;
+    _updateRoles = true;
 }
 
 Coach::~Coach(){
@@ -50,12 +55,11 @@ void Coach::run(){
             strat->initialize(_ref, _ourTeam, _theirTeam, _utils);
         }
         strat->runStrategy();
-        if(_showRoles){
-            // debug behaviours
+        if(_updateRoles){
             for(int x = 0; x < _ourTeam->avPlayersSize(); x++){
-                std::cout << "Player " << (int) _ourTeam->avPlayers().values().at(x)->playerId() << " has role " << _ourTeam->avPlayers().values().at(x)->getRoleName().toStdString() << std::endl;
+                _ourGUI->getUI()->setPlayerRole((int) _ourTeam->avPlayers().values().at(x)->playerId(), _ourTeam->avPlayers().values().at(x)->getRoleName());
             }
-            _showRoles = false;
+            _updateRoles = false;
         }
     }
 
@@ -71,7 +75,7 @@ void Coach::setStrategy(Strategy *strat){
 
     //setting new
     _strat = strat;
-    _showRoles = true;
+    _updateRoles = true;
 
     _mutexStrategy.unlock();
 }

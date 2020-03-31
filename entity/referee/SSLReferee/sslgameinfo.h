@@ -25,6 +25,7 @@
 #include <QMutex>
 #include <utils/basics/color.hh>
 #include <include/3rd_party/referee.pb.h>
+#include <entity/baseentity.h>
 
 class SSLGameInfo {
 private:
@@ -65,6 +66,10 @@ private:
     std::string refCommandToString(SSL_Referee_Command cmd);
 public:
     SSLGameInfo(Colors::Color _color);
+
+    // suassuna UI
+    CoachView *_ourGUI;
+    void setUI(CoachView *ourGUI) {_ourGUI = ourGUI;}
 
     void updateGameInfo(SSL_Referee &ref);
 
@@ -121,6 +126,8 @@ public:
     int getRedCards(Colors::Color colorAt);
 
     quint8 getGoalie() { return _goalie; }
+
+
 
     typedef enum {
         STATE_CANTMOVE,
