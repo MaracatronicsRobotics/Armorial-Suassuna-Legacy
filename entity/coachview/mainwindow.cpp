@@ -40,6 +40,10 @@ void MainWindow::setPlayerRole(quint8 id, QString role){
     QPixmap pixmp;
 
     if(role.toLower() == "role_default"){ // teste
+        pixmp.load(":/textures/textures/none.png");
+        playerRoles.at(id).first->setPixmap(pixmp);
+        playerRoles.at(id).second->setText(role);
+    }else if(role.toLower() == "role_goalkeeper"){
         pixmp.load(":/textures/textures/gk.png");
         playerRoles.at(id).first->setPixmap(pixmp);
         playerRoles.at(id).second->setText(role);

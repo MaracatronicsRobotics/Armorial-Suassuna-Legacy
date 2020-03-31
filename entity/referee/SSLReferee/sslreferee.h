@@ -25,13 +25,16 @@
 #include <QUdpSocket>
 #include <QNetworkInterface>
 #include <include/3rd_party/referee.pb.h>
-#include <entity/referee/SSLReferee/sslgameinfo.h>
 #include <entity/referee/referee.h>
 #include <utils/basics/color.hh>
+#include <entity/referee/SSLReferee/sslgameinfo.h>
+
+#include <entity/coachview/coachview.h>
+#include <entity/coachview/mainwindow.h>
 
 class SSLReferee : public Referee {
 public:
-    SSLReferee(QString ipAddress = "224.5.23.2", int port = 10003);
+    SSLReferee(CoachView *ourGUI, QString ipAddress = "224.5.23.2", int port = 10003);
     ~SSLReferee();
     QString name();
 
@@ -53,6 +56,9 @@ private:
 
     // UDP socket
     QUdpSocket *_socket;
+
+    // Suassuna UI
+    CoachView *_ourGUI;
 
     // Game infos (two team colors)
     QMap<Colors::Color, SSLGameInfo*> _gameInfo;
