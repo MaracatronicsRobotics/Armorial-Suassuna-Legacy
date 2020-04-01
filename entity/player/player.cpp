@@ -234,8 +234,8 @@ Angle Player::angleTo(const Position &pos) const{
 
 void Player::idle(){
     // Set current position/orientation as desired
-    _nextPosition = position();
-    _nextOrientation = orientation();
+    //_nextPosition = position();
+    //_nextOrientation = orientation();
 
     // Set speed to 0
     setSpeed(0.0, 0.0, 0.0);
@@ -263,9 +263,11 @@ void Player::setSpeed(float x, float y, float theta) {
     WR::Utils::limitValue(&x, -2.5, 2.5);
     WR::Utils::limitValue(&y, -2.5, 2.5);
 
-    // tem que fazer ajustes com os pids
-    _grSim->setSpeed((int)_team->teamId(), (int)playerId(), x, y, theta);
-    _grSim->setKickSpeed(_team->teamId(), playerId(), 0.0, 0.0);
+    if(_grSim != NULL){
+        // tem que fazer ajustes com os pids
+        _grSim->setSpeed((int)_team->teamId(), (int)playerId(), x, y, theta);
+        _grSim->setKickSpeed(_team->teamId(), playerId(), 0.0, 0.0);
+    }
 
 }
 
@@ -399,6 +401,8 @@ void Player::aroundTheBall(double robot_x, double robot_y, double point_x, doubl
 }
 
 void Player::kick(bool isPass, float kickZPower){
+    if(_grSim == NULL) return;
+
     if(isPass)
         _grSim->setKickSpeed(_team->teamId(), playerId(), 2.0, kickZPower);
     else
@@ -406,5 +410,7 @@ void Player::kick(bool isPass, float kickZPower){
 }
 
 void Player::dribble(bool isActive){
+    if(_grSim == NULL) return;
+
     _grSim->setDribble(_team->teamId(), playerId(), isActive);
 }
