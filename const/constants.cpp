@@ -1,6 +1,6 @@
 #include "constants.h"
 
-int MRCConstants::_threadFrequency = 60; // frequencia das threads criadas
+int MRCConstants::_threadFrequency = 30; // frequencia das threads criadas
 
 MRCConstants::MRCConstants()
 {

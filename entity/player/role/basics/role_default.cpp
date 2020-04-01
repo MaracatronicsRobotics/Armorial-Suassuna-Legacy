@@ -11,7 +11,6 @@ void Role_Default::initializeBehaviours(){
     // Aqui são inseridos os behaviours possíveis de serem usados
     // na ordem: ID do behaviour, instanciação dele
     usesBehaviour(BHV_DONOTHING, _bh_dn = new Behaviour_DoNothing());
-    usesBehaviour(BHV_BARRIER, _bh_def = new Behaviour_Barrier());
 }
 
 void Role_Default::configure(){
@@ -26,15 +25,6 @@ void Role_Default::run(){
      * set presentes neles)
     */
 
-    switch(getActualBehaviour()){
-    case BHV_DONOTHING:{
-        if(player()->position().x() >= 0) setBehaviour(BHV_BARRIER);
-    }
-    break;
-    case BHV_BARRIER:{
-        if(player()->position().x() < 0) setBehaviour(BHV_DONOTHING);
-    }
-    break;
-    }
+    setBehaviour(BHV_DONOTHING);
 
 }

@@ -54,8 +54,9 @@ bool Suassuna::start() {
     _world->setTeams(_ourTeam, _theirTeam);
 
     // Create GRSim Simulator
-    _grSimulator = new grsSimulator();
-    _world->addEntity(_grSimulator, 0);
+    _grSimulator = NULL;
+    //_grSimulator = new grsSimulator();
+    //_world->addEntity(_grSimulator, 0);
 
     // Setup team players
     setupOurPlayers();

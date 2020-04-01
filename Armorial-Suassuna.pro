@@ -218,8 +218,8 @@ HEADERS += \
     entity/coachview/mainwindow.h \
     entity/coachview/samico.h \
 	entity/coachview/qsfmlwidget.h \
-    entity/coachview/ui_mainwindow.h \
-    entity/player/skills/basics/skill_sample.h
+	build/ui_mainwindow.h \
+	entity/player/skills/basics/skill_sample.h
 
 FORMS += \
 	entity/coachview/mainwindow.ui
