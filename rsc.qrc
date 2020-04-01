@@ -36,5 +36,8 @@
         <file>textures/none.png</file>
         <file>textures/stop.png</file>
         <file>textures/play.png</file>
+        <file>textures/eq.png</file>
+        <file>textures/def.png</file>
+        <file>textures/ag.png</file>
     </qresource>
 </RCC>

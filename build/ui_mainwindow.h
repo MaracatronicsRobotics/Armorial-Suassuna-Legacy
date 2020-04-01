@@ -122,7 +122,7 @@ public:
     QWidget *tab;
     QWidget *tab_2;
     MyCanvas *samico;
-    QGroupBox *groupBox_8;
+    QGroupBox *controllerBox;
     QPushButton *pushButton;
     QPushButton *pushButton_2;
     QFrame *line_4;
@@ -564,17 +564,18 @@ public:
         samico = new MyCanvas(centralwidget);
         samico->setObjectName(QString::fromUtf8("samico"));
         samico->setGeometry(QRect(370, 30, 490, 690));
-        groupBox_8 = new QGroupBox(centralwidget);
-        groupBox_8->setObjectName(QString::fromUtf8("groupBox_8"));
-        groupBox_8->setGeometry(QRect(20, 30, 331, 91));
-        pushButton = new QPushButton(groupBox_8);
+        controllerBox = new QGroupBox(centralwidget);
+        controllerBox->setObjectName(QString::fromUtf8("controllerBox"));
+        controllerBox->setEnabled(true);
+        controllerBox->setGeometry(QRect(20, 30, 331, 91));
+        pushButton = new QPushButton(controllerBox);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         pushButton->setGeometry(QRect(60, 24, 64, 64));
         QIcon icon1;
         icon1.addFile(QString::fromUtf8(":/textures/textures/play.png"), QSize(), QIcon::Normal, QIcon::Off);
         pushButton->setIcon(icon1);
         pushButton->setIconSize(QSize(64, 64));
-        pushButton_2 = new QPushButton(groupBox_8);
+        pushButton_2 = new QPushButton(controllerBox);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
         pushButton_2->setGeometry(QRect(210, 24, 64, 64));
         QIcon icon2;
@@ -687,7 +688,7 @@ public:
         tout_y->setText(QApplication::translate("MainWindow", "0", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindow", "Tab 1", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindow", "Tab 2", nullptr));
-        groupBox_8->setTitle(QApplication::translate("MainWindow", "Suassuna Controller", nullptr));
+        controllerBox->setTitle(QApplication::translate("MainWindow", "Suassuna Controller", nullptr));
         pushButton->setText(QString());
         pushButton_2->setText(QString());
     } // retranslateUi
