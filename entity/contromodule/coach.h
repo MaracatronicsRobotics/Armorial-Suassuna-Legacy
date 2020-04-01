@@ -37,9 +37,11 @@ private:
     // Agressivity
     QHash<std::string, std::vector<std::vector<double>>> _agressivityClusters;
     void loadClusters();
-    std::string calculateAgressivity(std::vector<double> &distributions);
-    std::vector<double> getEnemyProportionsInAreas();
+    std::string calculateAgressivity(std::vector<double> &gaussians);
+    std::vector<double> getEnemyGaussiansInAreas();
     std::string _lastAgressivity;
+
+    std::vector<double> proportionsOld;
 };
 
 #endif // CONTROLLER_H

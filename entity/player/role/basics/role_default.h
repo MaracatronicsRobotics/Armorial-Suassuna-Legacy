@@ -9,12 +9,10 @@ class Role_Default : public Role
 private:
     // Behaviours
     Behaviour_DoNothing *_bh_dn;
-    Behaviour_Barrier *_bh_def;
 
     // Behaviours ids!
     enum{
-        BHV_DONOTHING,
-        BHV_BARRIER
+        BHV_DONOTHING
     };
 
     // Inherited functions

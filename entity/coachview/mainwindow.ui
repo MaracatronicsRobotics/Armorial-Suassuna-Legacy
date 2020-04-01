@@ -1687,7 +1687,10 @@
      </rect>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox_8">
+   <widget class="QGroupBox" name="controllerBox">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>20</x>

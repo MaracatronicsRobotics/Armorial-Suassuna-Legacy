@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include <build/ui_mainwindow.h>
 #include <bits/stdc++.h>
 #include <QVBoxLayout>
 #include <QScrollArea>
@@ -123,6 +123,9 @@ void MainWindow::setupTeams(MRCTeam *our, MRCTeam *their, QString opTeam){
     updateGameStage("FIRST HALF");
     updateRefereeCommand("GAME_HALT");
     updateTimeLeft("0.0s");
+
+    //
+    ui->controllerBox->setEnabled(false);
 }
 
 QString MainWindow::transformIntToString(int value){
