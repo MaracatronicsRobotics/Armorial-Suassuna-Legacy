@@ -216,6 +216,7 @@ void Coach::run(){
     std::string agressivity = calculateAgressivity(gaussians);
 
     /* tudo aqui eh pra debug! */
+
     bool vai = false;
     for(int x = 0; x < gaussians.size(); x++){
         if(proportionsOld.size() == 0){
@@ -228,56 +229,6 @@ void Coach::run(){
     proportionsOld = gaussians;
 
     if(vai){
-
-        /* debugando no file */
-        FILE *arq = fopen("tests.txt", "a+");
-        int locBall;
-        if(_ourTeam->fieldSide().isLeft()){
-            if(_ourTeam->loc()->ball().x() >= -4.5 &&_ourTeam->loc()->ball().x() <= -3.0){
-                locBall = 1;
-            }
-            else if(_ourTeam->loc()->ball().x() > -3.0 && _ourTeam->loc()->ball().x() <= -1.5){
-                locBall = 2;
-            }
-            else if(_ourTeam->loc()->ball().x() > -1.5 && _ourTeam->loc()->ball().x() <= 1.5){
-                locBall = 3;
-            }
-            else if(_ourTeam->loc()->ball().x() > 1.5 && _ourTeam->loc()->ball().x() <= 3.0){
-                locBall = 4;
-            }
-            else if(_ourTeam->loc()->ball().x() > 3.0 && _ourTeam->loc()->ball().x() <= 4.5){
-                locBall = 5;
-            }
-        }
-        else{
-            if(_ourTeam->loc()->ball().x() >= -4.5 &&_ourTeam->loc()->ball().x() <= -3.0){
-                locBall = 5;
-            }
-            else if(_ourTeam->loc()->ball().x() > -3.0 && _ourTeam->loc()->ball().x() <= -1.5){
-                locBall = 4;
-            }
-            else if(_ourTeam->loc()->ball().x() > -1.5 && _ourTeam->loc()->ball().x() <= 1.5){
-                locBall = 3;
-            }
-            else if(_ourTeam->loc()->ball().x() > 1.5 && _ourTeam->loc()->ball().x() <= 3.0){
-                locBall = 2;
-            }
-            else if(_ourTeam->loc()->ball().x() > 3.0 && _ourTeam->loc()->ball().x() <= 4.5){
-                locBall = 1;
-            }
-        }
-
-        char str[500];
-        for(int x = 0; x < agressivity.size(); x++){
-            str[x] = agressivity[x];
-            str[x+1] = '\0';
-        }
-
-
-        fprintf(arq, "[%.2lf , %.2lf , %.2lf , %.2lf , %.2lf], %d  -  %s\n", gaussians[0], gaussians[1], gaussians[2], gaussians[3], gaussians[4], locBall, str);
-        fclose(arq);
-        /* debugando no file */
-
         _lastAgressivity = agressivity;
 
         std::cout << "[COACH] Agressivity update to: [ " << agressivity << " ]" <<std::endl;
