@@ -55,9 +55,6 @@ private:
     SSLReferee *_ref;
     Coach *_coach;
 
-    // GRSIM Simulator for test
-    grsSimulator *_grSimulator;
-
     // Times
     MRCTeam *_ourTeam;
     MRCTeam *_theirTeam;
