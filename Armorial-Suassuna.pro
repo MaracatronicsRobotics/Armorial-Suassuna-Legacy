@@ -74,8 +74,7 @@ SOURCES += \
     entity/player/player.cpp \
 	entity/contromodule/mrcteam.cpp \
     entity/player/skills/skill.cpp \
-    entity/locations.cpp \
-    entity/contromodule/grsSimulator/grsSimulator.cpp \
+	entity/locations.cpp \
     entity/contromodule/coach.cpp \
     entity/player/playerbus.cpp \
     entity/player/playeraccess.cpp \
@@ -175,8 +174,7 @@ HEADERS += \
 	entity/contromodule/mrcteam.h \
     entity/player/skills/skill.h \
     entity/locations.h \
-    entity/player/skills/skills_include.h \
-    entity/contromodule/grsSimulator/grsSimulator.h \
+	entity/player/skills/skills_include.h \
     entity/contromodule/coach.h \
     entity/player/playerbus.h \
     entity/player/playeraccess.h \

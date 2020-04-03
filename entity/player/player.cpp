@@ -9,7 +9,7 @@ QString Player::name(){
     return "Player #"+QString::number((int)_team->teamId())+":"+QString::number((int)_playerId);
 }
 
-Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Role *defaultRole, SSLReferee *ref, grsSimulator *grSim, PID *vxPID, PID *vyPID, PID *vwPID) : Entity(Entity::ENT_PLAYER){
+Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Role *defaultRole, SSLReferee *ref, PID *vxPID, PID *vyPID, PID *vwPID) : Entity(Entity::ENT_PLAYER){
     _world = world;
     _team = team;
     _playerId = playerID;
@@ -31,8 +31,6 @@ Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Ro
     // Reset player
     reset();
 
-    // grSimulator for test
-    _grSim = grSim;
 }
 
 Player::~Player(){
@@ -263,14 +261,8 @@ void Player::setSpeed(float x, float y, float theta) {
     WR::Utils::limitValue(&x, -2.5, 2.5);
     WR::Utils::limitValue(&y, -2.5, 2.5);
 
-    if(_grSim != NULL){
-        // tem que fazer ajustes com os pids
-        _grSim->setSpeed((int)_team->teamId(), (int)playerId(), x, y, theta);
-        _grSim->setKickSpeed(_team->teamId(), playerId(), 0.0, 0.0);
-    }else{
-        _ctr->setSpeed((int)_team->teamId(), (int)playerId(), x, y, theta);
-        _ctr->kick(_team->teamId(), playerId(), 0.0);
-    }
+    _ctr->setSpeed((int)_team->teamId(), (int)playerId(), x, y, theta);
+    _ctr->kick(_team->teamId(), playerId(), 0.0);
 
 }
 
@@ -404,16 +396,20 @@ void Player::aroundTheBall(double robot_x, double robot_y, double point_x, doubl
 }
 
 void Player::kick(bool isPass, float kickZPower){
-    if(_grSim == NULL) return;
-
-    if(isPass)
-        _grSim->setKickSpeed(_team->teamId(), playerId(), 2.0, kickZPower);
-    else
-        _grSim->setKickSpeed(_team->teamId(), playerId(), 6.0, kickZPower);
+    if(isPass){
+        _ctr->kick(_team->teamId(), playerId(), 2.0);
+        if(kickZPower > 0.0){
+            _ctr->chipKick(_team->teamId(), playerId(), 2.0); // rever esse power dps
+        }
+    }
+    else{
+        _ctr->kick(_team->teamId(), playerId(), 6.0);
+        if(kickZPower > 0.0){
+            _ctr->chipKick(_team->teamId(), playerId(), 6.0); // rever esse power dps
+        }
+    }
 }
 
 void Player::dribble(bool isActive){
-    if(_grSim == NULL) return;
-
-    _grSim->setDribble(_team->teamId(), playerId(), isActive);
+    _ctr->holdBall(_team->teamId(), playerId(), isActive);
 }

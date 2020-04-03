@@ -6,8 +6,6 @@
 #include <entity/player/control/pid.h>
 #include <utils/freeangles/freeangles.h>
 
-#include <entity/contromodule/grsSimulator/grsSimulator.h>
-
 Suassuna::Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide)
     : _teamId(teamId), _teamColor(teamColor), _fieldSide(fieldSide){
     // Create controller
@@ -52,11 +50,6 @@ bool Suassuna::start() {
     // Setup teams
     setupTeams(opTeamId, opTeamColor, opFieldSide);
     _world->setTeams(_ourTeam, _theirTeam);
-
-    // Create GRSim Simulator
-    _grSimulator = NULL;
-    //_grSimulator = new grsSimulator();
-    //_world->addEntity(_grSimulator, 0);
 
     // Setup team players
     setupOurPlayers();
@@ -142,7 +135,7 @@ void Suassuna::setupOurPlayers() {
         PID *vxPID = new PID(0.5, 0.01, 0.0, 2.5, -2.5);
         PID *vyPID = new PID(0.5, 0.01, 0.0, 2.5, -2.5);
         PID *vwPID = new PID(0.5, 0.01, 0.003, 3.0, -3.0);
-        Player *player = new Player(_world, _ourTeam, _ctr, playerList.at(i), new Role_Default(), _ref, _grSimulator, vxPID, vyPID, vwPID);
+        Player *player = new Player(_world, _ourTeam, _ctr, playerList.at(i), new Role_Default(), _ref, vxPID, vyPID, vwPID);
         // Enable
         player->enable(true);
         // Add to team
@@ -156,7 +149,7 @@ void Suassuna::setupOppPlayers(quint8 opTeamId) {
     const QList<quint8> opPlayerList = _world->getWorldMap()->players(opTeamId);
     for(quint8 i=0; i<opPlayerList.size() && i<=MAX_ROBOT_ID; i++) {
         // Create Player
-        Player *opPlayer = new Player(_world, _theirTeam, _ctr, opPlayerList.at(i), NULL, _ref, NULL, NULL, NULL, NULL);
+        Player *opPlayer = new Player(_world, _theirTeam, _ctr, opPlayerList.at(i), NULL, _ref, NULL, NULL, NULL);
         // Disable (op team doesnt run)
         opPlayer->enable(false);
         // Add to team

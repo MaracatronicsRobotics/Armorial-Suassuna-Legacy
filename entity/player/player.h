@@ -14,7 +14,7 @@
 class Player : public Entity
 {
 public:
-    Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Role *defaultRole, SSLReferee *ref, grsSimulator *grSim, PID *vxPID, PID *vyPID, PID *vwPID);
+    Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Role *defaultRole, SSLReferee *ref, PID *vxPID, PID *vyPID, PID *vwPID);
     ~Player();
     QString name();
     void reset();
@@ -115,9 +115,6 @@ private:
     // errors
     float _lError;
     float _aError;
-
-    // grSimulator for tests
-    grsSimulator *_grSim;
 
     // PID's
     PID *_vxPID;
