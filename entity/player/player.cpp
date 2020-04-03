@@ -267,6 +267,9 @@ void Player::setSpeed(float x, float y, float theta) {
         // tem que fazer ajustes com os pids
         _grSim->setSpeed((int)_team->teamId(), (int)playerId(), x, y, theta);
         _grSim->setKickSpeed(_team->teamId(), playerId(), 0.0, 0.0);
+    }else{
+        _ctr->setSpeed((int)_team->teamId(), (int)playerId(), x, y, theta);
+        _ctr->kick(_team->teamId(), playerId(), 0.0);
     }
 
 }
