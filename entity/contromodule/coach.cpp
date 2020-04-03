@@ -214,49 +214,14 @@ void Coach::run(){
 
     std::vector<double> gaussians = getEnemyGaussiansInAreas();
     std::string agressivity = calculateAgressivity(gaussians);
-
-    /* tudo aqui eh pra debug! */
-
-    bool vai = false;
-    for(int x = 0; x < gaussians.size(); x++){
-        if(proportionsOld.size() == 0){
-            vai = true;
-            break;
-        }
-        if(gaussians[x] != proportionsOld[x]) vai = true;
-    }
-
-    proportionsOld = gaussians;
-
-    if(vai){
-        _lastAgressivity = agressivity;
-
-        std::cout << "[COACH] Agressivity update to: [ " << agressivity << " ]" <<std::endl;
-        std::cout << "Our high area: "     << gaussians[0] << std::endl;
-        std::cout << "Our medium area: "   << gaussians[1] << std::endl;
-        std::cout << "The midfield: "      << gaussians[2] << std::endl;
-        std::cout << "Their medium area: " << gaussians[3] << std::endl;
-        std::cout << "Their high area: "   << gaussians[4] << std::endl;
-
-        std::cout << std::endl;
-    }
-
-    /* tudo aqui eh pra debug! */
-
-    /*
     if(agressivity != _lastAgressivity){
         _lastAgressivity = agressivity;
 
-        std::cout << "[COACH] Agressivity update to: [ " << agressivity << " ]" <<std::endl;
-        std::cout << "Our high area: "     << gaussians[0] << std::endl;
-        std::cout << "Our medium area: "   << gaussians[1] << std::endl;
-        std::cout << "The midfield: "      << gaussians[2] << std::endl;
-        std::cout << "Their medium area: " << gaussians[3] << std::endl;
-        std::cout << "Their high area: "   << gaussians[4] << std::endl;
-
-        std::cout << std::endl;
+        // seting in UI
+        const char *cstr = agressivity.c_str();
+        _ourGUI->getUI()->setAgressivity(cstr);
     }
-    */
+
 
     // get strategy
     Strategy *strat = strategy();

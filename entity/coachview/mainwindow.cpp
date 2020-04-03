@@ -24,6 +24,33 @@ void MainWindow::disableRobot(quint8 id){
     else return ;
 }
 
+void MainWindow::setAgressivity(std::string agressivity){
+    QPixmap pixmp;
+
+    if(agressivity == "high_attack"){
+        ui->agressivity_txt->setText("High Agressive");
+        pixmp.load(":/textures/textures/ag.png");
+    }
+    else if(agressivity == "medium_attack"){
+        ui->agressivity_txt->setText("Medium Agressive");
+        pixmp.load(":/textures/textures/ag.png");
+    }
+    else if(agressivity == "equilibrated"){
+        ui->agressivity_txt->setText("Equilibrated");
+        pixmp.load(":/textures/textures/eq.png");
+    }
+    else if(agressivity == "medium_defense"){
+        ui->agressivity_txt->setText("Medium Defensive");
+        pixmp.load(":/textures/textures/def.png");
+    }
+    else if(agressivity == "high_defense"){
+        ui->agressivity_txt->setText("High Defensive");
+        pixmp.load(":/textures/textures/def.png");
+    }
+
+    ui->agressivity_img->setPixmap(pixmp);
+}
+
 void MainWindow::setPlayerBattery(quint8 id, int qt){
     this->playerBatteries.at(id)->setValue(qt);
 }
@@ -126,6 +153,9 @@ void MainWindow::setupTeams(MRCTeam *our, MRCTeam *their, QString opTeam){
 
     //
     ui->controllerBox->setEnabled(false);
+
+    // test
+    setAgressivity("equilibrated");
 }
 
 QString MainWindow::transformIntToString(int value){
