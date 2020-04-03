@@ -3,8 +3,6 @@
 #include <entity/player/playeraccess.h>
 #include <entity/player/role/role.h>
 
-#include <entity/contromodule/grsSimulator/grsSimulator.h>
-
 QString Player::name(){
     return "Player #"+QString::number((int)_team->teamId())+":"+QString::number((int)_playerId);
 }
