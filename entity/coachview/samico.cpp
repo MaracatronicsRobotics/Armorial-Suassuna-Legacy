@@ -31,7 +31,7 @@ void MyCanvas::onInit()
     // Framerate settings
     sf::RenderWindow::setFramerateLimit(framerate);
 
-    double widthZoom = soccerfield_width / 15.07;
+    double widthZoom = soccerfield_width / (soccerfield_height / widget_height);
     this->zoomViewAt(sf::Vector2i(0, 0), soccerfield_width / widthZoom);
 }
 

@@ -126,6 +126,9 @@ public:
     QPushButton *pushButton;
     QPushButton *pushButton_2;
     QFrame *line_4;
+    QGroupBox *groupBox_8;
+    QLabel *agressivity_img;
+    QLabel *agressivity_txt;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -133,7 +136,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(1118, 775);
+        MainWindow->resize(1155, 825);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/textures/textures/armorial.ico"), QSize(), QIcon::Normal, QIcon::Off);
         MainWindow->setWindowIcon(icon);
@@ -142,11 +145,12 @@ public:
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         groupBox = new QGroupBox(centralwidget);
         groupBox->setObjectName(QString::fromUtf8("groupBox"));
-        groupBox->setGeometry(QRect(890, 20, 221, 111));
+        groupBox->setGeometry(QRect(920, 78, 221, 111));
         groupBox->setAlignment(Qt::AlignCenter);
         sprite_1 = new QLabel(groupBox);
         sprite_1->setObjectName(QString::fromUtf8("sprite_1"));
         sprite_1->setGeometry(QRect(8, 29, 64, 64));
+        sprite_1->setPixmap(QPixmap(QString::fromUtf8(":/textures/textures/b0.png")));
         sprite_1->setScaledContents(true);
         battery_1 = new QProgressBar(groupBox);
         battery_1->setObjectName(QString::fromUtf8("battery_1"));
@@ -190,11 +194,12 @@ public:
         role_1->setFont(font);
         groupBox_2 = new QGroupBox(centralwidget);
         groupBox_2->setObjectName(QString::fromUtf8("groupBox_2"));
-        groupBox_2->setGeometry(QRect(890, 140, 221, 111));
+        groupBox_2->setGeometry(QRect(920, 196, 221, 111));
         groupBox_2->setAlignment(Qt::AlignCenter);
         sprite_2 = new QLabel(groupBox_2);
         sprite_2->setObjectName(QString::fromUtf8("sprite_2"));
         sprite_2->setGeometry(QRect(8, 29, 64, 64));
+        sprite_2->setPixmap(QPixmap(QString::fromUtf8(":/textures/textures/b1.png")));
         sprite_2->setScaledContents(true);
         battery_2 = new QProgressBar(groupBox_2);
         battery_2->setObjectName(QString::fromUtf8("battery_2"));
@@ -235,11 +240,12 @@ public:
         label_22->setScaledContents(true);
         groupBox_3 = new QGroupBox(centralwidget);
         groupBox_3->setObjectName(QString::fromUtf8("groupBox_3"));
-        groupBox_3->setGeometry(QRect(890, 260, 221, 111));
+        groupBox_3->setGeometry(QRect(920, 314, 221, 111));
         groupBox_3->setAlignment(Qt::AlignCenter);
         sprite_3 = new QLabel(groupBox_3);
         sprite_3->setObjectName(QString::fromUtf8("sprite_3"));
         sprite_3->setGeometry(QRect(8, 29, 64, 64));
+        sprite_3->setPixmap(QPixmap(QString::fromUtf8(":/textures/textures/b2.png")));
         sprite_3->setScaledContents(true);
         battery_3 = new QProgressBar(groupBox_3);
         battery_3->setObjectName(QString::fromUtf8("battery_3"));
@@ -280,11 +286,12 @@ public:
         label_29->setScaledContents(true);
         groupBox_4 = new QGroupBox(centralwidget);
         groupBox_4->setObjectName(QString::fromUtf8("groupBox_4"));
-        groupBox_4->setGeometry(QRect(890, 380, 221, 111));
+        groupBox_4->setGeometry(QRect(920, 432, 221, 111));
         groupBox_4->setAlignment(Qt::AlignCenter);
         sprite_4 = new QLabel(groupBox_4);
         sprite_4->setObjectName(QString::fromUtf8("sprite_4"));
         sprite_4->setGeometry(QRect(8, 29, 64, 64));
+        sprite_4->setPixmap(QPixmap(QString::fromUtf8(":/textures/textures/b3.png")));
         sprite_4->setScaledContents(true);
         battery_4 = new QProgressBar(groupBox_4);
         battery_4->setObjectName(QString::fromUtf8("battery_4"));
@@ -325,11 +332,12 @@ public:
         label_24->setScaledContents(true);
         groupBox_5 = new QGroupBox(centralwidget);
         groupBox_5->setObjectName(QString::fromUtf8("groupBox_5"));
-        groupBox_5->setGeometry(QRect(890, 500, 221, 111));
+        groupBox_5->setGeometry(QRect(920, 550, 221, 111));
         groupBox_5->setAlignment(Qt::AlignCenter);
         sprite_5 = new QLabel(groupBox_5);
         sprite_5->setObjectName(QString::fromUtf8("sprite_5"));
         sprite_5->setGeometry(QRect(8, 29, 64, 64));
+        sprite_5->setPixmap(QPixmap(QString::fromUtf8(":/textures/textures/b4.png")));
         sprite_5->setScaledContents(true);
         battery_5 = new QProgressBar(groupBox_5);
         battery_5->setObjectName(QString::fromUtf8("battery_5"));
@@ -370,11 +378,12 @@ public:
         label_25->setScaledContents(true);
         groupBox_6 = new QGroupBox(centralwidget);
         groupBox_6->setObjectName(QString::fromUtf8("groupBox_6"));
-        groupBox_6->setGeometry(QRect(890, 620, 221, 111));
+        groupBox_6->setGeometry(QRect(920, 668, 221, 111));
         groupBox_6->setAlignment(Qt::AlignCenter);
         sprite_6 = new QLabel(groupBox_6);
         sprite_6->setObjectName(QString::fromUtf8("sprite_6"));
         sprite_6->setGeometry(QRect(8, 29, 64, 64));
+        sprite_6->setPixmap(QPixmap(QString::fromUtf8(":/textures/textures/b5.png")));
         sprite_6->setScaledContents(true);
         battery_6 = new QProgressBar(groupBox_6);
         battery_6->setObjectName(QString::fromUtf8("battery_6"));
@@ -415,7 +424,7 @@ public:
         label_32->setScaledContents(true);
         line = new QFrame(centralwidget);
         line->setObjectName(QString::fromUtf8("line"));
-        line->setGeometry(QRect(870, 30, 20, 701));
+        line->setGeometry(QRect(900, 30, 20, 751));
         line->setFrameShape(QFrame::VLine);
         line->setFrameShadow(QFrame::Sunken);
         groupBox_7 = new QGroupBox(centralwidget);
@@ -553,7 +562,7 @@ public:
         line_2->setFrameShadow(QFrame::Sunken);
         tabWidget = new QTabWidget(centralwidget);
         tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
-        tabWidget->setGeometry(QRect(20, 440, 331, 291));
+        tabWidget->setGeometry(QRect(20, 440, 331, 331));
         tabWidget->setTabPosition(QTabWidget::West);
         tab = new QWidget();
         tab->setObjectName(QString::fromUtf8("tab"));
@@ -563,11 +572,11 @@ public:
         tabWidget->addTab(tab_2, QString());
         samico = new MyCanvas(centralwidget);
         samico->setObjectName(QString::fromUtf8("samico"));
-        samico->setGeometry(QRect(370, 30, 490, 690));
+        samico->setGeometry(QRect(370, 30, 527, 740));
         controllerBox = new QGroupBox(centralwidget);
         controllerBox->setObjectName(QString::fromUtf8("controllerBox"));
         controllerBox->setEnabled(true);
-        controllerBox->setGeometry(QRect(20, 30, 331, 91));
+        controllerBox->setGeometry(QRect(20, 20, 331, 91));
         pushButton = new QPushButton(controllerBox);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         pushButton->setGeometry(QRect(60, 24, 64, 64));
@@ -587,10 +596,24 @@ public:
         line_4->setGeometry(QRect(20, 130, 331, 20));
         line_4->setFrameShape(QFrame::HLine);
         line_4->setFrameShadow(QFrame::Sunken);
+        groupBox_8 = new QGroupBox(centralwidget);
+        groupBox_8->setObjectName(QString::fromUtf8("groupBox_8"));
+        groupBox_8->setGeometry(QRect(920, 20, 221, 51));
+        groupBox_8->setAlignment(Qt::AlignCenter);
+        agressivity_img = new QLabel(groupBox_8);
+        agressivity_img->setObjectName(QString::fromUtf8("agressivity_img"));
+        agressivity_img->setGeometry(QRect(70, 30, 16, 14));
+        agressivity_img->setPixmap(QPixmap(QString::fromUtf8(":/textures/textures/eq.png")));
+        agressivity_img->setScaledContents(true);
+        agressivity_txt = new QLabel(groupBox_8);
+        agressivity_txt->setObjectName(QString::fromUtf8("agressivity_txt"));
+        agressivity_txt->setGeometry(QRect(90, 28, 91, 17));
+        agressivity_txt->setFont(font);
+        agressivity_txt->setAlignment(Qt::AlignCenter);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
-        menubar->setGeometry(QRect(0, 0, 1118, 22));
+        menubar->setGeometry(QRect(0, 0, 1155, 22));
         MainWindow->setMenuBar(menubar);
         statusbar = new QStatusBar(MainWindow);
         statusbar->setObjectName(QString::fromUtf8("statusbar"));
@@ -691,6 +714,9 @@ public:
         controllerBox->setTitle(QApplication::translate("MainWindow", "Suassuna Controller", nullptr));
         pushButton->setText(QString());
         pushButton_2->setText(QString());
+        groupBox_8->setTitle(QApplication::translate("MainWindow", "Team Agressivity", nullptr));
+        agressivity_img->setText(QString());
+        agressivity_txt->setText(QApplication::translate("MainWindow", "Equilibrated", nullptr));
     } // retranslateUi
 
 };
