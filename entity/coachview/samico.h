@@ -11,6 +11,7 @@
 // field config
 #define soccerfield_width 7400
 #define soccerfield_height 10400
+#define widget_height 740.f
 #define borderOffset 300.f
 #define centralCirleRadius 500.f
 
