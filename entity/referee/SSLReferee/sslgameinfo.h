@@ -64,6 +64,8 @@ private:
     quint8 _goalie;
 
     std::string refCommandToString(SSL_Referee_Command cmd);
+    std::string refStageToString(SSL_Referee::Stage stage);
+    std::string refTimeLeftToString(uint32_t timeLeft);
 public:
     SSLGameInfo(Colors::Color _color);
 
@@ -144,6 +146,8 @@ public:
         STATE_TIMEOUT,
         STATE_UNDEFINED
     } RefProcessedState;
+
+
     RefProcessedState processedState();
 };
 
