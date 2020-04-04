@@ -58,6 +58,7 @@ void SSLGameInfo::updateGameInfo(SSL_Referee &ref) {
     bool procCmd = false;
 
     mLastRefPack.lock();
+    _ourGUI->getUI()->updateTimeLeft(refTimeLeftToString(lastRefPack.stage_time_left()/1e6).c_str());
     // Get goalie
     if(_color==Colors::YELLOW) {
         if(lastRefPack.yellow().has_goalie())
@@ -217,11 +218,12 @@ void SSLGameInfo::processCommand() {
         std::string strcommand = refCommandToString(ref_command);
         std::cout << "[SSLGameInfo] Processed SSLReferee command: " << strcommand.c_str() << "\n";
         _ourGUI->getUI()->updateRefereeCommand(strcommand.c_str());
+        _ourGUI->getUI()->updateGameStage(refStageToString(stage()).c_str());
         if(_color== Colors::BLUE){
-            _ourGUI->getUI()->updateScores(theirTeamInfo().goalie(), theirTeamInfo().yellow_cards(), theirTeamInfo().red_cards(), theirTeamInfo().timeouts(), ourTeamInfo().goalie(), ourTeamInfo().yellow_cards(), ourTeamInfo().red_cards(), ourTeamInfo().timeouts());
+            _ourGUI->getUI()->updateScores(theirTeamInfo().score(), theirTeamInfo().yellow_cards(), theirTeamInfo().red_cards(), theirTeamInfo().timeouts(), ourTeamInfo().score(), ourTeamInfo().yellow_cards(), ourTeamInfo().red_cards(), ourTeamInfo().timeouts());
         }
         else{
-            _ourGUI->getUI()->updateScores(ourTeamInfo().goalie(), ourTeamInfo().yellow_cards(), ourTeamInfo().red_cards(), ourTeamInfo().timeouts(), theirTeamInfo().goalie(), theirTeamInfo().yellow_cards(), theirTeamInfo().red_cards(), theirTeamInfo().timeouts());
+            _ourGUI->getUI()->updateScores(ourTeamInfo().score(), ourTeamInfo().yellow_cards(), ourTeamInfo().red_cards(), ourTeamInfo().timeouts(), theirTeamInfo().score(), theirTeamInfo().yellow_cards(), theirTeamInfo().red_cards(), theirTeamInfo().timeouts());
         }
     }
 }
@@ -246,6 +248,34 @@ std::string SSLGameInfo::refCommandToString(SSL_Referee_Command cmd) {
         case SSL_Referee_Command_NORMAL_START:          return "NORMAL START";
         default:                                        return "UNDEFINED!";
     }
+}
+
+
+std::string SSLGameInfo::refStageToString(SSL_Referee::Stage stage){
+    switch(stage){
+      case SSL_Referee_Stage_NORMAL_FIRST_HALF_PRE:          return "First_Half_Pre";
+      case SSL_Referee_Stage_NORMAL_FIRST_HALF:              return "First_Half";
+      case SSL_Referee_Stage_NORMAL_HALF_TIME:               return "Half_Time";
+      case SSL_Referee_Stage_NORMAL_SECOND_HALF_PRE:         return "Second_Half_Pre";
+      case SSL_Referee_Stage_NORMAL_SECOND_HALF:             return "Second_Half";
+      case SSL_Referee_Stage_EXTRA_TIME_BREAK:               return "Extra_Time_Break";
+      case SSL_Referee_Stage_EXTRA_FIRST_HALF_PRE:           return "Extra_First_Half_Pre";
+      case SSL_Referee_Stage_EXTRA_FIRST_HALF:               return "Extra_First_Half";
+      case SSL_Referee_Stage_EXTRA_HALF_TIME:                return "Extra_Half_Time";
+      case SSL_Referee_Stage_EXTRA_SECOND_HALF_PRE:          return "Extra_Second_Half_Pre";
+      case SSL_Referee_Stage_EXTRA_SECOND_HALF:              return "Extra_Second_Half";
+      case SSL_Referee_Stage_PENALTY_SHOOTOUT_BREAK:         return "Penalty_Shootout_Break";
+      case SSL_Referee_Stage_PENALTY_SHOOTOUT:               return "Penalty_Shootout";
+      case SSL_Referee_Stage_POST_GAME:                      return "Post_Game";
+      default:                                               return "UNDEFINED!";
+    }
+}
+
+std::string SSLGameInfo::refTimeLeftToString(uint32_t timeLeft){
+    std::string str = std::to_string(timeLeft);
+    str += " sec";
+
+    return str;
 }
 
 bool SSLGameInfo::gameOn(){ return getState() == GAME_ON ;}
