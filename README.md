@@ -6,7 +6,8 @@
 
 ```
 sudo sh protobuf.sh
-qmake
+mkdir build && cd build
+qmake ..
 make
 
 ./Armorial-Suassuna
