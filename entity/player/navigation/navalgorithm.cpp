@@ -34,10 +34,10 @@ void NavAlgorithm::runNavAlgorithm() {
     run();
 
     // Generate path
-    /*
+/*
     if(_generatePath)
         this->generatePath();
-        */
+*/
 }
 
 void NavAlgorithm::setOrigin(const Position &pos, const Angle &ori, const Velocity &vel) {

@@ -1,6 +1,7 @@
 #include "fastpathplanning.h"
 #define RAIOROBO 0.09
 #define RAIOBOLA 0.024
+#include <chrono>
 
 #include <utils/mrctimer/mrctimer.h>
 
@@ -38,20 +39,45 @@ void FastPathPlanning::run(){ // chama p recursão
     list.push_back(originPos());
     _allPath.clear();
 
-    MRCTimer* timer = new MRCTimer(2);
+    MRCTimer* timer = new MRCTimer(0.1);
 
     getPaths(list, 1, timer);
 
-    _path = _allPath.first();
+    double best_dist = 1e9;
+    QList<Position> best_path;
+
+    for(int x = 0; x < _allPath.size(); x++){
+        double sumDist = 0.0;
+        for(int y = 0; y < _allPath[x].size() - 1; y++){
+            sumDist += WR::Utils::distance(_allPath[x][y], _allPath[x][y+1]);
+        }
+        if(sumDist < best_dist){
+            best_dist = sumDist;
+            best_path = _allPath[x];
+        }
+    }
+
+    if(!best_path.isEmpty()){
+        if(best_path.size() > 2){
+            smoothPath(best_path);
+            _path = _smoothPath;
+        }else{
+            _path = best_path;
+        }
+    }
 
 };
 
 bool FastPathPlanning::getPaths(QList<Position> &rec, int h, MRCTimer *timer){
-    if(timer->checkTimerEnd()) return true;
-
+    if(timer->checkTimerEnd()){
+        _allPath.push_back(rec);
+        return true;
+    }
     Position collision = hasCollisionAtLine(rec.last());
-    if(!collision.isUnknown()){ // se tiver colisao do ultimo ponto ate o objetivo
+
+    if(!collision.isUnknown() && !timer->checkTimerEnd()){ // se tiver colisao do ultimo ponto ate o objetivo
         std::pair<Position, Position> pp = findPoint(rec, collision, h); // pego os dois pontos
+
         if(!pp.first.isValid() && !pp.second.isValid()){
             for(int x = 1; x <= 3; x++){
                 pp = findPoint(rec, collision, x);
@@ -60,17 +86,18 @@ bool FastPathPlanning::getPaths(QList<Position> &rec, int h, MRCTimer *timer){
                 }
             }
         }
-        if(pp.first.isValid()){ // se o primeiro ponto for valido (em campo)
+
+        if(pp.first.isValid() && !timer->checkTimerEnd()){ // se o primeiro ponto for valido (em campo)
             QList<Position> aux = rec; // salvo o meu vetor ate agora
             aux.push_back(pp.first); // coloco no novo vetor o meu novo ponto
-            if(getPaths(aux, h, timer)) return true; // chamo a recursao
+            getPaths(aux, h, timer); // chamo a recursao
         }
-        if(pp.second.isValid()){ // se o segundo ponto for valido (em campo)
+        if(pp.second.isValid() && !timer->checkTimerEnd()){ // se o segundo ponto for valido (em campo)
             QList<Position> aux = rec; // salvo o meu vetor ate agora
             aux.push_back(pp.second); // coloco no novo vetor o meu novo ponto
-            if(getPaths(aux, h, timer)) return true; // chamo a recursão
+            getPaths(aux, h, timer); // chamo a recursão
         }
-        if(!pp.first.isValid() && !pp.second.isValid()){
+        if((!pp.first.isValid() && !pp.second.isValid()) || timer->checkTimerEnd()){
             return true;
         }
     }else{
