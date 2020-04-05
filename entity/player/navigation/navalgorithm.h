@@ -5,8 +5,8 @@
 #include<entity/locations.h>
 #include <utils/utils.hh>
 
-class NavAlgorithm
-{public:
+class NavAlgorithm {
+public:
     NavAlgorithm();
     NavAlgorithm(const NavAlgorithm &copy);
     virtual ~NavAlgorithm();
@@ -31,7 +31,7 @@ class NavAlgorithm
     // Return results
     virtual Angle getDirection() const = 0;
     virtual float getDistance() const;
-    virtual QLinkedList<Position> getPath() const;
+    virtual QList<Position> getPath() const;
 
 protected:
     Locations* loc() { return _loc; }
@@ -67,7 +67,7 @@ private:
     // Path generation
     void generatePath();
     bool _generatePath;
-    QLinkedList<Position> _path;
+    QList<Position> _path;
     mutable QMutex _pathMutex;
 
     // Distance

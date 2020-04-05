@@ -40,9 +40,10 @@ SOURCES += \
 	entity/entity.cpp \
     entity/player/behaviour/basics/behaviour_goalkeeper.cpp \
     entity/player/behaviour/basics/behaviour_markball.cpp \
-    entity/player/behaviour/basics/behaviour_penalty_cf.cpp \
+	entity/player/behaviour/basics/behaviour_penalty_cf.cpp \
     entity/player/navigation/fpp/fastpathplanning.cpp \
     entity/player/navigation/navalgorithm.cpp \
+	entity/player/navigation/navigation.cpp \
     entity/player/skills/basics/skill_aroundtheball.cpp \
     entity/player/skills/basics/skill_dribble.cpp \
     entity/player/skills/basics/skill_goto.cpp \
@@ -142,7 +143,7 @@ HEADERS += \
     entity/player/navigation/navalgorithm.h \
     entity/player/navigation/navigation.h \
     entity/player/behaviour/basics/behaviour_markball.h \
-    entity/player/behaviour/basics/behaviour_penalty_cf.h \
+	entity/player/behaviour/basics/behaviour_penalty_cf.h \
     entity/player/skills/basics/skill_aroundtheball.h \
     entity/player/skills/basics/skill_dribble.h \
     entity/player/skills/basics/skill_goto.h \
@@ -237,7 +238,7 @@ HEADERS += \
     entity/coachview/mainwindow.h \
     entity/coachview/samico.h \
 	entity/coachview/qsfmlwidget.h \
-	build/ui_mainwindow.h \
+	build/tmp/moc/ui_mainwindow.h \
 	entity/player/skills/basics/skill_sample.h
 
 FORMS += \
