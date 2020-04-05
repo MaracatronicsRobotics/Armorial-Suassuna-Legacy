@@ -30,7 +30,7 @@ class Behaviour;
 class Skill;
 class Navigation;
 class Role;
-class NavigationAlgorithm;
+class NavAlgorithm;
 class ControlAlgorithm;
 class PlayerUtils;
 class Locations;

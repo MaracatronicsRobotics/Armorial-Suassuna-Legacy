@@ -47,19 +47,23 @@ Position Locations::ourGoal() const {
 Position Locations::ourGoalRightPost() const {
     return (ourSide().isRight()?wm()->rightGoal():wm()->leftGoal()).rightPost();
 }
+/*
 Position Locations::ourGoalRightPostOut() const { // Nao terminada
 //    Position
     return (ourSide().isRight()?wm()->rightGoal():wm()->leftGoal()).rightPost();
 }
+*/
 Position Locations::ourGoalRightMidPost() const {
     return Position(true, ourGoalRightPost().x(), ourGoalRightPost().y()/2, 0.0);
 }
 Position Locations::ourGoalLeftPost() const {
     return (ourSide().isRight()?wm()->rightGoal():wm()->leftGoal()).leftPost();
 }
+/*
 Position Locations::ourGoalLeftPostOut() const { // Nao terminada
     return (ourSide().isRight()?wm()->rightGoal():wm()->leftGoal()).leftPost();
 }
+*/
 Position Locations::ourGoalLeftMidPost() const {
     return Position(true, ourGoalLeftPost().x(), ourGoalLeftPost().y()/2, 0.0);
 }

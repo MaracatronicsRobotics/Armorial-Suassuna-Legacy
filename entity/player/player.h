@@ -14,7 +14,7 @@
 class Player : public Entity
 {
 public:
-    Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Role *defaultRole, SSLReferee *ref, PID *vxPID, PID *vyPID, PID *vwPID);
+    Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Role *defaultRole, SSLReferee *ref, PID *vxPID, PID *vyPID, PID *vwPID, NavAlgorithm *navAlg);
     ~Player();
     QString name();
     void reset();
@@ -38,6 +38,9 @@ public:
     // Orientation
     Angle orientation() const;
     Angle nextOrientation() const;
+
+    // Team
+    MRCTeam* playerTeam();
 
     // Velocity
     Velocity velocity() const;
@@ -77,6 +80,10 @@ public:
     void setRole(Role *b);
     QString getRoleName();
 
+    // pp
+    QList<Position> getPath() const;
+    void setGoal(Position pos);
+
 private:
     // Entity inherit virtual methods
     void initialization();
@@ -106,6 +113,9 @@ private:
 
     // Controller
     Controller *_ctr;
+
+    // Navigation
+    Navigation *_nav;
 
     // Role
     Role *_role;

@@ -2,12 +2,14 @@
 #include <entity/contromodule/mrcteam.h>
 #include <entity/player/playeraccess.h>
 #include <entity/player/role/role.h>
+#include <entity/player/navigation/navalgorithm.h>
+#include <entity/player/navigation/navigation.h>
 
 QString Player::name(){
     return "Player #"+QString::number((int)_team->teamId())+":"+QString::number((int)_playerId);
 }
 
-Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Role *defaultRole, SSLReferee *ref, PID *vxPID, PID *vyPID, PID *vwPID) : Entity(Entity::ENT_PLAYER){
+Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Role *defaultRole, SSLReferee *ref, PID *vxPID, PID *vyPID, PID *vwPID, NavAlgorithm *navAlg) : Entity(Entity::ENT_PLAYER){
     _world = world;
     _team = team;
     _playerId = playerID;
@@ -15,6 +17,7 @@ Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Ro
     _ctr = ctr;
     _role = NULL;
     _defaultRole = defaultRole;
+    _nav = new Navigation(this, navAlg);
 
     _playerAccessSelf = new PlayerAccess(true, this, team->loc());
     _playerAccessBus = new PlayerAccess(false, this, team->loc());
@@ -57,6 +60,10 @@ void Player::reset(){
 /* player info methods */
 quint8 Player::playerId() const{
     return _playerId;
+}
+
+MRCTeam* Player::playerTeam(){
+    return _team;
 }
 
 quint8 Player::teamId() const{
@@ -278,24 +285,18 @@ std::pair<float, float> Player::goTo(double robot_x, double robot_y, double poin
     if(vxSaida < 0) sinal_x = -1;
     if(vySaida < 0) sinal_y = -1;
 
-//     if(moduloDistancia <= offset){
-//         vxSaida = 0;
-//         vySaida = 0;
-
-//         return std::make_pair(0.0, 0.0);
-//     }
-// */
     if(moduloDistancia <= offset){
         vxSaida = 0;
         vySaida = 0;
+
+        return std::make_pair(0.0, 0.0);
+    }
 
     float newVX = _vxPID->calculate(vxSaida, velocity().x());
     float newVY = _vyPID->calculate(vySaida, velocity().y());
 
     return std::make_pair(newVX, newVY);
-    }
-    }
-
+}
 
 std::pair<double, double> Player::rotateTo(double robot_x, double robot_y, double point_x, double point_y, double angleOrigin2Robot) {
     // Define a velocidade angular do robô para visualizar a bola
@@ -356,6 +357,19 @@ void Player::goToLookTo(double robot_x, double robot_y, double point_x, double p
     std::pair<float, float> a;
     double p_x, p_y, angle, moduloDist, final_x, final_y;
 
+    // pp things //
+
+    setGoal(Position(true, point_x, point_y, 0.0));
+    QList<Position> pathGen = getPath();
+
+    if(pathGen.size() > 1){
+        point_x = pathGen.at(1).x();
+        point_y = pathGen.at(1).y();
+    }
+
+    // pp things //
+
+
     if (point_x == aim_x) angle = 1.570796327;
     else angle = atan((point_y - aim_y)/(point_x - aim_x));
     if (aim_x > point_x) {
@@ -412,8 +426,14 @@ void Player::kick(bool isPass, float kickZPower){
     }
 }
 
+void Player::setGoal(Position pos){
+    _nav->setGoal(pos, orientation(), true, true, false, true, true);
+}
+
+QList<Position> Player::getPath() const {
+    return _nav->getPath();
+}
+
 void Player::dribble(bool isActive){
     _ctr->holdBall(_team->teamId(), playerId(), isActive);
 }
-
-

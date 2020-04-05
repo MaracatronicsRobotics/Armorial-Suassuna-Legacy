@@ -8,7 +8,7 @@ class Role_Default : public Role
 {
 private:
     // Behaviours
-    Behaviour_DoNothing *_bh_dn;
+    Behaviour_MarkBall *_bh_dn;
 
     // Behaviours ids!
     enum{
