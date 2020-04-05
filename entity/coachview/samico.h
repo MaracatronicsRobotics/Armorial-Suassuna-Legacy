@@ -4,6 +4,7 @@
 #include "qsfmlwidget.h"
 #include <QObject>
 #include <entity/contromodule/mrcteam.h>
+#include <entity/player/player.h>
 
 // widget config
 #define framerate 60
@@ -89,6 +90,9 @@ class MyCanvas : public QSFMLCanvas
   sf::CircleShape *ball = new sf::CircleShape(ballRadius);
   static MRCTeam *_ourTeam;
   static MRCTeam *_theirTeam;
+
+  // Testing path
+  void drawPathLines(quint8 playerId);
 
   public:
   explicit MyCanvas(QWidget *parent);

@@ -1,5 +1,7 @@
 #include "samico.h"
 #include <iostream>
+#include <entity/player/playerbus.h>
+#include <entity/player/playeraccess.h>
 
 MRCTeam* MyCanvas::_ourTeam = NULL;
 MRCTeam* MyCanvas::_theirTeam = NULL;
@@ -96,6 +98,30 @@ void MyCanvas::drawRobots(){
     }
 }
 
+void MyCanvas::drawPathLines(quint8 playerId){
+
+    QHash<quint8, Player*> playersList = _ourTeam->avPlayers();
+
+    Player* player = playersList[playerId];
+    if(player->isEnabled()){
+        player->setGoal(player->playerTeam()->loc()->ball());
+        QList<QList<Position>> allPos;
+        allPos.push_back(player->getPath());
+        for(int x = 0; x < allPos.size(); x++){
+            QList<Position> pathAt = allPos[x];
+            for(int y = 0; y < pathAt.size() - 1; y++){
+                sf::Vertex a[2] = {
+                    sf::Vertex(sf::Vector2f(abs(((pathAt[y].y()*1000.0)-(real_height / 2.0))/((real_height / 2.0)/(soccerfield_width/2.0))), abs(((pathAt[y].x()*1000.0)-(real_width / 2.0))/((real_width / 2.0)/(soccerfield_height/2.0))))),
+                    sf::Vertex(sf::Vector2f(abs(((pathAt[y+1].y()*1000.0)-(real_height / 2.0))/((real_height / 2.0)/(soccerfield_width/2.0))), abs(((pathAt[y+1].x()*1000.0)-(real_width / 2.0))/((real_width / 2.0)/(soccerfield_height/2.0)))))
+                };
+                sf::RenderWindow::draw(a, 2, sf::Lines);
+            }
+        }
+
+    }
+
+}
+
 void MyCanvas::zoomViewAt(sf::Vector2i pixel, double zoom){
     const sf::Vector2f beforeCoord{ sf::RenderWindow::mapPixelToCoords(pixel) };
     sf::View view{ sf::RenderWindow::getView() };
@@ -123,4 +149,7 @@ void MyCanvas::onUpdate()
     // Draw soccer objects (ball and robots)
     drawRobots();
     drawBall();
+
+    // draw path of robot 0
+    if(PlayerBus::ourPlayerAvailable(0)) drawPathLines(0);
 }

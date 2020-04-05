@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include <build/ui_mainwindow.h>
+#include <build/tmp/moc/ui_mainwindow.h>
 #include <bits/stdc++.h>
 #include <QVBoxLayout>
 #include <QScrollArea>

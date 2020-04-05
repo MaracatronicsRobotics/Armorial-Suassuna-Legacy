@@ -7,7 +7,7 @@
 
 class Navigation {
 public:
-    Navigation(Player *player, NavAlgorithm *navAlg, ControlAlgorithm *linCtrAlg, ControlAlgorithm *angCtrAlg);
+    Navigation(Player *player, NavAlgorithm *navAlg);
 
     virtual ~Navigation();
 
@@ -22,7 +22,7 @@ public:
     // Getters
     Angle getDirection() const;
     float getDistance() const;
-    QLinkedList<Position> getPath() const;
+    QList<Position> getPath() const;
     float getLError() const { return _lError; }
     float getAError() const { return _aError; }
     float getMaxLSpeed() const { return _maxLSpeed; }
@@ -48,7 +48,7 @@ public:
 private:
     // General access
     Player* _player;
-    NavigationAlgorithm *_navAlg;
+    NavAlgorithm *_navAlg;
 
     // Secondary access
     MRCTeam *_ourTeam;
