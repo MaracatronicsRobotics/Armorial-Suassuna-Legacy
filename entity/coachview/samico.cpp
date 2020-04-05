@@ -104,7 +104,7 @@ void MyCanvas::drawPathLines(quint8 playerId){
 
     Player* player = playersList[playerId];
     if(player->isEnabled()){
-        player->setGoal(player->playerTeam()->loc()->ball());
+        player->setGoal(player->playerTeam()->loc()->ball()); 
         QList<QList<Position>> allPos;
         allPos.push_back(player->getPath());
         for(int x = 0; x < allPos.size(); x++){
@@ -117,8 +117,8 @@ void MyCanvas::drawPathLines(quint8 playerId){
                 sf::RenderWindow::draw(a, 2, sf::Lines);
             }
         }
-
     }
+
 
 }
 
@@ -151,5 +151,5 @@ void MyCanvas::onUpdate()
     drawBall();
 
     // draw path of robot 0
-    if(PlayerBus::ourPlayerAvailable(0)) drawPathLines(0);
+    drawPathLines(0);
 }
