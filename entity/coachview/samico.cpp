@@ -98,6 +98,7 @@ void MyCanvas::drawRobots(){
     }
 }
 
+/*
 void MyCanvas::drawPathLines(quint8 playerId){
 
     QHash<quint8, Player*> playersList = _ourTeam->avPlayers();
@@ -121,6 +122,7 @@ void MyCanvas::drawPathLines(quint8 playerId){
 
 
 }
+*/
 
 void MyCanvas::zoomViewAt(sf::Vector2i pixel, double zoom){
     const sf::Vector2f beforeCoord{ sf::RenderWindow::mapPixelToCoords(pixel) };
@@ -149,7 +151,4 @@ void MyCanvas::onUpdate()
     // Draw soccer objects (ball and robots)
     drawRobots();
     drawBall();
-
-    // draw path of robot 0
-    drawPathLines(0);
 }

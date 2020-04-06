@@ -91,9 +91,6 @@ class MyCanvas : public QSFMLCanvas
   static MRCTeam *_ourTeam;
   static MRCTeam *_theirTeam;
 
-  // Testing path
-  void drawPathLines(quint8 playerId);
-
   public:
   explicit MyCanvas(QWidget *parent);
   static void setTeams(MRCTeam *our, MRCTeam *their){_ourTeam = our; _theirTeam = their;}
