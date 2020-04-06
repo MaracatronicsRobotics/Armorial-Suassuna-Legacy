@@ -1,13 +1,8 @@
 #include "fastpathplanning.h"
-#define RAIOROBO 0.09
-#define RAIOBOLA 0.024
-#include <chrono>
-
-#include <utils/mrctimer/mrctimer.h>
 
 FastPathPlanning::FastPathPlanning()
 {
-    _smoothPathResolution = 0.3f;
+    _smoothPathResolution = MRCConstants::_FPPSmoothPathResolution;
 }
 
 FastPathPlanning::~FastPathPlanning(){
@@ -75,6 +70,7 @@ bool FastPathPlanning::getPaths(QList<Position> &rec, int h, MRCTimer *timer){
     }
     Position collision = hasCollisionAtLine(rec.last());
 
+
     if(!collision.isUnknown() && !timer->checkTimerEnd()){ // se tiver colisao do ultimo ponto ate o objetivo
         std::pair<Position, Position> pp = findPoint(rec, collision, h); // pego os dois pontos
 
@@ -92,14 +88,17 @@ bool FastPathPlanning::getPaths(QList<Position> &rec, int h, MRCTimer *timer){
             aux.push_back(pp.first); // coloco no novo vetor o meu novo ponto
             getPaths(aux, h, timer); // chamo a recursao
         }
+
         if(pp.second.isValid() && !timer->checkTimerEnd()){ // se o segundo ponto for valido (em campo)
             QList<Position> aux = rec; // salvo o meu vetor ate agora
             aux.push_back(pp.second); // coloco no novo vetor o meu novo ponto
             getPaths(aux, h, timer); // chamo a recursão
         }
+
         if((!pp.first.isValid() && !pp.second.isValid()) || timer->checkTimerEnd()){
             return true;
         }
+
     }else{
         rec.push_back(goalPos()); // salvo goalPosition
         _allPath.push_back(rec); // salvo no vetor de _paths gerados
@@ -141,8 +140,8 @@ std::pair<Position, Position> FastPathPlanning::findPoint(QList<Position> &list,
    Position endPoint = goalPos();
    QList <Position> allPoints;
    float coefAngular = WR::Utils::getPerpendicularCoefficient(startPoint, endPoint);
-   Position newPoint1(true, colisionPoint.x()+iteratorPoints*0.42*cos(coefAngular), colisionPoint.y()+iteratorPoints*0.42*sin(coefAngular),0.0);
-   Position newPoint2(true, colisionPoint.x()-iteratorPoints*0.42*cos(coefAngular), colisionPoint.y()-iteratorPoints*0.42*sin(coefAngular),0.0);
+   Position newPoint1(true, colisionPoint.x()+iteratorPoints*MRCConstants::_FPPBreakDistance*cos(coefAngular), colisionPoint.y()+iteratorPoints*MRCConstants::_FPPBreakDistance*sin(coefAngular),0.0);
+   Position newPoint2(true, colisionPoint.x()-iteratorPoints*MRCConstants::_FPPBreakDistance*cos(coefAngular), colisionPoint.y()-iteratorPoints*MRCConstants::_FPPBreakDistance*sin(coefAngular),0.0);
 
    if(!loc()->isInsideField(newPoint1,1.1)) newPoint1.setInvalid();
    if(!loc()->isInsideField(newPoint2,1.1)) newPoint2.setInvalid();
@@ -154,11 +153,11 @@ Position FastPathPlanning::hasCollisionAtLine(Position pos){
     bool hasColision = false;
     for (int i=0; i < _colisionPosition.size() && !hasColision; ++i) {
         float distanceLine = WR::Utils::distanceToSegment(pos, goalPos(), _colisionPosition[i].first); // calcula a distancia do ponto ao segmento
-        if (!_colisionPosition[i].second && distanceLine<0.38f) { //se a distancia de qualquer jogador ate a reta for menor que 38cm, tem colisao
+        if (!_colisionPosition[i].second && distanceLine<MRCConstants::_FPPRobotThreshHold) { //se a distancia de qualquer jogador ate a reta for menor que 38cm, tem colisao
             hasColision = true;
             return Position(hasColision, _colisionPosition[i].first.x(), _colisionPosition[i].first.y(), 0.0);
         }
-        if (_colisionPosition[i].second && distanceLine<0.20f) { // se for bola e a distancia dela ate a linha for menor que 20cm
+        if (_colisionPosition[i].second && distanceLine<MRCConstants::_FPPBallThreshHold) { // se for bola e a distancia dela ate a linha for menor que 20cm
             hasColision = true;
             return Position(hasColision, _colisionPosition[i].first.x(), _colisionPosition[i].first.y(), 0.0);
         }
