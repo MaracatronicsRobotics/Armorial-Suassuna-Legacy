@@ -1,8 +1,10 @@
 #ifndef FASTPATHPLANNING_H
 #define FASTPATHPLANNING_H
 
-#include<entity/player/navigation/navalgorithm.h>
-#include<GEARSystem/gearsystem.hh>
+#include <entity/player/navigation/navalgorithm.h>
+#include <GEARSystem/gearsystem.hh>
+#include <const/constants.h>
+#include <utils/mrctimer/mrctimer.h>
 
 class FastPathPlanning : public NavAlgorithm
 {
