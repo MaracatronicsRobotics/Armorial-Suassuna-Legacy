@@ -90,6 +90,7 @@ class MyCanvas : public QSFMLCanvas
   sf::CircleShape *ball = new sf::CircleShape(ballRadius);
   static MRCTeam *_ourTeam;
   static MRCTeam *_theirTeam;
+  void drawPathLines(quint8 playerId);
 
   public:
   explicit MyCanvas(QWidget *parent);

@@ -357,19 +357,6 @@ void Player::goToLookTo(double robot_x, double robot_y, double point_x, double p
     std::pair<float, float> a;
     double p_x, p_y, angle, moduloDist, final_x, final_y;
 
-    // pp things //
-
-    setGoal(Position(true, point_x, point_y, 0.0));
-    QList<Position> pathGen = getPath();
-
-    if(pathGen.size() > 1){
-        point_x = pathGen.at(1).x();
-        point_y = pathGen.at(1).y();
-    }
-
-    // pp things //
-
-
     if (point_x == aim_x) angle = 1.570796327;
     else angle = atan((point_y - aim_y)/(point_x - aim_x));
     if (aim_x > point_x) {

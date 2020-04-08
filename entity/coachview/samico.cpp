@@ -98,7 +98,7 @@ void MyCanvas::drawRobots(){
     }
 }
 
-/*
+
 void MyCanvas::drawPathLines(quint8 playerId){
 
     QHash<quint8, Player*> playersList = _ourTeam->avPlayers();
@@ -107,7 +107,7 @@ void MyCanvas::drawPathLines(quint8 playerId){
     if(player->isEnabled()){
         player->setGoal(player->playerTeam()->loc()->ball()); 
         QList<QList<Position>> allPos;
-        allPos.push_back(player->getPath());
+        if(PlayerBus::ourPlayerAvailable(playerId)) allPos.push_back(player->getPath());
         for(int x = 0; x < allPos.size(); x++){
             QList<Position> pathAt = allPos[x];
             for(int y = 0; y < pathAt.size() - 1; y++){
@@ -120,9 +120,8 @@ void MyCanvas::drawPathLines(quint8 playerId){
         }
     }
 
-
 }
-*/
+
 
 void MyCanvas::zoomViewAt(sf::Vector2i pixel, double zoom){
     const sf::Vector2f beforeCoord{ sf::RenderWindow::mapPixelToCoords(pixel) };
