@@ -1,7 +1,7 @@
 #include "coachview.h"
 #include <entity/coachview/mainwindow.h>
 
-#define THREAD_FREQUENCY 30
+#include <const/constants.h>
 
 QString CoachView::name(){
     return "Coach View";
@@ -29,7 +29,7 @@ CoachView::~CoachView(){
 }
 
 void CoachView::initialization(){
-    this->setLoopFrequency(THREAD_FREQUENCY);
+    this->setLoopFrequency(MRCConstants::threadFrequency());
 }
 
 void CoachView::loop(){

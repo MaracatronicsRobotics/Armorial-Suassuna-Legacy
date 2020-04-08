@@ -53,6 +53,7 @@ private:
 
     // GUI
     CoachView *_ourGUI;
+    QMutex _guiMutex;
 };
 
 #endif // WORLDMAPUPDATER_HH
