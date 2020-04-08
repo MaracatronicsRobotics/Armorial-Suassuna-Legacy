@@ -34,6 +34,7 @@ public:
     // setters
     void setPlayerRole(quint8 id, QString role);
     void setPlayerBattery(quint8 id, int qt);
+    void setPlayerKickCharge(quint8 id, int qt);
     void setRadioConnect(quint8 id, bool isOnline);
     void setDribble(quint8 id, bool isActive);
     void setAgressivity(std::string agressivity);
@@ -49,6 +50,7 @@ private:
     Ui::MainWindow *ui;
     std::vector<QGroupBox*> playerBoxes;
     std::vector<QProgressBar*> playerBatteries;
+    std::vector<QProgressBar*> playerKickCharges;
     std::vector<std::pair<QLabel*, QLabel*>> playerRoles;
     std::vector<QLabel*> playerConnections;
     std::vector<QLabel*> playerDribbles;
