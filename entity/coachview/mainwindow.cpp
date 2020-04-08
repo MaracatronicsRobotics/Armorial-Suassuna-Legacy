@@ -6,8 +6,9 @@
 #include <chrono>
 
 void MainWindow::resetRobots(){
-    for(int x = 0; x < maxRobots; x++){
+    for(quint8 x = 0; x < maxRobots; x++){
         setPlayerBattery(x, 0);
+        setPlayerKickCharge(x, 0);
         setPlayerRole(x, "none");
         setDribble(x, false);
         setRadioConnect(x, false);
@@ -53,6 +54,10 @@ void MainWindow::setAgressivity(std::string agressivity){
 
 void MainWindow::setPlayerBattery(quint8 id, int qt){
     this->playerBatteries.at(id)->setValue(qt);
+}
+
+void MainWindow::setPlayerKickCharge(quint8 id, int qt){
+    this->playerKickCharges.at(id)->setValue(qt);
 }
 
 void MainWindow::setRadioConnect(quint8 id, bool isOnline){
@@ -121,10 +126,10 @@ void MainWindow::setupTeams(MRCTeam *our, MRCTeam *their, QString opTeam){
 
     // updating yellow
     ui->yellow_name->setStyleSheet("font-weight: bold");
-    ui->t_score_y->setStyleSheet("color: #CCCC00");
-    ui->t_yelc_y->setStyleSheet("color: #CCCC00");
-    ui->t_redc_y->setStyleSheet("color: #CCCC00");
-    ui->t_tout_y->setStyleSheet("color: #CCCC00");
+    ui->t_score_y->setStyleSheet("color: #999900");
+    ui->t_yelc_y->setStyleSheet("color: #999900");
+    ui->t_redc_y->setStyleSheet("color: #999900");
+    ui->t_tout_y->setStyleSheet("color: #999900");
 
     std::vector<QPixmap> pixmapVector;
 
@@ -216,6 +221,14 @@ MainWindow::MainWindow(QWidget *parent)
     playerBatteries.push_back(ui->battery_4);
     playerBatteries.push_back(ui->battery_5);
     playerBatteries.push_back(ui->battery_6);
+
+    // creating vector for kick chages
+    playerKickCharges.push_back(ui->chute_1);
+    playerKickCharges.push_back(ui->chute_2);
+    playerKickCharges.push_back(ui->chute_3);
+    playerKickCharges.push_back(ui->chute_4);
+    playerKickCharges.push_back(ui->chute_5);
+    playerKickCharges.push_back(ui->chute_6);
 
     // creating vector for roles (label img and label text)
     playerRoles.push_back(std::make_pair(ui->imgrole_1, ui->role_1));
