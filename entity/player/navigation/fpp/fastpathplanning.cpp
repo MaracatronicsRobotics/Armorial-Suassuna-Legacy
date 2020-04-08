@@ -16,15 +16,19 @@ NavAlgorithm* FastPathPlanning::clone() const{
 void FastPathPlanning::reset(){
     _colisionPosition.clear();
 };
+
 void FastPathPlanning::addBall(const Position &pos, const Velocity &vel){
     this->addColisionPosition(pos, true);
 };
+
 void FastPathPlanning::addOwnRobot(const Position &pos, const Velocity &vel){
     this->addColisionPosition(pos, false);
 };
+
 void FastPathPlanning::addEnemyRobot(const Position &pos, const Velocity &vel){
     this->addColisionPosition(pos, false);
 };
+
 void FastPathPlanning::addGoalArea(const Position &pos){
     this->addColisionPosition(pos, true);
 };
@@ -145,8 +149,8 @@ std::pair<Position, Position> FastPathPlanning::findPoint(QList<Position> &list,
 
    if(!loc()->isInsideField(newPoint1,1.1)) newPoint1.setInvalid();
    if(!loc()->isInsideField(newPoint2,1.1)) newPoint2.setInvalid();
-   return std::make_pair(newPoint1, newPoint2);
 
+   return std::make_pair(newPoint1, newPoint2);
 }
 
 Position FastPathPlanning::hasCollisionAtLine(Position pos){
@@ -164,7 +168,6 @@ Position FastPathPlanning::hasCollisionAtLine(Position pos){
     }
 
     return Position(hasColision, 0.0, 0.0, 0.0);
-
 }
 
 Position FastPathPlanning::getVector(const Position &near, const Position &rand, float vectorLength) {

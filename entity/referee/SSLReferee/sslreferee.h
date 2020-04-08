@@ -34,7 +34,7 @@
 
 class SSLReferee : public Referee {
 public:
-    SSLReferee(CoachView *ourGUI, QString ipAddress = "224.5.23.2", int port = 10003);
+    SSLReferee(CoachView *ourGUI, QString ipAddress = "224.5.23.1", int port = 10003);
     ~SSLReferee();
     QString name();
 
