@@ -13,8 +13,9 @@
 #define soccerfield_width 7400
 #define soccerfield_height 10400
 #define widget_height 740.f
-#define borderOffset 300.f
+#define borderOffset 700.f
 #define centralCirleRadius 500.f
+#define goalDistToMargin 500.f
 
 #define real_width 10400
 #define real_height 7400
@@ -26,7 +27,7 @@
 #define maxRobots 6
 #define ballRadius 50.f
 #define robotRadius 110.f
-#define robotRealRadius 180.f
+#define robotRealRadius 1860.f
 #define border 1400
 
 class MyCanvas : public QSFMLCanvas
@@ -59,6 +60,19 @@ class MyCanvas : public QSFMLCanvas
       sf::Vertex(sf::Vector2f(soccerfield_width - borderOffset, soccerfield_height/2.0))
   };
 
+  sf::Color *colorDeepGoal = new sf::Color(255, 26, 26);
+
+  // vetor do gol (literalmente) esquerdo (baixo)
+  sf::Vertex golFundoEsquerdo[6] =
+  {
+      sf::Vertex(sf::Vector2f((soccerfield_width/2.0) - 500.f, goalDistToMargin), (*colorDeepGoal)),
+      sf::Vertex(sf::Vector2f((soccerfield_width/2.0) - 500.f, 200.f + goalDistToMargin), (*colorDeepGoal)),
+      sf::Vertex(sf::Vector2f((soccerfield_width/2.0) + 500.f, goalDistToMargin), (*colorDeepGoal)),
+      sf::Vertex(sf::Vector2f((soccerfield_width/2.0) + 500.f, 200.f + goalDistToMargin),(*colorDeepGoal)),
+      sf::Vertex(sf::Vector2f((soccerfield_width/2.0) - 500.f, goalDistToMargin), (*colorDeepGoal)),
+      sf::Vertex(sf::Vector2f((soccerfield_width/2.0) + 500.f, goalDistToMargin), (*colorDeepGoal))
+  };
+
   // vetor do gol esquerdo (baixo)
   sf::Vertex golEsquerdo[6] =
   {
@@ -70,6 +84,17 @@ class MyCanvas : public QSFMLCanvas
       sf::Vertex(sf::Vector2f((soccerfield_width/2.0) + 1000.f, 1000.f + borderOffset))
   };
 
+  // vetor do gol (literalmente) direto (cima)
+  sf::Vertex golFundoDireito[6] =
+  {
+      sf::Vertex(sf::Vector2f((soccerfield_width/2.0) - 500.f, soccerfield_height - goalDistToMargin), (*colorDeepGoal)),
+      sf::Vertex(sf::Vector2f((soccerfield_width/2.0) - 500.f, soccerfield_height - (200.f + goalDistToMargin)), (*colorDeepGoal)),
+      sf::Vertex(sf::Vector2f((soccerfield_width/2.0) + 500.f, soccerfield_height - goalDistToMargin), (*colorDeepGoal)),
+      sf::Vertex(sf::Vector2f((soccerfield_width/2.0) + 500.f, soccerfield_height - (200.f + goalDistToMargin)), (*colorDeepGoal)),
+      sf::Vertex(sf::Vector2f((soccerfield_width/2.0) - 500.f, soccerfield_height - goalDistToMargin), (*colorDeepGoal)),
+      sf::Vertex(sf::Vector2f((soccerfield_width/2.0) + 500.f, soccerfield_height - goalDistToMargin), (*colorDeepGoal))
+  };
+
   // vetor do gol direito (cima)
   sf::Vertex golDireito[6] =
   {
@@ -79,6 +104,12 @@ class MyCanvas : public QSFMLCanvas
       sf::Vertex(sf::Vector2f((soccerfield_width/2.0) + 1000.f, soccerfield_height - (1000.f + borderOffset))),
       sf::Vertex(sf::Vector2f((soccerfield_width/2.0) - 1000.f, soccerfield_height - (1000.f + borderOffset))),
       sf::Vertex(sf::Vector2f((soccerfield_width/2.0) + 1000.f, soccerfield_height - (1000.f + borderOffset)))
+  };
+
+  sf::Vertex linhaVertical[2] =
+  {
+      sf::Vertex(sf::Vector2f(soccerfield_width/2.0, borderOffset)),
+      sf::Vertex(sf::Vector2f(soccerfield_width/2.0, soccerfield_height - borderOffset))
   };
 
   // center circle
