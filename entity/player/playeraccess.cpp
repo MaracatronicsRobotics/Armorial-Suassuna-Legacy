@@ -33,8 +33,8 @@ PlayerAccess::~PlayerAccess() {
 }
 
 void PlayerAccess::kick(float power) {
-    //if(_self==false)
-    //    return;
+    if(_self==false)
+        return;
     _player->kick(false);
 }
 
@@ -48,6 +48,10 @@ quint8 PlayerAccess::teamId() const {
 
 quint8 PlayerAccess::opTeamId() const {
     return _player->opTeamId();
+}
+
+MRCTeam* PlayerAccess::team() const {
+    return _player->playerTeam();
 }
 
 Position PlayerAccess::position() const {
