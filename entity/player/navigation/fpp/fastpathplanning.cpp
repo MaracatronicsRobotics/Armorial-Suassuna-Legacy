@@ -38,6 +38,17 @@ void FastPathPlanning::run(){ // chama p recursão
     list.push_back(originPos());
     _allPath.clear();
 
+    // offset pra n dar merda
+    if(loc()->isInsideOurArea(goalPos(), 1.1)){
+        double offSet = loc()->ourSide().isLeft() ? (1.2 - abs(loc()->ourGoal().x() - goalPos().x())) : -(1.2 - abs(loc()->ourGoal().x() - goalPos().x()));
+        setGoal(Position(true, goalPos().x() + offSet, goalPos().y(), 0.0), Angle(false, 0));
+    }
+
+    if(loc()->isInsideTheirArea(goalPos(), 1.1)){
+        double offSet = loc()->theirSide().isLeft() ? (1.2 - abs(loc()->theirGoal().x() - goalPos().x())) : -(1.2 - abs(loc()->theirGoal().x() - goalPos().x()));
+        setGoal(Position(true, goalPos().x() + offSet, goalPos().y(), 0.0), Angle(false, 0));
+    }
+
     MRCTimer* timer = new MRCTimer(0.1);
 
     getPaths(list, 1, timer);
@@ -74,13 +85,24 @@ bool FastPathPlanning::getPaths(QList<Position> &rec, int h, MRCTimer *timer){
     }
     Position collision = hasCollisionAtLine(rec.last());
 
-
     if(!collision.isUnknown() && !timer->checkTimerEnd()){ // se tiver colisao do ultimo ponto ate o objetivo
         std::pair<Position, Position> pp = findPoint(rec, collision, h); // pego os dois pontos
+        if(loc()->isInsideOurArea(pp.first, 1.1) || loc()->isInsideTheirArea(pp.first, 1.1)){
+            pp.first.setInvalid();
+        }
+        if(loc()->isInsideOurArea(pp.second, 1.1) || loc()->isInsideTheirArea(pp.second, 1.1)){
+            pp.second.setInvalid();
+        }
 
         if(!pp.first.isValid() && !pp.second.isValid()){
             for(int x = 1; x <= 3; x++){
                 pp = findPoint(rec, collision, x);
+                if(loc()->isInsideOurArea(pp.first, 1.1) || loc()->isInsideTheirArea(pp.first, 1.1)){
+                    pp.first.setInvalid();
+                }
+                if(loc()->isInsideOurArea(pp.second, 1.1) || loc()->isInsideTheirArea(pp.second, 1.1)){
+                    pp.second.setInvalid();
+                }
                 if(pp.first.isValid() || pp.second.isValid()){
                     break;
                 }
