@@ -28,62 +28,10 @@ Currently, our AI framework is divided in 6 steps:
 ## Armorial-Project
 
 
-## Dependencies:
+## Installing
 
-### Ubuntu Dependencies (You can install using apt)
-* Google Protobuf
-* qt5-default
-* libqt5opengl5-dev
-* libprotobuf-dev 
-* protobuf-compiler
-* build-essential 
-* libsfml-dev
+Please, refer to [Armorial-WS](https://github.com/maracatronics/Armorial-WS) and install the entire Workspace.
 
+## Runnning
 
-### Instaling GearSystem
-This Lib was created By Warthog Robotics and was modificated by Maracatronics to attend our necessity.
-
-```bash
-git clone https://github.com/maracatronics/GEARSystem.git
-cd GEARSystem && cd trunk
-sh build/corba_skeletons.sh
-qmake install_path=/usr/lib/
-make -j4
-sudo sh install.sh
-```
-
-
-### Instaling WRBackbone
-This Lib was created By Warthog Robotics and was modificated by Maracatronics to attend our necessity. It allows communication between all modules of Armorial-Project. 
-
-```bash
-git clone https://github.com/maracatronics/GEARSystem.git
-cd GEARSystem && cd trunk
-sh build/corba_skeletons.sh
-qmake install_path=/usr/lib/
-make -j4
-sudo sh install.sh
-```
-
-
-## Compiling Armorial-Suassuna
-
-- Step 1: Install all dependencies
-
-- Step 2: Compiling 
-```bash
-git clone https://github.com/maracatronics/Armorial-Suassuna.git
-sudo sh protobuf.sh
-
-mkdir build
-cd build
-qmake ..
-make
-```
-- Step 3: Run WRBackbone
-
-- Step 4: Run Armorial-Suassuna
-
-```bash
-./bin/Armorial-Suassuna
-```
+To run the Armorial-Carrero please follow the steps listed in [Armorial-WS](https://github.com/maracatronics/Armorial-WS).
