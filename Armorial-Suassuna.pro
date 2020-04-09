@@ -155,8 +155,7 @@ HEADERS += \
 	exithandler.h \
 	include/3rd_party/netraw.h \
 	include/3rd_party/robocup_ssl_client.h \
-	include/3rd_party/util.h \
-	include/filters.h \
+        include/3rd_party/util.h \
 	include/3rd_party/messages_robocup_ssl_detection.pb.h \
 	include/3rd_party/messages_robocup_ssl_geometry.pb.h \
 	include/3rd_party/messages_robocup_ssl_wrapper.pb.h \
