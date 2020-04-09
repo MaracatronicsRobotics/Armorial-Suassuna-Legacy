@@ -191,10 +191,24 @@ bool Locations::isInsideTheirField(const Position &pos) {
     return (isInsideOurField(pos)==false);
 }
 bool Locations::isInsideOurArea(const Position &pos, float factor) {
-    return _isInsideArea(pos, factor, ourGoal(), ourGoalLeftMidPost(), ourGoalRightMidPost());
+    double y_offset = ourSide().isLeft() ? 0.5 : -0.5;
+    Position test(true, ourGoalLeftPost().x(), ourGoalLeftPost().y() - y_offset, 0.0);
+
+    double x_offset;
+    x_offset = ourSide().isLeft() ? 1.0 : -1.0;
+    Position ourGoalRightDeslocatedPost(true, ourGoalRightPost().x() + x_offset, ourGoalRightPost().y() + y_offset, 0.0);
+
+    return _isInsideArea(pos, factor, test, ourGoalRightDeslocatedPost);
 }
 bool Locations::isInsideTheirArea(const Position &pos, float factor) {
-    return _isInsideArea(pos, factor, theirGoal(), theirGoalLeftMidPost(), theirGoalRightMidPost());
+    double y_offset = theirSide().isLeft() ? 0.5 : -0.5;
+    Position test(true, theirGoalLeftPost().x(), theirGoalLeftPost().y() - y_offset, 0.0);
+
+    double x_offset;
+    x_offset = theirSide().isLeft() ? 1.0 : -1.0;
+    Position theirGoalRightDeslocatedPost(true, theirGoalRightPost().x() + x_offset, theirGoalRightPost().y() + y_offset, 0.0);
+
+    return _isInsideArea(pos, factor, test, theirGoalRightDeslocatedPost);
 }
 bool Locations::isOutsideField(const Position &pos, float factor) {
     return _isOutsideField(pos, factor*fieldMaxX(), factor*fieldMaxY());
@@ -208,13 +222,10 @@ bool Locations::isInsideField(const Position &pos, float factor) {
 bool Locations::isInsideField(const Position &pos, float dx, float dy) {
     return (!isOutsideField(pos, dx, dy));
 }
-bool Locations::_isInsideArea(const Position &pos, float factor, const Position &goal, const Position &goalLeftMidPost, const Position &goalRightMidPost) {
-    // Distance to goal center, mid right post and mid left post
-    float distGoal = WR::Utils::distance(pos, goal);
-    float distLeftMidPost = WR::Utils::distance(pos, goalLeftMidPost);
-    float distRightMidPost = WR::Utils::distance(pos, goalRightMidPost);
-    float areaRadius = factor*fieldDefenseRadius();
-    return (distGoal<areaRadius || distLeftMidPost<areaRadius || distRightMidPost<areaRadius);
+bool Locations::_isInsideArea(const Position &pos, float factor, const Position &goalLeftPost, const Position &goalRightDeslocatedPost) {
+    // rectangle
+    return( (pos.x() <= std::max(goalLeftPost.x() * factor, goalRightDeslocatedPost.x() * factor)) && (pos.x() >= std::min(goalLeftPost.x() * factor, goalRightDeslocatedPost.x() * factor)) &&
+                (pos.y() <= std::max(goalLeftPost.y() * factor, goalRightDeslocatedPost.y() * factor)) && (pos.y() >= std::min(goalLeftPost.y() * factor, goalRightDeslocatedPost.y() * factor)) );
 
     return false;
 }

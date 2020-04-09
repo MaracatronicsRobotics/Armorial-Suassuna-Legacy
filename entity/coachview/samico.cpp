@@ -136,6 +136,7 @@ void MyCanvas::zoomViewAt(sf::Vector2i pixel, double zoom){
 
 void MyCanvas::onUpdate()
 {
+
     sf::RenderWindow::clear(sf::Color(0, 0, 0));
 
     // Draw field background
@@ -143,6 +144,9 @@ void MyCanvas::onUpdate()
 
     // Draw field components (lines, circles, rectangles, etc)
     sf::RenderWindow::draw(linhasExternas, 10, sf::Lines);
+    sf::RenderWindow::draw(linhaVertical, 2, sf::Lines);
+    sf::RenderWindow::draw(golFundoEsquerdo, 6, sf::Lines);
+    sf::RenderWindow::draw(golFundoDireito, 6, sf::Lines);
     sf::RenderWindow::draw(golEsquerdo, 6, sf::Lines);
     sf::RenderWindow::draw(golDireito, 6, sf::Lines);
     sf::RenderWindow::draw(*circuloCentral);
@@ -150,4 +154,6 @@ void MyCanvas::onUpdate()
     // Draw soccer objects (ball and robots)
     drawRobots();
     drawBall();
+
+    //if(PlayerBus::ourPlayerAvailable(0)) drawPathLines(0);
 }

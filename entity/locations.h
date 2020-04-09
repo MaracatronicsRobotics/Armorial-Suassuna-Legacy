@@ -114,7 +114,7 @@ private:
     // Internal acess
     WorldMap* wm() const;
     // Internal
-    bool _isInsideArea(const Position &pos, float factor, const Position &goal, const Position &goalLeftMidPost, const Position &goalRightMidPost);
+    bool _isInsideArea(const Position &pos, float factor, const Position &goalLeftPost, const Position &goalRightDeslocatedPost);
     bool _isOutsideField(const Position &pos, const float maxX, const float maxY);
 };
 #endif // LOCATIONS_HH
