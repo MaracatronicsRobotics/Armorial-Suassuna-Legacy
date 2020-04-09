@@ -38,6 +38,7 @@ public:
     quint8 playerId() const;
     quint8 teamId() const;
     quint8 opTeamId() const;
+    MRCTeam* team() const;
     // Robot auxiliary methods
     // Position
     Position position() const;
