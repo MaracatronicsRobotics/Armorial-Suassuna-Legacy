@@ -143,6 +143,7 @@ class MyCanvas : public QSFMLCanvas
   static MRCTeam *_ourTeam;
   static MRCTeam *_theirTeam;
   void drawPathLines(quint8 playerId);
+  void drawKalmanPredict(quint8 playerId);
 
   public:
   explicit MyCanvas(QWidget *parent);
