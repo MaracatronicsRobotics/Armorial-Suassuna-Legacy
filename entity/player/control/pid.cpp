@@ -34,8 +34,8 @@ PID::PID(){
     _pre_error = 0.0;
     _integral = 0.0;
 
-    _timer = new MRCTimer(1000.0);
-    _timer->update();
+    _timer = new Timer();
+    _timer->start();
 }
 
 PID::PID(double kp, double ki, double kd, double max, double min){
@@ -49,8 +49,8 @@ PID::PID(double kp, double ki, double kd, double max, double min){
     _pre_error = 0.0;
     _integral = 0.0;
 
-    _timer = new MRCTimer(100);
-    _timer->update();
+    _timer = new Timer();
+    _timer->start();
 }
 
 PID::~PID(){
@@ -68,15 +68,22 @@ void PID::setPIDParameters(double kp, double kd, double ki, double max, double m
     _pre_error = 0.0;
     _integral = 0.0;
 
-    _timer->update();
+    _timer->start();
 }
 
 double PID::calculate(double desired, double actual){
+    if(fabs(desired) >= 10.0){
+        desired = 0.0;
+    }
     // get time interval
-    _dt = _timer->getTimeInMilliSeconds();
+    _timer->stop();
+
+    _dt = _timer->timeusec();
     _dt = _dt / 1000.0;
 
-    _timer->update();
+    _timer->start();
+
+    if(_dt == 0.0) return 0.0; // if _dt == 0
 
     // error
     double error = desired - actual;
