@@ -155,9 +155,9 @@ void Suassuna::setupOurPlayers() {
     QList<quint8> playerList = _world->getWorldMap()->players(_teamId);
     for(quint8 i=0; i<playerList.size() && i<=MAX_ROBOT_ID; i++) {
         // Create Player
-        PID *vxPID = new PID(0.5, 0.01, 0.0, 2.5, -2.5);
-        PID *vyPID = new PID(0.5, 0.01, 0.0, 2.5, -2.5);
-        PID *vwPID = new PID(0.5, 0.01, 0.003, 3.0, -3.0);
+        PID *vxPID = new PID(0.4, 0.0, 0.0, 2.5, -2.5);
+        PID *vyPID = new PID(0.4, 0.0, 0.0, 2.5, -2.5);
+        PID *vwPID = new PID(1.0, 0.001, 0.003, 3.0, -3.0);
         NavAlgorithm *navAlg = new FastPathPlanning();
         Player *player = new Player(_world, _ourTeam, _ctr, playerList.at(i), new Role_Default(), _ref, vxPID, vyPID, vwPID, navAlg);
         // Enable

@@ -79,6 +79,9 @@ void Player::reset(){
     // Errors
     _lError = 0.015;
     _aError = Angle::toRadians(4.0);
+    _lastAngle = -100.0;
+    _angularSpeed = 0.0;
+    now = std::chrono::system_clock::now();
 }
 
 /* player info methods */
@@ -114,6 +117,16 @@ void Player::loop(){
         }
     }
     else{
+        /* angular speed calculation */
+        if(_lastAngle == -100.0) _lastAngle = orientation().value();
+        else{
+            bfr = std::chrono::system_clock::now();
+            std::chrono::duration<double> diff = bfr-now;
+            _angularSpeed = (orientation().value() - _lastAngle)/diff.count();
+        }
+        /* angular speed calculation */
+
+        // kalman for PID precision
         _kalman->iterate(position());
         _idleCount = 0;
 
@@ -389,8 +402,7 @@ std::pair<double, double> Player::rotateTo(double point_x, double point_y) {
         speed = 0;
     }
 
-
-    double newSpeed = _vwPID->calculate(speed, angularSpeed().value());
+    double newSpeed = _vwPID->calculate(speed, _angularSpeed);
 
     return std::make_pair(angleRobot2Ball, newSpeed);
 }

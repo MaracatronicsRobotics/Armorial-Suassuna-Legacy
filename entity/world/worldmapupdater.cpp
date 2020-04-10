@@ -124,6 +124,7 @@ void WorldMapUpdater::updateTeam(WorldMap *wm, quint8 teamId) {
         wm->setPlayerPosition(teamId, player, _ctr->playerPosition(teamId, player));
         wm->setPlayerOrientation(teamId, player, _ctr->playerOrientation(teamId, player));
         wm->setPlayerVelocity(teamId, player, _ctr->playerVelocity(teamId, player));
+        wm->setPlayerAngularSpeed(teamId, player, _ctr->playerAngularSpeed(teamId, player));
         wm->setKickEnabled(teamId, player, _ctr->kickEnabled(teamId, player));
         wm->setDribbleEnabled(teamId, player, _ctr->dribbleEnabled(teamId, player));
         wm->setBatteryCharge(teamId, player, _ctr->batteryCharge(teamId, player));
