@@ -107,7 +107,7 @@ void Skill_PushBall::run(){
 
     // goToLookTo
     Position lookPos = WR::Utils::threePoints(_destination, loc()->ball(), 1000.0f, GEARSystem::Angle::pi);
-    player()->goToLookTo(player()->position().x(), player()->position().y(), desiredPos.x(), desiredPos.y(), lookPos.x(), lookPos.y(), player()->orientation().value(), 0.01);
+    player()->goToLookTo(desiredPos.x(), desiredPos.y(), lookPos.x(), lookPos.y(), 0.01);
 }
 
 bool Skill_PushBall::isBehindBall(Position posObjective){
