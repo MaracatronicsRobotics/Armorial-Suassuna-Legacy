@@ -390,7 +390,6 @@ std::pair<double, double> Player::rotateTo(double point_x, double point_y) {
         speed = 0;
     }
 
-    std::cout << "angularSpeed = " << angularSpeed().value() << std::endl;
     double newSpeed = _vwPID->calculate(speed, angularSpeed().value());
 
     return std::make_pair(angleRobot2Ball, newSpeed);
