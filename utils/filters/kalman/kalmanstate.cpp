@@ -19,18 +19,52 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#include "skill_aroundtheball.h"
-#include <entity/player/skills/skills_include.h>
+#include "kalmanstate.h"
 
-QString Skill_AroundTheBall::name() {
-    return "Skill_AroundTheBall";
+KalmanState::KalmanState() {
+
+    _state.setSize(3, 1);
+
 }
 
-Skill_AroundTheBall::Skill_AroundTheBall() {
-    _desiredPosition = Position(true, 0.0, 0.0, 0.0);
-    _offsetBall = 0.1;
+float KalmanState::getPosition() const {
+
+    return _state.get(0, 0);
+
 }
 
-void Skill_AroundTheBall::run() {
-    player()->aroundTheBall(_desiredPosition.x(), _desiredPosition.y(), _offsetBall);
+float KalmanState::getVelocity() const {
+
+    return _state.get(1, 0);
+
+}
+
+float KalmanState::getAcceleration() const {
+
+    return _state.get(2, 0);
+
+}
+
+Matrix& KalmanState::matrix() {
+
+    return _state;
+
+}
+
+void KalmanState::setPosition(float value) {
+
+    _state.set(0, 0, value);
+
+}
+
+void KalmanState::setVelocity(float value) {
+
+    _state.set(1, 0, value);
+
+}
+
+void KalmanState::setAcceleration(float value) {
+
+    _state.set(2, 0, value);
+
 }

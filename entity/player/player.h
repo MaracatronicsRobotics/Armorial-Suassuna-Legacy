@@ -29,6 +29,7 @@
 #include <bits/stdc++.h>
 #include <entity/locations.h>
 #include <entity/player/control/pid.h>
+#include <utils/filters/kalman/kalman.hpp>
 
 #define IDLE_COUNT 10
 
@@ -90,10 +91,10 @@ public:
 
     // Player skills
     void setSpeed(float x, float y, float theta);
-    std::pair<float, float> goTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double _distBall = 0.2);
-    std::pair<double, double> rotateTo(double robot_x, double robot_y, double point_x, double point_y, double robotAngle);
-    void goToLookTo(double robot_x, double robot_y, double point_x, double point_y, double aim_x, double aim_y, double angleOrigin2Robot, double offset = 0.2);
-    void aroundTheBall(double robot_x, double robot_y, double point_x, double point_y, double robotAngle, double offset);
+    std::pair<float, float> goTo(double point_x, double point_y, double _distBall = 0.2);
+    std::pair<double, double> rotateTo(double point_x, double point_y);
+    void goToLookTo(double point_x, double point_y, double aim_x, double aim_y, double offset = 0.2);
+    void aroundTheBall(double point_x, double point_y, double offset);
     void kick(bool isPass, float kickZPower = 0.0);
     void dribble(bool isActive);
 
@@ -104,6 +105,9 @@ public:
     // pp
     QList<Position> getPath() const;
     void setGoal(Position pos);
+
+    // Kalman Filtering (for more control)
+    Position getKalmanPredict();
 
 private:
     // Entity inherit virtual methods
@@ -151,6 +155,7 @@ private:
     PID *_vxPID;
     PID *_vyPID;
     PID *_vwPID;
+    KalmanFilter2D *_kalman;
 
 
 };

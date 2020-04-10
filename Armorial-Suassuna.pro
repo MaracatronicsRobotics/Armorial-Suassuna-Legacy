@@ -81,6 +81,9 @@ SOURCES += \
 	utils/fields/field_vss2008.cc \
 	utils/fields/fields.cc \
 	utils/fieldside/fieldside.cc \
+    utils/filters/kalman/kalman.cpp \
+    utils/filters/kalman/kalmanstate.cpp \
+    utils/filters/kalman/matrix.cpp \
     utils/freeangles/freeangles.cpp \
     utils/freeangles/obstacle.cpp \
 	utils/graph/edge.cc \
@@ -182,6 +185,9 @@ HEADERS += \
 	utils/fields/fields.hh \
 	utils/fields/wrfields.hh \
 	utils/fieldside/fieldside.hh \
+    utils/filters/kalman/kalman.hpp \
+    utils/filters/kalman/kalmanstate.h \
+    utils/filters/kalman/matrix.h \
     utils/freeangles/freeangles.h \
     utils/freeangles/obstacle.h \
 	utils/graph/basegraph.hh \

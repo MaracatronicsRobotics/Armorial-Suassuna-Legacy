@@ -140,7 +140,20 @@ void MyCanvas::drawPathLines(quint8 playerId){
             }
         }
     }
+}
 
+void MyCanvas::drawKalmanPredict(quint8 playerId){
+    QHash<quint8, Player*> playersList = _ourTeam->avPlayers();
+
+    Player* player = playersList[playerId];
+    if(player->isEnabled()){
+        Position pos = player->getKalmanPredict();
+        sf::Vertex a[2] = {
+            sf::Vertex(sf::Vector2f(abs(((player->position().y()*1000.0)-(real_height / 2.0))/((real_height / 2.0)/(soccerfield_width/2.0))), abs(((player->position().x()*1000.0)-(real_width / 2.0))/((real_width / 2.0)/(soccerfield_height/2.0))))),
+            sf::Vertex(sf::Vector2f(abs(((pos.y()*1000.0)-(real_height / 2.0))/((real_height / 2.0)/(soccerfield_width/2.0))), abs(((pos.x()*1000.0)-(real_width / 2.0))/((real_width / 2.0)/(soccerfield_height/2.0)))))
+        };
+        sf::RenderWindow::draw(a, 2, sf::Lines);
+    }
 }
 
 
@@ -177,4 +190,5 @@ void MyCanvas::onUpdate()
     drawBall();
 
     //if(PlayerBus::ourPlayerAvailable(0)) drawPathLines(0);
+    //if(PlayerBus::ourPlayerAvailable(0)) drawKalmanPredict(0);
 }
