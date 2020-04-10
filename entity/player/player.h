@@ -156,10 +156,6 @@ private:
     PID *_vyPID;
     PID *_vwPID;
     KalmanFilter2D *_kalman;
-    double _lastAngle;
-    double _angularSpeed;
-    std::chrono::time_point<std::chrono::system_clock> now;
-    std::chrono::time_point<std::chrono::system_clock> bfr;
 
 
 };
