@@ -32,7 +32,7 @@ QString Coach::name(){
     std::cout << "Coach" << std::endl;
 }
 
-Coach::Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam, CoachView *ourGUI)
+Coach::Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam)
 {
     _ref = ref;
     _ourTeam = ourTeam;
@@ -50,12 +50,6 @@ Coach::Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam, CoachView *o
 
     // null strat
     _strat = NULL;
-
-    // suassuna ui
-    _ourGUI = ourGUI;
-
-    // debug
-    _updateRoles = true;
 }
 
 Coach::~Coach(){
@@ -235,12 +229,9 @@ void Coach::run(){
 
     std::vector<double> gaussians = getEnemyGaussiansInAreas();
     std::string agressivity = calculateAgressivity(gaussians);
+
     if(agressivity != _lastAgressivity){
         _lastAgressivity = agressivity;
-
-        // seting in UI
-        const char *cstr = agressivity.c_str();
-        _ourGUI->getUI()->setAgressivity(cstr);
     }
 
 
@@ -253,14 +244,12 @@ void Coach::run(){
             strat->initialize(_ref, _ourTeam, _theirTeam, _utils);
         }
         strat->runStrategy();
-        if(_updateRoles){
-            for(int x = 0; x < _ourTeam->avPlayersSize(); x++){
-                _ourGUI->getUI()->setPlayerRole((int) _ourTeam->avPlayers().values().at(x)->playerId(), _ourTeam->avPlayers().values().at(x)->getRoleName());
-            }
-            _updateRoles = false;
-        }
     }
 
+}
+
+QString Coach::getAgressivity(){
+    return _lastAgressivity.c_str();
 }
 
 void Coach::setStrategy(Strategy *strat){
@@ -273,7 +262,6 @@ void Coach::setStrategy(Strategy *strat){
 
     //setting new
     _strat = strat;
-    _updateRoles = true;
 
     _mutexStrategy.unlock();
 }

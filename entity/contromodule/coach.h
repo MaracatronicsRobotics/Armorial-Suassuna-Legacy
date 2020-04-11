@@ -29,10 +29,11 @@
 class Coach : public ControlModule
 {
 public:
-    Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam, CoachView *ourGUI);
+    Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam);
     virtual ~Coach();
     QString name();
 
+    QString getAgressivity();
     void setStrategy(Strategy *strat);
 private:
     // run controller
@@ -48,12 +49,9 @@ private:
 
     // Strategy
     QMutex _mutexStrategy;
+    QMutex *_UIMutex;
     Strategy *_strat;
     Strategy* strategy();
-
-    // Suassuna UI
-    CoachView *_ourGUI;
-    bool _updateRoles;
 
     // Agressivity
     QHash<std::string, std::vector<std::vector<double>>> _agressivityClusters;

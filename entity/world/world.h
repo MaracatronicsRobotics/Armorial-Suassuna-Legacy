@@ -38,7 +38,7 @@
 
 class World : public Entity {
 public:
-    World(Controller *ctr, Fields::Field *defaultField, CoachView *ourGUI);
+    World(Controller *ctr, Fields::Field *defaultField);
     ~World();
     QString name();
 
@@ -92,9 +92,6 @@ private:
     // Internal
     void setupWorldMap();
     void stopAndDeleteEntities();
-
-    // GUI
-    CoachView *_ourGUI;
 };
 
 #endif // WORLD_HH

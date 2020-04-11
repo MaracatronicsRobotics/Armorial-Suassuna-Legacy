@@ -28,7 +28,7 @@ QString World::name() {
     return (_ctrModule==NULL? "World" : _ctrModule->name());
 }
 
-World::World(Controller *ctr, Fields::Field *defaultField, CoachView *ourGUI) : Entity(ENT_WORLD) {
+World::World(Controller *ctr, Fields::Field *defaultField) : Entity(ENT_WORLD) {
 
     _ctr = ctr;
     _ourTeam = _theirTeam = NULL;
@@ -36,12 +36,9 @@ World::World(Controller *ctr, Fields::Field *defaultField, CoachView *ourGUI) : 
     // Create WorldMap
     _wm = new WorldMap();
 
-    // GUI
-    _ourGUI = ourGUI;
-
     setupWorldMap();
     // Create WorldMapUpdater
-    _wmUpdater = new WorldMapUpdater(ctr, defaultField, _ourGUI);
+    _wmUpdater = new WorldMapUpdater(ctr, defaultField);
     _wmUpdater->setDefaultFieldGeometry(_wm);
 
     // Set self loop time

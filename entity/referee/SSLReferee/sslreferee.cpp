@@ -27,11 +27,10 @@ QString SSLReferee::name() {
     return "SSLReferee";
 }
 
-SSLReferee::SSLReferee(CoachView *ourGUI, QString ipAddress, int port) {
+SSLReferee::SSLReferee(QString ipAddress, int port) {
     // from http://robocupssl.cpe.ku.ac.th/referee:protocol
     _ipAddress = QHostAddress(ipAddress);
     _port = port;
-    _ourGUI = ourGUI;
 }
 
 SSLReferee::~SSLReferee() {
@@ -55,7 +54,6 @@ void SSLReferee::addGameInfo(Colors::Color color) {
     // Add game info color
     if(_gameInfo.contains(color)==false) {
         SSLGameInfo *ginfo = new SSLGameInfo(color);
-        ginfo->setUI(_ourGUI);
         _gameInfo.insert(color, ginfo);
     }
 }

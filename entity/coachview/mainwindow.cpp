@@ -46,7 +46,7 @@ void MainWindow::disableRobot(quint8 id){
     else return ;
 }
 
-void MainWindow::setAgressivity(std::string agressivity){
+void MainWindow::setAgressivity(QString agressivity){
     QPixmap pixmp;
 
     if(agressivity == "high_attack"){

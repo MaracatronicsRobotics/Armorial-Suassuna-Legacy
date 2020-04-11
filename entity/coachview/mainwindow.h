@@ -58,7 +58,7 @@ public:
     void setPlayerKickCharge(quint8 id, int qt);
     void setRadioConnect(quint8 id, bool isOnline);
     void setDribble(quint8 id, bool isActive);
-    void setAgressivity(std::string agressivity);
+    void setAgressivity(QString agressivity);
 
     // updaters
     void updateScores(int score_yellow, int yellowcards_yellow, int redcards_yellow, int tout_yellow,

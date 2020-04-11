@@ -30,14 +30,11 @@
 #include <entity/contromodule/mrcteam.h>
 #include <entity/coachview/mainwindow.h>
 
-WorldMapUpdater::WorldMapUpdater(Controller *ctr, Fields::Field *defaultField, CoachView *ourGUI) {
+WorldMapUpdater::WorldMapUpdater(Controller *ctr, Fields::Field *defaultField) {
     _ctr = ctr;
     _defaultField = defaultField;
     // Initialize
     _lastBallPosition.setUnknown();
-
-    // GUI
-    _ourGUI = ourGUI;
 }
 
 WorldMapUpdater::~WorldMapUpdater() {
@@ -112,15 +109,6 @@ void WorldMapUpdater::updateTeam(WorldMap *wm, quint8 teamId) {
     for(it=ctrPlayers.constBegin(); it!=ctrPlayers.end(); it++) {
         const quint8 player = *it;
         // Pos, ori and vel
-        _guiMutex.lock();
-
-        if(_ourGUI->getOurTeam()->teamId() == teamId && _ctr->playerPosition(teamId, player).isUnknown()){
-            _ourGUI->getUI()->disableRobot(player);
-        }else if(_ourGUI->getOurTeam()->teamId() == teamId && !_ctr->playerPosition(teamId, player).isUnknown()){
-            _ourGUI->getUI()->enableRobot(player);
-        }
-
-        _guiMutex.unlock();
         wm->setPlayerPosition(teamId, player, _ctr->playerPosition(teamId, player));
         wm->setPlayerOrientation(teamId, player, _ctr->playerOrientation(teamId, player));
         wm->setPlayerVelocity(teamId, player, _ctr->playerVelocity(teamId, player));

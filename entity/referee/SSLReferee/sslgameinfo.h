@@ -63,15 +63,12 @@ private:
 
     quint8 _goalie;
 
-    std::string refCommandToString(SSL_Referee_Command cmd);
-    std::string refStageToString(SSL_Referee::Stage stage);
-    std::string refTimeLeftToString(uint32_t timeLeft);
 public:
     SSLGameInfo(Colors::Color _color);
 
-    // suassuna UI
-    CoachView *_ourGUI;
-    void setUI(CoachView *ourGUI) {_ourGUI = ourGUI;}
+    std::string refCommandToString(SSL_Referee_Command cmd);
+    std::string refStageToString(SSL_Referee::Stage stage);
+    std::string refTimeLeftToString();
 
     void updateGameInfo(SSL_Referee &ref);
 
@@ -129,6 +126,8 @@ public:
 
     quint8 getGoalie() { return _goalie; }
 
+    // Mutex
+    QMutex *_UIMutex;
 
 
     typedef enum {

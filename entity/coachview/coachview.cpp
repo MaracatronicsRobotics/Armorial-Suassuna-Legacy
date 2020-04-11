@@ -21,7 +21,7 @@
 
 #include "coachview.h"
 #include <entity/coachview/mainwindow.h>
-
+#include <entity/player/playerbus.h>
 #include <const/constants.h>
 
 QString CoachView::name(){
@@ -35,8 +35,18 @@ void CoachView::setTeams(MRCTeam *our, MRCTeam *their){
     _suassunaUI->setupTeams(_ourTeam, _theirTeam);
 }
 
+void CoachView::setCoach(Coach *coach){
+    _coach = coach;
+}
+
+void CoachView::setReferee(SSLReferee *ref){
+    _ref = ref;
+}
+
 CoachView::CoachView() : Entity(ENT_GUI)
 {
+    _UIMutex = new QMutex();
+
     _suassunaUI = new MainWindow();
     _suassunaUI->show();
 }
@@ -54,9 +64,40 @@ void CoachView::initialization(){
 }
 
 void CoachView::loop(){
+    _UIMutex->lock();
 
+    // process every ssl game info
+    SSLGameInfo* _gameInfo = _ref->getGameInfo(_ourTeam->teamColor());
+
+    if(_gameInfo->getColor() == _ourTeam->teamColor()){
+        _suassunaUI->updateRefereeCommand(_gameInfo->refCommandToString(_gameInfo->command()).c_str());
+        _suassunaUI->updateGameStage(_gameInfo->refStageToString(_gameInfo->stage()).c_str());
+        SSL_Referee_TeamInfo theirTeamInfo = _gameInfo->theirTeamInfo();
+        SSL_Referee_TeamInfo ourTeamInfo = _gameInfo->ourTeamInfo();
+        if(_ourTeam->teamColor() == Colors::BLUE){
+            _suassunaUI->updateScores(theirTeamInfo.score(), theirTeamInfo.yellow_cards(), theirTeamInfo.red_cards(), theirTeamInfo.timeouts(), ourTeamInfo.score(), ourTeamInfo.yellow_cards(), ourTeamInfo.red_cards(), ourTeamInfo.timeouts());
+        }else{
+            _suassunaUI->updateScores(ourTeamInfo.score(), ourTeamInfo.yellow_cards(), ourTeamInfo.red_cards(), ourTeamInfo.timeouts(), theirTeamInfo.score(), theirTeamInfo.yellow_cards(), theirTeamInfo.red_cards(), theirTeamInfo.timeouts());
+        }
+    }
+    _suassunaUI->updateTimeLeft(_gameInfo->refTimeLeftToString().c_str());
+
+    // process coach agressivity
+    _suassunaUI->setAgressivity(_coach->getAgressivity());
+
+    // process players avaliability
+    QHash<quint8, Player*> ourPlayers = _ourTeam->avPlayers();
+    for(quint8 x = 0; x < MRCConstants::_qtPlayers; x++){
+        if(PlayerBus::ourPlayerAvailable(x)){
+            _suassunaUI->enableRobot(x);
+            _suassunaUI->setPlayerRole(x, ourPlayers[x]->getRoleName());
+        }else{
+            _suassunaUI->disableRobot(x);
+        }
+    }
+
+    _UIMutex->unlock();
 }
 
 void CoachView::finalization(){
-
 }
