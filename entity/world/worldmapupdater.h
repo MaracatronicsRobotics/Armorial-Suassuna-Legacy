@@ -31,7 +31,7 @@
 
 class WorldMapUpdater {
 public:
-    WorldMapUpdater(Controller *ctr, Fields::Field  *defaultField, CoachView *ourGUI);
+    WorldMapUpdater(Controller *ctr, Fields::Field  *defaultField);
     ~WorldMapUpdater();
     void setDefaultFieldGeometry(WorldMap *wm);
     void update(WorldMap *wm);
@@ -50,10 +50,6 @@ private:
 
     // Internal
     Position _lastBallPosition;
-
-    // GUI
-    CoachView *_ourGUI;
-    QMutex _guiMutex;
 };
 
 #endif // WORLDMAPUPDATER_HH

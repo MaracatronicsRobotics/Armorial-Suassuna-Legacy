@@ -49,6 +49,8 @@ SSLGameInfo::SSLGameInfo(Colors::Color color) {
 //    setState(GAME_ON);
 //    setState(GAME_OFF);
 
+    _UIMutex = new QMutex();
+
     (color==Colors::BLUE)? _stateColor = BLUE : _stateColor = YELLOW;
 
     _goalie = 200;
@@ -58,7 +60,7 @@ void SSLGameInfo::updateGameInfo(SSL_Referee &ref) {
     bool procCmd = false;
 
     mLastRefPack.lock();
-    _ourGUI->getUI()->updateTimeLeft(refTimeLeftToString(lastRefPack.stage_time_left()/1e6).c_str());
+
     // Get goalie
     if(_color==Colors::YELLOW) {
         if(lastRefPack.yellow().has_goalie())
@@ -217,14 +219,6 @@ void SSLGameInfo::processCommand() {
     if(_color==Colors::YELLOW) { // Avoid printing for both yellow and blue
         std::string strcommand = refCommandToString(ref_command);
         std::cout << "[SSLGameInfo] Processed SSLReferee command: " << strcommand.c_str() << "\n";
-        _ourGUI->getUI()->updateRefereeCommand(strcommand.c_str());
-        _ourGUI->getUI()->updateGameStage(refStageToString(stage()).c_str());
-        if(_color== Colors::BLUE){
-            _ourGUI->getUI()->updateScores(theirTeamInfo().score(), theirTeamInfo().yellow_cards(), theirTeamInfo().red_cards(), theirTeamInfo().timeouts(), ourTeamInfo().score(), ourTeamInfo().yellow_cards(), ourTeamInfo().red_cards(), ourTeamInfo().timeouts());
-        }
-        else{
-            _ourGUI->getUI()->updateScores(ourTeamInfo().score(), ourTeamInfo().yellow_cards(), ourTeamInfo().red_cards(), ourTeamInfo().timeouts(), theirTeamInfo().score(), theirTeamInfo().yellow_cards(), theirTeamInfo().red_cards(), theirTeamInfo().timeouts());
-        }
     }
 }
 
@@ -271,7 +265,8 @@ std::string SSLGameInfo::refStageToString(SSL_Referee::Stage stage){
     }
 }
 
-std::string SSLGameInfo::refTimeLeftToString(uint32_t timeLeft){
+std::string SSLGameInfo::refTimeLeftToString(){
+    uint32_t timeLeft = lastRefPack.stage_time_left()/1e6;
     std::string str = std::to_string(timeLeft);
     str += " sec";
 

@@ -34,7 +34,7 @@
 
 class SSLReferee : public Referee {
 public:
-    SSLReferee(CoachView *ourGUI, QString ipAddress = "224.5.23.1", int port = 10003);
+    SSLReferee(QString ipAddress = "224.5.23.1", int port = 10003);
     ~SSLReferee();
     QString name();
 
@@ -56,9 +56,6 @@ private:
 
     // UDP socket
     QUdpSocket *_socket;
-
-    // Suassuna UI
-    CoachView *_ourGUI;
 
     // Game infos (two team colors)
     QMap<Colors::Color, SSLGameInfo*> _gameInfo;

@@ -36,6 +36,9 @@ public:
     static float _FPPRobotThreshHold;
     static float _FPPBreakDistance;
     static float _FPPSmoothPathResolution;
+
+    /* Soccer constants */
+    static int _qtPlayers;
 };
 
 #endif // CONSTANTS_H

@@ -24,6 +24,8 @@
 
 #include <entity/entity.h>
 #include <entity/baseentity.h>
+#include <entity/contromodule/coach.h>
+#include <entity/referee/SSLReferee/sslreferee.h>
 
 class CoachView : public Entity
 {
@@ -34,6 +36,8 @@ public:
     QString name();
     MainWindow* getUI();
     void setTeams(MRCTeam *our, MRCTeam *their);
+    void setCoach(Coach *coach);
+    void setReferee(SSLReferee *ref);
     MRCTeam* getOurTeam() { return _ourTeam; }
 
 private:
@@ -44,9 +48,21 @@ private:
     // UI
     MainWindow *_suassunaUI;
 
+    // Ref
+    QList<SSLGameInfo*> _gameInfo;
+
+    // Mutex
+    QMutex *_UIMutex;
+
     // Teams
     MRCTeam *_ourTeam;
     MRCTeam *_theirTeam;
+
+    // Coach
+    Coach *_coach;
+
+    // Referee
+    SSLReferee *_ref;
 };
 
 #endif // COACHVIEW_H
