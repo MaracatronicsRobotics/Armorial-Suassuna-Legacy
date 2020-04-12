@@ -122,7 +122,7 @@ void KalmanFilter2D::predict() {
 
     // Get iteration time
     _timer.stop();
-    const float T = _timer.timemsec()*1E-3;
+    const float T = (1.0 / MRCConstants::threadFrequency()) * 1E3; // ms;
     _timer.start();
 
     // Check initial states, if do not have, quit. cannot make prevision...

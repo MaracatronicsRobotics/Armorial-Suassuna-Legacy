@@ -298,7 +298,7 @@ void Player::setSpeed(float x, float y, float theta) {
 }
 
 std::pair<float, float> Player::goTo(double point_x, double point_y, double offset){
-    Position robot_pos_filtered = _kalman->getPosition();
+    Position robot_pos_filtered = getKalmanPredict();
     double robot_x, robot_y, robotAngle = orientation().value();
     if(robot_pos_filtered.isUnknown()){
         robot_x = position().x();
@@ -333,7 +333,7 @@ std::pair<float, float> Player::goTo(double point_x, double point_y, double offs
 }
 
 std::pair<double, double> Player::rotateTo(double point_x, double point_y) {
-    Position robot_pos_filtered = _kalman->getPosition();
+    Position robot_pos_filtered = getKalmanPredict();
     double robot_x, robot_y, angleOrigin2Robot = orientation().value();
     if(robot_pos_filtered.isUnknown()){
         robot_x = position().x();
@@ -396,7 +396,7 @@ std::pair<double, double> Player::rotateTo(double point_x, double point_y) {
 }
 
 void Player::goToLookTo(double point_x, double point_y, double aim_x, double aim_y, double offset){
-    Position robot_pos_filtered = _kalman->getPosition();
+    Position robot_pos_filtered = getKalmanPredict();
     double robot_x, robot_y, angleOrigin2Robot = orientation().value();
     if(robot_pos_filtered.isUnknown()){
         robot_x = position().x();
@@ -442,7 +442,7 @@ void Player::goToLookTo(double point_x, double point_y, double aim_x, double aim
 }
 
 void Player::aroundTheBall(double point_x, double point_y, double offset){
-    Position robot_pos_filtered = _kalman->getPosition();
+    Position robot_pos_filtered = getKalmanPredict();
     double robot_x, robot_y, robotAngle = orientation().value();
     if(robot_pos_filtered.isUnknown()){
         robot_x = position().x();

@@ -21,7 +21,7 @@
 
 #include "constants.h"
 
-int MRCConstants::_threadFrequency           = 40; // frequencia das threads criadas
+int MRCConstants::_threadFrequency           = 60; // frequencia das threads criadas
 
 /* Fast Path Planning */
 float MRCConstants::_FPPBallThreshHold       = 0.2f;

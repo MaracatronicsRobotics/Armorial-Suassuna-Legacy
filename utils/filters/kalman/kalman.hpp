@@ -29,6 +29,8 @@
 #include "kalmanstate.h"
 #include "matrix.h"
 
+#include <const/constants.h>
+
 class KalmanFilter2D {
 
 private:
