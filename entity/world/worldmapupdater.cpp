@@ -126,6 +126,7 @@ void WorldMapUpdater::updateBallPossession(WorldMap *wm) {
     const QList<quint8> teams = wm->teams();
     qint8 closestTeam = -1, closestPlayer = -1;
     float minDist = 999;
+    float offSetDist = 0.25f;
 
     // Iterate teams
     QList<quint8>::const_iterator itTeam;
@@ -140,7 +141,7 @@ void WorldMapUpdater::updateBallPossession(WorldMap *wm) {
                 continue;
             // Find closest player
             float dist = WR::Utils::distance(posBall, wm->playerPosition(team, player));
-            if(dist<minDist) {
+            if(dist<minDist && dist < offSetDist) {
                 minDist = dist;
                 closestTeam = team;
                 closestPlayer = player;
