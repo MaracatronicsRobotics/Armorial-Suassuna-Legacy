@@ -111,6 +111,7 @@ void Player::loop(){
         if(_idleCount < IDLE_COUNT){
             _idleCount++;
             idle();
+            setRole(NULL);
         }
     }
     else{
