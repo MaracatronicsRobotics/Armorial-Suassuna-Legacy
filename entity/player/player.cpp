@@ -333,7 +333,7 @@ std::pair<float, float> Player::goTo(double point_x, double point_y, double offs
     return std::make_pair(newVX, newVY);
 }
 
-std::pair<double, double> Player::rotateTo(double point_x, double point_y) {
+std::pair<double, double> Player::rotateTo(double point_x, double point_y, double offset) {
     Position robot_pos_filtered = getKalmanPredict();
     double robot_x, robot_y, angleOrigin2Robot = orientation().value();
     if(robot_pos_filtered.isUnknown()){
@@ -393,10 +393,14 @@ std::pair<double, double> Player::rotateTo(double point_x, double point_y) {
 
     double newSpeed = _vwPID->calculate(speed, angularSpeed().value());
 
+    if(angleRobot2Ball <= offset){
+        return std::make_pair(angleRobot2Ball, -newSpeed);
+    }
+
     return std::make_pair(angleRobot2Ball, newSpeed);
 }
 
-void Player::goToLookTo(double point_x, double point_y, double aim_x, double aim_y, double offset){
+void Player::goToLookTo(double point_x, double point_y, double aim_x, double aim_y, double offset, double offsetAngular){
     Position robot_pos_filtered = getKalmanPredict();
     double robot_x, robot_y, angleOrigin2Robot = orientation().value();
     if(robot_pos_filtered.isUnknown()){
@@ -423,7 +427,7 @@ void Player::goToLookTo(double point_x, double point_y, double aim_x, double aim
     final_x = (p_x - robot_x)/moduloDist;
     final_y = (p_y - robot_y)/moduloDist;
     a = goTo(p_x + offset * final_x, p_y + offset * final_y, offset);
-    double theta = rotateTo(aim_x, aim_y).second;
+    double theta = rotateTo(aim_x, aim_y, offsetAngular).second;
 
     if(fabs(a.first) <= 0.1){
         if(a.first < 0) a.first = -0.1;

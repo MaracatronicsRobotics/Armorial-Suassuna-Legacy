@@ -92,8 +92,8 @@ public:
     // Player skills
     void setSpeed(float x, float y, float theta);
     std::pair<float, float> goTo(double point_x, double point_y, double _distBall = 0.2);
-    std::pair<double, double> rotateTo(double point_x, double point_y);
-    void goToLookTo(double point_x, double point_y, double aim_x, double aim_y, double offset = 0.2);
+    std::pair<double, double> rotateTo(double point_x, double point_y, double offset = 0.2);
+    void goToLookTo(double point_x, double point_y, double aim_x, double aim_y, double offset = 0.2, double offsetAngular = 0.2);
     void aroundTheBall(double point_x, double point_y, double offset);
     void kick(bool isPass, float kickZPower = 0.0);
     void dribble(bool isActive);
