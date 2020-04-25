@@ -32,5 +32,5 @@ Skill_AroundTheBall::Skill_AroundTheBall() {
 }
 
 void Skill_AroundTheBall::run() {
-    player()->aroundTheBall(_desiredPosition.x(), _desiredPosition.y(), _offsetBall);
+    player()->aroundTheBall(_desiredPosition, _offsetBall);
 }

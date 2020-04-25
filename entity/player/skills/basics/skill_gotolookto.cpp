@@ -33,5 +33,5 @@ Skill_GoToLookTo::Skill_GoToLookTo() {
 }
 
 void Skill_GoToLookTo::run() {
-    player()->goToLookTo(_desiredPosition.x(), _desiredPosition.y(), _aimPosition.x(), _aimPosition.y(), _offsetBall);
+    player()->goToLookTo(_desiredPosition, _aimPosition, _offsetBall);
 }

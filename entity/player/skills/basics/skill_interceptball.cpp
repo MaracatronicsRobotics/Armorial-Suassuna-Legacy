@@ -52,5 +52,5 @@ void Skill_InterceptBall::run() {
         objectivePos = WR::Utils::projectPointAtLine(posBall, ballVelocityLine, player()->position()); //Intercepta em 90 graus
     }
 
-    player()->goToLookTo(objectivePos.x(), objectivePos.y(), loc()->ball().x(), loc()->ball().y(), 0.01);
+    player()->goToLookTo(objectivePos, loc()->ball(), 0.01);
 }
