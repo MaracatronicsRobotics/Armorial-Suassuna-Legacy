@@ -89,7 +89,7 @@ void Skill_Kick::run() {
         break;
     }
 
-    player()->goToLookTo(desiredPos.x(), desiredPos.y(), _aimPosition.x(), _aimPosition.y(), 0.01);
+    player()->goToLookTo(desiredPos, _aimPosition, 0.01);
     player()->kick(_isPass, _zPower);
 }
 
