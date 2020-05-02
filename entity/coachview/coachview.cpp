@@ -49,6 +49,9 @@ CoachView::CoachView() : Entity(ENT_GUI)
 
     _suassunaUI = new MainWindow();
     _suassunaUI->show();
+
+    _timer = new Timer();
+    _timer->start();
 }
 
 MainWindow* CoachView::getUI(){
@@ -80,20 +83,26 @@ void CoachView::loop(){
             _suassunaUI->updateScores(ourTeamInfo.score(), ourTeamInfo.yellow_cards(), ourTeamInfo.red_cards(), ourTeamInfo.timeouts(), theirTeamInfo.score(), theirTeamInfo.yellow_cards(), theirTeamInfo.red_cards(), theirTeamInfo.timeouts());
         }
     }
+
     _suassunaUI->updateTimeLeft(_gameInfo->refTimeLeftToString().c_str());
 
-    // process coach agressivity
-    _suassunaUI->setAgressivity(_coach->getAgressivity());
+    _timer->stop();
+    if(_timer->timemsec() >= timeToUpdate){
+        // process coach agressivity
+        _suassunaUI->setAgressivity(_coach->getAgressivity());
 
-    // process players avaliability
-    QHash<quint8, Player*> ourPlayers = _ourTeam->avPlayers();
-    for(quint8 x = 0; x < MRCConstants::_qtPlayers; x++){
-        if(PlayerBus::ourPlayerAvailable(x)){
-            _suassunaUI->enableRobot(x);
-            _suassunaUI->setPlayerRole(x, ourPlayers[x]->getRoleName());
-        }else{
-            _suassunaUI->disableRobot(x);
+        // process players avaliability
+        QHash<quint8, Player*> ourPlayers = _ourTeam->avPlayers();
+        for(quint8 x = 0; x < MRCConstants::_qtPlayers; x++){
+            if(PlayerBus::ourPlayerAvailable(x)){
+                _suassunaUI->enableRobot(x);
+                _suassunaUI->setPlayerRole(x, ourPlayers[x]->getRoleName());
+            }else{
+                _suassunaUI->disableRobot(x);
+            }
         }
+
+        _timer->start();
     }
 
     _UIMutex->unlock();

@@ -26,6 +26,10 @@
 #include <entity/baseentity.h>
 #include <entity/contromodule/coach.h>
 #include <entity/referee/SSLReferee/sslreferee.h>
+#include <utils/mrctimer/mrctimer.h>
+#include <include/timer.h>
+
+#define timeToUpdate 50.0 // update player each 50ms
 
 class CoachView : public Entity
 {
@@ -63,6 +67,9 @@ private:
 
     // Referee
     SSLReferee *_ref;
+
+    // Timer
+    Timer *_timer;
 };
 
 #endif // COACHVIEW_H
