@@ -27,7 +27,7 @@
 #include <chrono>
 
 void MainWindow::resetRobots(){
-    for(quint8 x = 0; x < maxRobots; x++){
+    for(quint8 x = 0; x < MRCConstants::_qtPlayers; x++){
         setPlayerBattery(x, 0);
         setPlayerKickCharge(x, 0);
         setPlayerRole(x, "none");
@@ -49,12 +49,14 @@ void MainWindow::disableRobot(quint8 id){
 void MainWindow::setAgressivity(QString agressivity){
     QPixmap pixmp;
 
+    if(agressivity.toLower() == ui->agressivity_txt->text().toLower()) return;
+
     if(agressivity == "high_attack"){
-        ui->agressivity_txt->setText("High Agressive");
+        ui->agressivity_txt->setText("High_Attack");
         pixmp.load(":/textures/textures/ag.png");
     }
     else if(agressivity == "medium_attack"){
-        ui->agressivity_txt->setText("Medium Agressive");
+        ui->agressivity_txt->setText("Medium_Attack");
         pixmp.load(":/textures/textures/ag.png");
     }
     else if(agressivity == "equilibrated"){
@@ -62,11 +64,11 @@ void MainWindow::setAgressivity(QString agressivity){
         pixmp.load(":/textures/textures/eq.png");
     }
     else if(agressivity == "medium_defense"){
-        ui->agressivity_txt->setText("Medium Defensive");
+        ui->agressivity_txt->setText("Medium_Defense");
         pixmp.load(":/textures/textures/def.png");
     }
     else if(agressivity == "high_defense"){
-        ui->agressivity_txt->setText("High Defensive");
+        ui->agressivity_txt->setText("High_Defense");
         pixmp.load(":/textures/textures/def.png");
     }
 
@@ -91,6 +93,8 @@ void MainWindow::setRadioConnect(quint8 id, bool isOnline){
 
 void MainWindow::setPlayerRole(quint8 id, QString role){
     QPixmap pixmp;
+
+    if(role.toLower() == playerRoles.at(id).second->text().toLower()) return;
 
     if(role.toLower() == "role_default"){ // teste
         pixmp.load(":/textures/textures/gk.png");
@@ -127,9 +131,6 @@ void MainWindow::setupTeams(MRCTeam *our, MRCTeam *their, QString opTeam){
     _ourTeam = our;
     _theirTeam = their;
 
-    // Send teams to samico
-    MyCanvas::setTeams(_ourTeam, _theirTeam);
-
     if(_ourTeam->teamColor() == Colors::Color::YELLOW){
         ui->yellow_name->setText("<Maracatronics>");
         if(opTeam != "") ui->blue_name->setText(opTeam);
@@ -154,7 +155,7 @@ void MainWindow::setupTeams(MRCTeam *our, MRCTeam *their, QString opTeam){
 
     std::vector<QPixmap> pixmapVector;
 
-    for(int x = 0; x < maxRobots; x++){
+    for(int x = 0; x < MRCConstants::_qtPlayers; x++){
         char str[50];
         if(_ourTeam->teamColor() == Colors::Color::YELLOW) sprintf(str, ":/textures/textures/y%d.png", x);
         else sprintf(str, ":/textures/textures/b%d.png", x);

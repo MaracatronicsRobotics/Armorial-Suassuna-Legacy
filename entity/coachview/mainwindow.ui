@@ -1023,24 +1023,6 @@
       <string>Off</string>
      </property>
     </widget>
-    <widget class="QLabel" name="role_5">
-     <property name="geometry">
-      <rect>
-       <x>100</x>
-       <y>70</y>
-       <width>111</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>8</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Undefined</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_31">
      <property name="geometry">
       <rect>
@@ -1136,6 +1118,24 @@
      </property>
      <property name="scaledContents">
       <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="role_5">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>70</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Undefined</string>
      </property>
     </widget>
    </widget>
@@ -1930,16 +1930,6 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
-   <widget class="MyCanvas" name="samico" native="true">
-    <property name="geometry">
-     <rect>
-      <x>370</x>
-      <y>30</y>
-      <width>527</width>
-      <height>740</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QGroupBox" name="controllerBox">
     <property name="enabled">
      <bool>true</bool>
@@ -2064,12 +2054,22 @@
       </font>
      </property>
      <property name="text">
-      <string>Equilibrated</string>
+      <string>None</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
+   </widget>
+   <widget class="QOpenGLWidget" name="openGLWidget">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>30</y>
+      <width>527</width>
+      <height>750</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -2084,14 +2084,6 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>MyCanvas</class>
-   <extends>QWidget</extends>
-   <header>entity/coachview/samico.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="../../rsc.qrc"/>
  </resources>
