@@ -72,6 +72,8 @@ void CoachView::loop(){
     // Update GUI
     _suassunaUI->updateGUI(_ourTeam, _theirTeam, _ourTeam->loc());
 
+    _timer->stop();
+    if(_timer->timemsec() >= timeToUpdate){
     // process every ssl game info
     SSLGameInfo* _gameInfo = _ref->getGameInfo(_ourTeam->teamColor());
 
@@ -89,8 +91,7 @@ void CoachView::loop(){
 
     _suassunaUI->updateTimeLeft(_gameInfo->refTimeLeftToString().c_str());
 
-    _timer->stop();
-    if(_timer->timemsec() >= timeToUpdate){
+
         // process coach agressivity
         _suassunaUI->setAgressivity(_coach->getAgressivity());
 
