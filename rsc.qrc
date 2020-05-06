@@ -40,5 +40,14 @@
         <file>textures/def.png</file>
         <file>textures/ag.png</file>
         <file>textures/chute.png</file>
+        <file>textures/redcard.png</file>
+        <file>textures/yellowcard.png</file>
+        <file>textures/timeout.png</file>
+        <file>textures/warthog_logo.png</file>
+        <file>textures/defaultteam.png</file>
+        <file>textures/time.png</file>
+        <file>textures/command.png</file>
+        <file>textures/referee.png</file>
+        <file>textures/field.png</file>
     </qresource>
 </RCC>

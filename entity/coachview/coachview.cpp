@@ -69,6 +69,9 @@ void CoachView::initialization(){
 void CoachView::loop(){
     _UIMutex->lock();
 
+    // Update GUI
+    _suassunaUI->updateGUI(_ourTeam, _theirTeam, _ourTeam->loc());
+
     // process every ssl game info
     SSLGameInfo* _gameInfo = _ref->getGameInfo(_ourTeam->teamColor());
 

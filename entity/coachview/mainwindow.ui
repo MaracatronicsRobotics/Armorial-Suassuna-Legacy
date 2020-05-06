@@ -1375,636 +1375,6 @@
      <enum>Qt::Vertical</enum>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox_7">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>160</y>
-      <width>331</width>
-      <height>241</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Game Status</string>
-    </property>
-    <widget class="QLabel" name="label_7">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>60</y>
-       <width>61</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>9</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Command:</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_8">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>81</y>
-       <width>61</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>9</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Time Left:</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_9">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>40</y>
-       <width>41</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>9</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Stage:</string>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_stage">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>39</y>
-       <width>261</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_command">
-     <property name="geometry">
-      <rect>
-       <x>73</x>
-       <y>58</y>
-       <width>241</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_time">
-     <property name="geometry">
-      <rect>
-       <x>70</x>
-       <y>80</y>
-       <width>241</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-    <widget class="QLabel" name="blue_name">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>130</y>
-       <width>141</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>&lt;Blue Team&gt;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="yellow_name">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>130</y>
-       <width>151</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>&lt;Yellow Team&gt;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="t_score_b">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>150</y>
-       <width>101</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="autoFillBackground">
-      <bool>false</bool>
-     </property>
-     <property name="styleSheet">
-      <string notr="true"/>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
-     </property>
-     <property name="lineWidth">
-      <number>5</number>
-     </property>
-     <property name="text">
-      <string>Score</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-     <property name="wordWrap">
-      <bool>false</bool>
-     </property>
-     <property name="margin">
-      <number>0</number>
-     </property>
-    </widget>
-    <widget class="QLabel" name="t_redc_b">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>170</y>
-       <width>101</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Red Cards</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="t_yelc_b">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>190</y>
-       <width>101</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Yellow Cards</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="t_tout_b">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>210</y>
-       <width>101</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Timeouts Left</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="t_redc_y">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>170</y>
-       <width>101</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Red Cards</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="t_yelc_y">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>190</y>
-       <width>101</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Yellow Cards</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="t_tout_y">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>210</y>
-       <width>101</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Timeouts Left</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="t_score_y">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>150</y>
-       <width>101</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>Score</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="Line" name="line_3">
-     <property name="geometry">
-      <rect>
-       <x>160</x>
-       <y>130</y>
-       <width>20</width>
-       <height>101</height>
-      </rect>
-     </property>
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-    </widget>
-    <widget class="QLabel" name="score_b">
-     <property name="geometry">
-      <rect>
-       <x>110</x>
-       <y>149</y>
-       <width>20</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>0</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="redc_b">
-     <property name="geometry">
-      <rect>
-       <x>110</x>
-       <y>169</y>
-       <width>20</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>0</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="yelc_b">
-     <property name="geometry">
-      <rect>
-       <x>110</x>
-       <y>189</y>
-       <width>20</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>0</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="tout_b">
-     <property name="geometry">
-      <rect>
-       <x>110</x>
-       <y>209</y>
-       <width>20</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>0</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="score_y">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>149</y>
-       <width>20</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>0</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="redc_y">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>169</y>
-       <width>20</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>0</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="yelc_y">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>189</y>
-       <width>20</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>0</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-    <widget class="QLabel" name="tout_y">
-     <property name="geometry">
-      <rect>
-       <x>290</x>
-       <y>209</y>
-       <width>20</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="font">
-      <font>
-       <family>Umpush</family>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>0</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </widget>
-   <widget class="Line" name="line_2">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>410</y>
-      <width>331</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
-   <widget class="QGroupBox" name="controllerBox">
-    <property name="enabled">
-     <bool>true</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>20</y>
-      <width>331</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Suassuna Controller</string>
-    </property>
-    <widget class="QPushButton" name="pushButton">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>24</y>
-       <width>64</width>
-       <height>64</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../rsc.qrc">
-       <normaloff>:/textures/textures/play.png</normaloff>:/textures/textures/play.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>64</width>
-       <height>64</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_2">
-     <property name="geometry">
-      <rect>
-       <x>210</x>
-       <y>24</y>
-       <width>64</width>
-       <height>64</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../../rsc.qrc">
-       <normaloff>:/textures/textures/stop.png</normaloff>:/textures/textures/stop.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>64</width>
-       <height>64</height>
-      </size>
-     </property>
-    </widget>
-   </widget>
-   <widget class="Line" name="line_4">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>130</y>
-      <width>331</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
    <widget class="QGroupBox" name="groupBox_8">
     <property name="geometry">
      <rect>
@@ -2061,15 +1431,656 @@
      </property>
     </widget>
    </widget>
-   <widget class="QOpenGLWidget" name="openGLWidget">
+   <widget class="GLSoccerView" name="openGLWidget">
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>16</x>
       <y>30</y>
-      <width>527</width>
-      <height>750</height>
+      <width>880</width>
+      <height>500</height>
      </rect>
     </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_9">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>540</y>
+      <width>241</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Game Status</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <widget class="QLabel" name="team_b">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>40</y>
+       <width>48</width>
+       <height>48</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/armorial.ico</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="team_y">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>40</y>
+       <width>48</width>
+       <height>48</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/warthog_logo.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="score_b">
+     <property name="geometry">
+      <rect>
+       <x>75</x>
+       <y>50</y>
+       <width>31</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>18</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="score_y">
+     <property name="geometry">
+      <rect>
+       <x>132</x>
+       <y>50</y>
+       <width>31</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>18</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_16">
+     <property name="geometry">
+      <rect>
+       <x>111</x>
+       <y>55</y>
+       <width>16</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>x</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_17">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>100</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/yellowcard.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_18">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>120</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/redcard.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_19">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>140</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/timeout.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="yelc_b">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>100</y>
+       <width>21</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tout_b">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>140</y>
+       <width>21</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="redc_b">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>120</y>
+       <width>21</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_20">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>140</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/timeout.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="yelc_y">
+     <property name="geometry">
+      <rect>
+       <x>195</x>
+       <y>100</y>
+       <width>21</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="redc_y">
+     <property name="geometry">
+      <rect>
+       <x>195</x>
+       <y>120</y>
+       <width>21</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_33">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>100</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/yellowcard.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_34">
+     <property name="geometry">
+      <rect>
+       <x>210</x>
+       <y>120</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/redcard.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="tout_y">
+     <property name="geometry">
+      <rect>
+       <x>195</x>
+       <y>140</y>
+       <width>21</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_time">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>210</y>
+       <width>191</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>0 sec</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_stage">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>30</y>
+       <width>78</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_35">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>210</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Umpush</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/time.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_command">
+     <property name="geometry">
+      <rect>
+       <x>40</x>
+       <y>190</y>
+       <width>191</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>HALT</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_36">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>190</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Umpush</family>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/command.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_7">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>165</y>
+       <width>18</width>
+       <height>18</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/referee.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_8">
+     <property name="geometry">
+      <rect>
+       <x>35</x>
+       <y>165</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Referee Status</string>
+     </property>
+    </widget>
+    <widget class="Line" name="line_2">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>173</y>
+       <width>100</width>
+       <height>3</height>
+      </rect>
+     </property>
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>540</y>
+      <width>616</width>
+      <height>241</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="page_log">
+     <attribute name="title">
+      <string>Game Log</string>
+     </attribute>
+     <widget class="QTextEdit" name="textEdit">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>591</width>
+        <height>191</height>
+       </rect>
+      </property>
+      <property name="contextMenuPolicy">
+       <enum>Qt::DefaultContextMenu</enum>
+      </property>
+      <property name="acceptDrops">
+       <bool>true</bool>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="html">
+       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;a name=&quot;lipsum&quot;&gt;&lt;/a&gt;&lt;span style=&quot; font-family:'Ubuntu';&quot;&gt;L&lt;/span&gt;&lt;span style=&quot; font-family:'Ubuntu';&quot;&gt;orem ipsum dolor sit amet, consectetur adipiscing elit. Etiam auctor condimentum justo, a viverra orci eleifend eget. Etiam sit amet malesuada nisi, id faucibus tellus. Donec euismod consequat hendrerit. Maecenas vel quam nec turpis congue euismod at ac eros. Suspendisse tempor lectus id aliquet condimentum. Vivamus dapibus tempus diam, nec auctor neque eleifend non. Vivamus faucibus enim vel ante placerat tincidunt. Praesent tempor eleifend nulla vel fringilla. Praesent mollis vitae nulla non scelerisque. Donec pulvinar egestas ante vel mollis. Etiam vitae tortor vel nisl dignissim lacinia et eu turpis. Etiam ullamcorper consequat mi non ultrices. Phasellus sit amet metus scelerisque, imperdiet lorem eu, sodales urna. Praesent eget urna dui. Aliquam a posuere sem. Integer vitae ligula quis diam tincidunt efficitur. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu';&quot;&gt;Pellentesque pulvinar purus id nisl lobortis, eget ultrices lectus finibus. Nullam bibendum elit ligula. Mauris ornare vel nibh at tempus. Cras non varius quam. Sed faucibus pulvinar purus, in placerat nisl scelerisque quis. Morbi pulvinar congue eleifend. Aliquam ante felis, iaculis scelerisque libero at, consectetur aliquam arcu. Maecenas ut aliquam ante, vitae tempor odio. Vestibulum ornare auctor nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras eleifend commodo sem at luctus. Cras consequat suscipit sapien sit amet porttitor. Aenean porta augue vitae sapien egestas pharetra vitae ut est. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu';&quot;&gt;Nam diam lacus, tincidunt nec sagittis eget, consequat eu lectus. Quisque ullamcorper pulvinar justo, ut pulvinar justo mollis ac. Nulla tellus augue, rhoncus tincidunt porta a, maximus sagittis velit. Nam dictum, nulla a lacinia tincidunt, ipsum neque sagittis urna, ut iaculis eros est at lacus. Nam vitae malesuada quam. Cras vitae quam eget ligula faucibus fringilla id ac quam. Sed semper nunc eget neque euismod, a viverra nibh auctor. Curabitur lobortis, lacus et congue porttitor, erat risus mattis tellus, sit amet faucibus lorem urna quis nisl. Fusce id viverra felis, at posuere mi. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu';&quot;&gt;Etiam sagittis cursus libero at ornare. Ut eget ullamcorper lacus. Cras id massa eu orci hendrerit dignissim vitae at sem. Sed cursus placerat ullamcorper. Sed tincidunt lectus risus, efficitur sodales nisl pretium vitae. Nulla tempus magna est, vel rhoncus ligula ultricies sit amet. Lorem ipsum dolor sit amet, consectetur adipiscing elit. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'Ubuntu';&quot;&gt;Pellentesque a dolor vitae diam rutrum rhoncus eget eu nisi. Proin vulputate volutpat risus, quis cursus metus efficitur vitae. Quisque a mi lorem. Nam libero eros, rutrum vel sodales eget, interdum nec neque. Sed tempus sapien vitae nisi facilisis interdum. Nulla interdum arcu quis sem tempor, a volutpat nisl ullamcorper. Fusce quis felis nec nulla luctus elementum vitae ac metus. &lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_tree">
+     <attribute name="title">
+      <string>Role Tree</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="page_cfg">
+     <attribute name="title">
+      <string>Configurations</string>
+     </attribute>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>34</x>
+        <y>10</y>
+        <width>121</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>SoccerView Configs</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_37">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>18</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="pixmap">
+       <pixmap resource="../../rsc.qrc">:/textures/textures/field.png</pixmap>
+      </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="Line" name="line_3">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>18</y>
+        <width>430</width>
+        <height>3</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="allievel">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>35</y>
+        <width>181</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Show allie velocity vector</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="enemyvel">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>191</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Show enemy velocity vector</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="ballvel">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>85</y>
+        <width>181</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Show ball velocity vector</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="playerconf">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>110</y>
+        <width>181</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Show players confidency</string>
+      </property>
+     </widget>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -2084,6 +2095,13 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GLSoccerView</class>
+   <extends>QOpenGLWidget</extends>
+   <header>entity/coachview/soccerview/soccerview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../rsc.qrc"/>
  </resources>

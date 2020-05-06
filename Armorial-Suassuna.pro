@@ -37,19 +37,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
 	const/constants.cpp \
+    entity/coachview/soccerview/gltext.cpp \
+    entity/coachview/soccerview/soccerview.cpp \
+    entity/coachview/soccerview/util/field.cpp \
 	entity/entity.cpp \
-    entity/player/behaviour/basics/behaviour_goalkeeper.cpp \
-    entity/player/behaviour/basics/behaviour_markball.cpp \
+        entity/player/behaviour/basics/behaviour_goalkeeper.cpp \
+        entity/player/behaviour/basics/behaviour_markball.cpp \
 	entity/player/behaviour/basics/behaviour_penalty_cf.cpp \
-    entity/player/navigation/fpp/fastpathplanning.cpp \
-    entity/player/navigation/navalgorithm.cpp \
+        entity/player/navigation/fpp/fastpathplanning.cpp \
+        entity/player/navigation/navalgorithm.cpp \
 	entity/player/navigation/navigation.cpp \
-    entity/player/skills/basics/skill_aroundtheball.cpp \
-    entity/player/skills/basics/skill_dribble.cpp \
-    entity/player/skills/basics/skill_goto.cpp \
-    entity/player/skills/basics/skill_gotolookto.cpp \
-    entity/player/skills/basics/skill_interceptball.cpp \
-    entity/player/skills/basics/skill_rotateto.cpp \
+        entity/player/skills/basics/skill_aroundtheball.cpp \
+        entity/player/skills/basics/skill_dribble.cpp \
+        entity/player/skills/basics/skill_goto.cpp \
+        entity/player/skills/basics/skill_gotolookto.cpp \
+        entity/player/skills/basics/skill_interceptball.cpp \
+        entity/player/skills/basics/skill_rotateto.cpp \
 	entity/world/world.cpp \
 	entity/world/worldmapupdater.cpp \
 	exithandler.cpp \
@@ -77,61 +80,59 @@ SOURCES += \
 	utils/basics/wall.cc \
 	utils/fields/field_ssl2014.cc \
 	utils/fields/field_ssl2015.cc \
-    utils/fields/field_ssl2020.cc \
+        utils/fields/field_ssl2020.cc \
 	utils/fields/field_vss2008.cc \
 	utils/fields/fields.cc \
 	utils/fieldside/fieldside.cc \
-    utils/filters/kalman/kalman.cpp \
-    utils/filters/kalman/kalmanstate.cpp \
-    utils/filters/kalman/matrix.cpp \
-    utils/freeangles/freeangles.cpp \
-    utils/freeangles/obstacle.cpp \
+        utils/filters/kalman/kalman.cpp \
+        utils/filters/kalman/kalmanstate.cpp \
+        utils/filters/kalman/matrix.cpp \
+        utils/freeangles/freeangles.cpp \
+        utils/freeangles/obstacle.cpp \
 	utils/graph/edge.cc \
 	utils/graph/graph.cc \
 	utils/graph/vertex.cc \
 	utils/line/line.cc \
 	utils/utils.cc \
 	utils/wrtimer/wrtimer.cc \
-    entity/player/player.cpp \
+        entity/player/player.cpp \
 	entity/contromodule/mrcteam.cpp \
-    entity/player/skills/skill.cpp \
+        entity/player/skills/skill.cpp \
 	entity/locations.cpp \
-    entity/contromodule/coach.cpp \
-    entity/player/playerbus.cpp \
-    entity/player/playeraccess.cpp \
-    entity/contromodule/strategy/strategy.cpp \
-    entity/contromodule/playersdistribution.cpp \
-    entity/contromodule/strategy/strategystate.cpp \
-    entity/contromodule/coachutils.cpp \
-    entity/contromodule/playbook/playbook.cpp \
-    entity/player/behaviour/behaviour.cpp \
-    entity/player/behaviour/basics/behaviour_donothing.cpp \
-    entity/player/skills/basics/skill_donothing.cpp \
-    utils/knn/knn.cc \
-    entity/contromodule/strategy/basics/mrcstrategy.cpp \
-    entity/contromodule/strategy/basics/sslstrategy.cpp \
-    entity/contromodule/controlmodule.cpp \
-    entity/contromodule/strategy/basics/sslstrategy_halt.cpp \
-    entity/contromodule/playbook/basics/playbook_donothing.cpp \
-    entity/player/behaviour/basics/behaviour_followball.cpp \
-    entity/player/behaviour/basics/behaviour_timeout.cpp \
-    entity/player/control/pid.cpp \
+        entity/contromodule/coach.cpp \
+        entity/player/playerbus.cpp \
+        entity/player/playeraccess.cpp \
+        entity/contromodule/strategy/strategy.cpp \
+        entity/contromodule/playersdistribution.cpp \
+        entity/contromodule/strategy/strategystate.cpp \
+        entity/contromodule/coachutils.cpp \
+        entity/contromodule/playbook/playbook.cpp \
+        entity/player/behaviour/behaviour.cpp \
+        entity/player/behaviour/basics/behaviour_donothing.cpp \
+        entity/player/skills/basics/skill_donothing.cpp \
+        utils/knn/knn.cc \
+        entity/contromodule/strategy/basics/mrcstrategy.cpp \
+        entity/contromodule/strategy/basics/sslstrategy.cpp \
+        entity/contromodule/controlmodule.cpp \
+        entity/contromodule/strategy/basics/sslstrategy_halt.cpp \
+        entity/contromodule/playbook/basics/playbook_donothing.cpp \
+        entity/player/behaviour/basics/behaviour_followball.cpp \
+        entity/player/behaviour/basics/behaviour_timeout.cpp \
+        entity/player/control/pid.cpp \
 	utils/mrctimer/mrctimer.cpp \
-    entity/player/skills/basics/skill_kick.cpp \
-    entity/player/skills/basics/skill_gkick.cpp \
-    entity/player/behaviour/basics/behaviour_receiver.cpp \
-    entity/player/behaviour/basics/behaviour_attacker.cpp \
-    entity/player/behaviour/basics/behaviour_barrier.cpp \
-    entity/player/behaviour/basics/behaviour_markplayer.cpp \
-    entity/player/behaviour/basics/behaviour_penalty_gk.cpp \
-    entity/player/skills/basics/skill_pushball.cpp \
-    entity/player/role/role.cpp \
-    entity/player/role/basics/role_default.cpp \
-    entity/coachview/coachview.cpp \
-    entity/coachview/mainwindow.cpp \
-    entity/coachview/samico.cpp \
-    entity/coachview/qsfmlwidget.cpp \
-    entity/player/skills/basics/skill_sample.cpp
+        entity/player/skills/basics/skill_kick.cpp \
+        entity/player/skills/basics/skill_gkick.cpp \
+        entity/player/behaviour/basics/behaviour_receiver.cpp \
+        entity/player/behaviour/basics/behaviour_attacker.cpp \
+        entity/player/behaviour/basics/behaviour_barrier.cpp \
+        entity/player/behaviour/basics/behaviour_markplayer.cpp \
+        entity/player/behaviour/basics/behaviour_penalty_gk.cpp \
+        entity/player/skills/basics/skill_pushball.cpp \
+        entity/player/role/role.cpp \
+        entity/player/role/basics/role_default.cpp \
+        entity/coachview/coachview.cpp \
+        entity/coachview/mainwindow.cpp \
+        entity/player/skills/basics/skill_sample.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -141,6 +142,14 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
 	const/constants.h \
 	entity/baseentity.h \
+    entity/coachview/soccerview/gltext.h \
+    entity/coachview/soccerview/soccerview.h \
+    entity/coachview/soccerview/util/field.h \
+    entity/coachview/soccerview/util/field_default_constants.h \
+    entity/coachview/soccerview/util/geometry.h \
+    entity/coachview/soccerview/util/gvector.h \
+    entity/coachview/soccerview/util/timer.h \
+    entity/coachview/soccerview/util/util.h \
 	entity/entity.h \
     entity/player/navigation/fpp/fastpathplanning.h \
     entity/player/navigation/navalgorithm.h \
@@ -241,8 +250,6 @@ HEADERS += \
     entity/player/role/mrcroles.h \
     entity/coachview/coachview.h \
     entity/coachview/mainwindow.h \
-    entity/coachview/samico.h \
-	entity/coachview/qsfmlwidget.h \
 	build/tmp/moc/ui_mainwindow.h \
 	entity/player/skills/basics/skill_sample.h
 

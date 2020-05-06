@@ -66,6 +66,13 @@ public:
     void updateGameStage(QString stage);
     void updateRefereeCommand(QString command);
     void updateTimeLeft(QString timeleft);
+    void updateGUI(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc);
+
+    // getters
+    bool enableAllieVelocityVector();
+    bool enableEnemyVelocityVector();
+    bool enableBallVelocityVector();
+    bool enablePlayerConfidency();
 
 private:
     Ui::MainWindow *ui;
