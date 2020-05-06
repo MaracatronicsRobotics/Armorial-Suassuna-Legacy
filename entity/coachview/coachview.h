@@ -29,6 +29,8 @@
 #include <utils/mrctimer/mrctimer.h>
 #include <include/timer.h>
 
+#include <entity/coachview/soccerview/soccerview.h>
+
 #define timeToUpdate 50.0 // update player each 50ms
 
 class CoachView : public Entity

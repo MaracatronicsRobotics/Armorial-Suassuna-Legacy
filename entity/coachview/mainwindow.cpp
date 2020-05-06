@@ -25,6 +25,8 @@
 #include <QVBoxLayout>
 #include <QScrollArea>
 #include <chrono>
+#include <QStyle>
+#include <QStyleFactory>
 
 void MainWindow::resetRobots(){
     for(quint8 x = 0; x < MRCConstants::_qtPlayers; x++){
@@ -44,6 +46,17 @@ void MainWindow::enableRobot(quint8 id){
 void MainWindow::disableRobot(quint8 id){
     if(this->playerBoxes.at(id)->isEnabled()) this->playerBoxes.at(id)->setDisabled(true);
     else return ;
+}
+
+void MainWindow::updateGUI(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc){
+    ui->openGLWidget->updateDetection(ourTeam, theirTeam);
+    ui->openGLWidget->updateFieldGeometry(loc);
+
+    ui->openGLWidget->setDrawBallVel(enableBallVelocityVector());
+    ui->openGLWidget->setDrawAllieVel(enableAllieVelocityVector());
+    ui->openGLWidget->setDrawEnemyVel(enableEnemyVelocityVector());
+    ui->openGLWidget->setDrawPlayerConfidency(enablePlayerConfidency());
+
 }
 
 void MainWindow::setAgressivity(QString agressivity){
@@ -132,26 +145,12 @@ void MainWindow::setupTeams(MRCTeam *our, MRCTeam *their, QString opTeam){
     _theirTeam = their;
 
     if(_ourTeam->teamColor() == Colors::Color::YELLOW){
-        ui->yellow_name->setText("<Maracatronics>");
-        if(opTeam != "") ui->blue_name->setText(opTeam);
+        ui->team_y->setPixmap(QPixmap(":/textures/textures/armorial.ico"));
+        ui->team_b->setPixmap(QPixmap(":/textures/textures/defaultteam.png"));
     }else{
-        ui->blue_name->setText("<Maracatronics>");
-        if(opTeam != "") ui->yellow_name->setText(opTeam);
+        ui->team_b->setPixmap(QPixmap(":/textures/textures/armorial.ico"));
+        ui->team_y->setPixmap(QPixmap(":/textures/textures/defaultteam.png"));
     }
-
-    // updating blue
-    ui->blue_name->setStyleSheet("font-weight: bold");
-    ui->t_score_b->setStyleSheet("color: #0000CD");
-    ui->t_yelc_b->setStyleSheet("color: #0000CD");
-    ui->t_redc_b->setStyleSheet("color: #0000CD");
-    ui->t_tout_b->setStyleSheet("color: #0000CD");
-
-    // updating yellow
-    ui->yellow_name->setStyleSheet("font-weight: bold");
-    ui->t_score_y->setStyleSheet("color: #999900");
-    ui->t_yelc_y->setStyleSheet("color: #999900");
-    ui->t_redc_y->setStyleSheet("color: #999900");
-    ui->t_tout_y->setStyleSheet("color: #999900");
 
     std::vector<QPixmap> pixmapVector;
 
@@ -177,9 +176,6 @@ void MainWindow::setupTeams(MRCTeam *our, MRCTeam *their, QString opTeam){
     updateGameStage("FIRST HALF");
     updateRefereeCommand("GAME_HALT");
     updateTimeLeft("0.0s");
-
-    //
-    ui->controllerBox->setEnabled(false);
 
     // test
     setAgressivity("equilibrated");
@@ -220,6 +216,22 @@ void MainWindow::updateRefereeCommand(QString command){
 
 void MainWindow::updateTimeLeft(QString timeleft){
     ui->label_time->setText(timeleft);
+}
+
+bool MainWindow::enableAllieVelocityVector(){
+    return (ui->allievel->checkState() == Qt::CheckState::Checked) ? true : false;
+}
+
+bool MainWindow::enableEnemyVelocityVector(){
+    return (ui->enemyvel->checkState() == Qt::CheckState::Checked) ? true : false;
+}
+
+bool MainWindow::enableBallVelocityVector(){
+    return (ui->ballvel->checkState() == Qt::CheckState::Checked) ? true : false;
+}
+
+bool MainWindow::enablePlayerConfidency(){
+    return (ui->playerconf->checkState() == Qt::CheckState::Checked) ? true : false;
 }
 
 MainWindow::MainWindow(QWidget *parent)
@@ -275,6 +287,32 @@ MainWindow::MainWindow(QWidget *parent)
     playerDribbles.push_back(ui->dribble_4);
     playerDribbles.push_back(ui->dribble_5);
     playerDribbles.push_back(ui->dribble_6);
+
+    // dark pallete
+    this->setStyle(QStyleFactory::create("Fusion"));
+    QPalette darkPalette;
+    darkPalette.setColor(QPalette::Window,QColor(53,53,53));
+    darkPalette.setColor(QPalette::WindowText,Qt::white);
+    darkPalette.setColor(QPalette::Disabled,QPalette::WindowText,QColor(127,127,127));
+    darkPalette.setColor(QPalette::Base,QColor(42,42,42));
+    darkPalette.setColor(QPalette::AlternateBase,QColor(66,66,66));
+    darkPalette.setColor(QPalette::ToolTipBase,Qt::white);
+    darkPalette.setColor(QPalette::ToolTipText,Qt::white);
+    darkPalette.setColor(QPalette::Text,Qt::white);
+    darkPalette.setColor(QPalette::Disabled,QPalette::Text,QColor(127,127,127));
+    darkPalette.setColor(QPalette::Dark,QColor(35,35,35));
+    darkPalette.setColor(QPalette::Shadow,QColor(20,20,20));
+    darkPalette.setColor(QPalette::Button,QColor(53,53,53));
+    darkPalette.setColor(QPalette::ButtonText,Qt::white);
+    darkPalette.setColor(QPalette::Disabled,QPalette::ButtonText,QColor(127,127,127));
+    darkPalette.setColor(QPalette::BrightText,Qt::red);
+    darkPalette.setColor(QPalette::Link,QColor(42,130,218));
+    darkPalette.setColor(QPalette::Highlight,QColor(42,130,218));
+    darkPalette.setColor(QPalette::Disabled,QPalette::Highlight,QColor(80,80,80));
+    darkPalette.setColor(QPalette::HighlightedText,Qt::white);
+    darkPalette.setColor(QPalette::Disabled,QPalette::HighlightedText,QColor(127,127,127));
+
+    this->setPalette(darkPalette);
 }
 
 MainWindow::~MainWindow()
