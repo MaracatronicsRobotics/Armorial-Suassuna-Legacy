@@ -1762,9 +1762,9 @@
     <widget class="QLabel" name="label_stage">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>67</x>
        <y>30</y>
-       <width>78</width>
+       <width>101</width>
        <height>20</height>
       </rect>
      </property>
@@ -1774,7 +1774,7 @@
       </font>
      </property>
      <property name="text">
-      <string/>
+      <string>First_Half_Pre</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
