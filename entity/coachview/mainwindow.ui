@@ -14,7 +14,7 @@
    <string>Suassuna UI</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../../rsc.qrc">
+   <iconset>
     <normaloff>:/textures/textures/armorial.ico</normaloff>:/textures/textures/armorial.ico</iconset>
   </property>
   <property name="autoFillBackground">
@@ -49,7 +49,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/b0.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/robots/blue/b0.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -89,7 +89,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/battery.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/battery.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -108,7 +108,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/connect.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/connect.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -163,7 +163,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/dribble.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/dribble.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -182,7 +182,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/none.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/none.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -219,7 +219,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/chute.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/chute.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -275,7 +275,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/b1.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/robots/blue/b1.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -297,25 +297,6 @@
      </property>
      <property name="value">
       <number>100</number>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>90</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/battery.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
      </property>
     </widget>
     <widget class="QLabel" name="status_2">
@@ -372,82 +353,6 @@
       <string>Undefined</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_28">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>50</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/dribble.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="imgrole_2">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>70</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/none.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_22">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>30</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/connect.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_11">
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>90</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/chute.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QProgressBar" name="chute_2">
      <property name="geometry">
       <rect>
@@ -467,6 +372,101 @@
      </property>
      <property name="value">
       <number>100</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_28">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>50</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/dribble.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="imgrole_2">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>70</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/none.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_11">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>90</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/chute.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_22">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/connect.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>90</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/battery.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
@@ -498,7 +498,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/b2.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/robots/blue/b2.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -520,25 +520,6 @@
      </property>
      <property name="value">
       <number>100</number>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_3">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>90</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/battery.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
      </property>
     </widget>
     <widget class="QLabel" name="status_3">
@@ -595,82 +576,6 @@
       <string>Undefined</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_23">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>30</y>
-       <width>16</width>
-       <height>14</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/connect.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="imgrole_3">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>70</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/none.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_29">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>50</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/dribble.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_12">
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>90</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/chute.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QProgressBar" name="chute_3">
      <property name="geometry">
       <rect>
@@ -690,6 +595,101 @@
      </property>
      <property name="value">
       <number>100</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_29">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>50</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/dribble.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="imgrole_3">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>70</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/none.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_12">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>90</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/chute.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_23">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/connect.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>90</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/battery.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
@@ -721,7 +721,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/b3.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/robots/blue/b4.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -743,25 +743,6 @@
      </property>
      <property name="value">
       <number>100</number>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_4">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>90</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/battery.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
      </property>
     </widget>
     <widget class="QLabel" name="status_4">
@@ -818,63 +799,6 @@
       <string>Undefined</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_30">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>50</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/dribble.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="imgrole_4">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>70</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/none.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_24">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>30</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/connect.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QProgressBar" name="chute_4">
      <property name="geometry">
       <rect>
@@ -896,6 +820,44 @@
       <number>100</number>
      </property>
     </widget>
+    <widget class="QLabel" name="label_30">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>50</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/dribble.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="imgrole_4">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>70</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/none.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
     <widget class="QLabel" name="label_13">
      <property name="geometry">
       <rect>
@@ -909,7 +871,45 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/chute.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/chute.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_24">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/connect.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_4">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>90</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/battery.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -944,7 +944,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/b4.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/robots/blue/b5.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -966,25 +966,6 @@
      </property>
      <property name="value">
       <number>100</number>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_5">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>90</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/battery.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
      </property>
     </widget>
     <widget class="QLabel" name="status_5">
@@ -1023,63 +1004,6 @@
       <string>Off</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_31">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>50</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/dribble.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="imgrole_5">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>70</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/none.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_25">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>30</y>
-       <width>16</width>
-       <height>14</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/connect.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QProgressBar" name="chute_5">
      <property name="geometry">
       <rect>
@@ -1101,25 +1025,6 @@
       <number>100</number>
      </property>
     </widget>
-    <widget class="QLabel" name="label_14">
-     <property name="geometry">
-      <rect>
-       <x>150</x>
-       <y>90</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/chute.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QLabel" name="role_5">
      <property name="geometry">
       <rect>
@@ -1136,6 +1041,101 @@
      </property>
      <property name="text">
       <string>Undefined</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_31">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>50</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/dribble.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="imgrole_5">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>70</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/none.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_14">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>90</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/chute.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_25">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/connect.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_5">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>90</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/battery.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
      </property>
     </widget>
    </widget>
@@ -1167,7 +1167,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/b5.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/robots/blue/b6.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1189,25 +1189,6 @@
      </property>
      <property name="value">
       <number>100</number>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_6">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>90</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/battery.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
      </property>
     </widget>
     <widget class="QLabel" name="status_6">
@@ -1264,63 +1245,6 @@
       <string>Undefined</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_26">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>30</y>
-       <width>16</width>
-       <height>14</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/connect.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="imgrole_6">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>70</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/none.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
-    <widget class="QLabel" name="label_32">
-     <property name="geometry">
-      <rect>
-       <x>80</x>
-       <y>50</y>
-       <width>16</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/dribble.png</pixmap>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-    </widget>
     <widget class="QProgressBar" name="chute_6">
      <property name="geometry">
       <rect>
@@ -1342,6 +1266,44 @@
       <number>100</number>
      </property>
     </widget>
+    <widget class="QLabel" name="label_32">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>50</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/dribble.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="imgrole_6">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>70</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/none.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
     <widget class="QLabel" name="label_15">
      <property name="geometry">
       <rect>
@@ -1355,7 +1317,45 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/chute.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/chute.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_26">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/connect.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_6">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>90</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/battery.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1403,7 +1403,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/eq.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/eq.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1469,7 +1469,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/armorial.ico</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/armorial.ico</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1488,7 +1488,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/warthog_logo.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/warthog_logo.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1562,7 +1562,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/yellowcard.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/yellowcard.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1581,7 +1581,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/redcard.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/redcard.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1600,7 +1600,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/timeout.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/timeout.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1658,7 +1658,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/timeout.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/timeout.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1703,7 +1703,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/yellowcard.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/yellowcard.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1722,7 +1722,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/redcard.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/redcard.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1799,7 +1799,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/time.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/time.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1842,7 +1842,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/command.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/command.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1861,7 +1861,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/referee.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/referee.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1985,7 +1985,7 @@ p, li { white-space: pre-wrap; }
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap resource="../../rsc.qrc">:/textures/textures/field.png</pixmap>
+       <pixmap>:/textures/textures/field.png</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
