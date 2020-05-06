@@ -111,8 +111,6 @@ void GLSoccerView::updateFieldGeometry(Locations *loc) {
     fieldLines.append(FieldLine("LeftPenaltyStretch", kXMin+kDefenseRadius-kLineThickness/2, -kDefenseStretch/2, kXMin+kDefenseRadius-kLineThickness/2, kDefenseStretch/2, kLineThickness));
     fieldLines.append(FieldLine("RightPenaltyStretch", kXMax-kDefenseRadius+kLineThickness/2, -kDefenseStretch/2, kXMax-kDefenseRadius+kLineThickness/2, kDefenseStretch/2, kLineThickness));
 
-    std::cout << "data: " << kDefenseStretch << " - " << kXMax << std::endl;
-
     // Center circle
     fieldArcs.append(FieldCircularArc("CenterCircle", 0, 0, kCenterRadius-kLineThickness/2, 0, 2*M_PI, kLineThickness));
 
