@@ -111,6 +111,8 @@ void GLSoccerView::updateFieldGeometry(Locations *loc) {
     fieldLines.append(FieldLine("LeftPenaltyStretch", kXMin+kDefenseRadius-kLineThickness/2, -kDefenseStretch/2, kXMin+kDefenseRadius-kLineThickness/2, kDefenseStretch/2, kLineThickness));
     fieldLines.append(FieldLine("RightPenaltyStretch", kXMax-kDefenseRadius+kLineThickness/2, -kDefenseStretch/2, kXMax-kDefenseRadius+kLineThickness/2, kDefenseStretch/2, kLineThickness));
 
+    std::cout << "data: " << kDefenseStretch << " - " << kXMax << std::endl;
+
     // Center circle
     fieldArcs.append(FieldCircularArc("CenterCircle", 0, 0, kCenterRadius-kLineThickness/2, 0, 2*M_PI, kLineThickness));
 
@@ -129,11 +131,6 @@ void GLSoccerView::updateFieldGeometry(Locations *loc) {
         fieldLines.append(FieldLine("LeftFieldRightDefenseLine", kXMin, -kDefenseStretch/2, kXMin+kDefenseRadius+kLineThickness/2, -kDefenseStretch/2, kLineThickness));
         fieldLines.append(FieldLine("RightFieldLeftDefenseLine", kXMax, kDefenseStretch/2, kXMax-kDefenseRadius-kLineThickness/2, kDefenseStretch/2, kLineThickness));
         fieldLines.append(FieldLine("RightFieldRightDefenseLine", kXMax, -kDefenseStretch/2, kXMax-kDefenseRadius-kLineThickness/2, -kDefenseStretch/2, kLineThickness));
-    } else { // Rounded goal area
-        fieldArcs.append(FieldCircularArc("LeftFieldLeftPenaltyArc",   kXMin, kDefenseStretch/2,  kDefenseRadius-kLineThickness/2, 0,        M_PI/2,   kLineThickness));
-        fieldArcs.append(FieldCircularArc("LeftFieldRightPenaltyArc",  kXMin, -kDefenseStretch/2, kDefenseRadius-kLineThickness/2, 1.5*M_PI, 2*M_PI,   kLineThickness));
-        fieldArcs.append(FieldCircularArc("RightFieldLeftPenaltyArc",  kXMax, -kDefenseStretch/2, kDefenseRadius-kLineThickness/2, M_PI,     1.5*M_PI, kLineThickness));
-        fieldArcs.append(FieldCircularArc("RightFieldRightPenaltyArc", kXMax, kDefenseStretch/2,  kDefenseRadius-kLineThickness/2, M_PI/2,   M_PI,     kLineThickness));
     }
 
     // Add new lines
