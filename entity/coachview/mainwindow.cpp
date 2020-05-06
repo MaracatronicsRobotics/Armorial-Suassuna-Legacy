@@ -66,23 +66,23 @@ void MainWindow::setAgressivity(QString agressivity){
 
     if(agressivity == "high_attack"){
         ui->agressivity_txt->setText("High_Attack");
-        pixmp.load(":/textures/textures/ag.png");
+        pixmp.load(":/textures/textures/ui/ag.png");
     }
     else if(agressivity == "medium_attack"){
         ui->agressivity_txt->setText("Medium_Attack");
-        pixmp.load(":/textures/textures/ag.png");
+        pixmp.load(":/textures/textures/ui/ag.png");
     }
     else if(agressivity == "equilibrated"){
         ui->agressivity_txt->setText("Equilibrated");
-        pixmp.load(":/textures/textures/eq.png");
+        pixmp.load(":/textures/textures/ui/eq.png");
     }
     else if(agressivity == "medium_defense"){
         ui->agressivity_txt->setText("Medium_Defense");
-        pixmp.load(":/textures/textures/def.png");
+        pixmp.load(":/textures/textures/ui/def.png");
     }
     else if(agressivity == "high_defense"){
         ui->agressivity_txt->setText("High_Defense");
-        pixmp.load(":/textures/textures/def.png");
+        pixmp.load(":/textures/textures/ui/def.png");
     }
 
     ui->agressivity_img->setPixmap(pixmp);
@@ -110,23 +110,23 @@ void MainWindow::setPlayerRole(quint8 id, QString role){
     if(role.toLower() == playerRoles.at(id).second->text().toLower()) return;
 
     if(role.toLower() == "role_default"){ // teste
-        pixmp.load(":/textures/textures/gk.png");
+        pixmp.load(":/textures/textures/ui/gk.png");
         playerRoles.at(id).first->setPixmap(pixmp);
         playerRoles.at(id).second->setText(role);
     }else if(role.toLower() == "role_barrier"){
-        pixmp.load(":/textures/textures/bar.png");
+        pixmp.load(":/textures/textures/ui/bar.png");
         playerRoles.at(id).first->setPixmap(pixmp);
         playerRoles.at(id).second->setText(role);
     }else if(role.toLower() == "role_attacker"){
-        pixmp.load(":/textures/textures/atk.png");
+        pixmp.load(":/textures/textures/ui/atk.png");
         playerRoles.at(id).first->setPixmap(pixmp);
         playerRoles.at(id).second->setText(role);
     }else if(role.toLower() == "role_support"){
-        pixmp.load(":/textures/textures/sup.png");
+        pixmp.load(":/textures/textures/ui/sup.png");
         playerRoles.at(id).first->setPixmap(pixmp);
         playerRoles.at(id).second->setText(role);
     }else{
-        pixmp.load(":/textures/textures/none.png");
+        pixmp.load(":/textures/textures/ui/none.png");
         playerRoles.at(id).first->setPixmap(pixmp);
         playerRoles.at(id).second->setText("Undefined");
     }
@@ -145,19 +145,19 @@ void MainWindow::setupTeams(MRCTeam *our, MRCTeam *their, QString opTeam){
     _theirTeam = their;
 
     if(_ourTeam->teamColor() == Colors::Color::YELLOW){
-        ui->team_y->setPixmap(QPixmap(":/textures/textures/armorial.ico"));
-        ui->team_b->setPixmap(QPixmap(":/textures/textures/defaultteam.png"));
+        ui->team_y->setPixmap(QPixmap(":/textures/textures/ui/armorial.ico"));
+        ui->team_b->setPixmap(QPixmap(":/textures/textures/ui/defaultteam.png"));
     }else{
-        ui->team_b->setPixmap(QPixmap(":/textures/textures/armorial.ico"));
-        ui->team_y->setPixmap(QPixmap(":/textures/textures/defaultteam.png"));
+        ui->team_b->setPixmap(QPixmap(":/textures/textures/ui/armorial.ico"));
+        ui->team_y->setPixmap(QPixmap(":/textures/textures/ui/defaultteam.png"));
     }
 
     std::vector<QPixmap> pixmapVector;
 
     for(int x = 0; x < MRCConstants::_qtPlayers; x++){
         char str[50];
-        if(_ourTeam->teamColor() == Colors::Color::YELLOW) sprintf(str, ":/textures/textures/y%d.png", x);
-        else sprintf(str, ":/textures/textures/b%d.png", x);
+        if(_ourTeam->teamColor() == Colors::Color::YELLOW) sprintf(str, ":/textures/textures/robots/yellow/y%d.png", x);
+        else sprintf(str, ":/textures/textures/robots/blue/b%d.png", x);
 
         pixmapVector.push_back(QPixmap(str));
     }
