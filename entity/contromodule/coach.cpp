@@ -29,7 +29,7 @@
 #include <entity/coachview/mainwindow.h>
 
 QString Coach::name(){
-    std::cout << "Coach" << std::endl;
+    return "Coach";
 }
 
 Coach::Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam)
@@ -233,7 +233,6 @@ void Coach::run(){
     if(agressivity != _lastAgressivity){
         _lastAgressivity = agressivity;
     }
-
 
     // get strategy
     Strategy *strat = strategy();
