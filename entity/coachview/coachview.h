@@ -31,7 +31,7 @@
 
 #include <entity/coachview/soccerview/soccerview.h>
 
-#define timeToUpdate 50.0 // update player each 50ms
+#define timeToUpdate 500.0 // update referee and player status each 500ms
 
 class CoachView : public Entity
 {
