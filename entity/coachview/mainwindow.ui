@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1155</width>
-    <height>825</height>
+    <width>1397</width>
+    <height>842</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,7 +40,7 @@
      <property name="geometry">
       <rect>
        <x>8</x>
-       <y>29</y>
+       <y>30</y>
        <width>64</width>
        <height>64</height>
       </rect>
@@ -721,7 +721,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/robots/blue/b4.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/robots/blue/b3.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -919,8 +919,8 @@
    <widget class="QGroupBox" name="groupBox_5">
     <property name="geometry">
      <rect>
-      <x>920</x>
-      <y>550</y>
+      <x>1160</x>
+      <y>78</y>
       <width>221</width>
       <height>111</height>
      </rect>
@@ -944,7 +944,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/robots/blue/b5.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/robots/blue/b4.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1142,8 +1142,8 @@
    <widget class="QGroupBox" name="groupBox_6">
     <property name="geometry">
      <rect>
-      <x>920</x>
-      <y>668</y>
+      <x>1160</x>
+      <y>196</y>
       <width>221</width>
       <height>111</height>
      </rect>
@@ -1167,7 +1167,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../../rsc.qrc">:/textures/textures/robots/blue/b6.png</pixmap>
+      <pixmap resource="../../rsc.qrc">:/textures/textures/robots/blue/b5.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1368,17 +1368,17 @@
       <x>900</x>
       <y>30</y>
       <width>20</width>
-      <height>751</height>
+      <height>511</height>
      </rect>
     </property>
     <property name="orientation">
      <enum>Qt::Vertical</enum>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox_8">
+   <widget class="QGroupBox" name="agressivtyBox">
     <property name="geometry">
      <rect>
-      <x>920</x>
+      <x>1040</x>
       <y>20</y>
       <width>221</width>
       <height>51</height>
@@ -1435,17 +1435,17 @@
     <property name="geometry">
      <rect>
       <x>16</x>
-      <y>30</y>
+      <y>20</y>
       <width>880</width>
-      <height>500</height>
+      <height>523</height>
      </rect>
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBox_9">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>540</y>
+      <x>16</x>
+      <y>550</y>
       <width>241</width>
       <height>241</height>
      </rect>
@@ -1902,9 +1902,9 @@
    <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>280</x>
-      <y>540</y>
-      <width>616</width>
+      <x>276</x>
+      <y>550</y>
+      <width>1105</width>
       <height>241</height>
      </rect>
     </property>
@@ -1923,7 +1923,7 @@
        <rect>
         <x>10</x>
         <y>10</y>
-        <width>591</width>
+        <width>1076</width>
         <height>191</height>
        </rect>
       </property>
@@ -1996,7 +1996,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>160</x>
         <y>18</y>
-        <width>430</width>
+        <width>920</width>
         <height>3</height>
        </rect>
       </property>
@@ -2078,13 +2078,459 @@ p, li { white-space: pre-wrap; }
      </widget>
     </widget>
    </widget>
+   <widget class="QGroupBox" name="groupBox_7">
+    <property name="geometry">
+     <rect>
+      <x>1160</x>
+      <y>314</y>
+      <width>221</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Robot 6</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <widget class="QLabel" name="sprite_7">
+     <property name="geometry">
+      <rect>
+       <x>8</x>
+       <y>29</y>
+       <width>64</width>
+       <height>64</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/robots/blue/b6.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QProgressBar" name="battery_7">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>90</y>
+       <width>45</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="value">
+      <number>100</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="status_7">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>28</y>
+       <width>17</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Off</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="dribble_7">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>50</y>
+       <width>17</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Off</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="role_7">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>70</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Undefined</string>
+     </property>
+    </widget>
+    <widget class="QProgressBar" name="chute_7">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>90</y>
+       <width>45</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="value">
+      <number>100</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_38">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>50</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/dribble.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="imgrole_7">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>70</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/none.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_39">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>90</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/chute.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_40">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/connect.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_41">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>90</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/battery.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_8">
+    <property name="geometry">
+     <rect>
+      <x>1160</x>
+      <y>432</y>
+      <width>221</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Robot 7</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <widget class="QLabel" name="sprite_8">
+     <property name="geometry">
+      <rect>
+       <x>8</x>
+       <y>29</y>
+       <width>64</width>
+       <height>64</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/robots/blue/b7.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QProgressBar" name="battery_8">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>90</y>
+       <width>45</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="value">
+      <number>100</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="status_8">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>28</y>
+       <width>17</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Off</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="dribble_8">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>50</y>
+       <width>17</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Off</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="role_8">
+     <property name="geometry">
+      <rect>
+       <x>100</x>
+       <y>70</y>
+       <width>111</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Undefined</string>
+     </property>
+    </widget>
+    <widget class="QProgressBar" name="chute_8">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>90</y>
+       <width>45</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="value">
+      <number>100</number>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_42">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>50</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/dribble.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="imgrole_8">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>70</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/none.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_43">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>90</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/chute.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_44">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/connect.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_45">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>90</y>
+       <width>16</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/battery.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1155</width>
+     <width>1397</width>
      <height>22</height>
     </rect>
    </property>

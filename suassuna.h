@@ -39,8 +39,6 @@
 #include <entity/contromodule/coach.h>
 #include <entity/coachview/coachview.h>
 
-#define MAX_ROBOT_ID 6
-
 class Suassuna
 {
 public:

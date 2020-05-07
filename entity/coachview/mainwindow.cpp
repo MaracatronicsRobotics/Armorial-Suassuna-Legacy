@@ -168,6 +168,8 @@ void MainWindow::setupTeams(MRCTeam *our, MRCTeam *their, QString opTeam){
     ui->sprite_4->setPixmap(pixmapVector.at(3));
     ui->sprite_5->setPixmap(pixmapVector.at(4));
     ui->sprite_6->setPixmap(pixmapVector.at(5));
+    ui->sprite_7->setPixmap(pixmapVector.at(6));
+    ui->sprite_8->setPixmap(pixmapVector.at(7));
 
     // Initial setups
     resetRobots();
@@ -247,6 +249,8 @@ MainWindow::MainWindow(QWidget *parent)
     playerBoxes.push_back(ui->groupBox_4);
     playerBoxes.push_back(ui->groupBox_5);
     playerBoxes.push_back(ui->groupBox_6);
+    playerBoxes.push_back(ui->groupBox_7);
+    playerBoxes.push_back(ui->groupBox_8);
 
     // creating vector for battery
     playerBatteries.push_back(ui->battery_1);
@@ -255,6 +259,8 @@ MainWindow::MainWindow(QWidget *parent)
     playerBatteries.push_back(ui->battery_4);
     playerBatteries.push_back(ui->battery_5);
     playerBatteries.push_back(ui->battery_6);
+    playerBatteries.push_back(ui->battery_7);
+    playerBatteries.push_back(ui->battery_8);
 
     // creating vector for kick chages
     playerKickCharges.push_back(ui->chute_1);
@@ -263,6 +269,8 @@ MainWindow::MainWindow(QWidget *parent)
     playerKickCharges.push_back(ui->chute_4);
     playerKickCharges.push_back(ui->chute_5);
     playerKickCharges.push_back(ui->chute_6);
+    playerKickCharges.push_back(ui->chute_7);
+    playerKickCharges.push_back(ui->chute_8);
 
     // creating vector for roles (label img and label text)
     playerRoles.push_back(std::make_pair(ui->imgrole_1, ui->role_1));
@@ -271,6 +279,8 @@ MainWindow::MainWindow(QWidget *parent)
     playerRoles.push_back(std::make_pair(ui->imgrole_4, ui->role_4));
     playerRoles.push_back(std::make_pair(ui->imgrole_5, ui->role_5));
     playerRoles.push_back(std::make_pair(ui->imgrole_6, ui->role_6));
+    playerRoles.push_back(std::make_pair(ui->imgrole_7, ui->role_8));
+    playerRoles.push_back(std::make_pair(ui->imgrole_7, ui->role_8));
 
     // creating vector for radio connection
     playerConnections.push_back(ui->status_1);
@@ -279,6 +289,8 @@ MainWindow::MainWindow(QWidget *parent)
     playerConnections.push_back(ui->status_4);
     playerConnections.push_back(ui->status_5);
     playerConnections.push_back(ui->status_6);
+    playerConnections.push_back(ui->status_7);
+    playerConnections.push_back(ui->status_8);
 
     // creating vector for dribble connection
     playerDribbles.push_back(ui->dribble_1);
@@ -287,6 +299,8 @@ MainWindow::MainWindow(QWidget *parent)
     playerDribbles.push_back(ui->dribble_4);
     playerDribbles.push_back(ui->dribble_5);
     playerDribbles.push_back(ui->dribble_6);
+    playerDribbles.push_back(ui->dribble_7);
+    playerDribbles.push_back(ui->dribble_8);
 
     // dark pallete
     this->setStyle(QStyleFactory::create("Fusion"));

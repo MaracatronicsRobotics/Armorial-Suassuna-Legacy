@@ -30,7 +30,7 @@ float MRCConstants::_FPPBreakDistance        = 0.42f;
 float MRCConstants::_FPPSmoothPathResolution = 0.3f;
 
 /* Soccer constants */
-int MRCConstants::_qtPlayers                 = 6;
+int MRCConstants::_qtPlayers                 = 8;
 
 MRCConstants::MRCConstants()
 {
