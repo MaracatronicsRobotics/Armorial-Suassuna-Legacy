@@ -87,6 +87,7 @@ void World::initialization() {
 
 void World::loop() {
     _ctrModuleMutex.lock();
+
     // Lock for updating
     this->wmLockWrite();
 

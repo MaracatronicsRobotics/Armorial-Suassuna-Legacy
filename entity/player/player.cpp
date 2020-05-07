@@ -104,9 +104,6 @@ void Player::initialization(){
 }
 
 void Player::loop(){
-    // Lock for read wm
-    _world->wmLockRead();
-
     if(position().isUnknown()){
         if(_idleCount < IDLE_COUNT){
             _idleCount++;
@@ -122,13 +119,13 @@ void Player::loop(){
         _mutexRole.lock();
         if(_role != NULL){
             if(_role->isInitialized() == false){
-                _role->initialize(_world->ourTeam(), _world->theirTeam(), _team->loc(), _ref);
+                _role->initialize(_team, _team->opTeam(), _team->loc(), _ref);
             }
             _role->setPlayer(this, _playerAccessSelf);
             _role->runRole();
         }else if(_defaultRole != NULL){
             if(_defaultRole->isInitialized() == false){
-                _defaultRole->initialize(_world->ourTeam(), _world->theirTeam(), _team->loc(), _ref);
+                _defaultRole->initialize(_team, _team->opTeam(), _team->loc(), _ref);
             }
             _defaultRole->setPlayer(this, _playerAccessSelf);
             _defaultRole->runRole();
@@ -137,9 +134,6 @@ void Player::loop(){
         }
         _mutexRole.unlock();
     }
-
-    // Unlock wm for read
-    _world->wmUnlock();
 }
 
 QString Player::getRoleName() {
