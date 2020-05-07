@@ -170,7 +170,7 @@ void WorldMapUpdater::updateBallPossession(WorldMap *wm) {
 
 void WorldMapUpdater::setDefaultFieldGeometry(WorldMap *wm) {
     // Load default dimensions based on competition
-    _defaultField = new Fields::SSL2015();
+    _defaultField = new Fields::SSL2020();
     const float fieldX = _defaultField->maxX();
     const float fieldY = _defaultField->maxY();
     const float goalY = _defaultField->goalWidth()/2;
