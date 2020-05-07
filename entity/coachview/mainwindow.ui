@@ -1441,7 +1441,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox_9">
+   <widget class="QGroupBox" name="statusBox">
     <property name="geometry">
      <rect>
       <x>16</x>
@@ -2524,7 +2524,7 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_10">
+   <widget class="QGroupBox" name="groupBox_9">
     <property name="geometry">
      <rect>
       <x>1160</x>
@@ -2747,7 +2747,7 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_11">
+   <widget class="QGroupBox" name="groupBox_10">
     <property name="geometry">
      <rect>
       <x>1160</x>
@@ -2970,7 +2970,7 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_12">
+   <widget class="QGroupBox" name="groupBox_11">
     <property name="geometry">
      <rect>
       <x>1160</x>
@@ -3193,7 +3193,7 @@ p, li { white-space: pre-wrap; }
      </property>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_13">
+   <widget class="QGroupBox" name="groupBox_12">
     <property name="geometry">
      <rect>
       <x>1160</x>
