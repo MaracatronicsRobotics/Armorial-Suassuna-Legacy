@@ -28,7 +28,7 @@
 #include <entity/contromodule/playbook/playbook.h>
 
 QString CoachView::name(){
-    return "Coach View";
+    return "COACHVIEW";
 }
 
 void CoachView::setTeams(MRCTeam *our, MRCTeam *their){
