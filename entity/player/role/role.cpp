@@ -34,7 +34,7 @@ Role::Role() {
     _loc = NULL;
     _initialized = false;
     _configureEnabled = true; // for set behaviours
-
+    _actualBehaviour = -1;
 }
 
 Role::~Role() {
