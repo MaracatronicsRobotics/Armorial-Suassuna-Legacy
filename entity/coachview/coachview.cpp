@@ -97,6 +97,7 @@ void CoachView::loop(){
                 if(!(*it2)->isInitialized()) continue;
                 QString roleName = (*it2)->name();
                 rolesList[playbookName].push_back(roleName);
+                if((*it2)->player() == NULL) continue;
                 quint8 playerId = (*it2)->player()->playerId();
                 std::string playerName = "Robot " + std::to_string(playerId);
                 playersList[std::make_pair(playbookName, roleName)].push_back(std::make_pair(playerName.c_str(), playerId));
