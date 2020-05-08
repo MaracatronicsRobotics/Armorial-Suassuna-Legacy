@@ -104,32 +104,125 @@ void MainWindow::setRadioConnect(quint8 id, bool isOnline){
     }
 }
 
-void MainWindow::setPlayerRole(quint8 id, QString role){
+void MainWindow::addRoot(){
+    QTreeWidgetItem *item = new QTreeWidgetItem(treeWidget);
+
+    item->setText(0, "Strategy");
+
+    root = item;
+}
+
+void MainWindow::resetTree(QList<QString> playbookList, QMap<QString, QList<QString>> rolesList,
+                           QMap<std::pair<QString, QString>, QList<std::pair<QString, quint8>>> playersList){
+    // Parsing playbooks
+    for(int x = 0; x < playbookList.size(); x++){
+        if(!isContained(root, playbookList.at(x))){
+            addChild(root, playbookList.at(x))->setIcon(0, QIcon(getPlaybookPixmap(playbookList.at(x))));
+        }
+    }
+    // Removing old playbooks
+    removeOld(root, playbookList);
+
+    // Parsing roles
+    for(int x = 0; x < root->childCount(); x++){
+        QList<QString> list = rolesList[root->child(x)->text(0)];
+        for(int y = 0; y < list.size(); y++){
+            if(!isContained(root->child(x), list[y])){
+                addChild(root->child(x), list[y])->setIcon(0, QIcon(getRolePixmap(list[y])));
+            }
+        }
+        // Removing old roles
+        removeOld(root->child(x), list);
+    }
+
+    // Parsing robots
+    for(int x = 0; x < root->childCount(); x++){
+        for(int y = 0; y < root->child(x)->childCount(); y++){
+            QList<std::pair<QString, quint8>> list = playersList[std::make_pair(root->child(x)->text(0), root->child(x)->child(y)->text(0))];
+            QList<QString> listParse;
+            for(int z = 0; z < list.size(); z++){
+                if(!isContained(root->child(x)->child(y), list.at(z).first)){
+                    addChild(root->child(x)->child(y), list[z].first)->setIcon(0, QIcon(robotsPixmaps[list.at(z).second]));
+                }
+                listParse.push_back(list[z].first);
+            }
+            // Removing old robots
+            removeOld(root->child(x)->child(y), listParse);
+        }
+    }
+}
+
+QTreeWidgetItem* MainWindow::addChild(QTreeWidgetItem* parent, QString text){
+    QTreeWidgetItem* item = new QTreeWidgetItem(parent);
+    item->setText(0, text);
+
+    parent->addChild(item);
+
+    return item;
+}
+
+bool MainWindow::isContained(QTreeWidgetItem *parent, QString text){
+    for(int x = 0; x < parent->childCount(); x++){
+        if(parent->child(x)->text(0) == text)
+            return true;
+    }
+    return false;
+}
+
+void MainWindow::removeOld(QTreeWidgetItem *parent, QList<QString> stringList){
+    for(int x = 0; x < parent->childCount(); x++){
+        bool found = false;
+        for(int y = 0; y < stringList.size(); y++){
+            if(parent->child(x)->text(0) == stringList.at(y)){
+                found = true;
+                break;
+            }
+        }
+        if(!found) parent->takeChild(x);
+    }
+}
+
+QPixmap MainWindow::getPlaybookPixmap(QString playbook){
     QPixmap pixmp;
 
-    if(role.toLower() == playerRoles.at(id).second->text().toLower()) return;
+    if(playbook.toLower() == "playbook_attack"){ // teste
+        pixmp.load(":/textures/textures/ui/atk.png");
+    }
+    else if(playbook.toLower() == "playbook_defense"){
+        pixmp.load(":/textures/textures/ui/def.png");
+    }
+    else{
+        pixmp.load(":/textures/textures/ui/none.png");
+    }
+
+    return pixmp;
+}
+
+QPixmap MainWindow::getRolePixmap(QString role){
+    QPixmap pixmp;
 
     if(role.toLower() == "role_default"){ // teste
         pixmp.load(":/textures/textures/ui/gk.png");
-        playerRoles.at(id).first->setPixmap(pixmp);
-        playerRoles.at(id).second->setText(role);
     }else if(role.toLower() == "role_barrier"){
         pixmp.load(":/textures/textures/ui/bar.png");
-        playerRoles.at(id).first->setPixmap(pixmp);
-        playerRoles.at(id).second->setText(role);
     }else if(role.toLower() == "role_attacker"){
         pixmp.load(":/textures/textures/ui/atk.png");
-        playerRoles.at(id).first->setPixmap(pixmp);
-        playerRoles.at(id).second->setText(role);
     }else if(role.toLower() == "role_support"){
         pixmp.load(":/textures/textures/ui/sup.png");
-        playerRoles.at(id).first->setPixmap(pixmp);
-        playerRoles.at(id).second->setText(role);
     }else{
         pixmp.load(":/textures/textures/ui/none.png");
-        playerRoles.at(id).first->setPixmap(pixmp);
-        playerRoles.at(id).second->setText("Undefined");
     }
+
+    return pixmp;
+}
+
+void MainWindow::setPlayerRole(quint8 id, QString role){
+    QPixmap pixmp = getRolePixmap(role);
+
+    if(role.toLower() == playerRoles.at(id).second->text().toLower()) return;
+
+    playerRoles.at(id).first->setPixmap(pixmp);
+    playerRoles.at(id).second->setText(role);
 }
 
 void MainWindow::setDribble(quint8 id, bool isActive){
@@ -152,28 +245,26 @@ void MainWindow::setupTeams(MRCTeam *our, MRCTeam *their, QString opTeam){
         ui->team_y->setPixmap(QPixmap(":/textures/textures/ui/defaultteam.png"));
     }
 
-    std::vector<QPixmap> pixmapVector;
-
     for(int x = 0; x < MRCConstants::_qtPlayers; x++){
         char str[50];
         if(_ourTeam->teamColor() == Colors::Color::YELLOW) sprintf(str, ":/textures/textures/robots/yellow/y%d.png", x);
         else sprintf(str, ":/textures/textures/robots/blue/b%d.png", x);
 
-        pixmapVector.push_back(QPixmap(str));
+        robotsPixmaps.push_back(QPixmap(str));
     }
 
-    ui->sprite_1->setPixmap(pixmapVector.at(0));
-    ui->sprite_2->setPixmap(pixmapVector.at(1));
-    ui->sprite_3->setPixmap(pixmapVector.at(2));
-    ui->sprite_4->setPixmap(pixmapVector.at(3));
-    ui->sprite_5->setPixmap(pixmapVector.at(4));
-    ui->sprite_6->setPixmap(pixmapVector.at(5));
-    ui->sprite_7->setPixmap(pixmapVector.at(6));
-    ui->sprite_8->setPixmap(pixmapVector.at(7));
-    ui->sprite_9->setPixmap(pixmapVector.at(8));
-    ui->sprite_10->setPixmap(pixmapVector.at(9));
-    ui->sprite_11->setPixmap(pixmapVector.at(10));
-    ui->sprite_12->setPixmap(pixmapVector.at(11));
+    ui->sprite_1->setPixmap(robotsPixmaps.at(0));
+    ui->sprite_2->setPixmap(robotsPixmaps.at(1));
+    ui->sprite_3->setPixmap(robotsPixmaps.at(2));
+    ui->sprite_4->setPixmap(robotsPixmaps.at(3));
+    ui->sprite_5->setPixmap(robotsPixmaps.at(4));
+    ui->sprite_6->setPixmap(robotsPixmaps.at(5));
+    ui->sprite_7->setPixmap(robotsPixmaps.at(6));
+    ui->sprite_8->setPixmap(robotsPixmaps.at(7));
+    ui->sprite_9->setPixmap(robotsPixmaps.at(8));
+    ui->sprite_10->setPixmap(robotsPixmaps.at(9));
+    ui->sprite_11->setPixmap(robotsPixmaps.at(10));
+    ui->sprite_12->setPixmap(robotsPixmaps.at(11));
 
     // Initial setups
     resetRobots();
@@ -245,6 +336,16 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    // tree
+    root = NULL;
+    treeWidget = new QTreeWidget(ui->page_tree);
+    treeWidget->setObjectName(QStringLiteral("treeWidget"));
+    treeWidget->setGeometry(QRect(10, 10, 601, 192));
+    treeWidget->setColumnCount(1);
+    QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
+    ___qtreewidgetitem->setText(0, QApplication::translate("MainWindow", "Strategy", Q_NULLPTR));
+    qRegisterMetaType<QVector<int>>("QVector<int>");
 
     // creating vector for groupboxes
     playerBoxes.push_back(ui->groupBox);
@@ -355,6 +456,9 @@ MainWindow::MainWindow(QWidget *parent)
     darkPalette.setColor(QPalette::Disabled,QPalette::HighlightedText,QColor(127,127,127));
 
     this->setPalette(darkPalette);
+
+    // creating first tree
+    addRoot();
 }
 
 MainWindow::~MainWindow()

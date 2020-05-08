@@ -30,8 +30,7 @@
 #include <include/timer.h>
 
 #include <entity/coachview/soccerview/soccerview.h>
-
-#define timeToUpdate 500.0 // update referee and player status each 500ms
+#include <const/constants.h>
 
 class CoachView : public Entity
 {
@@ -45,6 +44,8 @@ public:
     void setCoach(Coach *coach);
     void setReferee(SSLReferee *ref);
     MRCTeam* getOurTeam() { return _ourTeam; }
+
+    double timeToUpdate;
 
 private:
     void initialization();

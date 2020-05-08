@@ -30,6 +30,7 @@
 #include <QProgressBar>
 #include <QLabel>
 #include <QMutex>
+#include <QTreeWidgetItem>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -74,6 +75,14 @@ public:
     bool enableBallVelocityVector();
     bool enablePlayerConfidency();
 
+    // tree
+    void addRoot();
+    void resetTree(QList<QString> playbookList, QMap<QString, QList<QString>> rolesList,
+                   QMap<std::pair<QString, QString>, QList<std::pair<QString, quint8>>> playersList);
+    bool isContained(QTreeWidgetItem *parent, QString text);
+    void removeOld(QTreeWidgetItem *parent, QList<QString> stringList);
+    QTreeWidgetItem* addChild(QTreeWidgetItem* parent, QString text);
+
 private:
     Ui::MainWindow *ui;
     std::vector<QGroupBox*> playerBoxes;
@@ -86,5 +95,16 @@ private:
     MRCTeam* _ourTeam;
     MRCTeam* _theirTeam;
 
+    // tree
+    QTreeWidget *treeWidget;
+    QTreeWidgetItem* root;
+    QMap<QTreeWidgetItem*, QList<QTreeWidgetItem*>> roles;
+    QList<QTreeWidgetItem*> robots;
+
+
+    // aux functions
+    QPixmap getRolePixmap(QString role);
+    QPixmap getPlaybookPixmap(QString playbook);
+    QList<QPixmap> robotsPixmaps;
 };
 #endif // MAINWINDOW_H

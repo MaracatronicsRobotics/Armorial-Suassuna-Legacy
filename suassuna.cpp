@@ -86,7 +86,7 @@ bool Suassuna::start() {
     _ourGUI->setTeams(_ourTeam, _theirTeam);
     _ourGUI->setCoach(_coach);
     _ourGUI->setReferee(_ref);
-    _world->addEntity(_ourGUI, 2);
+    _world->addEntity(_ourGUI, 3);
 
     // Setup strategy for coach
     Strategy *strategy = NULL;

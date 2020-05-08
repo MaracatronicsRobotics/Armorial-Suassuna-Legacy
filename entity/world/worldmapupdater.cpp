@@ -104,7 +104,6 @@ void WorldMapUpdater::updateBall(WorldMap *wm) {
 void WorldMapUpdater::updateTeam(WorldMap *wm, quint8 teamId) {
     const QList<quint8> ctrPlayers = _ctr->players(teamId);
     QList<quint8>::const_iterator it;
-    //printf("Team id = %d\n", teamId);
 
     for(it=ctrPlayers.constBegin(); it!=ctrPlayers.end(); it++) {
         const quint8 player = *it;
@@ -113,12 +112,14 @@ void WorldMapUpdater::updateTeam(WorldMap *wm, quint8 teamId) {
         wm->setPlayerOrientation(teamId, player, _ctr->playerOrientation(teamId, player));
         wm->setPlayerVelocity(teamId, player, _ctr->playerVelocity(teamId, player));
         wm->setPlayerAngularSpeed(teamId, player, _ctr->playerAngularSpeed(teamId, player));
-        wm->setKickEnabled(teamId, player, _ctr->kickEnabled(teamId, player));
-        wm->setDribbleEnabled(teamId, player, _ctr->dribbleEnabled(teamId, player));
-        wm->setBatteryCharge(teamId, player, _ctr->batteryCharge(teamId, player));
-        wm->setCapacitorCharge(teamId, player, _ctr->capacitorCharge(teamId, player));
-    }
 
+        if(teamId == 0){ // maracatronics team (id 0 by default)
+            wm->setKickEnabled(teamId, player, _ctr->kickEnabled(teamId, player));
+            wm->setDribbleEnabled(teamId, player, _ctr->dribbleEnabled(teamId, player));
+            wm->setBatteryCharge(teamId, player, _ctr->batteryCharge(teamId, player));
+            wm->setCapacitorCharge(teamId, player, _ctr->capacitorCharge(teamId, player));
+        }
+    }
 }
 
 void WorldMapUpdater::updateBallPossession(WorldMap *wm) {

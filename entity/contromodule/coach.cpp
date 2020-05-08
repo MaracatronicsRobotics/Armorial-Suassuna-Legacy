@@ -59,6 +59,10 @@ Coach::~Coach(){
     delete _utils;
 }
 
+StrategyState* Coach::getStrategyState(){
+    return strategy()->getLastStrategy();
+}
+
 std::vector<double> Coach::getEnemyGaussiansInAreas(){
     std::vector<double> proportions;
     for(int x = 0; x < 5; x++) proportions.push_back(0.0);

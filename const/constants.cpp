@@ -22,6 +22,7 @@
 #include "constants.h"
 
 int MRCConstants::_threadFrequency           = 60; // frequencia das threads criadas
+int MRCConstants::_guiUpdateFrequency        = 30;  // frequencia de update da GUI
 
 /* Fast Path Planning */
 float MRCConstants::_FPPBallThreshHold       = 0.2f;
