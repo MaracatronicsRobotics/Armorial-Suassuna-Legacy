@@ -5,7 +5,7 @@
 This repository contains the central AI controller software framework used by Maracatronics Robotics Team and Research Lab at Small Size League
 
 
-## Release 0.5
+## Release 0.0.5
 This release contains our central AI controller software framework that is currently being developed. It catches information in the network (using the GEARSystem structure) that is sent by Armorial-Carrero and use this to decide how the robots should act in the field.
 
 
@@ -23,6 +23,18 @@ Currently, our AI framework is divided in 6 steps:
 	* More complex actions of the robots, which mix a set of skills to form a behaviour itself.
 * Skill
 	* The basic actions of the robots, like go to a point, rotate, etc.
+
+## Release 0.1
+This release contains new updates that are listed below:
+
+* UI Updates
+	* The UI is remodeled, it now have support to 12 robots patterns, a new graphicalClient, an tree that can show the work of our AI framework, a new configuration bar that have some really nice features to graphicalClient and a new game status widget.
+
+* SegFault fixes
+	* The latest code release has some seriously bugs in certain modules, like the coach and the player. They are now working properly and may not have any problems (except the timeroverextended problems, that will be checked in the next release).
+	
+* Optimizations
+	* Our older UI has a lot of problems with optimizations, costing ~15% of processment. The new UI showed a better performance, costing approximately half of this processament.
 
 
 ## Armorial-Project
