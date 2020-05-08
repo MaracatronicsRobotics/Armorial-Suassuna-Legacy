@@ -55,6 +55,9 @@ public:
     virtual QString name() = 0;
     int getActualBehaviour();
 
+    // PlayerAcess
+    PlayerAccess* player();
+
 protected:
     // Behaviour list functions
     void usesBehaviour(int id, Behaviour *behaviour);
@@ -63,7 +66,6 @@ protected:
     bool canKickBall() const;
 
     // Utils, loc and player access
-    PlayerAccess* player();
     Locations* loc();
 
 private:

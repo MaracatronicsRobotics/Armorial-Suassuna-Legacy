@@ -35,6 +35,8 @@ public:
 
     QString getAgressivity();
     void setStrategy(Strategy *strat);
+
+    StrategyState* getStrategyState();
 private:
     // run controller
     void run();

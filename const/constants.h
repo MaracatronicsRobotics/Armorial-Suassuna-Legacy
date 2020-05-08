@@ -26,10 +26,12 @@ class MRCConstants
 {
 private:
     static int _threadFrequency;
+    static int _guiUpdateFrequency;
 public:
     MRCConstants();
 
     static int threadFrequency() { return _threadFrequency; }
+    static int guiUpdateFrequency() { return _guiUpdateFrequency; }
 
     /* Fast Path Planning */
     static float _FPPBallThreshHold;

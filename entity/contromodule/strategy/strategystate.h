@@ -37,6 +37,9 @@ public:
     // Called in Coach -> Strategy loop
     void runStrategyState();
     virtual QString name() = 0;
+
+    // Auxiliary methods
+    QList<Playbook*> getPlaybooks() { return _playbookList; }
 protected:
     // Playbook functions
     void usesPlaybook(Playbook *playbook);

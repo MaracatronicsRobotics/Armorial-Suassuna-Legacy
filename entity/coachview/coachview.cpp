@@ -24,6 +24,9 @@
 #include <entity/player/playerbus.h>
 #include <const/constants.h>
 
+#include <entity/contromodule/strategy/strategystate.h>
+#include <entity/contromodule/playbook/playbook.h>
+
 QString CoachView::name(){
     return "Coach View";
 }
@@ -52,6 +55,8 @@ CoachView::CoachView() : Entity(ENT_GUI)
 
     _timer = new Timer();
     _timer->start();
+
+    timeToUpdate = 1000.0 / MRCConstants::guiUpdateFrequency();
 }
 
 MainWindow* CoachView::getUI(){
@@ -63,7 +68,7 @@ CoachView::~CoachView(){
 }
 
 void CoachView::initialization(){
-    this->setLoopFrequency(MRCConstants::threadFrequency());
+    std::cout << "[CoachView] thread started.\n";
 }
 
 void CoachView::loop(){
@@ -74,22 +79,48 @@ void CoachView::loop(){
 
     _timer->stop();
     if(_timer->timemsec() >= timeToUpdate){
-    // process every ssl game info
-    SSLGameInfo* _gameInfo = _ref->getGameInfo(_ourTeam->teamColor());
+        // Process coach strategy, playbooks, roles and players
+        QList<QString> playbookList;
+        QMap<QString, QList<QString>> rolesList;
+        QMap<std::pair<QString, QString>, QList<std::pair<QString, quint8>>> playersList;
 
-    if(_gameInfo->getColor() == _ourTeam->teamColor()){
-        _suassunaUI->updateRefereeCommand(_gameInfo->refCommandToString(_gameInfo->command()).c_str());
-        _suassunaUI->updateGameStage(_gameInfo->refStageToString(_gameInfo->stage()).c_str());
-        SSL_Referee_TeamInfo theirTeamInfo = _gameInfo->theirTeamInfo();
-        SSL_Referee_TeamInfo ourTeamInfo = _gameInfo->ourTeamInfo();
-        if(_ourTeam->teamColor() == Colors::BLUE){
-            _suassunaUI->updateScores(theirTeamInfo.score(), theirTeamInfo.yellow_cards(), theirTeamInfo.red_cards(), theirTeamInfo.timeouts(), ourTeamInfo.score(), ourTeamInfo.yellow_cards(), ourTeamInfo.red_cards(), ourTeamInfo.timeouts());
-        }else{
-            _suassunaUI->updateScores(ourTeamInfo.score(), ourTeamInfo.yellow_cards(), ourTeamInfo.red_cards(), ourTeamInfo.timeouts(), theirTeamInfo.score(), theirTeamInfo.yellow_cards(), theirTeamInfo.red_cards(), theirTeamInfo.timeouts());
+        // Parsing playbooks
+        QList<Playbook*> pbList = _coach->getStrategyState()->getPlaybooks();
+        QList<Playbook*>::iterator it;
+        QList<Role*>::iterator it2;
+        for(it = pbList.begin(); it != pbList.end(); it++){
+            if(!(*it)->isInitialized()) continue;
+            QString playbookName = (*it)->name();
+            playbookList.push_back(playbookName);
+            QList<Role*> rList = (*it)->getRoles();
+            for(it2 = rList.begin(); it2 != rList.end(); it2++){
+                if(!(*it2)->isInitialized()) continue;
+                QString roleName = (*it2)->name();
+                rolesList[playbookName].push_back(roleName);
+                quint8 playerId = (*it2)->player()->playerId();
+                std::string playerName = "Robot " + std::to_string(playerId);
+                playersList[std::make_pair(playbookName, roleName)].push_back(std::make_pair(playerName.c_str(), playerId));
+            }
         }
-    }
 
-    _suassunaUI->updateTimeLeft(_gameInfo->refTimeLeftToString().c_str());
+        _suassunaUI->resetTree(playbookList, rolesList, playersList);
+
+        // process every ssl game info
+        SSLGameInfo* _gameInfo = _ref->getGameInfo(_ourTeam->teamColor());
+
+        if(_gameInfo->getColor() == _ourTeam->teamColor()){
+            _suassunaUI->updateRefereeCommand(_gameInfo->refCommandToString(_gameInfo->command()).c_str());
+            _suassunaUI->updateGameStage(_gameInfo->refStageToString(_gameInfo->stage()).c_str());
+            SSL_Referee_TeamInfo theirTeamInfo = _gameInfo->theirTeamInfo();
+            SSL_Referee_TeamInfo ourTeamInfo = _gameInfo->ourTeamInfo();
+            if(_ourTeam->teamColor() == Colors::BLUE){
+                _suassunaUI->updateScores(theirTeamInfo.score(), theirTeamInfo.yellow_cards(), theirTeamInfo.red_cards(), theirTeamInfo.timeouts(), ourTeamInfo.score(), ourTeamInfo.yellow_cards(), ourTeamInfo.red_cards(), ourTeamInfo.timeouts());
+            }else{
+                _suassunaUI->updateScores(ourTeamInfo.score(), ourTeamInfo.yellow_cards(), ourTeamInfo.red_cards(), ourTeamInfo.timeouts(), theirTeamInfo.score(), theirTeamInfo.yellow_cards(), theirTeamInfo.red_cards(), theirTeamInfo.timeouts());
+            }
+        }
+
+        _suassunaUI->updateTimeLeft(_gameInfo->refTimeLeftToString().c_str());
 
 
         // process coach agressivity
@@ -113,4 +144,5 @@ void CoachView::loop(){
 }
 
 void CoachView::finalization(){
+    std::cout << "[CoachView] thread ended.\n";
 }

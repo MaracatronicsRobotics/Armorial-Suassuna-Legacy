@@ -50,6 +50,9 @@ public:
     void clearPlayers();
     int numPlayers();
     virtual QString name() = 0;
+
+    // Auxiliary methods
+    QList<Role*> getRoles() { return _assignmentTable.values(); }
 protected:
     // Players on this playbook access
     bool hasPlayer(quint8 id);

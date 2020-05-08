@@ -38,6 +38,9 @@ public:
     virtual void runStrategy() = 0;
     virtual QString name() = 0;
 
+    // Auxiliary methods
+    StrategyState* getLastStrategy() { return _lastStrategy; }
+
 protected:
     SSLGameInfo::RefProcessedState getGameState();
     virtual void setStrategyState(int gameState, StrategyState *strategyState);
@@ -69,6 +72,9 @@ private:
 
     // Strategy initialized
     bool _initialized;
+
+    // Aux
+    StrategyState *_lastStrategy;
 };
 
 #endif // STRATEGY_H
