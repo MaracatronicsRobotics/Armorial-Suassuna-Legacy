@@ -113,7 +113,8 @@ void MainWindow::addRoot(){
 }
 
 void MainWindow::resetTree(QList<QString> playbookList, QMap<QString, QList<QString>> rolesList,
-                           QMap<std::pair<QString, QString>, QList<std::pair<QString, quint8>>> playersList){
+                           QMap<std::pair<QString, QString>, QList<std::pair<QString, quint8>>> playersList,
+                           QMap<QString, QString> behavioursList){
     // Parsing playbooks
     for(int x = 0; x < playbookList.size(); x++){
         if(!isContained(root, playbookList.at(x))){
@@ -142,14 +143,34 @@ void MainWindow::resetTree(QList<QString> playbookList, QMap<QString, QList<QStr
             QList<QString> listParse;
             for(int z = 0; z < list.size(); z++){
                 if(!isContained(root->child(x)->child(y), list.at(z).first)){
-                    addChild(root->child(x)->child(y), list[z].first)->setIcon(0, QIcon(robotsPixmaps[list.at(z).second]));
+                    QTreeWidgetItem *item = addChild(root->child(x)->child(y), list[z].first);
+                    item->setIcon(0, QIcon(robotsPixmaps[list.at(z).second]));
                 }
+                // Saving strings for remove later
                 listParse.push_back(list[z].first);
             }
             // Removing old robots
             removeOld(root->child(x)->child(y), listParse);
         }
     }
+
+    // Parsing behaviours
+    for(int x = 0; x < root->childCount(); x++){ // pb
+        for(int y = 0; y < root->child(x)->childCount(); y++){ // role
+            for(int w = 0; w < root->child(x)->child(y)->childCount(); w++){ // robot
+                QTreeWidgetItem *player = root->child(x)->child(y)->child(w);
+                QString playerName = player->text(0);
+                if(player->childCount() == 0){ // never had a behaviour before
+                    addChild(player, behavioursList[playerName]);
+                }else{                         // update existing behaviour
+                    QTreeWidgetItem *bhv = player->takeChild(0);
+                    bhv->setText(0, behavioursList[playerName]);
+                    player->addChild(bhv);
+                }
+            }
+        }
+    }
+
 }
 
 QTreeWidgetItem* MainWindow::addChild(QTreeWidgetItem* parent, QString text){
