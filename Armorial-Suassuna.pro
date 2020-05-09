@@ -37,6 +37,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     const/constants.cpp \
+    entity/ballprediction/ballprediction.cpp \
     entity/coachview/soccerview/gltext.cpp \
     entity/coachview/soccerview/soccerview.cpp \
     entity/coachview/soccerview/util/field.cpp \
@@ -141,6 +142,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     const/constants.h \
+    entity/ballprediction/ballprediction.h \
     entity/baseentity.h \
     entity/coachview/soccerview/gltext.h \
     entity/coachview/soccerview/soccerview.h \
