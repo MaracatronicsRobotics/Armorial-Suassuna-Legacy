@@ -85,19 +85,19 @@ void CoachView::loop(){
         QMap<QString, QList<QString>> rolesList;
         QMap<std::pair<QString, QString>, QList<std::pair<QString, quint8>>> playersList;
         QMap<QString, QString> behavioursList;
-/*
+
         // Parsing playbooks
         if(_coach->getStrategyState() != NULL){
             QList<Playbook*> pbList = _coach->getStrategyState()->getPlaybooks();
             QList<Playbook*>::iterator it;
             QList<Role*>::iterator it2;
             for(it = pbList.begin(); it != pbList.end(); it++){
-                if((*it) == NULL) continue;
+                if((*it) == NULL || !(*it)->isInitialized()) continue;
                 QString playbookName = (*it)->name();
                 playbookList.push_back(playbookName);
                 QList<Role*> rList = (*it)->getRoles();
                 for(it2 = rList.begin(); it2 != rList.end(); it2++){
-                    if((*it2) == NULL) continue;
+                    if((*it2) == NULL || !(*it2)->isInitialized()) continue;
                     QString roleName = (*it2)->name();
                     rolesList[playbookName].push_back(roleName);
                     if((*it2)->player() == NULL) continue;
@@ -110,8 +110,6 @@ void CoachView::loop(){
 
             _suassunaUI->resetTree(playbookList, rolesList, playersList, behavioursList);
         }
-*/
-
 
         // process every ssl game info
         SSLGameInfo* _gameInfo = _ref->getGameInfo(_ourTeam->teamColor());

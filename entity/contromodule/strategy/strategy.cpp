@@ -30,6 +30,7 @@ Strategy::Strategy()
     _lastState = SSLGameInfo::STATE_UNDEFINED;
     _initialized = false;
     _dist = NULL;
+    _lastStrategy = NULL;
 }
 
 Strategy::~Strategy(){
