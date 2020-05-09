@@ -39,6 +39,8 @@
 #include <entity/contromodule/coach.h>
 #include <entity/coachview/coachview.h>
 
+#include <entity/ballprediction/ballprediction.h>
+
 class Suassuna
 {
 public:
@@ -73,6 +75,7 @@ private:
     World *_world;
     SSLReferee *_ref;
     Coach *_coach;
+    BallPrediction *_ballPred;
 
     // Times
     MRCTeam *_ourTeam;
