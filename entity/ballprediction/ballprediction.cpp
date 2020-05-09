@@ -22,7 +22,6 @@ void BallPrediction::setMinVelocity(double minVelocity){
 }
 
 void BallPrediction::initialization(){
-    /*
     // Clear vars
     _posBall.clear();
     _velBall.clear();
@@ -31,15 +30,15 @@ void BallPrediction::initialization(){
 
     // Start Timer
     _timer.start();
-*/
+
     std::cout << "[BALLPREDICTION] Thread started.\n";
 }
 
 void BallPrediction::loop(){
     // precisa saber se ngm tem posse (chute)
     // bola com velocidade suficiente (chute)
-/*
-    if(nobodyHasPoss() && hasSufficientVelocity()){
+
+    if(/*nobodyHasPoss() && */hasSufficientVelocity()){
         // Stop timer and get _dt
         _timer.stop();
         _dtBall.push_back(_timer.timemsec());
@@ -60,15 +59,12 @@ void BallPrediction::loop(){
         if(_posBall.size() > _minDataSize && _velBall.size() > _minDataSize && _dtBall.size() > _minDataSize){
             std::cout << "[BALLPREDICTION] Trained.\n";
             // treino
-        }else{
-            std::cout << "[BALLPREDICTION] N deu cara.\n";
         }
 
         _posBall.clear();
         _velBall.clear();
         _dtBall.clear();
     }
-    */
 }
 
 void BallPrediction::finalization(){
