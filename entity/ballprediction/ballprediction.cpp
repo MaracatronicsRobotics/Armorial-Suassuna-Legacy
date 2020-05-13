@@ -6,7 +6,7 @@ QString BallPrediction::name(){
 
 BallPrediction::BallPrediction() : Entity(ENT_BALLPREDICTION)
 {
-
+    arq = fopen("test.csv", "w+");
 }
 
 void BallPrediction::setTeam(MRCTeam *team){
@@ -26,7 +26,6 @@ void BallPrediction::initialization(){
     _posBall.clear();
     _velBall.clear();
     _dtBall.clear();
-    _minVelocity = 0.3;
 
     // Start Timer
     _timer.start();
@@ -41,7 +40,7 @@ void BallPrediction::loop(){
     if(/*nobodyHasPoss() && */hasSufficientVelocity()){
         // Stop timer and get _dt
         _timer.stop();
-        _dtBall.push_back(_timer.timemsec());
+        _dtBall.push_back(_timer.timensec());
 
         // Lock mutex to get position and velocity
         _ballMutex.lock();
@@ -53,14 +52,19 @@ void BallPrediction::loop(){
         _posBall.push_back(ballPos);
         _velBall.push_back(ballVel);
 
-        // Start timer to get next _dt
-        _timer.start();
+        fprintf(arq, "%.12lf,%.12lf,%.12lf\n", ballVel.abs(), (_timer.timensec() - _dtBall.first())/1e6, WR::Utils::distance(_posBall.first(), ballPos));
     }else{
-        if(_posBall.size() > _minDataSize && _velBall.size() > _minDataSize && _dtBall.size() > _minDataSize){
-            std::cout << "[BALLPREDICTION] Trained.\n";
-            // treino
+        int sz = _posBall.size();
+/*
+        for(int x = 1; x < sz; x++){
+            Position pos = _posBall[x];
+            double time = _dtBall[x];
+            for(int y = x - 1; y >= 0; y--){
+                if(abs((_dtBall[y] - _dtBall[x])/1e6) >= 750) break;
+                fprintf(arq, "%.6lf,%.6lf,%.6lf\n", _velBall[y].abs(), abs((_dtBall[y] - _dtBall[x])/1e6), WR::Utils::distance(pos, _posBall[y]));
+            }
         }
-
+*/
         _posBall.clear();
         _velBall.clear();
         _dtBall.clear();

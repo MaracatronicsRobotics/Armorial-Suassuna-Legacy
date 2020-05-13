@@ -43,6 +43,9 @@ private:
 
     // Mutex
     QMutex _ballMutex;
+
+    // Arquivo
+    FILE *arq;
 };
 
 #endif // BALLPREDICTION_H

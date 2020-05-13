@@ -97,7 +97,7 @@ bool Suassuna::start() {
     _ballPred = new BallPrediction();
     _ballPred->setTeam(_ourTeam);
     _ballPred->setMinDataSize(50);
-    _ballPred->setMinVelocity(0.3);
+    _ballPred->setMinVelocity(0.1);
     _world->addEntity(_ballPred, 2);
 
     FreeAngles::initialize(_ourTeam, _theirTeam);
