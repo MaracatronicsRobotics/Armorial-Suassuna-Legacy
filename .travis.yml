@@ -10,9 +10,9 @@ matrix:
     - os: linux
       dist: bionic
       sudo: required
-    - os: linux
-      dist: xenial
-      sudo: required
+    #- os: linux
+    #  dist: xenial
+    #  sudo: required
 
 addons:
   apt:
