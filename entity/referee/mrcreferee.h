@@ -19,8 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#include "referee.h"
+#ifndef REFEREE_HH
+#define REFEREE_HH
 
-Referee::Referee() : Entity(Entity::ENT_REFEREE) {
+#include <entity/entity.h>
 
-}
+class MRCReferee : public Entity {
+public:
+    MRCReferee();
+    virtual void setBallKicked() = 0;
+};
+
+
+#endif // REFEREE_HH

@@ -101,6 +101,7 @@ double PID::calculate(double desired, double actual){
 
     // Derivative term
     double derivative = (error - _pre_error) / _dt;
+    if(isnan(derivative)) derivative = 0.0; // evitar 0.0/0.0
     double D = _kd * derivative;
 
     // Total PID

@@ -284,6 +284,8 @@ void Player::setSpeed(float x, float y, float theta) {
     _lastSpeedAbs = sqrt(pow(x, 2) + pow(y, 2));
 
     // watchdog on speed
+    if(isnan(x)) x = 0.0;
+    if(isnan(y)) y = 0.0;
     WR::Utils::limitValue(&x, -2.5, 2.5);
     WR::Utils::limitValue(&y, -2.5, 2.5);
 
@@ -309,17 +311,19 @@ std::pair<float, float> Player::goTo(Position targetPosition, double offset){
     long double moduloDistancia = sqrt(pow(Vx,2)+pow(Vy,2));
     float vxSaida = (Vx * cos(theta) + Vy * sin(theta));
     float vySaida = (Vy * cos(theta) - Vx * sin(theta));
-    double sinal_x = 1;
-    double sinal_y = 1;
+    double sinal_x = 1.0;
+    double sinal_y = 1.0;
 
-    if(vxSaida < 0) sinal_x = -1;
-    if(vySaida < 0) sinal_y = -1;
+    if(vxSaida < 0) sinal_x = -1.0;
+    if(vySaida < 0) sinal_y = -1.0;
 
     // inverte pra dar frenagem
+    // na simulação é bom colocar *= 0.0 pra ele realmente "parar" o robô
     if(moduloDistancia <= offset){
-        vxSaida *= -1;
-        vySaida *= -1;
+        vxSaida *= -1.0;
+        vySaida *= -1.0;
     }
+
 
     float newVX = _vxPID->calculate(vxSaida, velocity().x());
     float newVY = _vyPID->calculate(vySaida, velocity().y());
@@ -366,11 +370,9 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
             if(angleRobot2Ball < 0.0){
                 if (speed != 0.0 && angleRobot2Ball < 0.2) speed = -minValue;    //Inverte a velocidade para frenagem
                 else speed = minValue;
-                speed = minValue;
             }else{
                 if (speed != 0.0 && angleRobot2Ball < 0.2) speed = minValue;     //Inverte a velocidade para frenagem
                 else speed = -minValue;
-                speed = -minValue;
             }
         }else{
             if(angleRobot2Ball < 0.0){
@@ -387,40 +389,11 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
 
     double newSpeed = _vwPID->calculate(speed, angularSpeed().value());
 
-    if(angleRobot2Ball <= offset){
-        return std::make_pair(angleRobot2Ball, -newSpeed);
-    }
-
     return std::make_pair(angleRobot2Ball, newSpeed);
 }
 
 void Player::goToLookTo(Position targetPosition, Position lookToPosition, double offset, double offsetAngular){
-    Position robot_pos_filtered = getKalmanPredict();
-    double robot_x, robot_y;
-    if(robot_pos_filtered.isUnknown()){
-        robot_x = position().x();
-        robot_y = position().y();
-    }else{
-        robot_x = robot_pos_filtered.x();
-        robot_y = robot_pos_filtered.y();
-    }
-    // Configura o robô para ir até a bola e olhar para um alvo
-    std::pair<float, float> a;
-    double p_x, p_y, angle, moduloDist, final_x, final_y;
-
-    if (targetPosition.x() == lookToPosition.y()) angle = 1.570796327;
-    else angle = atan((targetPosition.y() - lookToPosition.y())/(targetPosition.x() - lookToPosition.x()));
-    if (lookToPosition.x() > targetPosition.x()) {
-        p_y = targetPosition.y() - offset * sin(angle);
-        p_x = targetPosition.x() - offset * cos(angle);
-    } else {
-        p_y = targetPosition.y() + offset * sin(angle);
-        p_x = targetPosition.x() + offset * cos(angle);
-    }
-    moduloDist = sqrt(pow((p_x - robot_x), 2) + pow((p_y - robot_y), 2));
-    final_x = (p_x - robot_x)/moduloDist;
-    final_y = (p_y - robot_y)/moduloDist;
-    a = goTo(Position(true, p_x + offset * final_x,p_y + offset * final_y, 0.0 ), offset);
+    std::pair<float, float> a = goTo(targetPosition, offset);
     double theta = rotateTo(lookToPosition, offsetAngular).second;
 
     if(fabs(a.first) <= 0.1){
@@ -436,7 +409,6 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, double
     WR::Utils::limitValue(&a.first, -2.5, 2.5);
     WR::Utils::limitValue(&a.second, -2.5, 2.5);
 
-    //if (moduloDist < offset) setSpeed(0, 0.2, theta); //3% de diferença nas velocidades
     setSpeed(a.first, a.second, theta);
 }
 

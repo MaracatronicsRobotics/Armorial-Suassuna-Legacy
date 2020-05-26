@@ -1,30 +1,6 @@
 syntax = "proto2";
 
-// Team is either blue or yellow
-enum Team {
-    // team not set
-    UNKNOWN = 0;
-    // yellow team
-    YELLOW = 1;
-    // blue team
-    BLUE = 2;
-}
-
-// BotId is the combination of a team and a robot id
-message BotId {
-    // the robot id - a negative value indicates that the id is not set
-    optional int32 id = 1;
-    // the team that the robot belongs to
-    optional Team team = 2;
-}
-
-// Location is a 2d-coordinate on the field in ssl-vision coordinate system. Units are in meters.
-message Location {
-    // the x-coordinate in [m] in the ssl-vision coordinate system
-    required float x = 1;
-    // the y-coordinate in [m] in the ssl-vision coordinate system
-    required float y = 2;
-}
+option go_package = "github.com/RoboCup-SSL/ssl-game-controller/internal/app/rcon";
 
 // a reply that is sent by the controller for each request from teams or autoRefs
 message ControllerReply {
@@ -59,14 +35,4 @@ message Signature {
     required string token = 1;
     // the PKCS1v15 signature of this message
     required bytes pkcs1v15 = 2;
-}
-
-// BallSpeedMeasurement is a single measurement sample of the ball speed
-message BallSpeedMeasurement {
-    // The UNIX timestamp [μs] when the measurement was taken.
-    required uint64 timestamp = 1;
-    // the ball speed measurement [m/s]
-    required float ball_speed = 2;
-    // the estimated initial ball speed (kick speed) [m/s]
-    optional float initial_ball_speed = 3;
 }
