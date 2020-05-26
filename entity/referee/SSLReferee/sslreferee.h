@@ -24,15 +24,14 @@
 
 #include <QUdpSocket>
 #include <QNetworkInterface>
-#include <include/3rd_party/referee.pb.h>
-#include <entity/referee/referee.h>
+#include <entity/referee/mrcreferee.h>
 #include <utils/basics/color.hh>
 #include <entity/referee/SSLReferee/sslgameinfo.h>
 
 #include <entity/coachview/coachview.h>
 #include <entity/coachview/mainwindow.h>
 
-class SSLReferee : public Referee {
+class SSLReferee : public MRCReferee {
 public:
     SSLReferee(QString ipAddress = "224.5.23.1", int port = 10003);
     ~SSLReferee();

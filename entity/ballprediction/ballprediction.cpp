@@ -56,11 +56,11 @@ void BallPrediction::loop(){
     }else{
         int sz = _posBall.size();
 /*
-        for(int x = 1; x < sz; x++){
+        for(int x = 1; x < sz; x+=10){
             Position pos = _posBall[x];
             double time = _dtBall[x];
-            for(int y = x - 1; y >= 0; y--){
-                if(abs((_dtBall[y] - _dtBall[x])/1e6) >= 750) break;
+            for(int y = x + 1; y <= x + 1 + 10; y++){ // do with the next 10 data
+                if(abs((_dtBall[y] - _dtBall[x])/1e6) >= 500) break;
                 fprintf(arq, "%.6lf,%.6lf,%.6lf\n", _velBall[y].abs(), abs((_dtBall[y] - _dtBall[x])/1e6), WR::Utils::distance(pos, _posBall[y]));
             }
         }

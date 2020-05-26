@@ -83,7 +83,7 @@ void SSLReferee::initialization() {
 }
 
 void SSLReferee::loop() {
-    SSL_Referee refereePacket;
+    Referee refereePacket;
     char buffer[65535];
     int len = 0;
 

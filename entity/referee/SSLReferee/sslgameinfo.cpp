@@ -43,6 +43,8 @@ const int SSLGameInfo::NOTREADY ;
 
 const int SSLGameInfo::TIMEOUT ;
 
+const int SSLGameInfo::BALL_PLACEMENT;
+
 SSLGameInfo::SSLGameInfo(Colors::Color color) {
     _color = color;
     setState(HALTED);
@@ -56,18 +58,18 @@ SSLGameInfo::SSLGameInfo(Colors::Color color) {
     _goalie = 200;
 }
 
-void SSLGameInfo::updateGameInfo(SSL_Referee &ref) {
+void SSLGameInfo::updateGameInfo(Referee &ref) {
     bool procCmd = false;
 
     mLastRefPack.lock();
 
     // Get goalie
     if(_color==Colors::YELLOW) {
-        if(lastRefPack.yellow().has_goalie())
-            _goalie = lastRefPack.yellow().goalie();
+        if(lastRefPack.yellow().has_goalkeeper())
+            _goalie = lastRefPack.yellow().goalkeeper();
     } else {
-        if(lastRefPack.blue().has_goalie())
-            _goalie = lastRefPack.blue().goalie();
+        if(lastRefPack.blue().has_goalkeeper())
+            _goalie = lastRefPack.blue().goalkeeper();
     }
     procCmd = (ref.command_counter() != lastRefPack.command_counter());
 
@@ -106,24 +108,24 @@ bool SSLGameInfo::isBlue() const {
     return (_color==Colors::BLUE);
 }
 
-SSL_Referee::Stage SSLGameInfo::stage() {
+Referee::Stage SSLGameInfo::stage() {
     mLastRefPack.lock();
-    SSL_Referee_Stage localStage = lastRefPack.stage();
+    Referee_Stage localStage = lastRefPack.stage();
     mLastRefPack.unlock();
 
     return localStage;
 }
 
-SSL_Referee_Command SSLGameInfo::command() {
+Referee_Command SSLGameInfo::command() {
     mLastRefPack.lock();
-    SSL_Referee_Command localCommand = lastRefPack.command();
+    Referee_Command localCommand = lastRefPack.command();
     mLastRefPack.unlock();
 
     return localCommand;
 }
 
-SSL_Referee_TeamInfo SSLGameInfo::ourTeamInfo() {
-    SSL_Referee_TeamInfo localInfo;
+Referee_TeamInfo SSLGameInfo::ourTeamInfo() {
+    Referee_TeamInfo localInfo;
 
     if (_color == Colors::BLUE) {
         mLastRefPack.lock();
@@ -137,8 +139,8 @@ SSL_Referee_TeamInfo SSLGameInfo::ourTeamInfo() {
     return localInfo;
 }
 
-SSL_Referee_TeamInfo SSLGameInfo::theirTeamInfo() {
-    SSL_Referee_TeamInfo localInfo;
+Referee_TeamInfo SSLGameInfo::theirTeamInfo() {
+    Referee_TeamInfo localInfo;
 
     if (_color != Colors::BLUE) {
         mLastRefPack.lock();
@@ -180,33 +182,36 @@ void SSLGameInfo::processCommand() {
     mProcessCmd.lock();
 
     mLastRefPack.lock();
-    SSL_Referee_Command ref_command = lastRefPack.command();
+    Referee_Command ref_command = lastRefPack.command();
     mLastRefPack.unlock();
 
     switch(ref_command) {
-        case SSL_Referee_Command_TIMEOUT_YELLOW:        setState(TIMEOUT);                          break;
-        case SSL_Referee_Command_TIMEOUT_BLUE:          setState(TIMEOUT);                          break;
-        case SSL_Referee_Command_HALT:                  setState(HALTED);                           break;
+        case Referee_Command_TIMEOUT_YELLOW:        setState(TIMEOUT);                          break;
+        case Referee_Command_TIMEOUT_BLUE:          setState(TIMEOUT);                          break;
+        case Referee_Command_HALT:                  setState(HALTED);                           break;
 
-        case SSL_Referee_Command_GOAL_YELLOW:
-        case SSL_Referee_Command_GOAL_BLUE:
-        case SSL_Referee_Command_STOP:                  setState(GAME_OFF);                         break;
+        case Referee_Command_GOAL_YELLOW:
+        case Referee_Command_GOAL_BLUE:
+        case Referee_Command_STOP:                  setState(GAME_OFF);                         break;
 
-        case SSL_Referee_Command_FORCE_START:           setState(GAME_ON);                          break;
+        case Referee_Command_FORCE_START:           setState(GAME_ON);                          break;
 
-        case SSL_Referee_Command_PREPARE_KICKOFF_YELLOW:setState( KICKOFF | YELLOW | NOTREADY );  	break;
-        case SSL_Referee_Command_PREPARE_KICKOFF_BLUE:  setState( KICKOFF | BLUE | NOTREADY);	  	break;
+        case Referee_Command_PREPARE_KICKOFF_YELLOW:setState( KICKOFF | YELLOW | NOTREADY );  	break;
+        case Referee_Command_PREPARE_KICKOFF_BLUE:  setState( KICKOFF | BLUE | NOTREADY);	  	break;
 
-        case SSL_Referee_Command_PREPARE_PENALTY_YELLOW:setState( PENALTY | YELLOW | NOTREADY);	  	break;
-        case SSL_Referee_Command_PREPARE_PENALTY_BLUE:	setState( PENALTY | BLUE | NOTREADY );	  	break;
+        case Referee_Command_PREPARE_PENALTY_YELLOW:setState( PENALTY | YELLOW | NOTREADY);	  	break;
+        case Referee_Command_PREPARE_PENALTY_BLUE:	setState( PENALTY | BLUE | NOTREADY );	  	break;
 
-        case SSL_Referee_Command_DIRECT_FREE_YELLOW:	setState( DIRECT | YELLOW | READY );	  	break;
-        case SSL_Referee_Command_DIRECT_FREE_BLUE:		setState( DIRECT | BLUE | READY);	  		break;
+        case Referee_Command_DIRECT_FREE_YELLOW:	setState( DIRECT | YELLOW | READY );	  	break;
+        case Referee_Command_DIRECT_FREE_BLUE:		setState( DIRECT | BLUE | READY);	  		break;
 
-        case SSL_Referee_Command_INDIRECT_FREE_YELLOW:	setState( INDIRECT | YELLOW | READY);	  	break;
-        case SSL_Referee_Command_INDIRECT_FREE_BLUE:	setState(INDIRECT | BLUE | READY);	  		break;
+        case Referee_Command_INDIRECT_FREE_YELLOW:	setState( INDIRECT | YELLOW | READY);	  	break;
+        case Referee_Command_INDIRECT_FREE_BLUE:	setState( INDIRECT | BLUE | READY);	  		break;
 
-        case SSL_Referee_Command_NORMAL_START:
+        case Referee_Command_BALL_PLACEMENT_BLUE:   setState( BALL_PLACEMENT | BLUE);           break;
+        case Referee_Command_BALL_PLACEMENT_YELLOW: setState( BALL_PLACEMENT | YELLOW);         break;
+
+        case Referee_Command_NORMAL_START:
             if(getState() & NOTREADY) {
                 setState(getState() & ~NOTREADY); // bit 11 -> 0
                 setState(getState() | READY);     // bit 10 -> 1
@@ -219,49 +224,55 @@ void SSLGameInfo::processCommand() {
     if(_color==Colors::YELLOW) { // Avoid printing for both yellow and blue
         std::string strcommand = refCommandToString(ref_command);
         std::cout << "[SSLGameInfo] Processed SSLReferee command: " << strcommand.c_str() << "\n";
+        if(ref_command == Referee_Command_BALL_PLACEMENT_BLUE
+           || ref_command == Referee_Command_BALL_PLACEMENT_YELLOW){
+            std::cout << "[SSLGameInfo] Placement Position X: " << desiredPosition().x() << " Y: " << desiredPosition().y() << "\n";
+        }
     }
 }
 
-std::string SSLGameInfo::refCommandToString(SSL_Referee_Command cmd) {
+std::string SSLGameInfo::refCommandToString(Referee_Command cmd) {
     switch(cmd) {
-        case SSL_Referee_Command_TIMEOUT_YELLOW:        return "TIMEOUT YELLOW";
-        case SSL_Referee_Command_TIMEOUT_BLUE:          return "TIMEOUT BLUE";
-        case SSL_Referee_Command_HALT:                  return "HALT";
-        case SSL_Referee_Command_GOAL_YELLOW:           return "GOAL YELLOW";
-        case SSL_Referee_Command_GOAL_BLUE:             return "GOAL BLUE";
-        case SSL_Referee_Command_STOP:                  return "STOP";
-        case SSL_Referee_Command_FORCE_START:           return "FORCE START";
-        case SSL_Referee_Command_PREPARE_KICKOFF_YELLOW:return "KICKOFF YELLOW";
-        case SSL_Referee_Command_PREPARE_KICKOFF_BLUE:  return "KICKOFF BLUE";
-        case SSL_Referee_Command_PREPARE_PENALTY_YELLOW:return "PENALTY YELLOW";
-        case SSL_Referee_Command_PREPARE_PENALTY_BLUE:  return "PENALTY BLUE";
-        case SSL_Referee_Command_DIRECT_FREE_YELLOW:    return "DIRECT FREE YELLOW";
-        case SSL_Referee_Command_DIRECT_FREE_BLUE:      return "DIRECT FREE BLUE";
-        case SSL_Referee_Command_INDIRECT_FREE_YELLOW:  return "INDIRECT FREE YELLOW";
-        case SSL_Referee_Command_INDIRECT_FREE_BLUE:    return "INDIRECT FREE BLUE";
-        case SSL_Referee_Command_NORMAL_START:          return "NORMAL START";
-        default:                                        return "UNDEFINED!";
+        case Referee_Command_TIMEOUT_YELLOW:        return "TIMEOUT YELLOW";
+        case Referee_Command_TIMEOUT_BLUE:          return "TIMEOUT BLUE";
+        case Referee_Command_HALT:                  return "HALT";
+        case Referee_Command_GOAL_YELLOW:           return "GOAL YELLOW";
+        case Referee_Command_GOAL_BLUE:             return "GOAL BLUE";
+        case Referee_Command_STOP:                  return "STOP";
+        case Referee_Command_FORCE_START:           return "FORCE START";
+        case Referee_Command_PREPARE_KICKOFF_YELLOW:return "KICKOFF YELLOW";
+        case Referee_Command_PREPARE_KICKOFF_BLUE:  return "KICKOFF BLUE";
+        case Referee_Command_PREPARE_PENALTY_YELLOW:return "PENALTY YELLOW";
+        case Referee_Command_PREPARE_PENALTY_BLUE:  return "PENALTY BLUE";
+        case Referee_Command_DIRECT_FREE_YELLOW:    return "DIRECT FREE YELLOW";
+        case Referee_Command_DIRECT_FREE_BLUE:      return "DIRECT FREE BLUE";
+        case Referee_Command_INDIRECT_FREE_YELLOW:  return "INDIRECT FREE YELLOW";
+        case Referee_Command_INDIRECT_FREE_BLUE:    return "INDIRECT FREE BLUE";
+        case Referee_Command_NORMAL_START:          return "NORMAL START";
+        case Referee_Command_BALL_PLACEMENT_BLUE:   return "PLACEMENT BLUE" ;
+        case Referee_Command_BALL_PLACEMENT_YELLOW: return "PLACEMENT YELLOW";
+        default:                                    return "UNDEFINED!";
     }
 }
 
 
-std::string SSLGameInfo::refStageToString(SSL_Referee::Stage stage){
+std::string SSLGameInfo::refStageToString(Referee::Stage stage){
     switch(stage){
-      case SSL_Referee_Stage_NORMAL_FIRST_HALF_PRE:          return "First_Half_Pre";
-      case SSL_Referee_Stage_NORMAL_FIRST_HALF:              return "First_Half";
-      case SSL_Referee_Stage_NORMAL_HALF_TIME:               return "Half_Time";
-      case SSL_Referee_Stage_NORMAL_SECOND_HALF_PRE:         return "Second_Half_Pre";
-      case SSL_Referee_Stage_NORMAL_SECOND_HALF:             return "Second_Half";
-      case SSL_Referee_Stage_EXTRA_TIME_BREAK:               return "Extra_Time_Break";
-      case SSL_Referee_Stage_EXTRA_FIRST_HALF_PRE:           return "Extra_First_Half_Pre";
-      case SSL_Referee_Stage_EXTRA_FIRST_HALF:               return "Extra_First_Half";
-      case SSL_Referee_Stage_EXTRA_HALF_TIME:                return "Extra_Half_Time";
-      case SSL_Referee_Stage_EXTRA_SECOND_HALF_PRE:          return "Extra_Second_Half_Pre";
-      case SSL_Referee_Stage_EXTRA_SECOND_HALF:              return "Extra_Second_Half";
-      case SSL_Referee_Stage_PENALTY_SHOOTOUT_BREAK:         return "Penalty_Shootout_Break";
-      case SSL_Referee_Stage_PENALTY_SHOOTOUT:               return "Penalty_Shootout";
-      case SSL_Referee_Stage_POST_GAME:                      return "Post_Game";
-      default:                                               return "UNDEFINED!";
+      case Referee_Stage_NORMAL_FIRST_HALF_PRE:          return "First_Half_Pre";
+      case Referee_Stage_NORMAL_FIRST_HALF:              return "First_Half";
+      case Referee_Stage_NORMAL_HALF_TIME:               return "Half_Time";
+      case Referee_Stage_NORMAL_SECOND_HALF_PRE:         return "Second_Half_Pre";
+      case Referee_Stage_NORMAL_SECOND_HALF:             return "Second_Half";
+      case Referee_Stage_EXTRA_TIME_BREAK:               return "Extra_Time_Break";
+      case Referee_Stage_EXTRA_FIRST_HALF_PRE:           return "Extra_First_Half_Pre";
+      case Referee_Stage_EXTRA_FIRST_HALF:               return "Extra_First_Half";
+      case Referee_Stage_EXTRA_HALF_TIME:                return "Extra_Half_Time";
+      case Referee_Stage_EXTRA_SECOND_HALF_PRE:          return "Extra_Second_Half_Pre";
+      case Referee_Stage_EXTRA_SECOND_HALF:              return "Extra_Second_Half";
+      case Referee_Stage_PENALTY_SHOOTOUT_BREAK:         return "Penalty_Shootout_Break";
+      case Referee_Stage_PENALTY_SHOOTOUT:               return "Penalty_Shootout";
+      case Referee_Stage_POST_GAME:                      return "Post_Game";
+      default:                                           return "UNDEFINED!";
     }
 }
 
@@ -271,6 +282,10 @@ std::string SSLGameInfo::refTimeLeftToString(){
     str += " sec";
 
     return str;
+}
+
+Referee_Point SSLGameInfo::desiredPosition(){
+    return lastRefPack.designated_position();
 }
 
 bool SSLGameInfo::gameOn(){ return getState() == GAME_ON ;}
@@ -298,6 +313,10 @@ bool SSLGameInfo::theirIndirectKick() { return indirectKick() && ! (getState() &
 bool SSLGameInfo::freeKick() { return directKick() || indirectKick(); }
 bool SSLGameInfo::ourFreeKick() { return ourDirectKick() || ourIndirectKick(); }
 bool SSLGameInfo::theirFreeKick() { return theirDirectKick() || theirIndirectKick(); }
+
+bool SSLGameInfo::ballPlacement(){ return (getState() & BALL_PLACEMENT); }
+bool SSLGameInfo::ourBallPlacement(){ return ballPlacement() && (getState() & _stateColor); }
+bool SSLGameInfo::theirBallPlacement(){ return ballPlacement() && !(getState() & _stateColor); }
 
 bool SSLGameInfo::timeOut() { return getState() == TIMEOUT; }
 
@@ -332,6 +351,8 @@ SSLGameInfo::RefProcessedState SSLGameInfo::processedState() {
                 return STATE_OURPENALTY;
             if(ourKickoff())
                 return STATE_OURKICKOFF;
+            if(ourBallPlacement())
+                return STATE_OURBALLPLACEMENT;
         } else if(theirRestart()) {
             if(theirDirectKick())
                 return STATE_THEIRDIRECTKICK;
@@ -341,6 +362,8 @@ SSLGameInfo::RefProcessedState SSLGameInfo::processedState() {
                 return STATE_THEIRPENALTY;
             if(theirKickoff())
                 return STATE_THEIRKICKOFF;
+            if(theirBallPlacement())
+                return STATE_THEIRBALLPLACEMENT;
         } else
             return STATE_GAMEOFF;
     }
