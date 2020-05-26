@@ -117,8 +117,8 @@ void CoachView::loop(){
         if(_gameInfo->getColor() == _ourTeam->teamColor()){
             _suassunaUI->updateRefereeCommand(_gameInfo->refCommandToString(_gameInfo->command()).c_str());
             _suassunaUI->updateGameStage(_gameInfo->refStageToString(_gameInfo->stage()).c_str());
-            SSL_Referee_TeamInfo theirTeamInfo = _gameInfo->theirTeamInfo();
-            SSL_Referee_TeamInfo ourTeamInfo = _gameInfo->ourTeamInfo();
+            Referee_TeamInfo theirTeamInfo = _gameInfo->theirTeamInfo();
+            Referee_TeamInfo ourTeamInfo = _gameInfo->ourTeamInfo();
             if(_ourTeam->teamColor() == Colors::BLUE){
                 _suassunaUI->updateScores(theirTeamInfo.score(), theirTeamInfo.yellow_cards(), theirTeamInfo.red_cards(), theirTeamInfo.timeouts(), ourTeamInfo.score(), ourTeamInfo.yellow_cards(), ourTeamInfo.red_cards(), ourTeamInfo.timeouts());
             }else{

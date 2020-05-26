@@ -24,7 +24,7 @@
 
 #include <QMutex>
 #include <utils/basics/color.hh>
-#include <include/3rd_party/referee.pb.h>
+#include <include/3rd_party/ssl_gc_referee_message.pb.h>
 #include <entity/baseentity.h>
 
 class SSLGameInfo {
@@ -47,13 +47,15 @@ private:
 
     static const int TIMEOUT =  (1 << 12);        //not used yet
 
+    static const int BALL_PLACEMENT = (1 << 13);
+
     int _state;
     QMutex mState;
 
     Colors::Color _color;
     int _stateColor;
 
-    SSL_Referee lastRefPack;
+    Referee lastRefPack;
     QMutex mLastRefPack;
 
     QMutex mProcessCmd;
@@ -66,21 +68,22 @@ private:
 public:
     SSLGameInfo(Colors::Color _color);
 
-    std::string refCommandToString(SSL_Referee_Command cmd);
-    std::string refStageToString(SSL_Referee::Stage stage);
+    std::string refCommandToString(Referee_Command cmd);
+    std::string refStageToString(Referee::Stage stage);
     std::string refTimeLeftToString();
 
-    void updateGameInfo(SSL_Referee &ref);
+    void updateGameInfo(Referee &ref);
 
     Colors::Color getColor() const;
     bool isYellow() const;
     bool isBlue() const;
 
-    SSL_Referee::Stage stage();
-    SSL_Referee_Command command();
+    Referee::Stage stage();
+    Referee_Command command();
 
-    SSL_Referee_TeamInfo ourTeamInfo();
-    SSL_Referee_TeamInfo theirTeamInfo();
+    Referee_TeamInfo ourTeamInfo();
+    Referee_TeamInfo theirTeamInfo();
+    Referee_Point desiredPosition();
 
     bool ballKicked();
     void setBallKicked();
@@ -116,6 +119,10 @@ public:
 
     bool canMove();
 
+    bool ballPlacement();
+    bool ourBallPlacement();
+    bool theirBallPlacement();
+
     bool allowedNearBall();
 
     bool canKickBall();
@@ -143,6 +150,8 @@ public:
         STATE_THEIRPENALTY,
         STATE_THEIRKICKOFF,
         STATE_TIMEOUT,
+        STATE_THEIRBALLPLACEMENT,
+        STATE_OURBALLPLACEMENT,
         STATE_UNDEFINED
     } RefProcessedState;
 

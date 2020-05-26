@@ -15,10 +15,10 @@ RCC_DIR = tmp/rc
 CONFIG += c++14 console
 CONFIG -= app_bundle
 QT += core \
-	gui \
-	widgets \
-	network \
-	opengl
+        gui \
+        widgets \
+        network \
+        opengl
 
 DEFINES += QT_DEPRECATED_WARNINGS
 LIBS *= -lprotobuf -lGLU -pthread -lsfml-graphics -lsfml-window -lsfml-system -lGEARSystem -lomniORB4 -lomnithread -lQt5Core -lpthread
@@ -54,23 +54,32 @@ SOURCES += \
     entity/player/skills/basics/skill_gotolookto.cpp \
     entity/player/skills/basics/skill_interceptball.cpp \
     entity/player/skills/basics/skill_rotateto.cpp \
+    entity/referee/mrcreferee.cpp \
     entity/world/world.cpp \
     entity/world/worldmapupdater.cpp \
     exithandler.cpp \
-    include/3rd_party/messages_robocup_ssl_detection.pb.cc \
     include/3rd_party/netraw.cpp \
-    include/3rd_party/robocup_ssl_client.cpp \
-    include/3rd_party/messages_robocup_ssl_geometry.pb.cc \
-    include/3rd_party/messages_robocup_ssl_refbox_log.pb.cc \
-    include/3rd_party/messages_robocup_ssl_wrapper.pb.cc \
-    include/3rd_party/game_event.pb.cc \
-    include/3rd_party/grSim_Commands.pb.cc \
-    include/3rd_party/grSim_Packet.pb.cc \
-    include/3rd_party/grSim_Replacement.pb.cc \
-    include/3rd_party/referee.pb.cc \
     entity/referee/SSLReferee/sslgameinfo.cpp \
-    entity/referee/referee.cpp \
     entity/referee/SSLReferee/sslreferee.cpp \
+    include/3rd_party/ssl_gc_api.pb.cc \
+    include/3rd_party/ssl_gc_change.pb.cc \
+    include/3rd_party/ssl_gc_ci.pb.cc \
+    include/3rd_party/ssl_gc_common.pb.cc \
+    include/3rd_party/ssl_gc_engine.pb.cc \
+    include/3rd_party/ssl_gc_engine_config.pb.cc \
+    include/3rd_party/ssl_gc_game_event.pb.cc \
+    include/3rd_party/ssl_gc_geometry.pb.cc \
+    include/3rd_party/ssl_gc_rcon.pb.cc \
+    include/3rd_party/ssl_gc_rcon_autoref.pb.cc \
+    include/3rd_party/ssl_gc_rcon_remotecontrol.pb.cc \
+    include/3rd_party/ssl_gc_rcon_team.pb.cc \
+    include/3rd_party/ssl_gc_referee_message.pb.cc \
+    include/3rd_party/ssl_gc_state.pb.cc \
+    include/3rd_party/ssl_vision_detection.pb.cc \
+    include/3rd_party/ssl_vision_detection_tracked.pb.cc \
+    include/3rd_party/ssl_vision_geometry.pb.cc \
+    include/3rd_party/ssl_vision_wrapper.pb.cc \
+    include/3rd_party/ssl_vision_wrapper_tracked.pb.cc \
     instancechecker.cpp \
     main.cpp \
     suassuna.cpp \
@@ -164,23 +173,32 @@ HEADERS += \
     entity/player/skills/basics/skill_gotolookto.h \
     entity/player/skills/basics/skill_interceptball.h \
     entity/player/skills/basics/skill_rotateto.h \
+    entity/referee/mrcreferee.h \
     entity/world/world.h \
     entity/world/worldmapupdater.h \
     exithandler.h \
     include/3rd_party/netraw.h \
-    include/3rd_party/robocup_ssl_client.h \
+    include/3rd_party/ssl_gc_api.pb.h \
+    include/3rd_party/ssl_gc_change.pb.h \
+    include/3rd_party/ssl_gc_ci.pb.h \
+    include/3rd_party/ssl_gc_common.pb.h \
+    include/3rd_party/ssl_gc_engine.pb.h \
+    include/3rd_party/ssl_gc_engine_config.pb.h \
+    include/3rd_party/ssl_gc_game_event.pb.h \
+    include/3rd_party/ssl_gc_geometry.pb.h \
+    include/3rd_party/ssl_gc_rcon.pb.h \
+    include/3rd_party/ssl_gc_rcon_autoref.pb.h \
+    include/3rd_party/ssl_gc_rcon_remotecontrol.pb.h \
+    include/3rd_party/ssl_gc_rcon_team.pb.h \
+    include/3rd_party/ssl_gc_referee_message.pb.h \
+    include/3rd_party/ssl_gc_state.pb.h \
+    include/3rd_party/ssl_vision_detection.pb.h \
+    include/3rd_party/ssl_vision_detection_tracked.pb.h \
+    include/3rd_party/ssl_vision_geometry.pb.h \
+    include/3rd_party/ssl_vision_wrapper.pb.h \
+    include/3rd_party/ssl_vision_wrapper_tracked.pb.h \
     include/3rd_party/util.h \
-    include/3rd_party/messages_robocup_ssl_detection.pb.h \
-    include/3rd_party/messages_robocup_ssl_geometry.pb.h \
-    include/3rd_party/messages_robocup_ssl_wrapper.pb.h \
-    include/3rd_party/game_event.pb.h \
-    include/3rd_party/messages_robocup_ssl_refbox_log.pb.h \
-    include/3rd_party/referee.pb.h \
-    include/3rd_party/grSim_Commands.pb.h \
-    include/3rd_party/grSim_Packet.pb.h \
-    include/3rd_party/grSim_Replacement.pb.h \
     entity/referee/SSLReferee/sslgameinfo.h \
-    entity/referee/referee.h \
     entity/referee/SSLReferee/sslreferee.h \
     instancechecker.h \
     suassuna.h \
