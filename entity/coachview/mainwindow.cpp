@@ -112,9 +112,12 @@ void MainWindow::addRoot(){
     root = item;
 }
 
-void MainWindow::resetTree(QList<QString> playbookList, QMap<QString, QList<QString>> rolesList,
+void MainWindow::resetTree(QString strat, QList<QString> playbookList, QMap<QString, QList<QString>> rolesList,
                            QMap<std::pair<QString, QString>, QList<std::pair<QString, quint8>>> playersList,
                            QMap<QString, QString> behavioursList){
+    // Changing strategy name
+    root->setText(0, strat);
+
     // Parsing playbooks
     for(int x = 0; x < playbookList.size(); x++){
         if(!isContained(root, playbookList.at(x))){
@@ -365,7 +368,7 @@ MainWindow::MainWindow(QWidget *parent)
     treeWidget->setGeometry(QRect(10, 10, 601, 192));
     treeWidget->setColumnCount(1);
     QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
-    ___qtreewidgetitem->setText(0, QApplication::translate("MainWindow", "Strategy", Q_NULLPTR));
+    ___qtreewidgetitem->setText(0, QApplication::translate("MainWindow", "Coach Tree", Q_NULLPTR));
     qRegisterMetaType<QVector<int>>("QVector<int>");
 
     // creating vector for groupboxes

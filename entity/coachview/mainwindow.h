@@ -77,7 +77,7 @@ public:
 
     // tree
     void addRoot();
-    void resetTree(QList<QString> playbookList, QMap<QString, QList<QString>> rolesList,
+    void resetTree(QString strat, QList<QString> playbookList, QMap<QString, QList<QString>> rolesList,
                    QMap<std::pair<QString, QString>, QList<std::pair<QString, quint8>>> playersList,
                    QMap<QString, QString> behavioursList);
     bool isContained(QTreeWidgetItem *parent, QString text);

@@ -88,6 +88,7 @@ void CoachView::loop(){
 
         // Parsing playbooks
         if(_coach->getStrategyState() != NULL){
+            QString stratName = _coach->getStrategyState()->name();
             QList<Playbook*> pbList = _coach->getStrategyState()->getPlaybooks();
             QList<Playbook*>::iterator it;
             QList<Role*>::iterator it2;
@@ -108,7 +109,7 @@ void CoachView::loop(){
                 }
             }
 
-            _suassunaUI->resetTree(playbookList, rolesList, playersList, behavioursList);
+            _suassunaUI->resetTree(stratName, playbookList, rolesList, playersList, behavioursList);
         }
 
         // process every ssl game info
