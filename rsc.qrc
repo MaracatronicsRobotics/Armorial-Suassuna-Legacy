@@ -49,5 +49,6 @@
         <file>textures/ui/command.png</file>
         <file>textures/ui/referee.png</file>
         <file>textures/ui/field.png</file>
+        <file>textures/ui/vision.png</file>
     </qresource>
 </RCC>

@@ -246,6 +246,43 @@
       <number>100</number>
      </property>
     </widget>
+    <widget class="QLabel" name="label_62">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/vision.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="vision_1">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>28</y>
+       <width>17</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Off</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_2">
     <property name="geometry">
@@ -464,6 +501,43 @@
      </property>
      <property name="pixmap">
       <pixmap resource="../../rsc.qrc">:/textures/textures/ui/battery.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="vision_2">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>28</y>
+       <width>17</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Off</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_63">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/vision.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -692,6 +766,43 @@
       <bool>true</bool>
      </property>
     </widget>
+    <widget class="QLabel" name="label_64">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/vision.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="vision_3">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>28</y>
+       <width>17</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Off</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_4">
     <property name="geometry">
@@ -910,6 +1021,43 @@
      </property>
      <property name="pixmap">
       <pixmap resource="../../rsc.qrc">:/textures/textures/ui/battery.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="vision_4">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>28</y>
+       <width>17</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Off</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_65">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/vision.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1138,6 +1286,43 @@
       <bool>true</bool>
      </property>
     </widget>
+    <widget class="QLabel" name="vision_5">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>28</y>
+       <width>17</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Off</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_66">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/vision.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_6">
     <property name="geometry">
@@ -1356,6 +1541,43 @@
      </property>
      <property name="pixmap">
       <pixmap resource="../../rsc.qrc">:/textures/textures/ui/battery.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="vision_6">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>28</y>
+       <width>17</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Off</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_67">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/vision.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1896,7 +2118,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page_tree">
      <attribute name="title">
@@ -2253,6 +2475,43 @@
       <bool>true</bool>
      </property>
     </widget>
+    <widget class="QLabel" name="vision_7">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>28</y>
+       <width>17</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Off</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_68">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/vision.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_8">
     <property name="geometry">
@@ -2471,6 +2730,43 @@
      </property>
      <property name="pixmap">
       <pixmap resource="../../rsc.qrc">:/textures/textures/ui/battery.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="vision_8">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>28</y>
+       <width>17</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Off</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_69">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/vision.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -2699,6 +2995,43 @@
       <bool>true</bool>
      </property>
     </widget>
+    <widget class="QLabel" name="vision_9">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>28</y>
+       <width>17</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Off</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_70">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/vision.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_10">
     <property name="geometry">
@@ -2917,6 +3250,43 @@
      </property>
      <property name="pixmap">
       <pixmap resource="../../rsc.qrc">:/textures/textures/ui/battery.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="vision_10">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>28</y>
+       <width>17</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Off</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_71">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/vision.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -3145,6 +3515,43 @@
       <bool>true</bool>
      </property>
     </widget>
+    <widget class="QLabel" name="vision_11">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>28</y>
+       <width>17</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Off</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_72">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/vision.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox_12">
     <property name="geometry">
@@ -3363,6 +3770,43 @@
      </property>
      <property name="pixmap">
       <pixmap resource="../../rsc.qrc">:/textures/textures/ui/battery.png</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+    <widget class="QLabel" name="vision_12">
+     <property name="geometry">
+      <rect>
+       <x>190</x>
+       <y>28</y>
+       <width>17</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="text">
+      <string>Off</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_73">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>30</y>
+       <width>16</width>
+       <height>14</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="../../rsc.qrc">:/textures/textures/ui/vision.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>

@@ -56,7 +56,8 @@ CoachView::CoachView() : Entity(ENT_GUI)
     _timer = new Timer();
     _timer->start();
 
-    timeToUpdate = 1000.0 / MRCConstants::guiUpdateFrequency();
+    // half of the openGL application update
+    timeToUpdate = (1000.0 / MRCConstants::guiUpdateFrequency()) / 2.0;
 }
 
 MainWindow* CoachView::getUI(){
@@ -72,21 +73,18 @@ void CoachView::initialization(){
 }
 
 void CoachView::loop(){
-    _UIMutex->lock();
-
     // Update GUI
     _suassunaUI->updateGUI(_ourTeam, _theirTeam, _ourTeam->loc());
 
     _timer->stop();
     if(_timer->timemsec() >= timeToUpdate){
-
         // Process coach strategy, playbooks, roles and players
         QList<QString> playbookList;
         QMap<QString, QList<QString>> rolesList;
         QMap<std::pair<QString, QString>, QList<std::pair<QString, quint8>>> playersList;
         QMap<QString, QString> behavioursList;
 
-        // Parsing playbooks
+        // Parsing strategy, playbook, roles, players and its actual behaviours
         if(_coach->getStrategyState() != NULL){
             QString stratName = _coach->getStrategyState()->name();
             QList<Playbook*> pbList = _coach->getStrategyState()->getPlaybooks();
@@ -127,8 +125,8 @@ void CoachView::loop(){
             }
         }
 
+        // process time left
         _suassunaUI->updateTimeLeft(_gameInfo->refTimeLeftToString().c_str());
-
 
         // process coach agressivity
         _suassunaUI->setAgressivity(_coach->getAgressivity());
@@ -136,18 +134,14 @@ void CoachView::loop(){
         // process players avaliability
         QHash<quint8, Player*> ourPlayers = _ourTeam->avPlayers();
         for(quint8 x = 0; x < MRCConstants::_qtPlayers; x++){
-            if(PlayerBus::ourPlayerAvailable(x)){
-                _suassunaUI->enableRobot(x);
-                _suassunaUI->setPlayerRole(x, ourPlayers[x]->getRoleName());
-            }else{
-                _suassunaUI->disableRobot(x);
-            }
+            bool status = PlayerBus::ourPlayerAvailable(x);
+            _suassunaUI->setRobotVisionStatus(x, status);
+            if(status) _suassunaUI->setPlayerRole(x, PlayerBus::ourPlayer(x)->roleName());
         }
 
+        // start timer for the next it
         _timer->start();
     }
-
-    _UIMutex->unlock();
 }
 
 void CoachView::finalization(){
