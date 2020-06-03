@@ -33,5 +33,6 @@
 #include <entity/player/behaviour/basics/behaviour_markball.h>
 #include <entity/player/behaviour/basics/behaviour_penalty_gk.h>
 #include <entity/player/behaviour/basics/behaviour_penalty_cf.h>
+#include <entity/player/behaviour/basics/behaviour_intercept.h>
 
 #endif // MRCBEHAVIOURS_H

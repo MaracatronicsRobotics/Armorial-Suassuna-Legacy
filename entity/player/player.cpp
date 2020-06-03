@@ -320,8 +320,8 @@ std::pair<float, float> Player::goTo(Position targetPosition, double offset){
     // inverte pra dar frenagem
     // na simulação é bom colocar *= 0.0 pra ele realmente "parar" o robô
     if(moduloDistancia <= offset){
-        vxSaida *= -1.0;
-        vySaida *= -1.0;
+        vxSaida *= 0.0;
+        vySaida *= 0.0;
     }
 
 
@@ -396,6 +396,7 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, double
     std::pair<float, float> a = goTo(targetPosition, offset);
     double theta = rotateTo(lookToPosition, offsetAngular).second;
 
+    /*
     if(fabs(a.first) <= 0.1){
         if(a.first < 0) a.first = -0.1;
         else a.first = 0.1;
@@ -405,6 +406,7 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, double
         if(a.second < 0) a.second = -0.1;
         else a.second = 0.1;
     }
+    */
 
     WR::Utils::limitValue(&a.first, -2.5, 2.5);
     WR::Utils::limitValue(&a.second, -2.5, 2.5);

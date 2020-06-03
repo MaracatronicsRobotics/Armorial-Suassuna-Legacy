@@ -30,6 +30,7 @@ QString Behaviour_Barrier::name() {
 }
 
 Behaviour_Barrier::Behaviour_Barrier() {
+    setMarkBall();
     setD(0.2);
     setRadius(1.4); // radius from our goal center
 
@@ -58,12 +59,43 @@ void Behaviour_Barrier::configure() {
 };
 
 void Behaviour_Barrier::run() {
+    Position markPosition;
+    if(_markNearestPlayer){
+        if(PlayerBus::theirPlayerAvailable(_markPlayerId))
+            markPosition = PlayerBus::theirPlayer(_markPlayerId)->position();
+        else
+            markPosition = loc()->ball();
+    }
+    else
+        markPosition = loc()->ball();
+
     // Pos barrier
-    Position goalProjection = WR::Utils::projectPointAtSegment(loc()->ourGoalRightMidPost(), loc()->ourGoalLeftMidPost(), loc()->ball());
-    Position desiredPosition = WR::Utils::threePoints(goalProjection, loc()->ball(), _radius, 0.0f);
+    Position goalProjection = WR::Utils::projectPointAtSegment(loc()->ourGoalRightMidPost(), loc()->ourGoalLeftMidPost(), markPosition);
+    Position desiredPosition = WR::Utils::threePoints(goalProjection, markPosition, _radius, 0.0f);
 
     // Position to look
-    Position aimPosition = WR::Utils::threePoints(loc()->ourGoal(), loc()->ball(), 1000.0f, 0.0); // high distance (always will look)
+    Position aimPosition = WR::Utils::threePoints(loc()->ourGoal(), markPosition, 1000.0f, 0.0); // high distance (always will look)
+
+    // Angle
+    const Position projected(true, loc()->ourGoal().x(), markPosition.y(), 0.0);
+    float bx = WR::Utils::distance(markPosition, projected);
+    float by = markPosition.y();
+    float angle = atan2(by, bx);
+
+    // Position variation
+    if(loc()->ourSide().isCenter())
+        _d = 0.0f;
+    float dx = _d*sin(angle);
+    float dy = _d*cos(angle);
+    if(loc()->ourSide().isLeft())
+        dy = -dy;
+    if((loc()->ourSide().isRight() && markPosition.y() >= 0.015) || (loc()->ourSide().isLeft() && markPosition.y() < -0.015)) {
+        dx = -dx;
+        dy = -dy;
+    }
+
+    // Adjust position
+    desiredPosition.setPosition(desiredPosition.x()+dx, desiredPosition.y()+dy, 0.0);
 
     // Error goal (desiredPosition sometimes goes off the field)
     if(loc()->ourSide().isRight() && desiredPosition.x() > loc()->ourGoal().x()-ERROR_GOAL_OFFSET){
@@ -75,6 +107,7 @@ void Behaviour_Barrier::run() {
     // settings of goto
     _sk_goto->setDesiredPosition(desiredPosition);
     _sk_goto->setAimPosition(aimPosition);
+    _sk_goto->setOffsetToBall(0.01);
 
     // settings of intercept
     _sk_gk->setInterceptAdvance(true);

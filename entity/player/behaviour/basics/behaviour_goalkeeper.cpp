@@ -24,7 +24,7 @@
 #include <entity/player/playerbus.h>
 
 #define ATTACKER_MINBALLDIST 0.4f
-#define GOALPOSTS_ERROR 0.0f
+#define GOALPOSTS_ERROR 0.05f
 #define INTERCEPT_MINBALLVELOCITY 0.2f
 
 QString Behaviour_Goalkeeper::name() {
@@ -65,7 +65,7 @@ void Behaviour_Goalkeeper::run() {
 
     _skill_Goalkeeper->setInterceptAdvance(true);
     _skill_Goalkeeper->setPositionToLook(loc()->ball());
-    _skill_gkick->setAim(loc()->ball());
+    _skill_gkick->setAim(loc()->theirGoal());
     _skill_gkick->setZPower(3.0);
 
     // goToLookTo (posicionamento do goleiro
@@ -78,6 +78,7 @@ void Behaviour_Goalkeeper::run() {
         desiredPosition.setPosition(loc()->ourGoal().x()+GOALPOSTS_ERROR, desiredPosition.y(), 0.0);
     }
 
+    _skill_goToLookTo->setOffsetToBall(0.01);
     _skill_goToLookTo->setDesiredPosition(desiredPosition);
     _skill_goToLookTo->setAimPosition(loc()->ball());
 
@@ -147,16 +148,12 @@ Position Behaviour_Goalkeeper::getAttackerInterceptPosition() {
 }
 
 Position Behaviour_Goalkeeper::calcAttackerBallImpact() {
-   // return loc()->ourGoal();
-    // fazer logica para calcular o impacto da bola
-    // verificar se esta suficientemente perto da bola, se a bola ta na frente dele e ver se o caminho p o chute dele está livre, anyway posicionado para nosso gol pra testar impacto centrado
-    //int poss = -1, size = loc()->getOpPlayers().size();
     QHash<quint8, Player*>::iterator it;
-    QHash<quint8, Player*> avPlayers = loc()->getMRCPlayers();
+    QHash<quint8, Player*> avPlayers = loc()->getOpPlayers();
     int poss = -1, size = avPlayers.size();
 
     for(it=avPlayers.begin(); it!=avPlayers.end(); it++){
-        if((*it)->hasBallPossession() && (*it)->playerId() != player()->playerId()){
+        if((*it)->hasBallPossession()){
             poss = (*it)->playerId();
             break;
         }
@@ -165,9 +162,14 @@ Position Behaviour_Goalkeeper::calcAttackerBallImpact() {
     if(poss == -1) // n tem ngm com a posse, mantem no centro do gol
         return loc()->ourGoal();
 
-    /* calculando posicao de impacto no y */
-    Angle angleAtk = PlayerBus::ourPlayer(quint8(poss))->orientation();
+    // check if ball is in front of player (avoid y errors)
+    Angle anglePlayerBall = PlayerBus::theirPlayer(quint8(poss))->angleTo(loc()->ball());
+    float diff = WR::Utils::angleDiff(anglePlayerBall, PlayerBus::theirPlayer(quint8(poss))->orientation());
+    bool ans = (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
+    if(!ans) return loc()->ourGoal();
 
+    /* calculando posicao de impacto no y */
+    Angle angleAtk = PlayerBus::theirPlayer(quint8(poss))->orientation();
     float angleValue = angleAtk.value();
 
     if(loc()->ourSide().isLeft()){ // ajustando pra o lado esquerdo
