@@ -19,46 +19,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef BEHAVIOUR_BARRIER_H
-#define BEHAVIOUR_BARRIER_H
+#ifndef BEHAVIOUR_INTERCEPT_H
+#define BEHAVIOUR_INTERCEPT_H
 
 #include <entity/player/behaviour/behaviour.h>
 #include <entity/player/skills/skills_include.h>
+#include <utils/basics/circle.h>
 
-class Behaviour_Barrier : public Behaviour {
+class Behaviour_Intercept : public Behaviour {
 private:
     void configure();
     void run();
     int _state;
 
-    // Param
-    float _d;
-    float _radius;
-    bool _markNearestPlayer;
-    quint8 _markPlayerId;
+    Skill_GoToLookTo *_skill_goToLookTo;
 
-    // Sk
-    Skill_GoToLookTo *_sk_goto;
-    Skill_InterceptBall *_sk_gk;
-    Skill_Kick *_sk_kick;
+    // utilitary functions
+    std::pair<Circle, Circle> generateCircles(Point2d& ballPosition, Point2d& kickVector);
+    Circle generateRobotCircle(Circle& circle1, Circle& circle2, Point2d& robotPosition);
+    Circle robotCircleAux(Point2d& circleCenter, Point2d& robotPosition);
+    double pointDistance(Point2d& a, Point2d& b);
+    bool isCounterClockwise(Point2d& circleCenterVector, Point2d& testVector);
+    bool isClockwise(Point2d& circleCenterVector, Point2d& testVector);
 
-    // Transitions
-    enum{
-        STATE_GOTO,
-        STATE_GK,
-        STATE_KICK
-    };
-
-    bool isBallComingToGoal(float minSpeed, float postsFactor = 1.0);
-
+    // setters
+    void setDistanceToGoal(double d) { _distanceToGoal = d; }
+    void setCircleRadius(double r) { _circleRadius = r; }
 public:
-    Behaviour_Barrier();
+    Behaviour_Intercept();
     QString name();
 
-    void setD(float d) { _d = d; }
-    void setRadius(float radius) { _radius = radius; }
-    void setMarkPlayer(quint8 playerId) { _markNearestPlayer = true; _markPlayerId = playerId; }
-    void setMarkBall() { _markNearestPlayer = false; }
+    // parameters
+    double _distanceToGoal;
+    double _circleRadius;
 };
 
-#endif // BEHAVIOUR_BARRIER_H
+#endif // BEHAVIOUR_INTERCEPT_H
