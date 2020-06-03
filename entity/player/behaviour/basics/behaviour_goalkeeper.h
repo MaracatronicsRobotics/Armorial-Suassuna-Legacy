@@ -52,7 +52,6 @@ private:
         STATE_GK
     };
 
-
 public:
     Behaviour_Goalkeeper();
     QString name();

@@ -43,6 +43,7 @@ SOURCES += \
     entity/coachview/soccerview/util/field.cpp \
     entity/entity.cpp \
     entity/player/behaviour/basics/behaviour_goalkeeper.cpp \
+    entity/player/behaviour/basics/behaviour_intercept.cpp \
     entity/player/behaviour/basics/behaviour_markball.cpp \
     entity/player/behaviour/basics/behaviour_penalty_cf.cpp \
     entity/player/navigation/fpp/fastpathplanning.cpp \
@@ -83,6 +84,7 @@ SOURCES += \
     instancechecker.cpp \
     main.cpp \
     suassuna.cpp \
+    utils/basics/circle.cpp \
     utils/basics/color.cc \
     utils/basics/competition.cc \
     utils/basics/quadrant.cc \
@@ -162,6 +164,7 @@ HEADERS += \
     entity/coachview/soccerview/util/timer.h \
     entity/coachview/soccerview/util/util.h \
     entity/entity.h \
+    entity/player/behaviour/basics/behaviour_intercept.h \
     entity/player/navigation/fpp/fastpathplanning.h \
     entity/player/navigation/navalgorithm.h \
     entity/player/navigation/navigation.h \
@@ -202,8 +205,10 @@ HEADERS += \
     entity/referee/SSLReferee/sslreferee.h \
     instancechecker.h \
     suassuna.h \
+    utils/basics/circle.h \
     utils/basics/color.hh \
     utils/basics/competition.hh \
+    utils/basics/point2d.h \
     utils/basics/quadrant.hh \
     utils/basics/side.hh \
     utils/basics/wall.hh \

@@ -46,6 +46,11 @@ void Role_Default::run(){
      * set presentes neles)
     */
 
+    if(player()->playerId() % 2 == 0)
+        _bh_dn->setMarkPlayer(player()->playerId());
+    else
+        _bh_dn->setMarkBall();
+
     setBehaviour(BHV_DONOTHING);
 
 
