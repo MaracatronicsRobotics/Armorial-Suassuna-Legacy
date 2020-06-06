@@ -69,6 +69,7 @@ void Skill_PushBall::run(){
     switch (_state) {
     case STATE_POS: {
         _currPos.setUnknown();
+        _distPushed = 0.0;
         desiredPos = behindBall;
 
         if(player()->isNearbyPosition(behindBall, 0.03f))
@@ -82,6 +83,7 @@ void Skill_PushBall::run(){
             _distPushed = 0.0;
             _currPos = loc()->ball();
         }
+
         _lastPos = _currPos;
         _currPos = loc()->ball();
         _distPushed += WR::Utils::distance(_lastPos, _currPos);
@@ -96,10 +98,6 @@ void Skill_PushBall::run(){
 
         if(_distPushed >= _maxPushDistance){
             player()->idle();
-        }
-
-        if(player()->distBall() > 0.1f){
-            _currPos.setUnknown();
         }
     }
         break;
