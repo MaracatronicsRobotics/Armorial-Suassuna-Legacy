@@ -31,7 +31,7 @@ Role_Default::Role_Default() {
 void Role_Default::initializeBehaviours(){
     // Aqui são inseridos os behaviours possíveis de serem usados
     // na ordem: ID do behaviour, instanciação dele
-    usesBehaviour(BHV_DONOTHING, _bh_dn = new Behaviour_Attacker());
+    usesBehaviour(BHV_DONOTHING, _bh_dn = new Behaviour_DoNothing());
 }
 
 void Role_Default::configure(){
