@@ -19,34 +19,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef ROLE_DEFAULT_H
-#define ROLE_DEFAULT_H
+#ifndef SKILL_PLACEMENT_H
+#define SKILL_PLACEMENT_H
 
-#include <entity/player/behaviour/mrcbehaviours.h>
-#include <entity/player/role/role.h>
+#include <entity/player/skills/skill.h>
 
-class Role_Default : public Role
-{
+class Skill_Placement : public Skill {
 private:
-    // Behaviours
-    Behaviour_DoNothing *_bh_dn;
+    // Parameters
+    Position _destination;
 
-    // Behaviours ids!
-    enum{
-        BHV_DONOTHING
+    // State machine
+    enum {
+        STATE_POS,
+        STATE_PUSH,
+        STATE_DONE
     };
+    int _state;
 
-    // Inherited functions
-    void configure();
     void run();
-
-    // Mutex
-    QMutex _mutex;
-
+    bool isBehindBall(Position posObjective);
+    bool isBallInFront();
 public:
-    Role_Default();
-    void initializeBehaviours();
+    Skill_Placement();
     QString name();
+    void setDestination(const Position &destination) { _destination = destination; }
 };
 
-#endif // ROLE_DEFAULT_H
+#endif // SKILL_PLACEMENT_H

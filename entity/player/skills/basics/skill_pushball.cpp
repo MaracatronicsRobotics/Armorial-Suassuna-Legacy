@@ -68,6 +68,7 @@ void Skill_PushBall::run(){
 
     switch (_state) {
     case STATE_POS: {
+        player()->dribble(false);
         _currPos.setUnknown();
         _distPushed = 0.0;
         desiredPos = behindBall;
@@ -77,6 +78,7 @@ void Skill_PushBall::run(){
     }
         break;
     case STATE_PUSH: {
+        player()->dribble(true);
         desiredPos = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.3f, GEARSystem::Angle::pi);
 
         if(_currPos.isUnknown()){

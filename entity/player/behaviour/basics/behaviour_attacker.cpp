@@ -22,8 +22,8 @@
 #include "behaviour_attacker.h"
 
 #include <utils/freeangles/freeangles.h>
+#include <utils/line/line.hh>
 
-#define KICK_POWER 8.0f
 #define RECEIVER_INVALID_ID 200
 #define MAX_DIST_KICK 2.5f
 
@@ -68,11 +68,11 @@ void Behaviour_Attacker::run() {
      * Bola fora do campo
      * Referee não permite que chutemos (cobrança do time inimigo)
     */
-
+/*
     if(!player()->canKickBall() || loc()->isInsideTheirArea(loc()->ball(), THEIR_AREA_OFFSET)
             || loc()->isOutsideField(loc()->ball(), OUT_FIELD_OFFSET) || loc()->isInsideOurArea(loc()->ball(), OUR_AREA_OFFSET))
         _state = STATE_CANTKICK;
-
+*/
     switch(_state){
     case STATE_CANTKICK:{
         Position waitPosition;
