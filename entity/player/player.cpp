@@ -147,6 +147,17 @@ QString Player::getRoleName() {
     return roleName;
 }
 
+QString Player::getActualBehaviourName() {
+    _mutexRole.lock();
+    QString behaviourName;
+    if(_role == NULL)
+        behaviourName = "UNKNOWN";
+    else
+        behaviourName = _role->getBehaviours().value(_role->getActualBehaviour())->name();
+    _mutexRole.unlock();
+    return behaviourName;
+}
+
 void Player::setRole(Role* b) {
     // Check same behavior
     if(b==_role)
@@ -311,19 +322,13 @@ std::pair<float, float> Player::goTo(Position targetPosition, double offset){
     long double moduloDistancia = sqrt(pow(Vx,2)+pow(Vy,2));
     float vxSaida = (Vx * cos(theta) + Vy * sin(theta));
     float vySaida = (Vy * cos(theta) - Vx * sin(theta));
-    double sinal_x = 1.0;
-    double sinal_y = 1.0;
-
-    if(vxSaida < 0) sinal_x = -1.0;
-    if(vySaida < 0) sinal_y = -1.0;
 
     // inverte pra dar frenagem
     // na simulação é bom colocar *= 0.0 pra ele realmente "parar" o robô
     if(moduloDistancia <= offset){
-        vxSaida *= 0.0;
-        vySaida *= 0.0;
+        vxSaida *= -1.0;
+        vySaida *= -1.0;
     }
-
 
     float newVX = _vxPID->calculate(vxSaida, velocity().x());
     float newVY = _vyPID->calculate(vySaida, velocity().y());
@@ -396,7 +401,7 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, double
     std::pair<float, float> a = goTo(targetPosition, offset);
     double theta = rotateTo(lookToPosition, offsetAngular).second;
 
-    /*
+/*
     if(fabs(a.first) <= 0.1){
         if(a.first < 0) a.first = -0.1;
         else a.first = 0.1;
@@ -406,7 +411,7 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, double
         if(a.second < 0) a.second = -0.1;
         else a.second = 0.1;
     }
-    */
+*/
 
     WR::Utils::limitValue(&a.first, -2.5, 2.5);
     WR::Utils::limitValue(&a.second, -2.5, 2.5);
