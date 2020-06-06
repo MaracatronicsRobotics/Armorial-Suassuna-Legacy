@@ -31,7 +31,7 @@ Role_Default::Role_Default() {
 void Role_Default::initializeBehaviours(){
     // Aqui são inseridos os behaviours possíveis de serem usados
     // na ordem: ID do behaviour, instanciação dele
-    usesBehaviour(BHV_DONOTHING, _bh_dn = new Behaviour_Barrier());
+    usesBehaviour(BHV_DONOTHING, _bh_dn = new Behaviour_Attacker());
 }
 
 void Role_Default::configure(){
@@ -45,11 +45,6 @@ void Role_Default::run(){
      * na classe da role, sete-os aqui e envie para o behaviour (usando as funções
      * set presentes neles)
     */
-
-    if(player()->playerId() % 2 == 0)
-        _bh_dn->setMarkPlayer(player()->playerId());
-    else
-        _bh_dn->setMarkBall();
 
     setBehaviour(BHV_DONOTHING);
 

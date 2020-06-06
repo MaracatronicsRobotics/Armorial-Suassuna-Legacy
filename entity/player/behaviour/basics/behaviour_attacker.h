@@ -35,7 +35,7 @@ private:
     int _state;
 
     QList<quint8> _recvs;
-    MRCTimer *_timer;
+    Timer *_timer;
 
     quint8 _bestReceiver;
     Position _kickPosition;
@@ -54,10 +54,10 @@ public:
     Skill_PushBall *_sk_push;
 
     enum{
-        STATE_ATTACK,
-        STATE_WAIT,
+        STATE_GOTO,
         STATE_KICK,
-        STATE_PUSH
+        STATE_PUSH,
+        STATE_CANTKICK
     };
 
     void addReceiver(quint8 recvId) { _recvs.push_back(recvId); }

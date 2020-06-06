@@ -49,6 +49,8 @@ public:
     QString name();
     void setDestination(const Position &destination) { _destination = destination; }
     void setMaxPushDistance(float maxPushDistance) { _maxPushDistance = maxPushDistance; }
+    float getPushedDistance() { return _distPushed; }
+    float getMaxPushDistance() { return _maxPushDistance; }
 };
 
 #endif // SKILL_PUSHBALL_H
