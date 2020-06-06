@@ -27,6 +27,10 @@
 #define RECEIVER_INVALID_ID 200
 #define MAX_DIST_KICK 2.5f
 
+#define OUR_AREA_OFFSET 1.05f
+#define THEIR_AREA_OFFSET 1.05f
+#define OUT_FIELD_OFFSET 1.05f
+
 QString Behaviour_Attacker::name() {
     return "Behaviour_Attacker";
 }
@@ -39,104 +43,100 @@ void Behaviour_Attacker::configure() {
     usesSkill(_sk_goto = new Skill_GoToLookTo());
     usesSkill(_sk_push = new Skill_PushBall());
 
-    addTransition(0, _sk_goto, _sk_kick);
-    addTransition(1, _sk_kick, _sk_goto);
+    addTransition(STATE_KICK, _sk_goto, _sk_kick);
+    addTransition(STATE_KICK, _sk_push, _sk_kick);
 
-    addTransition(2, _sk_goto, _sk_push);
-    addTransition(2, _sk_kick, _sk_push);
-    addTransition(3, _sk_push, _sk_kick);
+    addTransition(STATE_GOTO, _sk_push, _sk_goto);
+    addTransition(STATE_GOTO, _sk_kick, _sk_goto);
+
+    addTransition(STATE_PUSH, _sk_goto, _sk_push);
+    addTransition(STATE_PUSH, _sk_kick, _sk_push);
+
 
     setInitialSkill(_sk_goto);
 
     _state = STATE_PUSH;
 
-
-    _timer = new MRCTimer(1000.0f);
+    _timer = new Timer();
 };
 
 void Behaviour_Attacker::run() {
-    if(player()->canKickBall() == false){ // if can't kick ball
-        //_state = STATE_WAIT;
-    }
+    // Condiçoes de restrição para chute:
+    /*
+     * Bola na área inimiga
+     * Bola na nossa área
+     * Bola fora do campo
+     * Referee não permite que chutemos (cobrança do time inimigo)
+    */
+
+    if(!player()->canKickBall() || loc()->isInsideTheirArea(loc()->ball(), THEIR_AREA_OFFSET)
+            || loc()->isOutsideField(loc()->ball(), OUT_FIELD_OFFSET) || loc()->isInsideOurArea(loc()->ball(), OUR_AREA_OFFSET))
+        _state = STATE_CANTKICK;
 
     switch(_state){
+    case STATE_CANTKICK:{
+        Position waitPosition;
+        if(loc()->isInsideOurArea(loc()->ball(), OUR_AREA_OFFSET)){ // Caso esteja na nossa área
+            // Projeta ponto na reta entre o gol e a bola (2m atrás da bola)
+            waitPosition = WR::Utils::threePoints(loc()->ball(), loc()->ourGoal(), 2.0f, GEARSystem::Angle::pi);
+        }
+        else if(loc()->isInsideTheirArea(loc()->ball(), THEIR_AREA_OFFSET)){ // Caso esteja area deles
+            // Projeta ponto na reta entre o gol e a bola (2m atrás da bola)
+            waitPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 2.0f, GEARSystem::Angle::pi);
+        }
+        else if(loc()->isOutsideField(loc()->ball(), OUT_FIELD_OFFSET)){ // Caso esteja fora do campo
+            // Tem que ver o que fazer nesse caso, by now apenas congela o robô
+            waitPosition = player()->position();
+        }
+        else{
+            // Projeta ponto na reta entre o gol e a bola (0.6m atrás da bola)
+            waitPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.6f, GEARSystem::Angle::pi);
+        }
+
+        // Configurando goTo
+        Position lookPosition = WR::Utils::threePoints(loc()->ball(), waitPosition, 1000.0f, GEARSystem::Angle::pi);
+        _sk_goto->setAimPosition(lookPosition);
+        _sk_goto->setDesiredPosition(waitPosition);
+
+        // Habilita a transição
+        enableTransition(STATE_GOTO);
+
+        // Verificação para troca de estado
+        if(player()->canKickBall() && !loc()->isInsideTheirArea(loc()->ball(), THEIR_AREA_OFFSET)
+                && !loc()->isInsideOurArea(loc()->ball(), OUT_FIELD_OFFSET) && !loc()->isOutsideField(loc()->ball(), OUR_AREA_OFFSET))
+            _state = STATE_PUSH;
+
+    }
+    break;
     case STATE_PUSH:{
-        enableTransition(2);
-        _bestReceiver = RECEIVER_INVALID_ID;
-        _kickPosition = loc()->ourGoal();
-
         Position bestKickPosition = getBestKickPosition();
-        if(!bestKickPosition.isUnknown()){ // checar isso dps
-            _kickPosition = bestKickPosition;
-        }else{
-            // descobrindo o melhor receiver
-            _mutex.lock();
 
-            _bestReceiver = getBestReceiver();
-            if(_bestReceiver != RECEIVER_INVALID_ID){
-                Position receiverPosition = PlayerBus::ourPlayer(_bestReceiver)->position();
-                if(!receiverPosition.isUnknown()){
-                    _kickPosition = receiverPosition;
-                }
-            }
+        if(bestKickPosition.isUnknown()){ // Nao existem aberturas para o gol
 
-            _mutex.unlock();
         }
-        // Setting push position
-        _sk_push->setDestination(_kickPosition);
-
-        // Emitting signal for receivers
-        Position behindBall = WR::Utils::threePoints(loc()->ball(), _kickPosition, 0.2, GEARSystem::Angle::pi);
-        if(_bestReceiver != RECEIVER_INVALID_ID && player()->distBall() < 0.3f && isBehindBall(behindBall) == false){
-            emit goingToShoot(_bestReceiver);
+        else{                             // Abertura para chute
+            _sk_push->setDestination(bestKickPosition);
         }
 
-        // Change state to kick
+        enableTransition(STATE_PUSH);
 
-        // check if ball is in front
-        Angle anglePlayerBall = player()->angleTo(loc()->ball());
-        float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
-        bool ans = (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
-
-        float distToKickPosition = player()->distanceTo(_kickPosition);
-        if(distToKickPosition < MAX_DIST_KICK && player()->distBall() < 0.3f && ans){
-            _timer->update(); // reset timer
+        // Se puxou a bola demais ou está na distancia maxima pra realizar um chute
+        if(_sk_push->getPushedDistance() >= _sk_push->getMaxPushDistance() || WR::Utils::distance(player()->position(), bestKickPosition) < MAX_DIST_KICK){
             _state = STATE_KICK;
         }
     }
     break;
     case STATE_KICK:{
-        enableTransition(2);
-        if(_bestReceiver != RECEIVER_INVALID_ID){
-            if(PlayerBus::ourPlayerAvailable(_bestReceiver)){
-                _kickPosition = PlayerBus::ourPlayer(_bestReceiver)->position(); // update to avoid delay
-            }
-        }
+        Position bestKickPosition = getBestKickPosition();
+        _sk_kick->setAim(bestKickPosition);
+        _sk_kick->setIsPass(false);
 
-        // Enable kick
-        if(player()->isLookingTo(_kickPosition, 0.015)){
-            _sk_kick->setAim(_kickPosition);
-            _sk_kick->setIsPass(false);
-            enableTransition(3);
-        }
+        enableTransition(STATE_KICK);
 
-        // check if ball is in front
-        Angle anglePlayerBall = player()->angleTo(loc()->ball());
-        float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
-        bool ans = (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
-
-        if(!ans || player()->distBall() > 0.4f){
-            // emit ball kicked
-            if(_bestReceiver != RECEIVER_INVALID_ID){
-                emit shooted(_bestReceiver);
-            }
-
+        // Caso tenha se distanciado muito da bola (possivel chute realizado) volta para se posicionar
+        if(player()->distBall() > 0.35f)
             _state = STATE_PUSH;
-        }
 
-        if(_timer->getTimeInSeconds() >= 0.2f){
-            _state = STATE_PUSH;
-        }
     }
     break;
     }
