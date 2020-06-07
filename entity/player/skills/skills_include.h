@@ -34,6 +34,7 @@
 #include <entity/player/skills/basics/skill_interceptball.h>
 #include <entity/player/skills/basics/skill_pushball.h>
 #include <entity/player/skills/basics/skill_placement.h>
+#include <entity/player/skills/basics/skill_pushball2.h>
 
 // normal includes
 #include <entity/player/player.h>
