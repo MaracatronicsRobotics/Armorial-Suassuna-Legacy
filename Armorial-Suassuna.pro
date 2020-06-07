@@ -55,6 +55,7 @@ SOURCES += \
     entity/player/skills/basics/skill_gotolookto.cpp \
     entity/player/skills/basics/skill_interceptball.cpp \
     entity/player/skills/basics/skill_placement.cpp \
+    entity/player/skills/basics/skill_pushball2.cpp \
     entity/player/skills/basics/skill_rotateto.cpp \
     entity/referee/mrcreferee.cpp \
     entity/world/world.cpp \
@@ -177,6 +178,7 @@ HEADERS += \
     entity/player/skills/basics/skill_gotolookto.h \
     entity/player/skills/basics/skill_interceptball.h \
     entity/player/skills/basics/skill_placement.h \
+    entity/player/skills/basics/skill_pushball2.h \
     entity/player/skills/basics/skill_rotateto.h \
     entity/referee/mrcreferee.h \
     entity/world/world.h \

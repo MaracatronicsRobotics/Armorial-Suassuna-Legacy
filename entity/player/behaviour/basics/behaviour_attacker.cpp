@@ -41,7 +41,7 @@ Behaviour_Attacker::Behaviour_Attacker() {
 void Behaviour_Attacker::configure() {
     usesSkill(_sk_kick = new Skill_Kick());
     usesSkill(_sk_goto = new Skill_GoToLookTo());
-    usesSkill(_sk_push = new Skill_PushBall());
+    usesSkill(_sk_push = new Skill_PushBall2());
 
     addTransition(STATE_KICK, _sk_goto, _sk_kick);
     addTransition(STATE_KICK, _sk_push, _sk_kick);
@@ -120,6 +120,7 @@ void Behaviour_Attacker::run() {
 
         enableTransition(STATE_PUSH);
 
+        std::cout << "pushed: " << _sk_push->getPushedDistance() << std::endl;
         // Se puxou a bola demais ou está na distancia maxima pra realizar um chute
         if(_sk_push->getPushedDistance() >= _sk_push->getMaxPushDistance() || WR::Utils::distance(player()->position(), bestKickPosition) < MAX_DIST_KICK){
             _state = STATE_KICK;
