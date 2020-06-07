@@ -19,34 +19,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef ROLE_DEFAULT_H
-#define ROLE_DEFAULT_H
+#ifndef SKILL_PUSHBALL2_H
+#define SKILL_PUSHBALL2_H
 
-#include <entity/player/behaviour/mrcbehaviours.h>
-#include <entity/player/role/role.h>
+#include <entity/player/skills/skill.h>
 
-class Role_Default : public Role
-{
+class Skill_PushBall2 : public Skill {
 private:
-    // Behaviours
-    Behaviour_Attacker *_bh_dn;
+    // Parameters
+    Position _destination;
 
-    // Behaviours ids!
-    enum{
-        BHV_DONOTHING
+    // Internal
+    Position _currPos;
+    Position _lastPos;
+    double _maxPushDistance;
+    double _pushedDistance;
+
+    // State machine
+    enum {
+        STATE_POS,
+        STATE_PUSH,
+        STATE_DONE
     };
+    int _state;
 
-    // Inherited functions
-    void configure();
     void run();
-
-    // Mutex
-    QMutex _mutex;
+    bool isBehindBall(Position posObjective);
+    bool isBallInFront();
+    bool isInFrontOfObjective();
 
 public:
-    Role_Default();
-    void initializeBehaviours();
+    Skill_PushBall2();
     QString name();
+    void setDestination(const Position &destination) { _destination = destination; }
+    void setMaxPushDistance(double dist) { _maxPushDistance = dist; }
+    double getMaxPushDistance() { return _maxPushDistance; }
+    double getPushedDistance() { return _pushedDistance; }
 };
 
-#endif // ROLE_DEFAULT_H
+#endif // SKILL_PUSHBALL2_H
