@@ -120,7 +120,6 @@ void Behaviour_Attacker::run() {
 
         enableTransition(STATE_PUSH);
 
-        std::cout << "pushed: " << _sk_push->getPushedDistance() << std::endl;
         // Se puxou a bola demais ou está na distancia maxima pra realizar um chute
         if(_sk_push->getPushedDistance() >= _sk_push->getMaxPushDistance() || WR::Utils::distance(player()->position(), bestKickPosition) < MAX_DIST_KICK){
             _state = STATE_KICK;
@@ -220,6 +219,16 @@ Position Behaviour_Attacker::getBestKickPosition(){
     if(distR < (1.5 * 0.025)){ // 1.5 * raioDaBola (ruido ft. tristeza)
         return Position(false, 0.0, 0.0, 0.0); // bola n passa, debugar isso dps
     }
+
+    Line ballLineToGoal = Line::getLine(loc()->ball(), largestMid);
+
+    double o_a = (-1)/ballLineToGoal.a();
+    double o_b = player()->position().y() - (o_a * player()->position().x());
+
+    Line ortogonalLineToBallLine(o_a, o_b);
+
+    std::cout << "ballLine: " << ballLineToGoal.a() << " . " << ballLineToGoal.b() << std::endl;
+    std::cout << "ortPlayerLine: " << ortogonalLineToBallLine.a() << " . " << ortogonalLineToBallLine.b() << std::endl;
 
     return impactPosition;
 }

@@ -22,14 +22,14 @@
 #ifndef UTILS_HH
 #define UTILS_HH
 
-//#include <WRCoach/entity/controlmodule/coach/basecoach.hh>
+#include <entity/contromodule/mrcteam.h>
 #include <GEARSystem/gearsystem.hh>
 
 namespace WR {
 
     class Utils {
 	public:
-		//static void initialize(WRTeam *ourTeam, WRTeam *opTeam);
+        static void initialize(MRCTeam *ourTeam, MRCTeam *opTeam);
 
         static Position threePoints(const Position &near, const Position &far, float distance, float beta);
 
