@@ -26,10 +26,10 @@
 
 using namespace WR;
 
-/*void Utils::initialize(WRTeam *ourTeam, WRTeam *opTeam) {
+void Utils::initialize(MRCTeam *ourTeam, MRCTeam *opTeam) {
     kNN::initialize(ourTeam, opTeam);
     FreeAngles::initialize(ourTeam, opTeam);
-}*/
+}
 
 Position Utils::threePoints(const Position &near, const Position &far, float distance, float beta) {
     Angle alpha(true, atan2(far.y()-near.y(), far.x()-near.x()));

@@ -57,6 +57,9 @@ bool Suassuna::start() {
     Colors::Color opTeamColor = (_teamColor==Colors::YELLOW? Colors::BLUE : Colors::YELLOW);
     FieldSide opFieldSide = (_fieldSide.isRight()? Sides::LEFT : Sides::RIGHT);
 
+    // Initialize utils
+    WR::Utils::initialize(_ourTeam, _theirTeam);
+
     // Server connection
     if(connectToServer()==false)
         return false;
@@ -102,7 +105,8 @@ bool Suassuna::start() {
     _world->addEntity(_ballPred, 2);
     */
 
-    FreeAngles::initialize(_ourTeam, _theirTeam);
+    // Initialize utils
+    WR::Utils::initialize(_ourTeam, _theirTeam);
 
     // Start world
     _world->start();
