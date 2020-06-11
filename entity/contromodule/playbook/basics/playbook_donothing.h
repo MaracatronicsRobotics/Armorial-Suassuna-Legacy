@@ -29,6 +29,7 @@ class Playbook_DoNothing : public Playbook {
 private:
     // Roles
     QList<Role_Default*> _rl_def;
+    QList<Role_Barrier*> _rl_bar;
 
     void configure(int numPlayers);
     void run(int numPlayers);

@@ -28,6 +28,7 @@ class Skill_PushBall2 : public Skill {
 private:
     // Parameters
     Position _destination;
+    Position _aim;
 
     // Internal
     Position _currPos;
@@ -52,6 +53,7 @@ public:
     Skill_PushBall2();
     QString name();
     void setDestination(const Position &destination) { _destination = destination; }
+    void setAim(const Position &aim) { _aim = aim; }
     void setMaxPushDistance(double dist) { _maxPushDistance = dist; }
     double getMaxPushDistance() { return _maxPushDistance; }
     double getPushedDistance() { return _pushedDistance; }

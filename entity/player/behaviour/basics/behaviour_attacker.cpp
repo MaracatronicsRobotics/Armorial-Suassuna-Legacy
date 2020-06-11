@@ -25,7 +25,7 @@
 #include <utils/line/line.hh>
 
 #define RECEIVER_INVALID_ID 200
-#define MAX_DIST_KICK 2.5f
+#define MAX_DIST_KICK 1.5f
 
 #define OUR_AREA_OFFSET 1.05f
 #define THEIR_AREA_OFFSET 1.05f
@@ -109,19 +109,26 @@ void Behaviour_Attacker::run() {
     }
     break;
     case STATE_PUSH:{
-        Position bestKickPosition = getBestKickPosition();
+        // A ideia daqui é fazer o free angles pra o quadrante onde o atacante está, pegar a reta gerada
+        // E com essa reta calcular a reta ortogonal (entre o robo e essa reta gerada) e posicionar o robo
+        // na intersecção entre essas duas retas, arrastando a bola com o drible.
+
+        Position bestKickPosition = getBestPosition(QUADRANT_MID);
+        Position bestAimPosition = getBestKickPosition();
 
         if(bestKickPosition.isUnknown()){ // Nao existem aberturas para o gol
-
+            std::cout << "eae cla" << std::endl;
         }
         else{                             // Abertura para chute
             _sk_push->setDestination(bestKickPosition);
+            if(bestAimPosition.isUnknown()) _sk_push->setAim(loc()->ourGoal());
+            else _sk_push->setAim(bestAimPosition);
         }
 
         enableTransition(STATE_PUSH);
 
-        // Se puxou a bola demais ou está na distancia maxima pra realizar um chute
-        if(_sk_push->getPushedDistance() >= _sk_push->getMaxPushDistance() || WR::Utils::distance(player()->position(), bestKickPosition) < MAX_DIST_KICK){
+        // Se puxou a bola demais ou está suficientemente proximo da posicao para fazer chute ou na distancia maxima de chute
+        if(_sk_push->getPushedDistance() >= _sk_push->getMaxPushDistance() || (player()->isNearbyPosition(bestKickPosition, 0.2f) && WR::Utils::angleDiff(player()->angleTo(bestAimPosition), player()->orientation()) <= atan(0.05)) || player()->distOurGoal() <= MAX_DIST_KICK){
             _state = STATE_KICK;
         }
     }
@@ -227,8 +234,121 @@ Position Behaviour_Attacker::getBestKickPosition(){
 
     Line ortogonalLineToBallLine(o_a, o_b);
 
-    std::cout << "ballLine: " << ballLineToGoal.a() << " . " << ballLineToGoal.b() << std::endl;
-    std::cout << "ortPlayerLine: " << ortogonalLineToBallLine.a() << " . " << ortogonalLineToBallLine.b() << std::endl;
-
     return impactPosition;
+}
+
+Position Behaviour_Attacker::getBestPosition(int quadrant){
+    if(quadrant == NO_QUADRANT){
+        printf("[BEHAVIOUR ATTACKER] Attacker with id %u: quadrant isn't set.\n", player()->playerId());
+        return Position(false, 0.0, 0.0, 0.0);
+    }
+
+    const Position goalPosition = loc()->ourGoal(); // Fundo do gol (pra pegar o goleiro deles)
+    const std::pair<Position, Position> quadrantPosition = getQuadrantInitialPosition(quadrant); // Par de posições do quadrante
+    float radius = 4.0; // pegar raio médio pra atuação
+
+    //
+    //    PARTE DO GOL   //
+                         //
+
+    // Free Angles do gol até as posições do quadrante
+    Position initialPos = quadrantPosition.first; // pega as posicoes dos quadrantes gerados
+    Position finalPos = quadrantPosition.second;
+
+    // Pega a lista de obstaculos pra remover o proprio attacker
+    QList<Obstacle> obstaclesList = FreeAngles::getObstacles(goalPosition, radius);
+    int size = obstaclesList.size();
+    for(int x = 0; x < size; x++){
+        Obstacle obstAt = obstaclesList.at(x);
+        if(obstAt.team() == player()->teamId() && obstAt.id() == player()->playerId()){
+            obstaclesList.removeAt(x);
+            break;
+        }
+    }
+
+    // Calcula free angles enviando a lista de obstaculos nova (receiver removido)
+    QList<FreeAngles::Interval> freeAnglesToGoal = FreeAngles::getFreeAngles(goalPosition, initialPos, finalPos, obstaclesList);
+    float largestGoalAngle = 0.0; // salvar aqui o maior angulo livre pra o gol
+    if(freeAnglesToGoal.isEmpty()){ // free angles desativado(?)
+        return Position(false, 0.0, 0.0, 0.0); // debugar dps
+    }else{
+        // descobrir o maior intervalo de ang livre, pegar o meio (mais provavel de estar certo (ruido?))
+        float largestAngle = 0.0, largestMid = 0.0;
+        QList<FreeAngles::Interval>::iterator it;
+        for(it = freeAnglesToGoal.begin(); it != freeAnglesToGoal.end(); it++){
+            float initialAngle = it->angInitial();
+            float finalAngle = it->angFinal();
+            float dif = WR::Utils::angleDiff(initialAngle, finalAngle);
+            if(dif > largestAngle){
+                // salvo o maior intervalo (dif) e salvo o meio desse intervalo (final - dif/2)
+                largestAngle = dif;
+                largestMid = finalAngle - (dif / 2.0);
+            }
+        }
+        largestGoalAngle = largestMid; // finalmente salvo o angulo (meio do maior intervalo)
+    }
+
+    // Calculando a posicao em relação ao raio de atuação que o receiver vai ficar
+    float posAngle = GEARSystem::Angle::pi - largestGoalAngle; // angulo suplementar (variar o y)
+    float posX = radius * cos(posAngle);
+    float posY = radius * sin(posAngle);
+    Position goalLinePos(true, goalPosition.x() - posX, posY, 0.0);
+
+    Line goalLine = Line::getLine(goalPosition, largestGoalAngle);
+
+    double o_a = (-1)/goalLine.a();
+    double o_b = player()->position().y() - (o_a * player()->position().x());
+    Line ortogonalLine(o_a, o_b);
+
+    Position desiredPos = goalLine.interceptionWith(ortogonalLine);
+
+    return desiredPos;
+}
+
+std::pair<Position, Position> Behaviour_Attacker::getQuadrantInitialPosition(int quadrant){
+    if(quadrant == NO_QUADRANT){
+        printf("[BEHAVIOUR ATTACKER] Attacker with id %u: quadrant isn't set.\n", player()->playerId());
+        return std::make_pair(Position(false, 0.0, 0.0, 0.0), Position(false, 0.0, 0.0, 0.0));
+    }
+
+    // Calc some points
+    const float x = fabs(loc()->ourGoal().x());
+    const float y = fabs(loc()->ourFieldTopCorner().y());
+
+    const Position upL(true, -x, y, 0.0);
+    const Position up(true, 0.0, y, 0.0);
+    const Position upR(true, x, y, 0.0);
+    const Position botL(true, -x, -y, 0.0);
+    const Position bot(true, 0.0, -y, 0.0);
+    const Position botR(true, x, -y, 0.0);
+    const Position cen(true, 0.0, 0.0, 0.0);
+
+    // Depois trocar isso pra loc().theirSide() !!!!!!
+    bool sideIsLeft = loc()->ourSide().isLeft();
+
+    if(sideIsLeft){
+        switch(quadrant){
+        case QUADRANT_UP:
+            return std::make_pair(up, upL);
+        break;
+        case QUADRANT_MID:
+            return std::make_pair(up, bot);
+        break;
+        case QUADRANT_BOT:
+            return std::make_pair(botL, bot);
+        break;
+        }
+    }else{
+        switch(quadrant){
+        case QUADRANT_UP:
+            return std::make_pair(upR, up);
+        break;
+        case QUADRANT_MID:
+            return std::make_pair(up, bot);
+        break;
+        case QUADRANT_BOT:
+            return std::make_pair(bot, botR);
+        break;
+        }
+    }
 }

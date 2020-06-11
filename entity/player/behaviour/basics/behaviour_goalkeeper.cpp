@@ -24,7 +24,7 @@
 #include <entity/player/playerbus.h>
 
 #define ATTACKER_MINBALLDIST 0.4f
-#define GOALPOSTS_ERROR 0.05f
+#define GOALPOSTS_ERROR 0.1f
 #define INTERCEPT_MINBALLVELOCITY 0.2f
 
 QString Behaviour_Goalkeeper::name() {
@@ -149,7 +149,7 @@ Position Behaviour_Goalkeeper::getAttackerInterceptPosition() {
 
 Position Behaviour_Goalkeeper::calcAttackerBallImpact() {
     QHash<quint8, Player*>::iterator it;
-    QHash<quint8, Player*> avPlayers = loc()->getOpPlayers();
+    QHash<quint8, Player*> avPlayers = loc()->getMRCPlayers();      // ALTERA AQUI ZILDAO
     int poss = -1, size = avPlayers.size();
 
     for(it=avPlayers.begin(); it!=avPlayers.end(); it++){

@@ -19,10 +19,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef MRCROLES_H
-#define MRCROLES_H
+#ifndef ROLE_BARRIER_H
+#define ROLE_BARRIER_H
 
-#include <entity/player/role/basics/role_default.h>
-#include <entity/player/role/basics/role_barrier.h>
+#include <entity/player/behaviour/mrcbehaviours.h>
+#include <entity/player/role/role.h>
 
-#endif // MRCROLES_H
+class Role_Barrier : public Role
+{
+private:
+    // Behaviours
+    Behaviour_Barrier *_bh_bar;
+
+    // Behaviours ids!
+    enum{
+        BHV_BARRIER
+    };
+
+    // Inherited functions
+    void configure();
+    void run();
+
+    // Mutex
+    QMutex _mutex;
+
+public:
+    Role_Barrier();
+    void initializeBehaviours();
+    QString name();
+};
+
+#endif // ROLE_BARRIER_H

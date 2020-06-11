@@ -37,7 +37,7 @@ Skill_PushBall2::Skill_PushBall2() {
     _currPos.setUnknown();
     _lastPos.setUnknown();
     _state = STATE_POS;
-    setMaxPushDistance(0.8f);
+    setMaxPushDistance(1.2f);
 }
 
 void Skill_PushBall2::run(){
@@ -46,7 +46,7 @@ void Skill_PushBall2::run(){
 
 
     // Calc behind ball
-    Position behindBall = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.16f, GEARSystem::Angle::pi);
+    Position behindBall = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.2f, GEARSystem::Angle::pi);
 
     if(loc()->ballVelocity().abs() > BALLPREVISION_MINVELOCITY){
         // Calc unitary vector of velocity
@@ -70,7 +70,7 @@ void Skill_PushBall2::run(){
         _currPos.setUnknown();
         _pushedDistance = 0.0;
         player()->dribble(false);
-        player()->goToLookTo(behindBall, loc()->ball(), 0.1f);
+        player()->goToLookTo(behindBall, loc()->ball());
 
         if(player()->distBall() < BALL_MINDIST && isBallInFront())
             _state = STATE_PUSH;
@@ -83,14 +83,15 @@ void Skill_PushBall2::run(){
         }
         _lastPos = _currPos;
         _currPos = loc()->ball();
-        _pushedDistance += WR::Utils::distance(_lastPos, _currPos);
 
         player()->dribble(true);
 
         if(!isInFrontOfObjective())
-            player()->goToLookTo(player()->position(), _destination);
-        else
-            player()->goToLookTo(_destination, _destination);
+            player()->rotateTo(_aim);
+        else{
+            _pushedDistance += WR::Utils::distance(_lastPos, _currPos);
+            player()->goToLookTo(_destination, _aim);
+        }
 
         if(player()->distBall() > BALL_MINDIST)
             _state = STATE_POS;
@@ -101,9 +102,6 @@ void Skill_PushBall2::run(){
     }
     break;
     }
-
-
-    player()->rotateTo(_destination);
 }
 
 bool Skill_PushBall2::isBehindBall(Position posObjective){
@@ -124,7 +122,7 @@ bool Skill_PushBall2::isBallInFront(){
 }
 
 bool Skill_PushBall2::isInFrontOfObjective(){
-    Angle anglePlayerObj = player()->angleTo(_destination);
+    Angle anglePlayerObj = player()->angleTo(_aim);
     float diff = WR::Utils::angleDiff(anglePlayerObj, player()->orientation());
 
     return (diff <= atan(0.1)); // atan(0.1) aprox = 6 degree

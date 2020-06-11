@@ -32,6 +32,8 @@ void Role_Default::initializeBehaviours(){
     // Aqui são inseridos os behaviours possíveis de serem usados
     // na ordem: ID do behaviour, instanciação dele
     usesBehaviour(BHV_DONOTHING, _bh_dn = new Behaviour_Attacker());
+    usesBehaviour(1, _bh_gk = new Behaviour_Goalkeeper());
+    usesBehaviour(2, _bh_bar = new Behaviour_Barrier());
 }
 
 void Role_Default::configure(){
@@ -46,7 +48,14 @@ void Role_Default::run(){
      * set presentes neles)
     */
 
-    setBehaviour(BHV_DONOTHING);
+    if(player()->distOurGoal() <= 1.0f)
+        setBehaviour(1);
+    else if(player()->distOurGoal() <= 1.5f){
+        _bh_bar->setMarkBall();
+        setBehaviour(2);
+    }
+    else
+        setBehaviour(BHV_DONOTHING);
 
 
 }
