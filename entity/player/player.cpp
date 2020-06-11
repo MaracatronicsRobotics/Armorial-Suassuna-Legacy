@@ -55,6 +55,7 @@ Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Ro
 
     // Reset player
     reset();
+    setPidActivated(true);
 
 }
 
@@ -305,7 +306,7 @@ void Player::setSpeed(float x, float y, float theta) {
 
 }
 
-std::pair<float, float> Player::goTo(Position targetPosition, double offset){
+std::pair<float, float> Player::goTo(Position targetPosition, double offset, bool setHere){
     Position robot_pos_filtered = getKalmanPredict();
     double robot_x, robot_y, robotAngle = orientation().value();
     if(robot_pos_filtered.isUnknown()){
@@ -330,13 +331,23 @@ std::pair<float, float> Player::goTo(Position targetPosition, double offset){
         vySaida *= -1.0;
     }
 
-    float newVX = _vxPID->calculate(vxSaida, velocity().x());
-    float newVY = _vyPID->calculate(vySaida, velocity().y());
+    float newVX, newVY;
+    if(isPidActivated()){
+        newVX = _vxPID->calculate(vxSaida, velocity().x());
+        newVY = _vyPID->calculate(vySaida, velocity().y());
+    }
 
-    return std::make_pair(newVX, newVY);
+    if(isPidActivated()){
+        if(setHere) setSpeed(newVX, newVY, 0.0);
+        return std::make_pair(newVX, newVY);
+    }
+    else{
+        if(setHere) setSpeed(vxSaida, vySaida, 0.0);
+        return std::make_pair(vxSaida, vySaida);
+    }
 }
 
-std::pair<double, double> Player::rotateTo(Position targetPosition, double offset) {
+std::pair<double, double> Player::rotateTo(Position targetPosition, double offset, bool setHere) {
     Position robot_pos_filtered = getKalmanPredict();
     double robot_x, robot_y, angleOrigin2Robot = orientation().value();
     if(robot_pos_filtered.isUnknown()){
@@ -392,16 +403,23 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
         speed = 0;
     }
 
-    double newSpeed = _vwPID->calculate(speed, angularSpeed().value());
 
-    return std::make_pair(angleRobot2Ball, newSpeed);
+    if(isPidActivated()){
+        double newSpeed = _vwPID->calculate(speed, angularSpeed().value());
+        if(setHere) setSpeed(0.0, 0.0, newSpeed);
+        return std::make_pair(angleRobot2Ball, newSpeed);
+    }
+    else{
+        if(setHere) setSpeed(0.0, 0.0, speed);
+        return std::make_pair(angleRobot2Ball, speed);
+    }
 }
 
 void Player::goToLookTo(Position targetPosition, Position lookToPosition, double offset, double offsetAngular){
-    std::pair<float, float> a = goTo(targetPosition, offset);
-    double theta = rotateTo(lookToPosition, offsetAngular).second;
+    std::pair<float, float> a = goTo(targetPosition, offset, false);
+    std::pair<double, double> b = rotateTo(lookToPosition, offsetAngular, false);
 
-/*
+
     if(fabs(a.first) <= 0.1){
         if(a.first < 0) a.first = -0.1;
         else a.first = 0.1;
@@ -411,12 +429,16 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, double
         if(a.second < 0) a.second = -0.1;
         else a.second = 0.1;
     }
-*/
 
     WR::Utils::limitValue(&a.first, -2.5, 2.5);
     WR::Utils::limitValue(&a.second, -2.5, 2.5);
 
-    setSpeed(a.first, a.second, theta);
+    if(fabs(b.first) >= GEARSystem::Angle::pi / 2.0)
+        setSpeed(0.5 * a.first, 0.5 * a.second, b.second);
+    else{
+        setSpeed(a.first, a.second, b.second);
+    }
+
 }
 
 void Player::aroundTheBall(Position targetPosition, double offset, double offsetAngular){

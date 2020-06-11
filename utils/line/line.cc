@@ -32,6 +32,8 @@ Line::Line(float a, float b) {
 }
 
 Position Line::interceptionWith(const Line &line) {
+    if((_a-line.a()) == 0) return Position(false, 0.0, 0.0, 0.0);
+
     float x = (line.b()-_b) / (_a-line.a());
     float y = _a*x + _b;
     return Position(true, x, y, 0.0);

@@ -90,7 +90,9 @@ void Skill_Kick::run() {
     }
 
     player()->goToLookTo(desiredPos, _aimPosition, 0.01);
-    player()->kick(_isPass, _zPower);
+
+    if(isBehindBall(_aimPosition))
+        player()->kick(_isPass, _zPower);
 }
 
 bool Skill_Kick::isBehindBall(Position posObjective){

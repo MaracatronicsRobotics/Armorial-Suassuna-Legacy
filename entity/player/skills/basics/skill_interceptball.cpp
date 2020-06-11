@@ -39,7 +39,7 @@ void Skill_InterceptBall::run() {
 
     // Check ball speed (maybe a error)
     if(ballVelocity.abs() <= 0.1)
-        objectivePos = player()->position(); // manter posicao
+        objectivePos = loc()->ball(); // manter posicao
     else{
         // Unitary velocity vector (project point at goal)
         Position posBall = loc()->ball();
@@ -52,5 +52,9 @@ void Skill_InterceptBall::run() {
         objectivePos = WR::Utils::projectPointAtLine(posBall, ballVelocityLine, player()->position()); //Intercepta em 90 graus
     }
 
+    if(_interceptAdvance)
+        objectivePos = WR::Utils::threePoints(objectivePos, loc()->ball(), 0.1f, 0.0);
+
+    std::cout << "to indo pra : " << objectivePos.x() << " . " << objectivePos.y() << std::endl;
     player()->goToLookTo(objectivePos, loc()->ball(), 0.01);
 }

@@ -37,12 +37,17 @@ void Playbook_DoNothing::configure(int numPlayers) {
         Role_Default *rl_def = new Role_Default();
         usesRole(rl_def);
         _rl_def.push_back(rl_def);
+
+        Role_Barrier *rl_bar = new Role_Barrier();
+        usesRole(rl_bar);
+        _rl_bar.push_back(rl_bar);
     }
 }
 
 void Playbook_DoNothing::run(int numPlayers) {
     for(int i = 0; i < numPlayers; i++){
         quint8 playerId = dist()->getPlayer();
-        setPlayerRole(playerId, _rl_def.at(i));
+        if(playerId % 2) setPlayerRole(playerId, _rl_def.at(i));
+        else setPlayerRole(playerId, _rl_bar.at(i));
     }
 }

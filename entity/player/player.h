@@ -91,8 +91,8 @@ public:
 
     // Player skills
     void setSpeed(float x, float y, float theta);
-    std::pair<float, float> goTo(Position targetPosition, double _offset = 0.2);
-    std::pair<double, double> rotateTo(Position targetPosition, double offset = 0.2);
+    std::pair<float, float> goTo(Position targetPosition, double _offset = 0.2, bool setHere = true);
+    std::pair<double, double> rotateTo(Position targetPosition, double offset = 0.2, bool setHere = true);
     void goToLookTo(Position targetPosition, Position lookToPosition, double offset = 0.2, double offsetAngular = 0.2);
     void aroundTheBall(Position targetPosition, double offset, double offsetAngular = 0.2);
     void kick(bool isPass, float kickZPower = 0.0);
@@ -109,6 +109,10 @@ public:
 
     // Kalman Filtering (for more control)
     Position getKalmanPredict();
+
+    // PID
+    void setPidActivated(bool val) { _pidActivated = val; }
+    bool isPidActivated() { return _pidActivated; }
 
 private:
     // Entity inherit virtual methods
@@ -153,6 +157,7 @@ private:
     float _aError;
 
     // PID's
+    bool _pidActivated;
     PID *_vxPID;
     PID *_vyPID;
     PID *_vwPID;

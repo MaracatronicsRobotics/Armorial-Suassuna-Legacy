@@ -45,6 +45,10 @@ private:
     bool isBehindBall(Position posObjective);
     quint8 getBestReceiver();
 
+    // Quadrant
+    std::pair<Position, Position> getQuadrantInitialPosition(int quadrant);
+    Position getBestPosition(int quadrant);
+
 public:
     Behaviour_Attacker();
     QString name();
@@ -60,8 +64,16 @@ public:
         STATE_CANTKICK
     };
 
+    enum{
+        NO_QUADRANT,
+        QUADRANT_UP,
+        QUADRANT_MID,
+        QUADRANT_BOT
+    };
+
     void addReceiver(quint8 recvId) { _recvs.push_back(recvId); }
     void clearReceivers() { _recvs.clear(); }
+
 
 signals:
     void goingToShoot(quint8 id);
