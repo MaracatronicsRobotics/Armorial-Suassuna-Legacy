@@ -19,10 +19,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef MRCROLES_H
-#define MRCROLES_H
+#include "role_barrier.h"
 
-#include <entity/player/role/basics/role_default.h>
-#include <entity/player/role/basics/role_barrier.h>
+QString Role_Barrier::name(){
+    return "Role_Barrier";
+}
 
-#endif // MRCROLES_H
+Role_Barrier::Role_Barrier() {
+}
+
+void Role_Barrier::initializeBehaviours(){
+    // Aqui são inseridos os behaviours possíveis de serem usados
+    // na ordem: ID do behaviour, instanciação dele
+    usesBehaviour(BHV_BARRIER, _bh_bar = new Behaviour_Barrier());
+}
+
+void Role_Barrier::configure(){
+    // Aqui são setados parametros que devem ser configurados
+}
+
+void Role_Barrier::run(){
+    /*
+     * Aqui devem ocorrer os sets de parametros de acordo com o behaviour
+     * que estiver sendo executado, de preferencia declare todos os parametros
+     * na classe da role, sete-os aqui e envie para o behaviour (usando as funções
+     * set presentes neles)
+    */
+
+    setBehaviour(BHV_BARRIER);
+
+}
