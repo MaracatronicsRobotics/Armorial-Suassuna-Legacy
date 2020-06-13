@@ -58,9 +58,16 @@ public:
     Skill_PushBall2 *_sk_push;
 
     enum{
+        SKT_KICK,
+        SKT_PUSH,
+        SKT_GOTO
+    };
+
+    enum{
         STATE_GOTO,
         STATE_KICK,
         STATE_PUSH,
+        STATE_PASS,
         STATE_CANTKICK
     };
 

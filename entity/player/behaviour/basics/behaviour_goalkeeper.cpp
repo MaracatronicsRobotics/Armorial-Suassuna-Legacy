@@ -163,13 +163,13 @@ Position Behaviour_Goalkeeper::calcAttackerBallImpact() {
         return loc()->ourGoal();
 
     // check if ball is in front of player (avoid y errors)
-    Angle anglePlayerBall = PlayerBus::theirPlayer(quint8(poss))->angleTo(loc()->ball());
-    float diff = WR::Utils::angleDiff(anglePlayerBall, PlayerBus::theirPlayer(quint8(poss))->orientation());
+    Angle anglePlayerBall = PlayerBus::ourPlayer(quint8(poss))->angleTo(loc()->ball()); // ALTERA AQUI ZILDAO
+    float diff = WR::Utils::angleDiff(anglePlayerBall, PlayerBus::ourPlayer(quint8(poss))->orientation()); // ALTERA AQUI ZILDAO
     bool ans = (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
     if(!ans) return loc()->ourGoal();
 
     /* calculando posicao de impacto no y */
-    Angle angleAtk = PlayerBus::theirPlayer(quint8(poss))->orientation();
+    Angle angleAtk = PlayerBus::ourPlayer(quint8(poss))->orientation(); // ALTERA AQUI ZILDAO
     float angleValue = angleAtk.value();
 
     if(loc()->ourSide().isLeft()){ // ajustando pra o lado esquerdo

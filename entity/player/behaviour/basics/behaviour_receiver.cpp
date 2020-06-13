@@ -52,44 +52,30 @@ void Behaviour_Receiver::configure() {
 };
 
 void Behaviour_Receiver::run() {
-    setQuadrant(QUADRANT_UPMID);
+    setQuadrant(QUADRANT_BOTMID);
+    _attackerId = 1;
+    /*
+    for(quint8 id = 0; id < MRCConstants::_qtPlayers; id++){
+        if(PlayerBus::ourPlayerAvailable(id))
+            if(PlayerBus::ourPlayer(id)->hasBallPossession())
+                _attackerId = id;
+    }
+    */
     if(_attackerId == NO_ATTACKER){
-        printf("[BEHAVIOUR RECEIVER] Attacker isn't set (Receiver ID: %u)\n", player()->playerId());
+        // caso o atacante n esteja disponivel, posicionar da mesma forma que o attacker
+        // ou seja, na projecao ortogonal da reta onde há angulação livre.
+        //printf("[BEHAVIOUR RECEIVER] Attacker isn't available (Receiver ID: %u)\n", player()->playerId());
         return ;
     }
-    if(!PlayerBus::ourPlayerAvailable(_attackerId)){
-        printf("[BEHAVIOUR RECEIVER] Attacker isn't available (Receiver ID: %u)\n", player()->playerId());
-        return ;
-    }
+    else{
+        Position _desiredPosition = getReceiverBestPosition(_quadrant, _attackerId, _minRadius, _maxRadius);
 
-    Position _desiredPosition = getReceiverBestPosition(_quadrant, _attackerId, _minRadius, _maxRadius);
-    double modDistToAttacker = fabs(WR::Utils::distance(player()->position(), PlayerBus::ourPlayer(_attackerId)->position()));
+        _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
+        _skill_GoToLookTo->setAimPosition(PlayerBus::ourPlayer(_attackerId)->position());
+    }
 
     // fazer machine state aqui
 
-    /*switch (_state) {
-    case STATE_POSITION:
-        enableTransition(SK_GOTO);
-        _skill_GoToLookTo->setAimPosition(PlayerBus::ourPlayer(_attackerId)->position());
-        _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
-        break;
-    case STATE_WAIT:
-    case STATE_RECEIVE:
-        enableTransition(SK_RECV);
-        if (loc()->b)
-    }*/
-}
-
-void Behaviour_Receiver::goingToReceive(quint8 id){
-    if(id == player()->playerId()){
-        _state = STATE_WAIT; // tem q ser estado de recepção (interceptBall)
-    }
-}
-
-void Behaviour_Receiver::attackerShooted(quint8 id){
-    if(id == player()->playerId()){
-        _state = STATE_RECEIVE; // criar estado p verificar se ta em posicao boa p receber (mover caso n esteja)
-    }
 }
 
 Position Behaviour_Receiver::getReceiverBestPosition(int quadrant, quint8 attackerId, float minRadius, float maxRadius){
@@ -168,7 +154,7 @@ Position Behaviour_Receiver::getReceiverBestPosition(int quadrant, quint8 attack
     size = attackerObstaclesList.size();
     for(int x = 0; x < size; x++){
         Obstacle obstAt = attackerObstaclesList.at(x);
-        if(obstAt.team() == player()->teamId() && obstAt.id() == player()->playerId()){
+        if((obstAt.team() == player()->teamId() && obstAt.id() == player()->playerId())){
             attackerObstaclesList.removeAt(x);
             break;
         }
