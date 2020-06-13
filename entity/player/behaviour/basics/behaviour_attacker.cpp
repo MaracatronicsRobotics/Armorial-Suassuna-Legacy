@@ -43,14 +43,14 @@ void Behaviour_Attacker::configure() {
     usesSkill(_sk_goto = new Skill_GoToLookTo());
     usesSkill(_sk_push = new Skill_PushBall2());
 
-    addTransition(STATE_KICK, _sk_goto, _sk_kick);
-    addTransition(STATE_KICK, _sk_push, _sk_kick);
+    addTransition(SKT_KICK, _sk_goto, _sk_kick);
+    addTransition(SKT_KICK, _sk_push, _sk_kick);
 
-    addTransition(STATE_GOTO, _sk_push, _sk_goto);
-    addTransition(STATE_GOTO, _sk_kick, _sk_goto);
+    addTransition(SKT_GOTO, _sk_push, _sk_goto);
+    addTransition(SKT_GOTO, _sk_kick, _sk_goto);
 
-    addTransition(STATE_PUSH, _sk_goto, _sk_push);
-    addTransition(STATE_PUSH, _sk_kick, _sk_push);
+    addTransition(SKT_PUSH, _sk_goto, _sk_push);
+    addTransition(SKT_PUSH, _sk_kick, _sk_push);
 
 
     setInitialSkill(_sk_goto);
@@ -99,7 +99,7 @@ void Behaviour_Attacker::run() {
         _sk_goto->setDesiredPosition(waitPosition);
 
         // Habilita a transição
-        enableTransition(STATE_GOTO);
+        enableTransition(SKT_GOTO);
 
         // Verificação para troca de estado
         if(player()->canKickBall() && !loc()->isInsideTheirArea(loc()->ball(), THEIR_AREA_OFFSET)
@@ -125,11 +125,20 @@ void Behaviour_Attacker::run() {
             else _sk_push->setAim(bestAimPosition);
         }
 
-        enableTransition(STATE_PUSH);
+        enableTransition(SKT_PUSH);
+
+        /// TODO
+        /// Refinar a decisão para realizar chute ao gol: chutar quando não houverem obstaculos entre a reta robo-bola em direção ao gol.
+
+        std::cout << "Pushed distance: " << _sk_push->getPushedDistance() << std::endl;
 
         // Se puxou a bola demais ou está suficientemente proximo da posicao para fazer chute ou na distancia maxima de chute
-        if(_sk_push->getPushedDistance() >= _sk_push->getMaxPushDistance() || (player()->isNearbyPosition(bestKickPosition, 0.2f) && WR::Utils::angleDiff(player()->angleTo(bestAimPosition), player()->orientation()) <= atan(0.05)) || player()->distOurGoal() <= MAX_DIST_KICK){
+        if((player()->isNearbyPosition(bestKickPosition, 0.2f) && WR::Utils::angleDiff(player()->angleTo(bestAimPosition), player()->orientation()) <= atan(0.05)) || player()->distOurGoal() <= MAX_DIST_KICK){
             _state = STATE_KICK;
+        }
+        else if(_sk_push->getPushedDistance() >= _sk_push->getMaxPushDistance()){
+            _state = STATE_PASS;
+            std::cout << "MAKING PASS!" << std::endl;
         }
     }
     break;
@@ -138,12 +147,36 @@ void Behaviour_Attacker::run() {
         _sk_kick->setAim(bestKickPosition);
         _sk_kick->setIsPass(false);
 
-        enableTransition(STATE_KICK);
+        enableTransition(SKT_KICK);
 
         // Caso tenha se distanciado muito da bola (possivel chute realizado) volta para se posicionar
         if(player()->distBall() > 0.35f)
             _state = STATE_PUSH;
 
+    }
+    break;
+    case STATE_PASS:{
+        quint8 bestReceiverId = getBestReceiver();
+        if(bestReceiverId == RECEIVER_INVALID_ID) // Se não houverem receptores disponiveis, chuta
+            _state = STATE_KICK;
+        else{
+            if(PlayerBus::ourPlayerAvailable(bestReceiverId)){
+                Position recvPos = PlayerBus::ourPlayer(bestReceiverId)->position();
+                _sk_kick->setAim(recvPos);
+                _sk_kick->setIsPass(true);
+
+                enableTransition(SKT_KICK);
+            }
+            else{
+                _state = STATE_KICK; // Caso o jogador n esteja disponivel, chuta
+            }
+        }
+
+        /// TODO:
+        /// Remover isso (?)
+        // Caso tenha se distanciado muito da bola (possivel chute realizado) volta para se posicionar
+        if(player()->distBall() > 0.35f)
+            _state = STATE_PUSH;
     }
     break;
     }

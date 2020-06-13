@@ -28,7 +28,6 @@
 #include <QObject>
 
 class Behaviour_Receiver : public Behaviour {
-    Q_OBJECT
 private:
     void configure();
     void run();
@@ -84,10 +83,6 @@ public:
     int getQuadrant() { return _quadrant; }
     float getMinRadius() { return _minRadius; }
     float getMaxRadius() { return _maxRadius; }
-
-public slots:
-    void goingToReceive(quint8 id);
-    void attackerShooted(quint8 id);
 };
 
 #endif // BEHAVIOUR_RECEIVER_H

@@ -31,7 +31,7 @@ private:
     // Behaviours
     Behaviour_Attacker *_bh_dn;
     Behaviour_Goalkeeper *_bh_gk;
-    Behaviour_Barrier *_bh_bar;
+    Behaviour_Receiver *_bh_bar;
 
     // Behaviours ids!
     enum{

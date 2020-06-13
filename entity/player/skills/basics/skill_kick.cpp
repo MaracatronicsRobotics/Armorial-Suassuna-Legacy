@@ -91,7 +91,7 @@ void Skill_Kick::run() {
 
     player()->goToLookTo(desiredPos, _aimPosition, 0.01);
 
-    if(isBehindBall(_aimPosition))
+    if(isInFrontOfObjective())
         player()->kick(_isPass, _zPower);
 }
 
@@ -110,4 +110,11 @@ bool Skill_Kick::isBallInFront(){
     float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
 
     return (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
+}
+
+bool Skill_Kick::isInFrontOfObjective(){
+    Angle anglePlayerObj = player()->angleTo(_aimPosition);
+    float diff = WR::Utils::angleDiff(anglePlayerObj, player()->orientation());
+
+    return (diff <= atan(0.1)); // atan(0.1) aprox = 6 degree
 }

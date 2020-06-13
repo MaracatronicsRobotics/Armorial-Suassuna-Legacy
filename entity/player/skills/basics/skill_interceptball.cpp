@@ -55,6 +55,5 @@ void Skill_InterceptBall::run() {
     if(_interceptAdvance)
         objectivePos = WR::Utils::threePoints(objectivePos, loc()->ball(), 0.1f, 0.0);
 
-    std::cout << "to indo pra : " << objectivePos.x() << " . " << objectivePos.y() << std::endl;
     player()->goToLookTo(objectivePos, loc()->ball(), 0.01);
 }
