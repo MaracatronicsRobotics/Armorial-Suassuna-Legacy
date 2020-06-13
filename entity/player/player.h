@@ -29,7 +29,6 @@
 #include <bits/stdc++.h>
 #include <entity/locations.h>
 #include <entity/player/control/pid.h>
-#include <utils/filters/kalman/kalman.hpp>
 
 #define IDLE_COUNT 10
 
@@ -107,9 +106,6 @@ public:
     QList<Position> getPath() const;
     void setGoal(Position pos);
 
-    // Kalman Filtering (for more control)
-    Position getKalmanPredict();
-
     // PID
     void setPidActivated(bool val) { _pidActivated = val; }
     bool isPidActivated() { return _pidActivated; }
@@ -161,7 +157,6 @@ private:
     PID *_vxPID;
     PID *_vyPID;
     PID *_vwPID;
-    KalmanFilter2D *_kalman;
 
 
 };

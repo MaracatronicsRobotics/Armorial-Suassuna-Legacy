@@ -56,8 +56,6 @@ void Behaviour_Attacker::configure() {
     setInitialSkill(_sk_goto);
 
     _state = STATE_PUSH;
-
-    _timer = new Timer();
 };
 
 void Behaviour_Attacker::run() {
@@ -73,6 +71,7 @@ void Behaviour_Attacker::run() {
             || loc()->isOutsideField(loc()->ball(), OUT_FIELD_OFFSET) || loc()->isInsideOurArea(loc()->ball(), OUR_AREA_OFFSET))
         _state = STATE_CANTKICK;
 */
+
     switch(_state){
     case STATE_CANTKICK:{
         Position waitPosition;
@@ -117,7 +116,10 @@ void Behaviour_Attacker::run() {
         Position bestAimPosition = getBestKickPosition();
 
         if(bestKickPosition.isUnknown()){ // Nao existem aberturas para o gol
-            std::cout << "eae cla" << std::endl;
+            /// TODO:
+            /// Ver o que fazer nessa situação
+
+            std::cout << "oi?" << std::endl;
         }
         else{                             // Abertura para chute
             _sk_push->setDestination(bestKickPosition);
@@ -127,18 +129,15 @@ void Behaviour_Attacker::run() {
 
         enableTransition(SKT_PUSH);
 
-        /// TODO
+        /// TODO:
         /// Refinar a decisão para realizar chute ao gol: chutar quando não houverem obstaculos entre a reta robo-bola em direção ao gol.
 
-        std::cout << "Pushed distance: " << _sk_push->getPushedDistance() << std::endl;
-
         // Se puxou a bola demais ou está suficientemente proximo da posicao para fazer chute ou na distancia maxima de chute
-        if((player()->isNearbyPosition(bestKickPosition, 0.2f) && WR::Utils::angleDiff(player()->angleTo(bestAimPosition), player()->orientation()) <= atan(0.05)) || player()->distOurGoal() <= MAX_DIST_KICK){
+        if((player()->isNearbyPosition(bestKickPosition, 0.2f) && WR::Utils::angleDiff(player()->angleTo(bestAimPosition), player()->orientation()) <= atan(0.1)) || player()->distOurGoal() <= MAX_DIST_KICK){
             _state = STATE_KICK;
         }
         else if(_sk_push->getPushedDistance() >= _sk_push->getMaxPushDistance()){
             _state = STATE_PASS;
-            std::cout << "MAKING PASS!" << std::endl;
         }
     }
     break;
@@ -180,6 +179,7 @@ void Behaviour_Attacker::run() {
     }
     break;
     }
+
 }
 
 quint8 Behaviour_Attacker::getBestReceiver(){
@@ -187,7 +187,8 @@ quint8 Behaviour_Attacker::getBestReceiver(){
     double dist = INFINITY;
     for(int x = 0; x < _recvs.size(); x++){
         if(PlayerBus::ourPlayerAvailable(_recvs.at(x))){
-            double distToAtk = sqrt(pow(player()->position().x() - PlayerBus::ourPlayer(_recvs.at(x))->position().x(), 2) + pow(player()->position().y() - PlayerBus::ourPlayer(_recvs.at(x))->position().y(), 2));
+            Position recvPos = PlayerBus::ourPlayer(_recvs.at(x))->position();
+            double distToAtk = player()->distanceTo(recvPos);
             if(distToAtk < dist){
                 dist = distToAtk;
                 bestRcv = _recvs.at(x);
@@ -260,13 +261,6 @@ Position Behaviour_Attacker::getBestKickPosition(){
         return Position(false, 0.0, 0.0, 0.0); // bola n passa, debugar isso dps
     }
 
-    Line ballLineToGoal = Line::getLine(loc()->ball(), largestMid);
-
-    double o_a = (-1)/ballLineToGoal.a();
-    double o_b = player()->position().y() - (o_a * player()->position().x());
-
-    Line ortogonalLineToBallLine(o_a, o_b);
-
     return impactPosition;
 }
 
@@ -328,9 +322,12 @@ Position Behaviour_Attacker::getBestPosition(int quadrant){
     Position goalLinePos(true, goalPosition.x() - posX, posY, 0.0);
 
     Line goalLine = Line::getLine(goalPosition, largestGoalAngle);
+    double o_a, o_b;
 
-    double o_a = (-1)/goalLine.a();
-    double o_b = player()->position().y() - (o_a * player()->position().x());
+    if(goalLine.a() == 0.0) return Position(false, 0.0, 0.0, 0.0);
+    o_a = (-1)/goalLine.a();
+    o_b = player()->position().y() - (o_a * player()->position().x());
+
     Line ortogonalLine(o_a, o_b);
 
     Position desiredPos = goalLine.interceptionWith(ortogonalLine);

@@ -31,9 +31,11 @@ Role_Default::Role_Default() {
 void Role_Default::initializeBehaviours(){
     // Aqui são inseridos os behaviours possíveis de serem usados
     // na ordem: ID do behaviour, instanciação dele
+
     usesBehaviour(BHV_DONOTHING, _bh_dn = new Behaviour_Attacker());
     usesBehaviour(1, _bh_gk = new Behaviour_Goalkeeper());
     usesBehaviour(2, _bh_bar = new Behaviour_Receiver());
+
 }
 
 void Role_Default::configure(){
@@ -48,16 +50,10 @@ void Role_Default::run(){
      * set presentes neles)
     */
 
-    if(player()->distOurGoal() <= 1.0f)
+    if(player()->playerId() == 1)
+        setBehaviour(BHV_DONOTHING);
+    else
         setBehaviour(1);
-    else{
-        if(player()->playerId() == 1){
-            _bh_dn->addReceiver(3);
-            setBehaviour(BHV_DONOTHING);
-        }
-        else
-            setBehaviour(2);
-    }
 
 
 }
