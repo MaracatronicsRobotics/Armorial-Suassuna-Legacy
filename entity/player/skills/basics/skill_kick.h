@@ -39,6 +39,7 @@ private:
     float _zPower;
     bool isBehindBall(Position posObjective);
     bool isBallInFront();
+    bool isInFrontOfObjective();
 
 public:
     Skill_Kick();
