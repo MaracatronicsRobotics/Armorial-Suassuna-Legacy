@@ -37,7 +37,7 @@ Skill_PushBall2::Skill_PushBall2() {
     _currPos.setUnknown();
     _lastPos.setUnknown();
     _state = STATE_POS;
-    setMaxPushDistance(1.2f);
+    setMaxPushDistance(1.0f);
 }
 
 void Skill_PushBall2::run(){
