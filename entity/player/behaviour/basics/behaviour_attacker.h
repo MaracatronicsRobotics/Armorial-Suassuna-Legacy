@@ -35,7 +35,6 @@ private:
     int _state;
 
     QList<quint8> _recvs;
-    Timer *_timer;
 
     quint8 _bestReceiver;
     Position _kickPosition;

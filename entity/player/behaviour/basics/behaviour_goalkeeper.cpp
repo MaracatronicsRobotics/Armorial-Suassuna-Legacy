@@ -22,6 +22,7 @@
 #include "behaviour_goalkeeper.h"
 #include <utils/knn/knn.hh>
 #include <entity/player/playerbus.h>
+#include <utils/freeangles/freeangles.h>
 
 #define ATTACKER_MINBALLDIST 0.4f
 #define GOALPOSTS_ERROR 0.1f
@@ -36,7 +37,7 @@ Behaviour_Goalkeeper::Behaviour_Goalkeeper() {
     _skill_gkick = NULL;
     _skill_goToLookTo = NULL;
 
-    setRadius(0.4); // raio que define posse de bola para o goleiro dar takeout
+    setRadius(0.5); // raio que define posse de bola para o goleiro dar takeout
     setTakeoutEnabled(true); // avançar na bola quando ela estiver na margem de aceitação (takeout vai dar goto e kick na bola)
     setTakeoutFactor(1.0); // fator de erro pra largura do gol (avançar na bola)
     useAttackerOri(true); // pra levar o atacante em consideração na projeção no gol
@@ -126,11 +127,13 @@ Position Behaviour_Goalkeeper::getAttackerInterceptPosition() {
     if(_useAttackerOri==false)
         return interceptPosition;
 
-    float goal_left = loc()->ourGoalLeftPost().y();
-    float goal_right = loc()->ourGoalRightPost().y();
-
     // Calc ball impact based on attacker ori and check if its going to the goal
     Position posImpact = calcAttackerBallImpact();
+    if(posImpact.isUnknown())
+        return interceptPosition;
+
+    float goal_left = loc()->ourGoalLeftPost().y();
+    float goal_right = loc()->ourGoalRightPost().y();
 
     if(loc()->ourSide().isRight()) {
         goal_left += GOALPOSTS_ERROR;
@@ -150,7 +153,7 @@ Position Behaviour_Goalkeeper::getAttackerInterceptPosition() {
 Position Behaviour_Goalkeeper::calcAttackerBallImpact() {
     QHash<quint8, Player*>::iterator it;
     QHash<quint8, Player*> avPlayers = loc()->getMRCPlayers();      // ALTERA AQUI ZILDAO
-    int poss = -1, size = avPlayers.size();
+    int poss = -1;
 
     for(it=avPlayers.begin(); it!=avPlayers.end(); it++){
         if((*it)->hasBallPossession()){
@@ -163,6 +166,7 @@ Position Behaviour_Goalkeeper::calcAttackerBallImpact() {
         return loc()->ourGoal();
 
     // check if ball is in front of player (avoid y errors)
+    Position playerPos = PlayerBus::ourPlayer(quint8(poss))->position(); // ALTERA AQUI ZILDAO
     Angle anglePlayerBall = PlayerBus::ourPlayer(quint8(poss))->angleTo(loc()->ball()); // ALTERA AQUI ZILDAO
     float diff = WR::Utils::angleDiff(anglePlayerBall, PlayerBus::ourPlayer(quint8(poss))->orientation()); // ALTERA AQUI ZILDAO
     bool ans = (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
@@ -196,10 +200,39 @@ Position Behaviour_Goalkeeper::calcAttackerBallImpact() {
     // Impact point
     float impact_y = loc()->ball().y() + y;
     float impact_x = loc()->ourGoal().x();
-
     const Position posImpact(true, impact_x, impact_y, 0.0); // posicao de impacto (mudando só o y em teoria)
                                                                       // verificar dps a ideia de mover ele pra frente e reduzir angulação
-    /* calculando posicao de impacto no y */
+    // Check if path to impactPosition is clear
+    QList<quint8> exceptions;
+    exceptions.push_back(player()->playerId());   // Set gk exception
+
+    // Get angles of destination
+    Obstacle destination;
+    destination.position() = posImpact;
+    destination.radius() = 0.09f;
+    destination.calcAnglesFrom(playerPos);
+
+    // Generate obstacles and remove exceptions
+    QList<Obstacle> obstacles = FreeAngles::getObstacles(playerPos);
+
+    for(int i = 0; i < exceptions.size(); i++){
+        const quint8 exception = exceptions.at(i);
+
+        for(int j = 0; j < obstacles.size(); j++){
+            Obstacle obst = obstacles.at(j);
+            if(obst.id() == exception && obst.team() == player()->teamId()){
+                obstacles.removeAt(j);
+                j--;
+            }
+        }
+    }
+
+    // Calc free angles and check if has any free angles
+    QList<FreeAngles::Interval> freeAngles = FreeAngles::getFreeAngles(playerPos, destination.initialAngle(), destination.finalAngle(), obstacles);
+    bool hasAnyPath = (freeAngles.isEmpty() == false);
+
+    if(!hasAnyPath)
+        return loc()->ourGoal();
 
     return posImpact; // retorna o impacto, em caso de alguem ter posse da bola
 }

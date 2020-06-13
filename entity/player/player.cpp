@@ -47,9 +47,6 @@ Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Ro
     _vyPID = vyPID;
     _vwPID = vwPID;
 
-    _kalman = new KalmanFilter2D();
-    _kalman->setEnabled(true);
-
     // Idle control
     _idleCount = 0;
 
@@ -113,8 +110,6 @@ void Player::loop(){
         }
     }
     else{
-        // kalman for PID precision
-        _kalman->iterate(position());
         _idleCount = 0;
 
         _mutexRole.lock();
@@ -307,15 +302,10 @@ void Player::setSpeed(float x, float y, float theta) {
 }
 
 std::pair<float, float> Player::goTo(Position targetPosition, double offset, bool setHere){
-    Position robot_pos_filtered = getKalmanPredict();
     double robot_x, robot_y, robotAngle = orientation().value();
-    if(robot_pos_filtered.isUnknown()){
-        robot_x = position().x();
-        robot_y = position().y();
-    }else{
-        robot_x = robot_pos_filtered.x();
-        robot_y = robot_pos_filtered.y();
-    }
+    robot_x = position().x();
+    robot_y = position().y();
+
     // Define a velocidade do robô para chegar na bola
     long double Vx = (targetPosition.x() - robot_x);
     long double Vy = (targetPosition.y() - robot_y);
@@ -348,15 +338,9 @@ std::pair<float, float> Player::goTo(Position targetPosition, double offset, boo
 }
 
 std::pair<double, double> Player::rotateTo(Position targetPosition, double offset, bool setHere) {
-    Position robot_pos_filtered = getKalmanPredict();
     double robot_x, robot_y, angleOrigin2Robot = orientation().value();
-    if(robot_pos_filtered.isUnknown()){
-        robot_x = position().x();
-        robot_y = position().y();
-    }else{
-        robot_x = robot_pos_filtered.x();
-        robot_y = robot_pos_filtered.y();
-    }
+    robot_x = position().x();
+    robot_y = position().y();
 
     // Define a velocidade angular do robô para visualizar a bola
     double vectorRobot2BallX = (targetPosition.x() - robot_x);
@@ -442,21 +426,12 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, double
 }
 
 void Player::aroundTheBall(Position targetPosition, double offset, double offsetAngular){
-    Position robot_pos_filtered = getKalmanPredict();
-    double robot_x, robot_y, robotAngle = orientation().value();
-    if(robot_pos_filtered.isUnknown()){
-        robot_x = position().x();
-        robot_y = position().y();
-    }else{
-        robot_x = robot_pos_filtered.x();
-        robot_y = robot_pos_filtered.y();
-    }
+    double robot_x, robot_y;
+    robot_x = position().x();
+    robot_y = position().y();
     // Configura o robô para ir até a bola e girar em torno dela
-    std::pair<float, float> a;
-    long double moduloDistancia = sqrt(pow((targetPosition.x() - robot_x),2)+pow((targetPosition.y() - robot_y),2));
-    a = goTo(targetPosition, offset);
-    float theta = rotateTo(targetPosition, offsetAngular).second;
-
+    goTo(targetPosition, offset, true);
+    rotateTo(targetPosition, offsetAngular, true);
 }
 
 void Player::kick(bool isPass, float kickZPower){
@@ -484,9 +459,4 @@ QList<Position> Player::getPath() const {
 
 void Player::dribble(bool isActive){
     _ctr->holdBall(_team->teamId(), playerId(), isActive);
-}
-
-Position Player::getKalmanPredict(){
-    _kalman->predict();
-    return _kalman->getPosition();
 }
