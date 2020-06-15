@@ -112,13 +112,14 @@ void WorldMapUpdater::updateTeam(WorldMap *wm, quint8 teamId) {
         wm->setPlayerOrientation(teamId, player, _ctr->playerOrientation(teamId, player));
         wm->setPlayerVelocity(teamId, player, _ctr->playerVelocity(teamId, player));
         wm->setPlayerAngularSpeed(teamId, player, _ctr->playerAngularSpeed(teamId, player));
-
+/*      Online mode doesn't need this =)
         if(teamId == 0){ // maracatronics team (id 0 by default)
             wm->setKickEnabled(teamId, player, _ctr->kickEnabled(teamId, player));
             wm->setDribbleEnabled(teamId, player, _ctr->dribbleEnabled(teamId, player));
             wm->setBatteryCharge(teamId, player, _ctr->batteryCharge(teamId, player));
             wm->setCapacitorCharge(teamId, player, _ctr->capacitorCharge(teamId, player));
         }
+*/
     }
 }
 

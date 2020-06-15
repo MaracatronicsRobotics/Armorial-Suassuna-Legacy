@@ -68,8 +68,14 @@ void StrategyState::runStrategyState() {
         configure(_lastNumOurPlayers);
         _configureEnabled = false;
     }
+
     // For each playbook, initialize (if necessary) and clear old players
     for(it = _playbookList.begin(); it != _playbookList.end(); it++) {
+        if((*it) == NULL){
+            std::cout << "PORRA ZILDAO 1" << std::endl;
+            continue;
+        }
+
         Playbook *playbook = *it;
         // Initialize playbooks (initialized before run() because it modifies
         // players in playbook and already needs it with available players lists)
@@ -78,19 +84,28 @@ void StrategyState::runStrategyState() {
         // Clear old players added
         playbook->clearPlayers();
     }
+
     // Reset players distribution
     _dist->clear();
     QList<Player*> players = avPlayers.values();
     QList<Player*>::iterator it2;
     for(it2=players.begin(); it2!=players.end(); it2++)
         _dist->insert((*it2)->playerId());
+
     // Run state implemented by child
     // It set players to playbooks created on configure()
     run(_lastNumOurPlayers);
+
     // Effectivelly run playbook
     for(it = _playbookList.begin(); it != _playbookList.end(); it++) {
+        if((*it) == NULL){
+            std::cout << "PORRA ZILDAO 2" << std::endl;
+            continue;
+        }
+
         (*it)->runPlaybook(name());
     }
+
     // If still players on players distribution, set them to DoNothing
     while(_dist->hasPlayersAvailable()) {
         quint8 id = _dist->getPlayer();
@@ -98,23 +113,48 @@ void StrategyState::runStrategyState() {
         player->setRole(NULL);
         std::cout << "[WARNING] " << name().toStdString() << ", player #" << (int)id << " wasn't allocated in a Playbook!\n";
     }
+
     // Cleanup playbook old roles
     for(it = _playbookList.begin(); it != _playbookList.end(); it++) {
+        if((*it) == NULL){
+            std::cout << "PORRA ZILDAO 3" << std::endl;
+            continue;
+        }
+
         if((*it)->numPlayers()!=0)
             (*it)->clearOldRoles();
     }
+
     // Clear old playbook
     clearOldPlaybook();
 }
 
 void StrategyState::setCurrPlaybookToOld() {
-    while(_playbookList.empty()==false)
-        _oldPlaybook.push_back(_playbookList.takeFirst());
+    int sz = _playbookList.size();
+    for(int x = 0; x < sz; x++){
+        if(_playbookList.at(x) == NULL){
+            std::cout << "DALE ZILDAO" << std::endl;
+            continue;
+        }
+        else
+            delete _playbookList.at(x);
+    }
+
+    _playbookList.clear();
 }
 
 void StrategyState::clearOldPlaybook() {
-    while(_oldPlaybook.empty()==false)
-        delete _oldPlaybook.takeFirst();
+    int sz = _oldPlaybook.size();
+    for(int x = 0; x < sz; x++){
+        if(_oldPlaybook.at(x) == NULL){
+            std::cout << "DALE ZILDAO" << std::endl;
+            continue;
+        }
+        else
+            delete _oldPlaybook.at(x);
+    }
+
+    _oldPlaybook.clear();
 }
 
 void StrategyState::usesPlaybook(Playbook *playbook) {

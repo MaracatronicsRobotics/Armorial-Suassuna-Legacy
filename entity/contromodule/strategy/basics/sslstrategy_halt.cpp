@@ -36,6 +36,10 @@ void SSLStrategy_Halt::configure(int numOurPlayers) {
 }
 
 void SSLStrategy_Halt::run(int numOurPlayers) {
+    if(_pb_doNothing == NULL){
+        std::cout << "oi bb" << std::endl;
+        return;
+    }
     QList<quint8> allPlayers = dist()->getAllPlayers();
     if(!allPlayers.isEmpty())
         _pb_doNothing->addPlayers(allPlayers);
