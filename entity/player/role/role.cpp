@@ -40,7 +40,10 @@ Role::~Role() {
     // Delete behaviours
     QHash<int, Behaviour*>:: iterator it;
     for(it = _behaviourList.begin(); it != _behaviourList.end(); it++){
-        delete *it;
+        if((*it) == NULL)
+            continue;
+        else
+            delete *it;
     }
     _behaviourList.clear();
 }
