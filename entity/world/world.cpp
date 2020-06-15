@@ -35,8 +35,8 @@ World::World(Controller *ctr, Fields::Field *defaultField) : Entity(ENT_WORLD) {
 
     // Create WorldMap
     _wm = new WorldMap();
-
     setupWorldMap();
+
     // Create WorldMapUpdater
     _wmUpdater = new WorldMapUpdater(ctr, defaultField);
     _wmUpdater->setDefaultFieldGeometry(_wm);
@@ -68,15 +68,19 @@ void World::setTeams(MRCTeam *ourTeam, MRCTeam *theirTeam) {
 
 void World::initialization() {
     std::cout << "[WORLD] thread started.\n";
+
     // Get priorities
     QList<int> priorities = _priorityLevels.keys();
+
     // In each priority
     for(QList<int>::const_iterator i=priorities.constBegin(); i!=priorities.constEnd(); i++) {
         // Get entities
         if(_priorityLevels.contains(*i) == false)
             continue;
+
         QHash<int,Entity*> *entities = _priorityLevels.value(*i);
         QList<Entity*> ents = entities->values();
+
         // Start entity thread
         for(QList<Entity*>::const_iterator ie=ents.constBegin(); ie!=ents.constEnd(); ie++) {
             if((*ie)->entityType() == EntityType::ENT_GUI)
@@ -115,18 +119,22 @@ void World::loop() {
 void World::finalization() {
     // Stop all entities and delete them
     stopAndDeleteEntities();
+
     std::cout << "[WORLD] thread ended.\n";
 }
 
 void World::stopAndDeleteEntities() {
     // Get priorities
     QList<int> priorities = _priorityLevels.keys();
+
     // In each priority (decreasing)
     for(int i=priorities.size()-1; i>=0; i--) {
         const int priority = priorities.at(i);
+
         // Get entities
         QHash<int,Entity*> *entities = _priorityLevels.value(priority);
         QList<Entity*> ents = entities->values();
+
         // Stop entities
         for(QList<Entity*>::const_iterator it=ents.constBegin(); it!=ents.constEnd(); it++) {
             Entity *entity = *it;
@@ -142,8 +150,10 @@ void World::stopAndDeleteEntities() {
             // Delete
             delete entity;
         }
+
         // Delete hash from priority
         delete _priorityLevels.value(priority);
+
         // Remove priority from list
         _priorityLevels.remove(priority);
     }
@@ -157,6 +167,7 @@ void World::addEntity(Entity *e, int priority) {
         if(hash->contains(e->entityId()))
             return;
     }
+
     // Get priority level hash; add if necessary
     QHash<int,Entity*> *priorityLevel;
     if(_priorityLevels.keys().contains(priority)==false) {
@@ -164,8 +175,10 @@ void World::addEntity(Entity *e, int priority) {
         _priorityLevels.insert(priority, priorityLevel);
     } else
         priorityLevel = _priorityLevels.value(priority);
+
     // Insert Entity on priority level
     priorityLevel->insert(e->entityId(), e);
+
     // Set priority
     e->setEntityPriority(priority);
 }
@@ -177,13 +190,17 @@ void World::removeEntity(int id) {
         QHash<int,Entity*> *hash = (*it);
         if(hash->contains(id)) {
             Entity *entity = hash->value(id);
+
             // Stop and wait
             entity->stopEntity();
             entity->wait();
+
             // Remove from hash
             hash->remove(id);
+
             // Delete
             delete entity;
+
             return;
         }
     }
@@ -194,6 +211,7 @@ void World::setupWorldMap() {
     QList<quint8> balls =_ctr->balls();
     for(QList<quint8>::const_iterator iballs=balls.constBegin(); iballs!=balls.constEnd(); iballs++)
         _wm->addBall(*iballs);
+
     // Fill teams
     QList<quint8> teams = _ctr->teams();
     for(QList<quint8>::const_iterator iteams=teams.constBegin(); iteams!=teams.constEnd(); iteams++) {

@@ -107,13 +107,25 @@ void Playbook::updatePlayersRoles() {
 }
 
 void Playbook::setCurrRolesToOld() {
-    while(_rolesList.empty()==false)
-        _oldRoles.push_back(_rolesList.takeFirst());
+    int sz = _rolesList.size();
+    for(int x = 0; x < sz; x++)
+        if(_rolesList.at(x) == NULL){
+            std::cout << "DALE ZILDAO" << std::endl;
+            continue;
+        }
+        else
+            delete _rolesList.at(x);
 }
 
 void Playbook::clearOldRoles() {
-    while(_oldRoles.empty()==false)
-        delete _oldRoles.takeFirst();
+    int sz = _oldRoles.size();
+    for(int x = 0; x < sz; x++)
+        if(_oldRoles.at(x) == NULL){
+            std::cout << "DALE ZILDAO" << std::endl;
+            continue;
+        }
+        else
+            delete _oldRoles.at(x);
 }
 
 void Playbook::usesRole(Role *role) {

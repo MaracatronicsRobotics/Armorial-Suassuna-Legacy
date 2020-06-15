@@ -29,7 +29,7 @@ Playbook_DoNothing::Playbook_DoNothing() {
 }
 
 int Playbook_DoNothing::maxNumPlayer() {
-    return INT_MAX;
+    return MRCConstants::_qtPlayers;
 }
 
 void Playbook_DoNothing::configure(int numPlayers) {

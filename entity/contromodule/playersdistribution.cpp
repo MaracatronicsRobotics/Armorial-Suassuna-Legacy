@@ -238,11 +238,10 @@ void PlayersDistribution::insert(quint8 id) {
 }
 
 void PlayersDistribution::remove(quint8 id) {
-    QList<playerInfo>::iterator it;
-    for(it=_players.begin(); it!=_players.end(); it++) {
-        playerInfo info = *it;
-        if(info.id==id) {
-            _players.erase(it);
+    int sz = _players.size();
+    for(int x = 0; x < sz; x++){
+        if(_players.at(x).id == id){
+            _players.removeAt(x);
             break;
         }
     }
