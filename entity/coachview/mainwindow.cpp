@@ -197,7 +197,10 @@ void MainWindow::removeOld(QTreeWidgetItem *parent, QList<QString> stringList){
                 break;
             }
         }
-        if(!found) parent->takeChild(x);
+        if(!found){
+            QTreeWidgetItem *test = parent->takeChild(x);
+            delete test;
+        }
     }
 }
 
@@ -495,6 +498,30 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    QList<QTreeWidgetItem*>::iterator it;
+    // Deleting robot and behaviours pointers
+    for(it = robots.begin(); it != robots.end(); it++){
+        QList<QTreeWidgetItem*>::iterator it2;
+        QList<QTreeWidgetItem*> children = (*it)->takeChildren();
+        for(it2 = children.begin(); it != children.end(); it++){
+            delete (*it2);
+        }
+        delete (*it);
+    }
+
+    // Deleting roles
+    for(it = roles.keys().begin(); it != roles.keys().end(); it++){
+        roles[(*it)].clear(); // convenience
+        delete (*it);
+    }
+
+    QList<QTreeWidgetItem*> rootChildren = root->takeChildren();
+    for(it = rootChildren.begin(); it != rootChildren.end(); it++){
+        delete (*it);
+    }
+
+    delete root;
+    delete treeWidget;
     delete ui;
 }
 

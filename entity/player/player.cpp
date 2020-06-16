@@ -63,6 +63,11 @@ Player::~Player(){
         delete _playerAccessSelf;
     if(_playerAccessBus != NULL)
         delete _playerAccessBus;
+
+    delete _nav;
+    delete _vxPID;
+    delete _vyPID;
+    delete _vwPID;
 }
 
 PlayerAccess* Player::access() const {

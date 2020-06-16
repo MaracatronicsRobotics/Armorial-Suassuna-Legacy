@@ -48,7 +48,6 @@ void CoachView::setReferee(SSLReferee *ref){
 
 CoachView::CoachView() : Entity(ENT_GUI)
 {
-    _UIMutex = new QMutex();
 
     _suassunaUI = new MainWindow();
     _suassunaUI->show();
@@ -66,6 +65,9 @@ MainWindow* CoachView::getUI(){
 
 CoachView::~CoachView(){
     _suassunaUI->close();
+
+    delete _timer;
+    delete _suassunaUI;
 }
 
 void CoachView::initialization(){

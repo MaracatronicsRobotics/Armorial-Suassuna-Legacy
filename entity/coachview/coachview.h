@@ -58,9 +58,6 @@ private:
     // Ref
     QList<SSLGameInfo*> _gameInfo;
 
-    // Mutex
-    QMutex *_UIMutex;
-
     // Teams
     MRCTeam *_ourTeam;
     MRCTeam *_theirTeam;
