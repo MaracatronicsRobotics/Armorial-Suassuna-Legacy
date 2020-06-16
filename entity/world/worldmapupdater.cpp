@@ -38,7 +38,6 @@ WorldMapUpdater::WorldMapUpdater(Controller *ctr, Fields::Field *defaultField) {
 }
 
 WorldMapUpdater::~WorldMapUpdater() {
-
 }
 
 void WorldMapUpdater::update(WorldMap *wm) {

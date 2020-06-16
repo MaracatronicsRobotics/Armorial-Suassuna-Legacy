@@ -133,9 +133,6 @@ public:
 
     quint8 getGoalie() { return _goalie; }
 
-    // Mutex
-    QMutex *_UIMutex;
-
 
     typedef enum {
         STATE_CANTMOVE,

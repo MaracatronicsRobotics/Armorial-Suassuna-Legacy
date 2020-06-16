@@ -97,7 +97,7 @@ private:
     MRCTeam* _theirTeam;
 
     // tree
-    QTreeWidget *treeWidget;
+    QTreeWidget* treeWidget;
     QTreeWidgetItem* root;
     QMap<QTreeWidgetItem*, QList<QTreeWidgetItem*>> roles;
     QList<QTreeWidgetItem*> robots;

@@ -53,7 +53,7 @@ void Playbook::initialize(MRCTeam *ourTeam, MRCTeam *opTeam, CoachUtils *utils, 
 void Playbook::runPlaybook(QString strategyState) {
     // Check if StrategyState set players to this playbook
     if(_players.size()==0) {
-        //std::cout << "[WARNING] " << strategyState.toStdString() << "->" << name().toStdString() << " has no players set!\n";
+        std::cout << "[WARNING] " << strategyState.toStdString() << "->" << name().toStdString() << " has no players set!\n";
         return;
     }
     // Run configure(numPlayers) if num of players in this playbook changed
@@ -107,14 +107,8 @@ void Playbook::updatePlayersRoles() {
 }
 
 void Playbook::setCurrRolesToOld() {
-    int sz = _rolesList.size();
-    for(int x = 0; x < sz; x++)
-        if(_rolesList.at(x) == NULL){
-            std::cout << "DALE ZILDAO" << std::endl;
-            continue;
-        }
-        else
-            delete _rolesList.at(x);
+    while(!_rolesList.isEmpty())
+        _oldRoles.push_back(_rolesList.takeFirst());
 }
 
 void Playbook::clearOldRoles() {
