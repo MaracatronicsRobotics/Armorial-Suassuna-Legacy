@@ -50,9 +50,6 @@ Suassuna::~Suassuna() {
     delete _ctr;
     // Delete default field
     delete _defaultField;
-    // Delete our gui
-    if(_ourGUI != NULL)
-        delete _ourGUI;
 }
 
 bool Suassuna::start() {
