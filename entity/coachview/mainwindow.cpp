@@ -498,6 +498,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+
     QList<QTreeWidgetItem*>::iterator it;
     // Deleting robot and behaviours pointers
     for(it = robots.begin(); it != robots.end(); it++){
