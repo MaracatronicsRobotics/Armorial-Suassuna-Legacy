@@ -130,17 +130,8 @@ void StrategyState::runStrategyState() {
 }
 
 void StrategyState::setCurrPlaybookToOld() {
-    int sz = _playbookList.size();
-    for(int x = 0; x < sz; x++){
-        if(_playbookList.at(x) == NULL){
-            std::cout << "DALE ZILDAO" << std::endl;
-            continue;
-        }
-        else
-            delete _playbookList.at(x);
-    }
-
-    _playbookList.clear();
+    while(!_playbookList.isEmpty())
+        _oldPlaybook.push_back(_playbookList.takeFirst());
 }
 
 void StrategyState::clearOldPlaybook() {

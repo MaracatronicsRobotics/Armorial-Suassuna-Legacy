@@ -36,6 +36,7 @@ Suassuna::Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide)
 
     // Create GUI
     _ourGUI = new CoachView();
+    //_ourGUI = NULL;
     
     // Default field setup
     _defaultField = new Fields::SSL2020();
@@ -47,8 +48,11 @@ Suassuna::Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide)
 Suassuna::~Suassuna() {
     // Delete controller
     delete _ctr;
-    // Delete defautl field
+    // Delete default field
     delete _defaultField;
+    // Delete our gui
+    if(_ourGUI != NULL)
+        delete _ourGUI;
 }
 
 bool Suassuna::start() {
@@ -94,7 +98,7 @@ bool Suassuna::start() {
     _ourGUI->setTeams(_ourTeam, _theirTeam);
     _ourGUI->setCoach(_coach);
     _ourGUI->setReferee(_ref);
-    _world->addEntity(_ourGUI, 3);
+    _world->addEntity(_ourGUI, 2);
 
     // Setup ball prediction
     /*

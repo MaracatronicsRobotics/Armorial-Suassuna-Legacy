@@ -51,8 +51,6 @@ SSLGameInfo::SSLGameInfo(Colors::Color color) {
 //    setState(GAME_ON);
 //    setState(GAME_OFF);
 
-    _UIMutex = new QMutex();
-
     (color==Colors::BLUE)? _stateColor = BLUE : _stateColor = YELLOW;
 
     _goalie = 200;

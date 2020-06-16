@@ -230,13 +230,14 @@ void Coach::run(){
         std::cout << "[COACH] No players available!" << std::endl;
         return ;
     }
-
+/*
     std::vector<double> gaussians = getEnemyGaussiansInAreas();
     std::string agressivity = calculateAgressivity(gaussians);
 
     if(agressivity != _lastAgressivity){
         _lastAgressivity = agressivity;
     }
+*/
 
     // get strategy
     Strategy *strat = strategy();
