@@ -52,8 +52,7 @@ CoachView::CoachView() : Entity(ENT_GUI)
     _suassunaUI = new MainWindow();
     _suassunaUI->show();
 
-    _timer = new Timer();
-    _timer->start();
+    _timer.start();
 
     // half of the openGL application update
     timeToUpdate = (1000.0 / MRCConstants::guiUpdateFrequency()) / 2.0;
@@ -66,7 +65,6 @@ MainWindow* CoachView::getUI(){
 CoachView::~CoachView(){
     _suassunaUI->close();
 
-    delete _timer;
     delete _suassunaUI;
 }
 
@@ -78,8 +76,8 @@ void CoachView::loop(){
     // Update GUI
     _suassunaUI->updateGUI(_ourTeam, _theirTeam, _ourTeam->loc());
 
-    _timer->stop();
-    if(_timer->timemsec() >= timeToUpdate){
+    _timer.stop();
+    if(_timer.timemsec() >= timeToUpdate){
         // Process coach strategy, playbooks, roles and players
         QList<QString> playbookList;
         QMap<QString, QList<QString>> rolesList;
@@ -93,12 +91,14 @@ void CoachView::loop(){
             QList<Playbook*>::iterator it;
             QList<Role*>::iterator it2;
             for(it = pbList.begin(); it != pbList.end(); it++){
-                if((*it) == NULL || !(*it)->isInitialized()) continue;
+                if((*it) == NULL) continue;
+                if(!(*it)->isInitialized()) continue;
                 QString playbookName = (*it)->name();
                 playbookList.push_back(playbookName);
                 QList<Role*> rList = (*it)->getRoles();
                 for(it2 = rList.begin(); it2 != rList.end(); it2++){
-                    if((*it2) == NULL || !(*it2)->isInitialized()) continue;
+                    if((*it2) == NULL) continue;
+                    if(!(*it2)->isInitialized()) continue;
                     QString roleName = (*it2)->name();
                     rolesList[playbookName].push_back(roleName);
                     if((*it2)->player() == NULL) continue;
@@ -142,7 +142,7 @@ void CoachView::loop(){
         }
 
         // start timer for the next it
-        _timer->start();
+        _timer.start();
     }
 }
 

@@ -69,7 +69,7 @@ private:
     SSLReferee *_ref;
 
     // Timer
-    Timer *_timer;
+    Timer _timer;
 };
 
 #endif // COACHVIEW_H

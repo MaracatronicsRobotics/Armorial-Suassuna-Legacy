@@ -68,10 +68,20 @@ void GLSoccerView::updateDefaultFieldDimensions() {
     fieldDim.field_length = FieldConstantsLarc2020::kFieldLength;
     fieldDim.field_width = FieldConstantsLarc2020::kFieldWidth;
     fieldDim.boundary_width = FieldConstantsLarc2020::kBoundaryWidth;
+
+    // Erasing lines
+    std::vector<FieldLine *>::iterator it;
+    for(it = fieldDim.lines.begin(); it != fieldDim.lines.end(); it++)
+        delete (*it);
     fieldDim.lines.clear();
+
     for(size_t i=0; i<FieldConstantsLarc2020::kNumFieldLines; i++)
         fieldDim.lines.push_back(new FieldLine(FieldConstantsLarc2020::kFieldLines[i]));
 
+    // Erasing arcs
+    std::vector<FieldCircularArc *>::iterator it2;
+    for(it2 = fieldDim.arcs.begin(); it2 != fieldDim.arcs.end(); it2++)
+        delete (*it2);
     fieldDim.arcs.clear();
 
     for(size_t i=0; i<FieldConstantsLarc2020::kNumFieldArcs; i++)
@@ -131,15 +141,30 @@ void GLSoccerView::updateFieldGeometry(Locations *loc) {
         fieldLines.append(FieldLine("RightFieldRightDefenseLine", kXMax, -kDefenseStretch/2, kXMax-kDefenseRadius-kLineThickness/2, -kDefenseStretch/2, kLineThickness));
     }
 
+    // Erase fieldDim lines pointers
+    std::vector<FieldLine*>::iterator it;
+    for(it = fieldDim.lines.begin(); it != fieldDim.lines.end(); it++)
+        delete (*it);
+
     // Add new lines
     fieldDim.lines.clear();
     for(int i=0; i<fieldLines.size(); i++)
         fieldDim.lines.push_back(new FieldLine(fieldLines[i]));
 
+    // Erase fieldDim arcs pointers
+    std::vector<FieldCircularArc*>::iterator it2;
+    for(it2 = fieldDim.arcs.begin(); it2 != fieldDim.arcs.end(); it2++)
+        delete (*it2);
+
     // Add new arcs
     fieldDim.arcs.clear();
     for(int i=0; i<fieldArcs.size(); i++)
         fieldDim.arcs.push_back(new FieldCircularArc(fieldArcs[i]));
+
+    // Erase fieldDim triangle pointers
+    std::vector<FieldTriangle*>::iterator it3;
+    for(it3 = fieldDim.triangles.begin(); it3 != fieldDim.triangles.end(); it3++)
+        delete (*it3);
 
     // Add new triangles
     fieldDim.triangles.clear();
