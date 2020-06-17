@@ -245,6 +245,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
+        MainWindow->setEnabled(true);
         MainWindow->resize(1397, 842);
         QIcon icon;
         icon.addFile(QString::fromUtf8(":/textures/textures/armorial.ico"), QSize(), QIcon::Normal, QIcon::Off);

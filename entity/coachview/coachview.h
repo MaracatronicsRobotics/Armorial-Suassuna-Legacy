@@ -64,6 +64,7 @@ private:
 
     // Coach
     Coach *_coach;
+    std::mutex mutx;
 
     // Referee
     SSLReferee *_ref;

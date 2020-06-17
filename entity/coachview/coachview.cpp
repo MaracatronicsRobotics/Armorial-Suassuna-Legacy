@@ -78,6 +78,7 @@ void CoachView::loop(){
 
     _timer.stop();
     if(_timer.timemsec() >= timeToUpdate){
+        /*
         // Process coach strategy, playbooks, roles and players
         QList<QString> playbookList;
         QMap<QString, QList<QString>> rolesList;
@@ -108,9 +109,9 @@ void CoachView::loop(){
                     playersList[std::make_pair(playbookName, roleName)].push_back(std::make_pair(playerName.c_str(), playerId));
                 }
             }
-
             _suassunaUI->resetTree(stratName, playbookList, rolesList, playersList, behavioursList);
         }
+        */
 
         // process every ssl game info
         SSLGameInfo* _gameInfo = _ref->getGameInfo(_ourTeam->teamColor());
