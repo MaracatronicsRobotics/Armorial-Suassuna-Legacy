@@ -38,6 +38,7 @@ public:
 
     StrategyState* getStrategyState();
 private:
+    friend class CoachView;
     // run controller
     void run();
 
@@ -51,7 +52,6 @@ private:
 
     // Strategy
     QMutex _mutexStrategy;
-    QMutex *_UIMutex;
     Strategy *_strat;
     Strategy* strategy();
 
