@@ -39,11 +39,11 @@ public:
     ~CoachView();
 
     QString name();
-    MainWindow* getUI();
-    void setTeams(MRCTeam *our, MRCTeam *their);
-    void setCoach(Coach *coach);
-    void setReferee(SSLReferee *ref);
-    MRCTeam* getOurTeam() { return _ourTeam; }
+    static void setTeams(MRCTeam *our, MRCTeam *their);
+    static void setCoach(Coach *coach);
+    static void setReferee(SSLReferee *ref);
+    static void updateTree(StrategyState *strat);
+    static MRCTeam* getOurTeam() { return _ourTeam; }
 
     double timeToUpdate;
 
@@ -53,21 +53,21 @@ private:
     void finalization();
 
     // UI
-    MainWindow *_suassunaUI;
+    static MainWindow *_suassunaUI;
 
     // Ref
     QList<SSLGameInfo*> _gameInfo;
 
     // Teams
-    MRCTeam *_ourTeam;
-    MRCTeam *_theirTeam;
+    static MRCTeam *_ourTeam;
+    static MRCTeam *_theirTeam;
 
     // Coach
-    Coach *_coach;
+    static Coach *_coach;
     std::mutex mutx;
 
     // Referee
-    SSLReferee *_ref;
+    static SSLReferee *_ref;
 
     // Timer
     Timer _timer;
