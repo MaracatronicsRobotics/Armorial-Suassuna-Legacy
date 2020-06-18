@@ -127,6 +127,8 @@ void StrategyState::runStrategyState() {
 
     // Clear old playbook
     clearOldPlaybook();
+
+    CoachView::updateTree(this);
 }
 
 void StrategyState::setCurrPlaybookToOld() {
