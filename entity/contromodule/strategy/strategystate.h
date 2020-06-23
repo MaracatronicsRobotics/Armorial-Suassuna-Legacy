@@ -40,6 +40,7 @@ public:
 
     // Auxiliary methods
     QList<Playbook*> getPlaybooks() { return _playbookList; }
+    Colors::Color teamColor();
 protected:
     // Playbook functions
     void usesPlaybook(Playbook *playbook);
@@ -53,6 +54,7 @@ protected:
 
     // Utils, loc and dist access
     CoachUtils* utils() { return _utils; }
+    SSLReferee* ref() { return _ref; }
     Locations* loc() const;
     PlayersDistribution* dist() { return _dist; }
 private:

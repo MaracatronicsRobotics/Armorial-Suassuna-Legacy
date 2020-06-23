@@ -53,6 +53,7 @@ public:
 
     // Auxiliary methods
     QList<Role*> getRoles() { return _assignmentTable.values(); }
+    Colors::Color teamColor() { return _ourTeam->teamColor(); }
 protected:
     // Players on this playbook access
     bool hasPlayer(quint8 id);
@@ -66,6 +67,7 @@ protected:
 
     // Utils, loc and dist access
     CoachUtils* utils() { return _utils; }
+    SSLReferee* ref() { return _ref; }
     Locations* loc() const;
     PlayersDistribution* dist() { return _dist; }
 private:

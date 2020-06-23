@@ -112,8 +112,10 @@ void Behaviour_Attacker::run() {
         // E com essa reta calcular a reta ortogonal (entre o robo e essa reta gerada) e posicionar o robo
         // na intersecção entre essas duas retas, arrastando a bola com o drible.
 
-        Position bestKickPosition = getBestPosition(QUADRANT_MID);
+        Position bestKickPosition = getBestPosition(getBestQuadrant());
         Position bestAimPosition = getBestKickPosition();
+        std::cout << "quadrant: " << getBestQuadrant() << std::endl;
+        std::cout << "aim: " << bestAimPosition.x() << " . " << bestAimPosition.y() << std::endl;
 
         if(bestKickPosition.isUnknown()){ // Nao existem aberturas para o gol
             /// TODO:
@@ -212,7 +214,6 @@ bool Behaviour_Attacker::isBehindBall(Position posObjective){
 Position Behaviour_Attacker::getBestKickPosition(){
     const Position goalRightPost = loc()->ourGoalRightPost();
     const Position goalLeftPost = loc()->ourGoalLeftPost();
-    const Position goalCenter = loc()->ourGoal();
 
     // calculating angles
     float minAngle = WR::Utils::getAngle(loc()->ball(), goalRightPost);
@@ -244,13 +245,13 @@ Position Behaviour_Attacker::getBestKickPosition(){
     }
 
     // Triangularization
-    float x = goalCenter.x() - loc()->ball().x();
+    float x = loc()->ourGoal().x() - loc()->ball().x();
     float tg = tan(largestMid);
     float y = tg * x;
 
     // Impact point
     float pos_y = loc()->ball().y() + y;
-    Position impactPosition(true, goalCenter.x(), pos_y, 0.0);
+    Position impactPosition(true, loc()->ourGoal().x(), pos_y, 0.0);
 
     // Check if impact position has space for ball radius
     const float distImpactPos = WR::Utils::distance(loc()->ball(), impactPosition);
@@ -315,12 +316,6 @@ Position Behaviour_Attacker::getBestPosition(int quadrant){
         largestGoalAngle = largestMid; // finalmente salvo o angulo (meio do maior intervalo)
     }
 
-    // Calculando a posicao em relação ao raio de atuação que o receiver vai ficar
-    float posAngle = GEARSystem::Angle::pi - largestGoalAngle; // angulo suplementar (variar o y)
-    float posX = radius * cos(posAngle);
-    float posY = radius * sin(posAngle);
-    Position goalLinePos(true, goalPosition.x() - posX, posY, 0.0);
-
     Line goalLine = Line::getLine(goalPosition, largestGoalAngle);
     double o_a, o_b;
 
@@ -333,6 +328,33 @@ Position Behaviour_Attacker::getBestPosition(int quadrant){
     Position desiredPos = goalLine.interceptionWith(ortogonalLine);
 
     return desiredPos;
+}
+
+int Behaviour_Attacker::getBestQuadrant(){
+    double bestDist = 999;
+    int bestQuadrant = 0;
+    for(int x = QUADRANT_UP; x <= QUADRANT_BOT; x++){
+        Position quadrantBarycenter = getQuadrantBarycenter(x);
+        double dist = WR::Utils::distance(player()->position(), quadrantBarycenter);
+        if(dist < bestDist){
+            bestDist = dist;
+            bestQuadrant = x;
+        }
+    }
+
+    return bestQuadrant;
+}
+
+Position Behaviour_Attacker::getQuadrantBarycenter(int quadrant){
+    const float goal_x = loc()->ourGoal().x();
+    const float goal_y = loc()->ourGoal().y();
+
+    std::pair<Position, Position> points = getQuadrantInitialPosition(quadrant);
+
+    const float barycenter_x = (points.first.x() + points.second.x() + goal_x) / 3.0;
+    const float barycenter_y = (points.first.y() + points.second.y() + goal_y) / 3.0;
+
+    return Position(true, barycenter_x, barycenter_y, 0.0);
 }
 
 std::pair<Position, Position> Behaviour_Attacker::getQuadrantInitialPosition(int quadrant){
