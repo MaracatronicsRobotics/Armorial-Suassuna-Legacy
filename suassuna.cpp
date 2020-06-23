@@ -201,10 +201,3 @@ void Suassuna::setupOppPlayers(quint8 opTeamId) {
         _world->addEntity(opPlayer, 2);
     }
 }
-
-int main(){
-    int i;
-    for(i = 1; i <= 10; i++){
-        printf("%d\n", i);
-    }
-}
