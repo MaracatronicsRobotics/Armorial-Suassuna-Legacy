@@ -42,6 +42,7 @@ private:
 
     Position getBestKickPosition();
     bool isBehindBall(Position posObjective);
+    bool hasBallAnyPathTo(Position posObjective);
     quint8 getBestReceiver();
 
     // Quadrant
