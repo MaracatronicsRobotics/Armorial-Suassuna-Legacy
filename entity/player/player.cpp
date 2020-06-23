@@ -363,8 +363,8 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
         angleOrigin2ball = acos(vectorRobot2BallX); //angulo que a bola faz com o eixo x em relação ao robo
     }
 
-    double minValue = 1.5;
-    double maxValue = 3.0;
+    double minValue = 2.5;
+    double maxValue = 5.0;
 
     double speed = 0.0;
 

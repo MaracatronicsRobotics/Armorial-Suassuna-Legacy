@@ -173,7 +173,7 @@ void Suassuna::setupOurPlayers() {
         // Create Player
         PID *vxPID = new PID(0.5, 0.0, 0.0, 2.5, -2.5);
         PID *vyPID = new PID(0.5, 0.0, 0.0, 2.5, -2.5);
-        PID *vwPID = new PID(0.7, 0.0, 0.0, 3.0, -3.0);
+        PID *vwPID = new PID(0.7, 0.0, 0.0, 5.0, -5.0);
         NavAlgorithm *navAlg = new FastPathPlanning();
         Player *player = new Player(_world, _ourTeam, _ctr, playerList.at(i), new Role_Default(), _ref, vxPID, vyPID, vwPID, navAlg);
         // Enable
@@ -199,5 +199,12 @@ void Suassuna::setupOppPlayers(quint8 opTeamId) {
         _theirTeam->addPlayer(opPlayer);
         // Add to world
         _world->addEntity(opPlayer, 2);
+    }
+}
+
+int main(){
+    int i;
+    for(i = 1; i <= 10; i++){
+        printf("%d\n", i);
     }
 }

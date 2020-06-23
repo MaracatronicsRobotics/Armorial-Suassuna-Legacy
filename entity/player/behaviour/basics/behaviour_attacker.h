@@ -45,6 +45,8 @@ private:
     quint8 getBestReceiver();
 
     // Quadrant
+    int getBestQuadrant();
+    Position getQuadrantBarycenter(int quadrant);
     std::pair<Position, Position> getQuadrantInitialPosition(int quadrant);
     Position getBestPosition(int quadrant);
 
