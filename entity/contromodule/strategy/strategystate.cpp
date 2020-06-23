@@ -175,3 +175,7 @@ bool StrategyState::hasBallPossession() const {
 quint8 StrategyState::ballPossession() const {
     return _ourTeam->ballPossession();
 }
+
+Colors::Color StrategyState::teamColor(){
+    return _ourTeam->teamColor();
+}
