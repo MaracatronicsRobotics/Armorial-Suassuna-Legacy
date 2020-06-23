@@ -43,5 +43,7 @@ void MRCStrategy::configure() {
     setStrategyState(THEIRDIRECTKICK, new SSLStrategy_Halt());
     setStrategyState(THEIRINDIRECTKICK, new SSLStrategy_Halt());
     setStrategyState(TIMEOUT, new SSLStrategy_Halt());
+    setStrategyState(THEIRPLACEMENT, new SSLStrategy_Halt());
+    setStrategyState(OURPLACEMENT, new SSLStrategy_Halt());
     setStrategyState(UNDEFINED, new SSLStrategy_Halt());
 }

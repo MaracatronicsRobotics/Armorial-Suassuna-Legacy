@@ -60,6 +60,8 @@ SSLStrategy::SSLGameState SSLStrategy::refState2SSLGameState(SSLGameInfo::RefPro
         case SSLGameInfo::STATE_THEIRKICKOFF:       return THEIRKICKOFF;
         case SSLGameInfo::STATE_THEIRPENALTY:       return THEIRPENALTY;
         case SSLGameInfo::STATE_TIMEOUT:            return TIMEOUT;
+        case SSLGameInfo::STATE_OURBALLPLACEMENT:   return OURPLACEMENT;
+        case SSLGameInfo::STATE_THEIRBALLPLACEMENT: return THEIRPLACEMENT;
 
         case SSLGameInfo::STATE_UNDEFINED:
         default:
@@ -81,6 +83,8 @@ QString SSLStrategy::state2str(int gameState) {
         case THEIRINDIRECTKICK: return "THEIR INDIRECT KICK";
         case THEIRKICKOFF:      return "THEIR KICKOFF";
         case THEIRPENALTY:      return "THEIR PENALTY";
+        case OURPLACEMENT:      return "OUR PLACEMENT";
+        case THEIRPLACEMENT:    return "THEIR PLACEMENT";
         case UNDEFINED:
         default:
             return "UNDEFINED";
