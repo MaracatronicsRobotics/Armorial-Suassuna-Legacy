@@ -134,8 +134,9 @@ void Behaviour_Attacker::run() {
         /// TODO:
         /// Refinar a decisão para realizar chute ao gol: chutar quando não houverem obstaculos entre a reta robo-bola em direção ao gol.
 
+        std::cout << "has path: " << hasBallAnyPathTo(bestAimPosition) << std::endl;
         // Se puxou a bola demais ou está suficientemente proximo da posicao para fazer chute ou na distancia maxima de chute
-        if((player()->isNearbyPosition(bestKickPosition, 0.2f) && WR::Utils::angleDiff(player()->angleTo(bestAimPosition), player()->orientation()) <= atan(0.1)) || player()->distOurGoal() <= MAX_DIST_KICK){
+        if(((player()->isNearbyPosition(bestKickPosition, 0.2f) || hasBallAnyPathTo(bestAimPosition)) && WR::Utils::angleDiff(player()->angleTo(bestAimPosition), player()->orientation()) <= atan(0.1)) || player()->distOurGoal() <= MAX_DIST_KICK){
             _state = STATE_KICK;
         }
         else if(_sk_push->getPushedDistance() >= _sk_push->getMaxPushDistance()){
@@ -250,7 +251,12 @@ Position Behaviour_Attacker::getBestKickPosition(){
     float y = tg * x;
 
     // Impact point
-    float pos_y = loc()->ball().y() + y;
+    float pos_y;
+    if(loc()->ball().y() < 0.0)
+        pos_y = -loc()->ball().y() - y;
+    else
+        pos_y = loc()->ball().y() + y;
+
     Position impactPosition(true, loc()->ourGoal().x(), pos_y, 0.0);
 
     // Check if impact position has space for ball radius
@@ -403,4 +409,20 @@ std::pair<Position, Position> Behaviour_Attacker::getQuadrantInitialPosition(int
         break;
         }
     }
+}
+
+bool Behaviour_Attacker::hasBallAnyPathTo(Position posObjective){
+    // Getting angles
+    Obstacle objective;
+    objective.position() = posObjective;
+    objective.radius() = 0.025 * 1.5; // 1.5 * ballRadius
+    objective.calcAnglesFrom(loc()->ball());
+
+    // Generating obstacle list
+    QList<Obstacle> obstacles = FreeAngles::getObstacles(loc()->ball());
+
+    // Calc free angles and return if has any free angles
+    QList<FreeAngles::Interval> freeAngles = FreeAngles::getFreeAngles(loc()->ball(), objective.initialAngle(), objective.finalAngle(), obstacles);
+
+    return (freeAngles.empty() == false);
 }
