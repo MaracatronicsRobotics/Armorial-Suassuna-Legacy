@@ -116,27 +116,18 @@ void Behaviour_Attacker::run() {
         if(bestAimPosition.isUnknown()) bestAimPosition = loc()->ourGoal();
 
         Position attackerInterceptWithGoal = getAttackerInterceptWithGoal();
-        std::cout << "quadrant: " << getBestQuadrant() << std::endl;
-        std::cout << "aim: " << bestAimPosition.x() << " . " << bestAimPosition.y() << std::endl;
-
         if(bestKickPosition.isUnknown()){ // Nao existem aberturas para o gol
             /// TODO:
             /// Ver o que fazer nessa situação
-
-            std::cout << "oi?" << std::endl;
+            std::cout << "bestkick is unknown" << std::endl;
         }
         else{                             // Abertura para chute
             _sk_push->setDestination(bestKickPosition);
-            if(bestAimPosition.isUnknown()) _sk_push->setAim(loc()->ourGoal());
-            else _sk_push->setAim(bestAimPosition);
+            _sk_push->setAim(bestAimPosition);
         }
 
         enableTransition(SKT_PUSH);
 
-        /// TODO:
-        /// Refinar a decisão para realizar chute ao gol: chutar quando não houverem obstaculos entre a reta robo-bola em direção ao gol.
-
-        std::cout << "ball has path: " << hasBallAnyPathTo(attackerInterceptWithGoal) << std::endl;
         // Se puxou a bola demais ou está suficientemente proximo da posicao para fazer chute ou na distancia maxima de chute
         if(((player()->isNearbyPosition(bestKickPosition, 0.2f) || hasBallAnyPathTo(attackerInterceptWithGoal)) && WR::Utils::angleDiff(player()->angleTo(bestAimPosition), player()->orientation()) <= atan(0.05)) || player()->distOurGoal() <= MAX_DIST_KICK){
             _state = STATE_KICK;
@@ -150,7 +141,7 @@ void Behaviour_Attacker::run() {
         Position bestKickPosition = getBestAimPosition();
         if(bestKickPosition.isUnknown()) bestKickPosition = loc()->ourGoal();
         _sk_kick->setAim(bestKickPosition);
-        _sk_kick->setIsPass(false);
+        _sk_kick->setPower(MRCConstants::_maxKickPower);
 
         enableTransition(SKT_KICK);
 
@@ -166,9 +157,13 @@ void Behaviour_Attacker::run() {
             _state = STATE_KICK;
         else{
             if(PlayerBus::ourPlayerAvailable(bestReceiverId)){
+                /// TODO:
+                /// Driblar a bola até o nosso aliado e chutar
+                /// Se habilitar apenas o kick, talvez possam acontecer alguns erros inesperados =c
+                /// Criar heurística para definir força do chute
                 Position recvPos = PlayerBus::ourPlayer(bestReceiverId)->position();
                 _sk_kick->setAim(recvPos);
-                _sk_kick->setIsPass(true);
+                _sk_kick->setPower(3.0);
 
                 enableTransition(SKT_KICK);
             }

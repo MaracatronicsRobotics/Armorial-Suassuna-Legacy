@@ -27,7 +27,6 @@
 class Skill_Kick : public Skill {
 private:
     void run();
-    bool _isPass;
     Position _aimPosition;
 
     enum{
@@ -36,7 +35,8 @@ private:
     };
 
     int _state;
-    float _zPower;
+    float _power;
+    bool _isChip;
     bool isBehindBall(Position posObjective);
     bool isBallInFront();
     bool isInFrontOfObjective();
@@ -45,9 +45,9 @@ public:
     Skill_Kick();
     QString name();
 
-    void setIsPass(bool isPass) { _isPass = isPass; }
     void setAim (Position pos) { _aimPosition = pos; }
-    void setZPower(float power) { _zPower = power; }
+    void setPower(float power) { _power = power; }
+    void setIsChip(bool isChip) { _isChip = isChip; }
 };
 
 #endif // SKILL_KICK_H

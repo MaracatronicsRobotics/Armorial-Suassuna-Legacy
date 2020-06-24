@@ -807,7 +807,7 @@ public:
         label_37 = new QLabel(page_cfg);
         label_37->setObjectName(QString::fromUtf8("label_37"));
         label_37->setGeometry(QRect(10, 10, 18, 18));
-        label_37->setPixmap(QPixmap(QString::fromUtf8(":/textures/textures/field.png")));
+        label_37->setPixmap(QPixmap(QString::fromUtf8(":/textures/textures/ui/field.png")));
         label_37->setScaledContents(true);
         line_3 = new QFrame(page_cfg);
         line_3->setObjectName(QString::fromUtf8("line_3"));
@@ -1238,7 +1238,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(MainWindow);

@@ -450,18 +450,12 @@ void Player::aroundTheBall(Position targetPosition, double offset, double offset
     rotateTo(targetPosition, offsetAngular, true);
 }
 
-void Player::kick(bool isPass, float kickZPower){
-    if(isPass){
-        _ctr->kick(_team->teamId(), playerId(), 2.0);
-        if(kickZPower > 0.0){
-            _ctr->chipKick(_team->teamId(), playerId(), 2.0); // rever esse power dps
-        }
+void Player::kick(float power, bool isChipKick){
+    if(!isChipKick){
+        _ctr->kick(_team->teamId(), playerId(), power);
     }
     else{
-        _ctr->kick(_team->teamId(), playerId(), 6.0);
-        if(kickZPower > 0.0){
-            _ctr->chipKick(_team->teamId(), playerId(), 6.0); // rever esse power dps
-        }
+        _ctr->chipKick(_team->teamId(), playerId(), power); // rever esse power dps
     }
 }
 

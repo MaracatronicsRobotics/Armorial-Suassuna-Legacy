@@ -41,15 +41,19 @@ private:
     Skill_GoToLookTo *_sk_goto;
     Skill_InterceptBall *_sk_gk;
     Skill_Kick *_sk_kick;
+    Skill_PushBall2 *_sk_push;
 
     // Transitions
     enum{
         STATE_GOTO,
         STATE_GK,
-        STATE_KICK
+        STATE_KICK,
+        STATE_PUSH
     };
 
+    // Auxiliary
     bool isBallComingToGoal(float minSpeed, float postsFactor = 1.0);
+    bool isBehindBall(Position posObjective);
 
 public:
     Behaviour_Barrier();

@@ -94,7 +94,7 @@ public:
     std::pair<double, double> rotateTo(Position targetPosition, double offset = 0.2, bool setHere = true);
     void goToLookTo(Position targetPosition, Position lookToPosition, double offset = 0.2, double offsetAngular = 0.2);
     void aroundTheBall(Position targetPosition, double offset, double offsetAngular = 0.2);
-    void kick(bool isPass, float kickZPower = 0.0);
+    void kick(float power, bool isChipKick = false);
     void dribble(bool isActive);
 
     // Role
