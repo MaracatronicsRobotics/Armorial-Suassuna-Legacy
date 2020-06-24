@@ -40,7 +40,8 @@ private:
     Position _kickPosition;
     QMutex _mutex;
 
-    Position getBestKickPosition();
+    Position getBestAimPosition();
+    Position getAttackerInterceptWithGoal();
     bool isBehindBall(Position posObjective);
     bool hasBallAnyPathTo(Position posObjective);
     quint8 getBestReceiver();
