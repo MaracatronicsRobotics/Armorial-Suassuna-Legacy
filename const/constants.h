@@ -41,6 +41,7 @@ public:
 
     /* Soccer constants */
     static int _qtPlayers;
+    static float _maxKickPower;
 };
 
 #endif // CONSTANTS_H
