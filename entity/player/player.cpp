@@ -370,7 +370,7 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
 
     angleRobot2Ball = angleOrigin2Robot - angleOrigin2ball;
 
-    if(fabs(angleRobot2Ball) >= GEARSystem::Angle::toRadians(3)){ // se a dif for de até 3 graus
+    if(fabs(angleRobot2Ball) >= GEARSystem::Angle::toRadians(1.5)){ // se a dif for de até 1.5 grau
         if(angleRobot2Ball < 0.0){
             if(angleRobot2Ball < -GEARSystem::Angle::pi) speed = -maxValue;
             else speed = maxValue;
@@ -379,10 +379,10 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
             else speed = maxValue;
         }
 
-        // Se estiver < 30 graus, seta uma minima para desalecerar um pouco
-        if(fabs(angleRobot2Ball) < GEARSystem::Angle::toRadians(30)){
-            if(angleRobot2Ball < 0.0) speed = (fabs(angleRobot2Ball) / GEARSystem::Angle::toRadians(30)) * minValue;
-            else speed = (fabs(angleRobot2Ball) / GEARSystem::Angle::toRadians(30)) * -minValue;
+        // Se estiver < 20 graus, seta uma minima para desalecerar um pouco
+        if(fabs(angleRobot2Ball) < GEARSystem::Angle::toRadians(20)){
+            if(angleRobot2Ball < 0.0) speed = (fabs(angleRobot2Ball) / GEARSystem::Angle::toRadians(20)) * minValue;
+            else speed = (fabs(angleRobot2Ball) / GEARSystem::Angle::toRadians(20)) * -minValue;
         }
     }else{
         speed = 0.0;
