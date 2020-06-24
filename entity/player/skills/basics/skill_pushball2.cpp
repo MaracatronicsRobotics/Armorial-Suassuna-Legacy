@@ -72,7 +72,7 @@ void Skill_PushBall2::run(){
         player()->dribble(false);
         player()->goToLookTo(behindBall, loc()->ball());
 
-        if(player()->distBall() < BALL_MINDIST && isBallInFront())
+        if(player()->distBall() <= BALL_MINDIST && isBallInFront())
             _state = STATE_PUSH;
     }
     break;
@@ -125,5 +125,5 @@ bool Skill_PushBall2::isInFrontOfObjective(){
     Angle anglePlayerObj = player()->angleTo(_aim);
     float diff = WR::Utils::angleDiff(anglePlayerObj, player()->orientation());
 
-    return (diff <= atan(0.1)); // atan(0.1) aprox = 6 degree
+    return (diff <= GEARSystem::Angle::toRadians(3)); // 3 graus de dif
 }

@@ -131,9 +131,10 @@ void Behaviour_Attacker::run() {
         bool isInFront = isBallInFront();
         bool isAlignedToGoal = isBallAlignedToGoal();
         bool ballHasFreePathToGoal = hasBallAnyPathTo(attackerInterceptWithGoal);
+        bool isSufficientlyAlignedToAim =  WR::Utils::angleDiff(player()->angleTo(bestAimPosition), player()->orientation()) <= GEARSystem::Angle::toRadians(3);
         bool isCloseEnoughToGoal = player()->distanceTo(loc()->ourGoal()) <= MAX_DIST_KICK;
 
-        if((isInFront && isAlignedToGoal && ballHasFreePathToGoal) || isCloseEnoughToGoal){
+        if((isInFront && isAlignedToGoal && ballHasFreePathToGoal && isSufficientlyAlignedToAim) || isCloseEnoughToGoal){
             _state = STATE_KICK;
         }
         else if(_sk_push->getPushedDistance() >= _sk_push->getMaxPushDistance()){
