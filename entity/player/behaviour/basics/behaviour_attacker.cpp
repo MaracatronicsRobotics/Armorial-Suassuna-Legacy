@@ -128,11 +128,16 @@ void Behaviour_Attacker::run() {
 
         enableTransition(SKT_PUSH);
 
-        // Se puxou a bola demais ou está suficientemente proximo da posicao para fazer chute ou na distancia maxima de chute
-        if(((player()->isNearbyPosition(bestKickPosition, 0.2f) || hasBallAnyPathTo(attackerInterceptWithGoal)) && WR::Utils::angleDiff(player()->angleTo(bestAimPosition), player()->orientation()) <= atan(0.05)) || player()->distOurGoal() <= MAX_DIST_KICK){
+        bool isInFront = isBallInFront();
+        bool isAlignedToGoal = isBallAlignedToGoal();
+        bool ballHasFreePathToGoal = hasBallAnyPathTo(attackerInterceptWithGoal);
+        bool isCloseEnoughToGoal = player()->distanceTo(loc()->ourGoal()) <= MAX_DIST_KICK;
+
+        if((isInFront && isAlignedToGoal && ballHasFreePathToGoal) || isCloseEnoughToGoal){
             _state = STATE_KICK;
         }
         else if(_sk_push->getPushedDistance() >= _sk_push->getMaxPushDistance()){
+            // melhorar essa condição pra fazer passe
             _state = STATE_PASS;
         }
     }
@@ -235,14 +240,11 @@ Position Behaviour_Attacker::getAttackerInterceptWithGoal(){
     return posImpact;
 }
 
-bool Behaviour_Attacker::isBehindBall(Position posObjective){
-    Position posBall = loc()->ball();
-    Position posPlayer = player()->position();
-    float anglePlayer = WR::Utils::getAngle(posBall, posPlayer);
-    float angleDest = WR::Utils::getAngle(posBall, posObjective);
-    float diff = WR::Utils::angleDiff(anglePlayer, angleDest);
+bool Behaviour_Attacker::isBallInFront(){
+    Angle anglePlayerBall = player()->angleTo(loc()->ball());
+    float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
 
-    return (diff>GEARSystem::Angle::pi/2.0f);
+    return (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
 }
 
 Position Behaviour_Attacker::getBestAimPosition(){
@@ -461,4 +463,19 @@ bool Behaviour_Attacker::hasBallAnyPathTo(Position posObjective){
     QList<FreeAngles::Interval> freeAngles = FreeAngles::getFreeAngles(loc()->ball(), objective.initialAngle(), objective.finalAngle(), obstacles);
 
     return (freeAngles.empty() == false);
+}
+
+bool Behaviour_Attacker::isBallAlignedToGoal(){
+    const Position posRightPost = loc()->ourGoalRightPost();
+    const Position posLeftPost = loc()->ourGoalLeftPost();
+    Angle angPlayerBall = player()->angleTo(loc()->ball());
+    Angle angRightPost = player()->angleTo(posRightPost);
+    Angle angLeftPost = player()->angleTo(posLeftPost);
+    float angDiffPosts = WR::Utils::angleDiff(angRightPost, angLeftPost);
+
+    // Check angle difference with posts
+    float angDiffRight = WR::Utils::angleDiff(angPlayerBall, angRightPost);
+    float angDiffLeft = WR::Utils::angleDiff(angPlayerBall, angLeftPost);
+
+    return (fabs(angDiffRight)<angDiffPosts && fabs(angDiffLeft)<angDiffPosts);
 }

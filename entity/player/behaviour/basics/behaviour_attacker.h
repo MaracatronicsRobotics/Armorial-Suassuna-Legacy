@@ -42,7 +42,8 @@ private:
 
     Position getBestAimPosition();
     Position getAttackerInterceptWithGoal();
-    bool isBehindBall(Position posObjective);
+    bool isBallInFront();
+    bool isBallAlignedToGoal();
     bool hasBallAnyPathTo(Position posObjective);
     quint8 getBestReceiver();
 
