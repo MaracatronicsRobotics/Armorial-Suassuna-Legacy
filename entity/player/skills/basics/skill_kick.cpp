@@ -31,8 +31,7 @@ QString Skill_Kick::name() {
 }
 
 Skill_Kick::Skill_Kick() {
-    _isPass = false;
-    _zPower = 0.0;
+    _isChip = false;
     _aimPosition = Position(false, 0.0, 0.0, 0.0);
 
     _aimPosition.setUnknown();
@@ -92,7 +91,7 @@ void Skill_Kick::run() {
     player()->goToLookTo(desiredPos, _aimPosition, 0.01);
 
     if(isInFrontOfObjective())
-        player()->kick(_isPass, _zPower);
+        player()->kick(_power, _isChip);
 }
 
 bool Skill_Kick::isBehindBall(Position posObjective){

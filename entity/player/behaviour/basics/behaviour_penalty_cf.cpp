@@ -42,7 +42,7 @@ void Behaviour_Penalty_CF::configure() {
 
 void Behaviour_Penalty_CF::run() {
 
-    _skill_kick->setIsPass(false);
+    _skill_kick->setPower(MRCConstants::_maxKickPower);
 
     /*const float minAngle = WR::Utils::getAngle(loc()->ball(), loc()->ourGoalRightPost());
     const float maxAngle = WR::Utils::getAngle(loc()->ball(), loc()->ourGoalLeftPost());
