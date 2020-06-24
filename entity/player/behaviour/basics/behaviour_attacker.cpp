@@ -52,7 +52,6 @@ void Behaviour_Attacker::configure() {
     addTransition(SKT_PUSH, _sk_goto, _sk_push);
     addTransition(SKT_PUSH, _sk_kick, _sk_push);
 
-
     setInitialSkill(_sk_goto);
 
     _state = STATE_PUSH;
@@ -113,7 +112,10 @@ void Behaviour_Attacker::run() {
         // na intersecção entre essas duas retas, arrastando a bola com o drible.
 
         Position bestKickPosition = getBestPosition(getBestQuadrant());
-        Position bestAimPosition = getBestKickPosition();
+        Position bestAimPosition = getBestAimPosition();
+        if(bestAimPosition.isUnknown()) bestAimPosition = loc()->ourGoal();
+
+        Position attackerInterceptWithGoal = getAttackerInterceptWithGoal();
         std::cout << "quadrant: " << getBestQuadrant() << std::endl;
         std::cout << "aim: " << bestAimPosition.x() << " . " << bestAimPosition.y() << std::endl;
 
@@ -134,9 +136,9 @@ void Behaviour_Attacker::run() {
         /// TODO:
         /// Refinar a decisão para realizar chute ao gol: chutar quando não houverem obstaculos entre a reta robo-bola em direção ao gol.
 
-        std::cout << "has path: " << hasBallAnyPathTo(bestAimPosition) << std::endl;
+        std::cout << "ball has path: " << hasBallAnyPathTo(attackerInterceptWithGoal) << std::endl;
         // Se puxou a bola demais ou está suficientemente proximo da posicao para fazer chute ou na distancia maxima de chute
-        if(((player()->isNearbyPosition(bestKickPosition, 0.2f) || hasBallAnyPathTo(bestAimPosition)) && WR::Utils::angleDiff(player()->angleTo(bestAimPosition), player()->orientation()) <= atan(0.1)) || player()->distOurGoal() <= MAX_DIST_KICK){
+        if(((player()->isNearbyPosition(bestKickPosition, 0.2f) || hasBallAnyPathTo(attackerInterceptWithGoal)) && WR::Utils::angleDiff(player()->angleTo(bestAimPosition), player()->orientation()) <= atan(0.05)) || player()->distOurGoal() <= MAX_DIST_KICK){
             _state = STATE_KICK;
         }
         else if(_sk_push->getPushedDistance() >= _sk_push->getMaxPushDistance()){
@@ -145,7 +147,8 @@ void Behaviour_Attacker::run() {
     }
     break;
     case STATE_KICK:{
-        Position bestKickPosition = getBestKickPosition();
+        Position bestKickPosition = getBestAimPosition();
+        if(bestKickPosition.isUnknown()) bestKickPosition = loc()->ourGoal();
         _sk_kick->setAim(bestKickPosition);
         _sk_kick->setIsPass(false);
 
@@ -202,6 +205,41 @@ quint8 Behaviour_Attacker::getBestReceiver(){
     return bestRcv;
 }
 
+Position Behaviour_Attacker::getAttackerInterceptWithGoal(){
+    /* calculando posicao de impacto no y */
+    Angle angleAtk = player()->orientation(); // ALTERA AQUI ZILDAO
+    float angleValue = angleAtk.value();
+
+    if(loc()->ourSide().isLeft()){ // ajustando pra o lado esquerdo
+        angleValue = GEARSystem::Angle::pi - angleValue;
+    }
+
+    // Check 2pi
+    if(angleValue==GEARSystem::Angle::twoPi)
+        angleValue = 0.0f;
+
+    // Check high angle
+    if(fabs(angleValue)>=GEARSystem::Angle::pi)
+        angleValue += (angleValue>=0? -GEARSystem::Angle::twoPi : GEARSystem::Angle::twoPi);
+
+    // Check impossible impact (infinite tg)
+    if(fabs(angleValue)>=GEARSystem::Angle::pi/2.0f)
+        return Position(false, 0.0, 0.0, 0.0);
+
+    // Triagulate
+    float x = fabs(loc()->ourGoal().x() - loc()->ball().x());
+    float tg = tan(angleValue);
+    float y = tg*x;
+
+    // Impact point
+    float impact_y = loc()->ball().y() + y;
+    float impact_x = loc()->ourGoal().x();
+    const Position posImpact(true, impact_x, impact_y, 0.0); // posicao de impacto (mudando só o y em teoria)
+                                                                      // verificar dps a ideia de mover ele pra frente e reduzir angulação
+
+    return posImpact;
+}
+
 bool Behaviour_Attacker::isBehindBall(Position posObjective){
     Position posBall = loc()->ball();
     Position posPlayer = player()->position();
@@ -212,7 +250,7 @@ bool Behaviour_Attacker::isBehindBall(Position posObjective){
     return (diff>GEARSystem::Angle::pi/2.0f);
 }
 
-Position Behaviour_Attacker::getBestKickPosition(){
+Position Behaviour_Attacker::getBestAimPosition(){
     const Position goalRightPost = loc()->ourGoalRightPost();
     const Position goalLeftPost = loc()->ourGoalLeftPost();
 
@@ -244,18 +282,13 @@ Position Behaviour_Attacker::getBestKickPosition(){
             }
         }
     }
-
     // Triangularization
     float x = loc()->ourGoal().x() - loc()->ball().x();
     float tg = tan(largestMid);
     float y = tg * x;
 
     // Impact point
-    float pos_y;
-    if(loc()->ball().y() < 0.0)
-        pos_y = -loc()->ball().y() - y;
-    else
-        pos_y = loc()->ball().y() + y;
+    float pos_y = loc()->ball().y() + y;
 
     Position impactPosition(true, loc()->ourGoal().x(), pos_y, 0.0);
 
@@ -395,6 +428,9 @@ std::pair<Position, Position> Behaviour_Attacker::getQuadrantInitialPosition(int
         case QUADRANT_BOT:
             return std::make_pair(botL, bot);
         break;
+        default:
+            return std::make_pair(Position(false, 0.0, 0.0, 0.0), Position(false, 0.0, 0.0, 0.0));
+        break;
         }
     }else{
         switch(quadrant){
@@ -407,11 +443,16 @@ std::pair<Position, Position> Behaviour_Attacker::getQuadrantInitialPosition(int
         case QUADRANT_BOT:
             return std::make_pair(bot, botR);
         break;
+        default:
+            return std::make_pair(Position(false, 0.0, 0.0, 0.0), Position(false, 0.0, 0.0, 0.0));
+        break;
         }
     }
 }
 
 bool Behaviour_Attacker::hasBallAnyPathTo(Position posObjective){
+    if(posObjective.isUnknown()) return false;
+
     // Getting angles
     Obstacle objective;
     objective.position() = posObjective;
