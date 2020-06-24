@@ -115,5 +115,5 @@ bool Skill_Kick::isInFrontOfObjective(){
     Angle anglePlayerObj = player()->angleTo(_aimPosition);
     float diff = WR::Utils::angleDiff(anglePlayerObj, player()->orientation());
 
-    return (diff <= atan(0.1)); // atan(0.1) aprox = 6 degree
+    return (diff <= GEARSystem::Angle::toRadians(3)); // aprox 3 graus
 }
