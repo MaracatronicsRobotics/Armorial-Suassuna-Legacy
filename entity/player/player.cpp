@@ -381,8 +381,8 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
 
         // Se estiver < 30 graus, seta uma minima para desalecerar um pouco
         if(fabs(angleRobot2Ball) < GEARSystem::Angle::toRadians(30)){
-            if(angleRobot2Ball < 0.0) speed = minValue;
-            else speed = -minValue;
+            if(angleRobot2Ball < 0.0) speed = (fabs(angleRobot2Ball) / GEARSystem::Angle::toRadians(30)) * minValue;
+            else speed = (fabs(angleRobot2Ball) / GEARSystem::Angle::toRadians(30)) * -minValue;
         }
     }else{
         speed = 0.0;
