@@ -250,10 +250,6 @@ Position Behaviour_Attacker::getBestAimPosition(){
     if(largestMid == GEARSystem::Angle::twoPi)
         largestMid = 0.0f;
 
-    // Check high angle
-    if(fabs(largestMid)>=GEARSystem::Angle::pi)
-        largestMid += (largestMid>=0? -GEARSystem::Angle::twoPi : GEARSystem::Angle::twoPi);
-
     if(fabs(largestMid) >= GEARSystem::Angle::pi / 2.0){
         return Position(false, 0.0, 0.0, 0.0);
     }
