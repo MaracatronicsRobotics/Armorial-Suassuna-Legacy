@@ -114,8 +114,8 @@ void Behaviour_Attacker::run() {
         Position bestKickPosition = getBestPosition(getBestQuadrant());
         Position bestAimPosition = getBestAimPosition();
         if(bestAimPosition.isUnknown()) bestAimPosition = loc()->ourGoal();
+        Position impactPos = calcImpactPositionInGoal();
 
-        Position attackerInterceptWithGoal = getAttackerInterceptWithGoal();
         if(bestKickPosition.isUnknown()){ // Nao existem aberturas para o gol
             /// TODO:
             /// Ver o que fazer nessa situação
@@ -130,11 +130,11 @@ void Behaviour_Attacker::run() {
 
         bool isInFront = isBallInFront();
         bool isAlignedToGoal = isBallAlignedToGoal();
-        bool ballHasFreePathToGoal = hasBallAnyPathTo(attackerInterceptWithGoal);
+        bool ballHasFreePathToGoal = hasBallAnyPathTo(impactPos);
         bool isSufficientlyAlignedToAim =  WR::Utils::angleDiff(player()->angleTo(bestAimPosition), player()->orientation()) <= GEARSystem::Angle::toRadians(3);
         bool isCloseEnoughToGoal = player()->distanceTo(loc()->ourGoal()) <= MAX_DIST_KICK;
 
-        if((isInFront && isAlignedToGoal && ballHasFreePathToGoal && isSufficientlyAlignedToAim) || isCloseEnoughToGoal){
+        if((isInFront && (isAlignedToGoal || isSufficientlyAlignedToAim) && ballHasFreePathToGoal ) || isCloseEnoughToGoal){
             _state = STATE_KICK;
         }
         else if(_sk_push->getPushedDistance() >= _sk_push->getMaxPushDistance()){
@@ -206,41 +206,6 @@ quint8 Behaviour_Attacker::getBestReceiver(){
     return bestRcv;
 }
 
-Position Behaviour_Attacker::getAttackerInterceptWithGoal(){
-    /* calculando posicao de impacto no y */
-    Angle angleAtk = player()->orientation(); // ALTERA AQUI ZILDAO
-    float angleValue = angleAtk.value();
-
-    if(loc()->ourSide().isLeft()){ // ajustando pra o lado esquerdo
-        angleValue = GEARSystem::Angle::pi - angleValue;
-    }
-
-    // Check 2pi
-    if(angleValue==GEARSystem::Angle::twoPi)
-        angleValue = 0.0f;
-
-    // Check high angle
-    if(fabs(angleValue)>=GEARSystem::Angle::pi)
-        angleValue += (angleValue>=0? -GEARSystem::Angle::twoPi : GEARSystem::Angle::twoPi);
-
-    // Check impossible impact (infinite tg)
-    if(fabs(angleValue)>=GEARSystem::Angle::pi/2.0f)
-        return Position(false, 0.0, 0.0, 0.0);
-
-    // Triagulate
-    float x = fabs(loc()->ourGoal().x() - loc()->ball().x());
-    float tg = tan(angleValue);
-    float y = tg*x;
-
-    // Impact point
-    float impact_y = loc()->ball().y() + y;
-    float impact_x = loc()->ourGoal().x();
-    const Position posImpact(true, impact_x, impact_y, 0.0); // posicao de impacto (mudando só o y em teoria)
-                                                                      // verificar dps a ideia de mover ele pra frente e reduzir angulação
-
-    return posImpact;
-}
-
 bool Behaviour_Attacker::isBallInFront(){
     Angle anglePlayerBall = player()->angleTo(loc()->ball());
     float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
@@ -280,15 +245,23 @@ Position Behaviour_Attacker::getBestAimPosition(){
             }
         }
     }
-    // Triangularization
-    float x = loc()->ourGoal().x() - loc()->ball().x();
-    float tg = tan(largestMid);
-    float y = tg * x;
 
-    // Impact point
-    float pos_y = loc()->ball().y() + y;
+    // Check 2pi
+    if(largestMid == GEARSystem::Angle::twoPi)
+        largestMid = 0.0f;
 
-    Position impactPosition(true, loc()->ourGoal().x(), pos_y, 0.0);
+    // Check high angle
+    if(fabs(largestMid)>=GEARSystem::Angle::pi)
+        largestMid += (largestMid>=0? -GEARSystem::Angle::twoPi : GEARSystem::Angle::twoPi);
+
+    if(fabs(largestMid) >= GEARSystem::Angle::pi / 2.0){
+        return Position(false, 0.0, 0.0, 0.0);
+    }
+
+    Line ballLine = Line::getLine(loc()->ball(), largestMid);
+
+    float ans_y = ballLine.a() * loc()->ourGoal().x() + ballLine.b();
+    Position impactPosition(true, loc()->ourGoal().x(), ans_y, 0.0);
 
     // Check if impact position has space for ball radius
     const float distImpactPos = WR::Utils::distance(loc()->ball(), impactPosition);
@@ -300,6 +273,17 @@ Position Behaviour_Attacker::getBestAimPosition(){
     }
 
     return impactPosition;
+}
+
+Position Behaviour_Attacker::calcImpactPositionInGoal(){
+    Angle angleAtk = player()->orientation(); // ALTERA AQUI ZILDAO
+    float angleValue = angleAtk.value();
+
+    Line playerLine = Line::getLine(player()->position(), angleValue);
+    float ans_x = loc()->ourGoal().x();
+    float ans_y = playerLine.a() * ans_x + playerLine.b();
+
+    return Position(true, ans_x, ans_y, 0.0);
 }
 
 Position Behaviour_Attacker::getBestPosition(int quadrant){
