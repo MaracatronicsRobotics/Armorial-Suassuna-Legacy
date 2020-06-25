@@ -259,6 +259,11 @@ Position Behaviour_Attacker::getBestAimPosition(){
     float ans_y = ballLine.a() * loc()->ourGoal().x() + ballLine.b();
     Position impactPosition(true, loc()->ourGoal().x(), ans_y, 0.0);
 
+    // Se a projeção for em um y invalido, retorna uma posição invalida
+    if(!(ans_y >= -loc()->fieldDefenseWidth()/2.0 && ans_y <= loc()->fieldDefenseWidth()/2.0)){
+        return Position(false, 0.0, 0.0, 0.0);
+    }
+
     // Check if impact position has space for ball radius
     const float distImpactPos = WR::Utils::distance(loc()->ball(), impactPosition);
     const float radiusAngle = largestAngle/2.0;
