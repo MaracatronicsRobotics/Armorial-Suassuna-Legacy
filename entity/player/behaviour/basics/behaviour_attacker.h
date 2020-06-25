@@ -41,7 +41,7 @@ private:
     QMutex _mutex;
 
     Position getBestAimPosition();
-    Position getAttackerInterceptWithGoal();
+    Position calcImpactPositionInGoal();
     bool isBallInFront();
     bool isBallAlignedToGoal();
     bool hasBallAnyPathTo(Position posObjective);

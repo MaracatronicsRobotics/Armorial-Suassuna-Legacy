@@ -31,5 +31,5 @@ Skill_RotateTo::Skill_RotateTo() {
 }
 
 void Skill_RotateTo::run() {
-    player()->rotateTo(_desiredPosition);
+    player()->rotateTo(_desiredPosition, 0, true);
 }

@@ -31,7 +31,5 @@ Skill_GoTo::Skill_GoTo() {
 }
 
 void Skill_GoTo::run() {
-    std::pair<double, double> pp = player()->goTo(_desiredPosition);
-
-    player()->setSpeed(pp.first, pp.second, 0.0);
+    player()->goTo(_desiredPosition, 0, true);
 }
