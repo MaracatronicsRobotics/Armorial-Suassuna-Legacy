@@ -333,11 +333,37 @@ std::pair<float, float> Player::goTo(Position targetPosition, double offset, boo
     }
 
     if(isPidActivated()){
-        if(setHere) setSpeed(newVX, newVY, 0.0);
+        if(setHere){
+            // aplicar velocidade minima ( só no intercept que goTo vai ser chamado pra ativar aqui ? )
+            if(fabs(newVX) <= 0.4){
+                if(newVX < 0) newVX = -0.4;
+                else newVX = 0.4;
+            }
+
+            if(fabs(newVY) <= 0.4){
+                if(newVY < 0) newVY = -0.4;
+                else newVY = 0.4;
+            }
+
+            setSpeed(newVX, newVY, 0.0);
+        }
         return std::make_pair(newVX, newVY);
     }
     else{
-        if(setHere) setSpeed(vxSaida, vySaida, 0.0);
+        if(setHere){
+            // aplicar velocidade minima ( só no intercept que goTo vai ser chamado pra ativar aqui ? )
+            if(fabs(newVX) <= 0.4){
+                if(newVX < 0) newVX = -0.4;
+                else newVX = 0.4;
+            }
+
+            if(fabs(newVY) <= 0.4){
+                if(newVY < 0) newVY = -0.4;
+                else newVY = 0.4;
+            }
+
+            setSpeed(vxSaida, vySaida, 0.0);
+        }
         return std::make_pair(vxSaida, vySaida);
     }
 }

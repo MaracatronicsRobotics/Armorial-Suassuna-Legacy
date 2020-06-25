@@ -41,7 +41,7 @@ Behaviour_Goalkeeper::Behaviour_Goalkeeper() {
     setRadius(0.5); // raio que define posse de bola para o goleiro dar takeout
     setTakeoutEnabled(true); // avançar na bola quando ela estiver na margem de aceitação (takeout vai dar goto e kick na bola)
     setTakeoutFactor(1.0); // fator de erro pra largura do gol (avançar na bola)
-    useAttackerOri(true); // pra levar o atacante em consideração na projeção no gol
+    useAttackerOri(false); // pra levar o atacante em consideração na projeção no gol
 }
 
 void Behaviour_Goalkeeper::configure() {
@@ -89,7 +89,7 @@ void Behaviour_Goalkeeper::run() {
         desiredPosition.setPosition(loc()->ourGoal().x()+GOALPOSTS_ERROR, desiredPosition.y(), 0.0);
     }
 
-    _skill_goToLookTo->setOffsetToBall(0.01);
+    _skill_goToLookTo->setOffsetToBall(0);
     _skill_goToLookTo->setDesiredPosition(desiredPosition);
     _skill_goToLookTo->setAimPosition(loc()->ball());
 
