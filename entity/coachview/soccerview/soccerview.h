@@ -85,6 +85,7 @@ public:
     void setDrawEnemyVel(bool status)         { drawEnemyVel         = status; }
     void setDrawBallVel(bool status)          { drawBallVel          = status; }
     void setDrawPlayerConfidency(bool status) { drawPlayerConfidency = status; }
+    void setDrawPlayerPath(bool status)       { drawPlayerPath       = status; }
 
 private:
     static constexpr double minZValue = -10;
@@ -127,6 +128,7 @@ private:
     bool drawEnemyVel;
     bool drawBallVel;
     bool drawPlayerConfidency;
+    bool drawPlayerPath;
 
     double tLastRedraw;
 

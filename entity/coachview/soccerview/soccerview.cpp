@@ -727,13 +727,14 @@ void GLSoccerView::drawRobotsNextPositions() {
             glColor3d(0.0, 0.0, 1.0);
         }
         drawX(robotsNextPositions.at(i).second);
-        drawRobotTrajetory(robotsPaths.at(i));
+        if(drawPlayerPath) drawRobotTrajetory(robotsPaths.at(i));
 //		drawStippleLine(robots.at(i).loc, robotsNextPositions.at(i).second);
     }
     glPopAttrib();
 }
 
 void GLSoccerView::drawRobotTrajetory(const QLinkedList<Position> &path) {
+    if(path.isEmpty()) return;
     QLinkedList<Position>::const_iterator it;
     for(it=path.constBegin(); it!=path.constEnd()-1; it++){
         // Get path positions

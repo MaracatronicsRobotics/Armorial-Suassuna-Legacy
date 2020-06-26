@@ -2197,7 +2197,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Show allie velocity vector</string>
+       <string>Show allies velocity vector</string>
       </property>
      </widget>
      <widget class="QCheckBox" name="enemyvel">
@@ -2205,7 +2205,7 @@
        <rect>
         <x>10</x>
         <y>60</y>
-        <width>191</width>
+        <width>201</width>
         <height>23</height>
        </rect>
       </property>
@@ -2215,7 +2215,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Show enemy velocity vector</string>
+       <string>Show enemies velocity vector</string>
       </property>
      </widget>
      <widget class="QCheckBox" name="ballvel">
@@ -2252,6 +2252,24 @@
       </property>
       <property name="text">
        <string>Show players confidency</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="playerpath">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>135</y>
+        <width>181</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Show allies path</string>
       </property>
      </widget>
     </widget>
