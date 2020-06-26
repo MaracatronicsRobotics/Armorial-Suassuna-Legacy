@@ -29,9 +29,13 @@ QString Skill_GoToLookTo::name() {
 Skill_GoToLookTo::Skill_GoToLookTo() {
     _aimPosition = Position(true, 0.0, 0.0, 0.0);
     _desiredPosition = Position(true, 0.0, 0.0, 0.0);
-    _offsetBall = 0.2;
+    _avoidTeammates = true;
+    _avoidOpponents = true;
+    _avoidBall = true;
+    _avoidOurGoalArea = true;
+    _avoidTheirGoalArea = true;
 }
 
 void Skill_GoToLookTo::run() {
-    player()->goToLookTo(_desiredPosition, _aimPosition, _offsetBall);
+    player()->goToLookTo(_desiredPosition, _aimPosition, _avoidTeammates, _avoidOpponents, _avoidBall, _avoidOurGoalArea, _avoidTheirGoalArea);
 }

@@ -92,7 +92,7 @@ public:
     void setSpeed(float x, float y, float theta);
     std::pair<float, float> goTo(Position targetPosition, double _offset = 0.2, bool setHere = true, double minVel = 0.1);
     std::pair<double, double> rotateTo(Position targetPosition, double offset = 0.2, bool setHere = true);
-    void goToLookTo(Position targetPosition, Position lookToPosition, double offset = 0.2, double offsetAngular = 0.2);
+    void goToLookTo(Position targetPosition, Position lookToPosition, bool avoidTeammates, bool avoidOpponents, bool avoidBall, bool avoidOurGoalArea, bool avoidTheirGoalArea);
     void aroundTheBall(Position targetPosition, double offset, double offsetAngular = 0.2);
     void kick(float power, bool isChipKick = false);
     void dribble(bool isActive);

@@ -70,7 +70,6 @@ void Behaviour_Penalty_CF::run() {
 
     _skill_goToLookTo->setAimPosition(Aim);
     _skill_kick->setAim(Aim);
-    _skill_goToLookTo->setOffsetToBall(0.2f);
     _skill_goToLookTo->setDesiredPosition(loc()->ball());
     loc()->theirGoalLeftPost().y();
     if (player()->distBall() < 0.2f) {
