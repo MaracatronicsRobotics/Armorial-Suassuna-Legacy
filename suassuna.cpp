@@ -27,7 +27,7 @@
 #include <entity/player/control/pid.h>
 #include <utils/freeangles/freeangles.h>
 #include <entity/player/navigation/navalgorithm.h>
-#include <entity/player/navigation/fpp/fastpathplanning.h>
+#include <entity/player/navigation/fana/fana.h>
 
 Suassuna::Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide)
     : _teamId(teamId), _teamColor(teamColor), _fieldSide(fieldSide){
@@ -173,8 +173,8 @@ void Suassuna::setupOurPlayers() {
         // Create Player
         PID *vxPID = new PID(0.5, 0.0, 0.0, 2.5, -2.5);
         PID *vyPID = new PID(0.5, 0.0, 0.0, 2.5, -2.5);
-        PID *vwPID = new PID(0.7, 0.0, 0.0, 6.0, -6.0);
-        NavAlgorithm *navAlg = new FastPathPlanning();
+        PID *vwPID = new PID(0.7, 0.0, 0.05, 6.0, -6.0);
+        NavigationAlgorithm *navAlg = new FANA();
         Player *player = new Player(_world, _ourTeam, _ctr, playerList.at(i), new Role_Default(), _ref, vxPID, vyPID, vwPID, navAlg);
         // Enable
         player->enable(true);

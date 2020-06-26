@@ -18,22 +18,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
-#ifndef BASEPLAYER_HH
-#define BASEPLAYER_HH
-#include <iostream>
+
+#ifndef RRTVERTEX_HH
+#define RRTVERTEX_HH
+
 #include <GEARSystem/gearsystem.hh>
-class World;
-class MRCTeam;
-class Player;
-class PlayerAccess;
-class Behaviour;
-class Skill;
-class Navigation;
-class Role;
-class NavigationAlgorithm;
-class ControlAlgorithm;
-class PlayerUtils;
-class Locations;
-class grsSimulator;
-class CoachView;
-#endif // BASEPLAYER_HH
+#include <utils/graph/graph.hh>
+
+class RRTVertex : public Vertex {
+public:
+    RRTVertex(const Position &pos);
+
+    // Getters
+    Position getPosition() const { return _pos; }
+
+private:
+    Position _pos;
+};
+
+#endif // RRTVERTEX_HH

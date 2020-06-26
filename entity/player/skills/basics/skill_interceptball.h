@@ -28,6 +28,7 @@ class Skill_InterceptBall : public Skill {
 private:
     void run();
     bool _interceptAdvance;
+    bool isBehindBall(const Position &destination, float angularPrecision);
     Position _posLook;
 public:
     Skill_InterceptBall();

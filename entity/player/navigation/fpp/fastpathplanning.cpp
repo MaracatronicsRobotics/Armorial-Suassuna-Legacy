@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
-
+/*
 #include "fastpathplanning.h"
 
 FastPathPlanning::FastPathPlanning()
@@ -73,9 +73,8 @@ void FastPathPlanning::run(){ // chama p recursão
     MRCTimer* timer = new MRCTimer(0.1);
 
     getPaths(list, 1, timer);
-
     double best_dist = 1e9;
-    QList<Position> best_path;
+    QLinkedList<Position> best_path;
 
     for(int x = 0; x < _allPath.size(); x++){
         double sumDist = 0.0;
@@ -96,7 +95,6 @@ void FastPathPlanning::run(){ // chama p recursão
             _path = best_path;
         }
     }
-
 };
 
 bool FastPathPlanning::getPaths(QList<Position> &rec, int h, MRCTimer *timer){
@@ -152,7 +150,6 @@ bool FastPathPlanning::getPaths(QList<Position> &rec, int h, MRCTimer *timer){
 
         return true;
     }
-
     return true;
 }
 
@@ -169,11 +166,11 @@ float FastPathPlanning::getDistance() const{
 };
 
 
-QList<Position> FastPathPlanning::getPath() const{
+QLinkedList<Position> FastPathPlanning::getPath() const{
     return _path;
 };
 
-QList<QList<Position>> FastPathPlanning::getAllPath() const{
+QList<QLinkedList<Position>> FastPathPlanning::getAllPath() const{
     return _allPath;
 }
 
@@ -291,14 +288,6 @@ void FastPathPlanning::smoothPath(QList<Position> &path) {
         // Clear tmp
         tmp.clear();
     }
+
 }
-
-
-
-
-
-
-
-
-
-
+*/
