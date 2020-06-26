@@ -53,7 +53,7 @@ void MainWindow::updateGUI(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc)
     ui->openGLWidget->setDrawAllieVel(enableAllieVelocityVector());
     ui->openGLWidget->setDrawEnemyVel(enableEnemyVelocityVector());
     ui->openGLWidget->setDrawPlayerConfidency(enablePlayerConfidency());
-
+    ui->openGLWidget->setDrawPlayerPath(enablePlayerPath());
 }
 
 void MainWindow::setAgressivity(QString agressivity){
@@ -350,6 +350,11 @@ bool MainWindow::enableBallVelocityVector(){
 
 bool MainWindow::enablePlayerConfidency(){
     return (ui->playerconf->checkState() == Qt::CheckState::Checked) ? true : false;
+}
+
+
+bool MainWindow::enablePlayerPath(){
+    return (ui->playerpath->checkState() == Qt::CheckState::Checked) ? true : false;
 }
 
 MainWindow::MainWindow(QWidget *parent)

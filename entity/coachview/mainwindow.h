@@ -73,6 +73,7 @@ public:
     bool enableEnemyVelocityVector();
     bool enableBallVelocityVector();
     bool enablePlayerConfidency();
+    bool enablePlayerPath();
 
     // tree
     void addRoot();
