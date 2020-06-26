@@ -29,14 +29,23 @@ private:
     void run();
     Position _desiredPosition;
     Position _aimPosition;
-    double _offsetBall;
+    bool _avoidTeammates;
+    bool _avoidOpponents;
+    bool _avoidBall;
+    bool _avoidOurGoalArea;
+    bool _avoidTheirGoalArea;
+
 public:
     Skill_GoToLookTo();
     QString name();
 
     void setDesiredPosition(Position pos) { _desiredPosition = pos; }
     void setAimPosition(Position pos) { _aimPosition = pos; }
-    void setOffsetToBall(double value) { _offsetBall = value; }
+    void setAvoidTeammates(bool cond) { _avoidTeammates = cond; }
+    void setAvoidOpponents(bool cond) { _avoidOpponents = cond; }
+    void setAvoidBall(bool cond) { _avoidBall = cond; }
+    void setAvoidOurGoalArea(bool cond) { _avoidOurGoalArea = cond; }
+    void setAvoidTheirGoalArea(bool cond) { _avoidTheirGoalArea = cond; }
 };
 
 #endif // SKILL_GOTOLOOKTO_H

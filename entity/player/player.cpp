@@ -436,7 +436,7 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
     }
 }
 
-void Player::goToLookTo(Position targetPosition, Position lookToPosition, double offset, double offsetAngular){
+void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool avoidTeammates, bool avoidOpponents, bool avoidBall, bool avoidOurGoalArea, bool avoidTheirGoalArea){
     /*
     std::pair<float, float> a = goTo(targetPosition, offset, false);
     std::pair<double, double> b = rotateTo(lookToPosition, offsetAngular, false);
@@ -478,8 +478,15 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, double
     }
     */
 
+    Angle anglePP;
     std::pair<double, double> help = rotateTo(targetPosition);
-    std::pair<Angle, float> a = getNavDirectionDistance(targetPosition, Angle(true, help.first), true, true, false, true, true);
+    if(lookToPosition.isUnknown())
+        anglePP = Angle(false, 0.0);
+    else
+        anglePP = Angle(true, help.first);
+
+    std::pair<double, double> rotateSpeed = rotateTo(lookToPosition);
+    std::pair<Angle, float> a = getNavDirectionDistance(targetPosition, anglePP, avoidTeammates, avoidOpponents, avoidBall, avoidOurGoalArea, avoidTheirGoalArea);
 /*
     double vx = _vxPID->calculate(a.second * cos(a.first.value()), velocity().x());
     double vy = _vyPID->calculate(a.second * sin(a.first.value()), velocity().y());
@@ -488,24 +495,24 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, double
     double vy = a.second * sin(a.first.value());
     double dist = WR::Utils::distance(position(), targetPosition);
     if(dist <= 0.5f){ // se estiver a menos de 50cm do alvo
-        if(fabs(help.first) >= GEARSystem::Angle::toRadians(15)){ // se a diferença for maior que 15 deg
-            setSpeed(0.0, 0.0, help.second); // zera a linear e espera girar
+        if(fabs(rotateSpeed.first) >= GEARSystem::Angle::toRadians(15)){ // se a diferença for maior que 15 deg
+            setSpeed(0.0, 0.0, rotateSpeed.second); // zera a linear e espera girar
         }else{
-            setSpeed(vx, vy, help.second); // caso esteja de boa, gogo
+            setSpeed(vx, vy, rotateSpeed.second); // caso esteja de boa, gogo
         }
     }
     else if(dist > 0.5f && dist <= 1.0f){ // se estiver entre 50cm a 1m do alvo
-        if(fabs(help.first) >= GEARSystem::Angle::toRadians(45)){ // se a diferença for maior que 45 deg
-            setSpeed(0.3 * vx, 0.3 * vy, help.second); // linear * 0.3 e gira
+        if(fabs(rotateSpeed.first) >= GEARSystem::Angle::toRadians(45)){ // se a diferença for maior que 45 deg
+            setSpeed(0.3 * vx, 0.3 * vy, rotateSpeed.second); // linear * 0.3 e gira
         }else{
-            setSpeed(vx, vy, help.second); // caso esteja de boa, gogo
+            setSpeed(vx, vy, rotateSpeed.second); // caso esteja de boa, gogo
         }
     }
     else if(dist > 1.0f){ // se estiver a mais de 1m do alvo
-        if(fabs(help.first) >= GEARSystem::Angle::toRadians(75)){ // se a diferença for maior que 75 deg
-            setSpeed(0.5 * vx, 0.5 * vy, help.second); // linear * 0.5 e gira
+        if(fabs(rotateSpeed.first) >= GEARSystem::Angle::toRadians(75)){ // se a diferença for maior que 75 deg
+            setSpeed(0.5 * vx, 0.5 * vy, rotateSpeed.second); // linear * 0.5 e gira
         }else{
-            setSpeed(vx, vy, help.second); // caso esteja de boa, gogo
+            setSpeed(vx, vy, rotateSpeed.second); // caso esteja de boa, gogo
         }
     }
 }

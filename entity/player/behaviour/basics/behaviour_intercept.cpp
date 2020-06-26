@@ -175,6 +175,7 @@ void Behaviour_Intercept::run() {
     // Setando parametros na skill de goToLookTo
     _skill_goToLookTo->setDesiredPosition(Position(true, (robotPosition.x() + desiredVelocityVector.x())/1000.0, (robotPosition.y() + desiredVelocityVector.y())/1000.0, 0.0));
     _skill_goToLookTo->setAimPosition(Position(true, (desiredKick.x())/1000.0, (desiredKick.y())/1000.0, 0.0));
+    _skill_goToLookTo->setAvoidBall(false);
 }
 
 std::pair<Circle, Circle> Behaviour_Intercept::generateCircles(Point2d& ballPosition, Point2d& kickVector){

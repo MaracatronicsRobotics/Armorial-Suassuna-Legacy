@@ -89,9 +89,10 @@ void Behaviour_Goalkeeper::run() {
         desiredPosition.setPosition(loc()->ourGoal().x()+GOALPOSTS_ERROR, desiredPosition.y(), 0.0);
     }
 
-    _skill_goToLookTo->setOffsetToBall(0);
     _skill_goToLookTo->setDesiredPosition(desiredPosition);
     _skill_goToLookTo->setAimPosition(loc()->ball());
+    _skill_goToLookTo->setAvoidBall(false);
+    _skill_goToLookTo->setAvoidOurGoalArea(false);
 
     // machine if state begins for transitionsss
     if(player()->distBall() > _radius && isBallComingToGoal(INTERCEPT_MINBALLVELOCITY)){ // bola nao ta em posse do goleiro e ta indo pro gol
