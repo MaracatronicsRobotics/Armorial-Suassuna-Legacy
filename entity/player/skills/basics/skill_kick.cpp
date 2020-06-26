@@ -88,7 +88,8 @@ void Skill_Kick::run() {
         break;
     }
 
-    player()->goToLookTo(desiredPos, _aimPosition, true, true, false, true, true);
+    // change this later (avoid areas)
+    player()->goToLookTo(desiredPos, _aimPosition, true, true, false, false, false);
 
     if(isInFrontOfObjective())
         player()->kick(_power, _isChip);
