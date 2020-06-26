@@ -1,9 +1,9 @@
 /***
- * Maracatronics Robotics
- * Federal University of Pernambuco (UFPE) at Recife
- * http://www.maracatronics.com/
+ * Warthog Robotics
+ * University of Sao Paulo (USP) at Sao Carlos
+ * http://www.warthog.sc.usp.br/
  *
- * This file is part of Armorial project.
+ * This file is part of WRCoach project.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,22 +19,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef NAVALGORITHM_H
-#define NAVALGORITHM_H
+#ifndef NAVIGATIONALGORITHM_HH
+#define NAVIGATIONALGORITHM_HH
 
 #include <GEARSystem/Types/types.hh>
-#include<entity/locations.h>
 #include <utils/utils.hh>
 
-class NavAlgorithm {
+class NavigationAlgorithm {
 public:
-    NavAlgorithm();
-    NavAlgorithm(const NavAlgorithm &copy);
-    virtual ~NavAlgorithm();
+    NavigationAlgorithm();
+    NavigationAlgorithm(const NavigationAlgorithm &copy);
+    virtual ~NavigationAlgorithm();
+
+    virtual QString name();
 
     // Access to Navigation
     void initialize(Locations *loc);
-    void runNavAlgorithm();
+    void runNavigationAlgorithm();
 
     // Reset algorithm
     virtual void reset() = 0;
@@ -52,7 +53,7 @@ public:
     // Return results
     virtual Angle getDirection() const = 0;
     virtual float getDistance() const;
-    virtual QList<Position> getPath() const;
+    virtual QLinkedList<Position> getPath() const;
 
 protected:
     Locations* loc() { return _loc; }
@@ -71,12 +72,12 @@ private:
     virtual void run() = 0;
 
     // Copy
-    virtual NavAlgorithm* clone() const;
+    virtual NavigationAlgorithm* clone() const;
 
     // Locations access
     Locations *_loc;
 
-    // NavAlgorithm positions
+    // NavigationAlgorithm positions
     // Origin
     Position _originPos;
     Angle _originOri;
@@ -88,11 +89,11 @@ private:
     // Path generation
     void generatePath();
     bool _generatePath;
-    QList<Position> _path;
+    QLinkedList<Position> _path;
     mutable QMutex _pathMutex;
 
     // Distance
     float _distance;
 };
 
-#endif // NAVALGORITHM_H
+#endif // NAVIGATIONALGORITHM_HH

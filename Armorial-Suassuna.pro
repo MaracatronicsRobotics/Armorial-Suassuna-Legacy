@@ -46,9 +46,15 @@ SOURCES += \
     entity/player/behaviour/basics/behaviour_intercept.cpp \
     entity/player/behaviour/basics/behaviour_markball.cpp \
     entity/player/behaviour/basics/behaviour_penalty_cf.cpp \
+    entity/player/navigation/fana/fana.cpp \
     entity/player/navigation/fpp/fastpathplanning.cpp \
     entity/player/navigation/navalgorithm.cpp \
     entity/player/navigation/navigation.cpp \
+    entity/player/navigation/rrt/rrt.cpp \
+    entity/player/navigation/rrt/rrtnode.cpp \
+    entity/player/navigation/rrt/rrtobstacle.cpp \
+    entity/player/navigation/rrt/rrttree.cpp \
+    entity/player/navigation/rrt/rrtvertex.cpp \
     entity/player/role/basics/role_barrier.cpp \
     entity/player/skills/basics/skill_aroundtheball.cpp \
     entity/player/skills/basics/skill_dribble.cpp \
@@ -168,11 +174,17 @@ HEADERS += \
     entity/coachview/soccerview/util/util.h \
     entity/entity.h \
     entity/player/behaviour/basics/behaviour_intercept.h \
+    entity/player/navigation/fana/fana.h \
     entity/player/navigation/fpp/fastpathplanning.h \
     entity/player/navigation/navalgorithm.h \
     entity/player/navigation/navigation.h \
     entity/player/behaviour/basics/behaviour_markball.h \
     entity/player/behaviour/basics/behaviour_penalty_cf.h \
+    entity/player/navigation/rrt/rrt.h \
+    entity/player/navigation/rrt/rrtnode.h \
+    entity/player/navigation/rrt/rrtobstacle.h \
+    entity/player/navigation/rrt/rrttree.h \
+    entity/player/navigation/rrt/rrtvertex.h \
     entity/player/role/basics/role_barrier.h \
     entity/player/skills/basics/skill_aroundtheball.h \
     entity/player/skills/basics/skill_dribble.h \
