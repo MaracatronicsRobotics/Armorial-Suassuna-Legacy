@@ -35,18 +35,17 @@ void Skill_InterceptBall::run() {
     /* calculating projection of ball */
     Position objectivePos; // Position where the goalkeeper should be
 
-    Velocity ballVelocity = loc()->ballVelocity();
-
+    const Velocity ballVelocity = loc()->ballVelocity();
     // Check ball speed (maybe a error)
     if(ballVelocity.abs() <= 0.1)
         objectivePos = loc()->ball(); // manter posicao
     else{
         // Unitary velocity vector (project point at goal)
-        Position posBall = loc()->ball();
-        Position unitaryBallVelocity = Position(true, ballVelocity.x()/ballVelocity.abs(), ballVelocity.y()/ballVelocity.abs(), 0.0);
+        const Position posBall = loc()->ball();
+        const Position unitaryBallVelocity = Position(true, ballVelocity.x()/ballVelocity.abs(), ballVelocity.y()/ballVelocity.abs(), 0.0);
 
         // Now ball velocity line (pos + uni_velocity vector)
-        Position ballVelocityLine = Position(true, posBall.x()+unitaryBallVelocity.x(), posBall.y()+unitaryBallVelocity.y(), 0.0);
+        const Position ballVelocityLine = Position(true, posBall.x()+unitaryBallVelocity.x(), posBall.y()+unitaryBallVelocity.y(), 0.0);
 
         // Call utils to get projection
         objectivePos = WR::Utils::projectPointAtLine(posBall, ballVelocityLine, player()->position()); //Intercepta em 90 graus
@@ -55,6 +54,24 @@ void Skill_InterceptBall::run() {
     if(_interceptAdvance)
         objectivePos = WR::Utils::threePoints(objectivePos, loc()->ball(), 0.1f, 0.0);
 
-    player()->goTo(objectivePos, 0, true);
+    player()->goTo(objectivePos, 0, true, 0.4f);
     player()->dribble(true);
+}
+
+
+
+bool Skill_InterceptBall::isBehindBall(const Position &destination, float angularPrecision) {
+    Position posBall = loc()->ball();
+    Position posPlayer = player()->position();
+
+    // Translate the position of the player to the front
+    float xPlayer = posPlayer.x() + cos(player()->orientation().value())*MRCConstants::_robotRadius;
+    float yPlayer = posPlayer.y() + sin(player()->orientation().value())*MRCConstants::_robotRadius;
+    posPlayer.setPosition(xPlayer, yPlayer, posPlayer.z());
+
+    // Calc
+    float anglePlayer = WR::Utils::getAngle(posBall, posPlayer);
+    float angleDest = WR::Utils::getAngle(posBall, destination);
+    float diff = WR::Utils::angleDiff(anglePlayer, angleDest);
+    return (diff>angularPrecision);
 }

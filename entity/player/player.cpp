@@ -30,7 +30,7 @@ QString Player::name(){
     return "Player #"+QString::number((int)_team->teamId())+":"+QString::number((int)_playerId);
 }
 
-Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Role *defaultRole, SSLReferee *ref, PID *vxPID, PID *vyPID, PID *vwPID, NavAlgorithm *navAlg) : Entity(Entity::ENT_PLAYER){
+Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Role *defaultRole, SSLReferee *ref, PID *vxPID, PID *vyPID, PID *vwPID, NavigationAlgorithm *navAlg) : Entity(Entity::ENT_PLAYER){
     _world = world;
     _team = team;
     _playerId = playerID;
@@ -268,6 +268,16 @@ Angle Player::angleTo(const Position &pos) const{
 
 /* Locomotion algorithms */
 
+std::pair<Angle,float> Player::getNavDirectionDistance(const Position &destination, const Angle &positionToLook, bool avoidTeammates, bool avoidOpponents, bool avoidBall, bool avoidOurGoalArea, bool avoidTheirGoalArea) {
+    _nav->setGoal(destination, positionToLook, avoidTeammates, avoidOpponents, avoidBall, avoidOurGoalArea, avoidTheirGoalArea);
+    Angle direction = _nav->getDirection();
+    float distance = _nav->getDistance();
+
+    std::pair<Angle,float> movement = std::make_pair(direction, distance);
+    movement.first.setValue(movement.first.value() - orientation().value());
+    return movement;
+}
+
 void Player::idle(){
     // Set current position/orientation as desired
     //_nextPosition = position();
@@ -284,7 +294,7 @@ void Player::setSpeed(float x, float y, float theta) {
 
     float currSpeedAbs = sqrt(pow(x, 2) + pow(y, 2));
     float incSpeedAbs = currSpeedAbs - _lastSpeedAbs;
-    float maxAcc = 0.5;
+    float maxAcc = 2.0;
 
     if(fabs(incSpeedAbs) > maxAcc && incSpeedAbs > 0){
         float newSpeed = _lastSpeedAbs + maxAcc;
@@ -306,7 +316,7 @@ void Player::setSpeed(float x, float y, float theta) {
 
 }
 
-std::pair<float, float> Player::goTo(Position targetPosition, double offset, bool setHere){
+std::pair<float, float> Player::goTo(Position targetPosition, double offset, bool setHere, double minVel){
     double robot_x, robot_y, robotAngle = orientation().value();
     robot_x = position().x();
     robot_y = position().y();
@@ -335,14 +345,14 @@ std::pair<float, float> Player::goTo(Position targetPosition, double offset, boo
     if(isPidActivated()){
         if(setHere){
             // aplicar velocidade minima ( só no intercept que goTo vai ser chamado pra ativar aqui ? )
-            if(fabs(newVX) <= 0.4){
-                if(newVX < 0) newVX = -0.4;
-                else newVX = 0.4;
+            if(fabs(newVX) <= minVel){
+                if(newVX < 0) newVX = -minVel;
+                else newVX = minVel;
             }
 
-            if(fabs(newVY) <= 0.4){
-                if(newVY < 0) newVY = -0.4;
-                else newVY = 0.4;
+            if(fabs(newVY) <= minVel){
+                if(newVY < 0) newVY = -minVel;
+                else newVY = minVel;
             }
 
             setSpeed(newVX, newVY, 0.0);
@@ -352,14 +362,14 @@ std::pair<float, float> Player::goTo(Position targetPosition, double offset, boo
     else{
         if(setHere){
             // aplicar velocidade minima ( só no intercept que goTo vai ser chamado pra ativar aqui ? )
-            if(fabs(newVX) <= 0.4){
-                if(newVX < 0) newVX = -0.4;
-                else newVX = 0.4;
+            if(fabs(vxSaida) <= minVel){
+                if(vxSaida < 0) vxSaida = -minVel;
+                else vxSaida = minVel;
             }
 
-            if(fabs(newVY) <= 0.4){
-                if(newVY < 0) newVY = -0.4;
-                else newVY = 0.4;
+            if(fabs(vySaida) <= minVel){
+                if(vySaida < 0) vySaida = -minVel;
+                else vySaida = minVel;
             }
 
             setSpeed(vxSaida, vySaida, 0.0);
@@ -427,6 +437,7 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
 }
 
 void Player::goToLookTo(Position targetPosition, Position lookToPosition, double offset, double offsetAngular){
+    /*
     std::pair<float, float> a = goTo(targetPosition, offset, false);
     std::pair<double, double> b = rotateTo(lookToPosition, offsetAngular, false);
 
@@ -465,6 +476,38 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, double
             setSpeed(a.first, a.second, b.second); // caso esteja de boa, gogo
         }
     }
+    */
+
+    std::pair<double, double> help = rotateTo(targetPosition);
+    std::pair<Angle, float> a = getNavDirectionDistance(targetPosition, Angle(true, help.first), true, true, false, true, true);
+/*
+    double vx = _vxPID->calculate(a.second * cos(a.first.value()), velocity().x());
+    double vy = _vyPID->calculate(a.second * sin(a.first.value()), velocity().y());
+*/
+    double vx = a.second * cos(a.first.value());
+    double vy = a.second * sin(a.first.value());
+    double dist = WR::Utils::distance(position(), targetPosition);
+    if(dist <= 0.5f){ // se estiver a menos de 50cm do alvo
+        if(fabs(help.first) >= GEARSystem::Angle::toRadians(15)){ // se a diferença for maior que 15 deg
+            setSpeed(0.0, 0.0, help.second); // zera a linear e espera girar
+        }else{
+            setSpeed(vx, vy, help.second); // caso esteja de boa, gogo
+        }
+    }
+    else if(dist > 0.5f && dist <= 1.0f){ // se estiver entre 50cm a 1m do alvo
+        if(fabs(help.first) >= GEARSystem::Angle::toRadians(45)){ // se a diferença for maior que 45 deg
+            setSpeed(0.3 * vx, 0.3 * vy, help.second); // linear * 0.3 e gira
+        }else{
+            setSpeed(vx, vy, help.second); // caso esteja de boa, gogo
+        }
+    }
+    else if(dist > 1.0f){ // se estiver a mais de 1m do alvo
+        if(fabs(help.first) >= GEARSystem::Angle::toRadians(75)){ // se a diferença for maior que 75 deg
+            setSpeed(0.5 * vx, 0.5 * vy, help.second); // linear * 0.5 e gira
+        }else{
+            setSpeed(vx, vy, help.second); // caso esteja de boa, gogo
+        }
+    }
 }
 
 void Player::aroundTheBall(Position targetPosition, double offset, double offsetAngular){
@@ -489,7 +532,7 @@ void Player::setGoal(Position pos){
     _nav->setGoal(pos, orientation(), true, true, false, true, true);
 }
 
-QList<Position> Player::getPath() const {
+QLinkedList<Position> Player::getPath() const {
     return _nav->getPath();
 }
 

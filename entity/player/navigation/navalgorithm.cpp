@@ -1,9 +1,9 @@
 /***
- * Maracatronics Robotics
- * Federal University of Pernambuco (UFPE) at Recife
- * http://www.maracatronics.com/
+ * Warthog Robotics
+ * University of Sao Paulo (USP) at Sao Carlos
+ * http://www.warthog.sc.usp.br/
  *
- * This file is part of Armorial project.
+ * This file is part of WRCoach project.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,16 +20,15 @@
  ***/
 
 #include "navalgorithm.h"
-#include <utils/mrctimer/mrctimer.h>
+#include <utils/wrtimer/wrtimer.hh>
 
-#define NAVALG_PATHRESOLUTION 0.10
 #define NAVALG_MAXTIME 5 // ms
 
-NavAlgorithm::NavAlgorithm() {
+NavigationAlgorithm::NavigationAlgorithm() {
     _generatePath = true;
 }
 
-NavAlgorithm::NavAlgorithm(const NavAlgorithm &copy) {
+NavigationAlgorithm::NavigationAlgorithm(const NavigationAlgorithm &copy) {
     _originPos = copy._originPos;
     _originOri = copy._originOri;
     _originVel = copy._originVel;
@@ -42,53 +41,55 @@ NavAlgorithm::NavAlgorithm(const NavAlgorithm &copy) {
     _path.clear();
 }
 
-NavAlgorithm::~NavAlgorithm() {
+NavigationAlgorithm::~NavigationAlgorithm() {
 
 }
 
-void NavAlgorithm::initialize(Locations *loc) {
+QString NavigationAlgorithm::name() {
+    return "Not defined";
+}
+
+void NavigationAlgorithm::initialize(Locations *loc) {
     _loc = loc;
 }
 
-void NavAlgorithm::runNavAlgorithm() {
-    // Run NavAlgorithm specific implementation
+void NavigationAlgorithm::runNavigationAlgorithm() {
+    // Run NavigationAlgorithm specific implementation
     run();
 
     // Generate path
-/*
     if(_generatePath)
         this->generatePath();
-*/
 }
 
-void NavAlgorithm::setOrigin(const Position &pos, const Angle &ori, const Velocity &vel) {
+void NavigationAlgorithm::setOrigin(const Position &pos, const Angle &ori, const Velocity &vel) {
     _originPos = pos;
     _originOri = ori;
     _originVel = vel;
 }
 
-void NavAlgorithm::setGoal(const Position &pos, const Angle &ori) {
+void NavigationAlgorithm::setGoal(const Position &pos, const Angle &ori) {
     _goalPos = pos;
     _goalOri = ori;
 }
 
-float NavAlgorithm::getDistance() const {
+float NavigationAlgorithm::getDistance() const {
     QMutexLocker locker(&_pathMutex);
     return _distance;
 }
 
-QList<Position> NavAlgorithm::getPath() const {
+QLinkedList<Position> NavigationAlgorithm::getPath() const {
     QMutexLocker locker(&_pathMutex);
 
     // Return path
     return _path;
 }
 
-NavAlgorithm *NavAlgorithm::clone() const {
+NavigationAlgorithm *NavigationAlgorithm::clone() const {
     return NULL;
 }
 
-void NavAlgorithm::generatePath() {
+void NavigationAlgorithm::generatePath() {
     QMutexLocker locker(&_pathMutex);
 
     // Clear old path
@@ -96,7 +97,7 @@ void NavAlgorithm::generatePath() {
     _distance = 0.0;
 
     // Generate a copy of the object
-    NavAlgorithm *clone = this->clone();
+    NavigationAlgorithm *clone = this->clone();
     if(clone==NULL) {
         // Child doesn't implement clone
         _path.append(_originPos);
@@ -105,14 +106,36 @@ void NavAlgorithm::generatePath() {
         return;
     }
 
-    // Appends the current origin
+    // Apends the current origin
     _path.append(_originPos);
 
     // Generate points until reach the goal
-    MRCTimer timer(5);
+    WRTimer timer;
     Position currPos = _originPos;
-    while(WR::Utils::distance(currPos, _goalPos)>NAVALG_PATHRESOLUTION && timer.checkTimerEnd()) {
+    float navAlgPathResolution = 0.03f;
+    while(WR::Utils::distance(currPos, _goalPos)>4*navAlgPathResolution && timer.timemsec()<=NAVALG_MAXTIME) {
 
+        // Run algorithm
+        clone->runNavigationAlgorithm();
+
+        // Gets the direction for the goal
+        Angle direction = clone->getDirection();
+
+        // Calcuates the new dx and dy whose will be added to the actual position
+        float dx = navAlgPathResolution*cos(direction.value());
+        float dy = navAlgPathResolution*sin(direction.value());
+        currPos.setPosition(currPos.x() + dx, currPos.y() + dy, 0.0);
+
+        // Update distance
+        _distance += WR::Utils::distance(_path.last(), currPos);
+
+        // Add to the path
+        _path.append(currPos);
+
+        // Set new origins
+        clone->setOrigin(currPos, Angle(), Velocity());
+
+        timer.stop();
     }
 
     // Delete clone
@@ -122,4 +145,3 @@ void NavAlgorithm::generatePath() {
     _distance += WR::Utils::distance(_path.last(), _goalPos);
     _path.append(_goalPos);
 }
-

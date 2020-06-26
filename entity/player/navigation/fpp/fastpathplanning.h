@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
-
+/*
 #ifndef FASTPATHPLANNING_H
 #define FASTPATHPLANNING_H
 
@@ -44,20 +44,20 @@ public:
 
     Angle getDirection() const;
     float getDistance() const;
-    QList<Position> getPath() const;
-    QList<QList<Position>> getAllPath() const;
+    QLinkedList<Position> getPath() const;
+    QList<QLinkedList<Position>> getAllPath() const;
 
 private:
     std::pair<Position, Position> findPoint(QList<Position> &list, Position colisionPoint,int iteratorPoints);
     Position hasCollisionAtLine(Position pos);
     void addColisionPosition(Position _pos, Boolean _isBall);
     QList<std::pair<Position, Boolean>> _colisionPosition;
-    QList<Position> _path;
-    QList<QList<Position>> _allPath;
+    QLinkedList<Position> _path;
+    QList<QLinkedList<Position>> _allPath;
 
     // Path smoothing
     float _smoothPathResolution;
-    QList<Position> _smoothPath;
+    QLinkedList<Position> _smoothPath;
     void smoothPath(QList<Position> &path);
     Position getVector(const Position &near, const Position &rand, float vectorLength);
 
@@ -65,3 +65,4 @@ private:
 };
 
 #endif // FASTPATHPLANNING_H
+*/
