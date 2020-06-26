@@ -70,7 +70,7 @@ void Skill_PushBall2::run(){
         _currPos.setUnknown();
         _pushedDistance = 0.0;
         player()->dribble(false);
-        player()->goToLookTo(behindBall, loc()->ball());
+        player()->goToLookTo(behindBall, loc()->ball(), true, true, false, true, true);
 
         if(player()->distBall() <= BALL_MINDIST && isBallInFront())
             _state = STATE_PUSH;
@@ -90,7 +90,7 @@ void Skill_PushBall2::run(){
             player()->rotateTo(_aim);
         else{
             _pushedDistance += WR::Utils::distance(_lastPos, _currPos);
-            player()->goToLookTo(_destination, _aim);
+            player()->goToLookTo(_destination, _aim, true, true, false, true, true);
         }
 
         if(player()->distBall() > BALL_MINDIST)

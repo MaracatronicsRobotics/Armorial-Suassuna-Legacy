@@ -35,7 +35,8 @@ void Behaviour_FollowBall::configure() {
 };
 
 void Behaviour_FollowBall::run() {
-    _skill_GoToLookTo->setDesiredPosition(loc()->ball());
-    _skill_GoToLookTo->setOffsetToBall(_offsetBall);
+    Position desired = WR::Utils::threePoints(player()->position(), loc()->ball(), _offsetBall, GEARSystem::Angle::pi);
+    _skill_GoToLookTo->setDesiredPosition(desired);
+    _skill_GoToLookTo->setAvoidBall(true);
 }
 

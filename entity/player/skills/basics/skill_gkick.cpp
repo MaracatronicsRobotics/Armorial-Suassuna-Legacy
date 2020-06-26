@@ -32,6 +32,6 @@ Skill_GKick::Skill_GKick() {
 }
 
 void Skill_GKick::run() {
-    player()->goToLookTo(loc()->ball(), _aimPosition, 0.01);
+    player()->goToLookTo(loc()->ball(), _aimPosition, true, true, false, false, false);
     player()->kick(MRCConstants::_maxKickPower, true);
 }

@@ -116,7 +116,7 @@ void Behaviour_Barrier::run() {
     // settings of goto
     _sk_goto->setDesiredPosition(desiredPosition);
     _sk_goto->setAimPosition(aimPosition);
-    _sk_goto->setOffsetToBall(0.01);
+    _sk_goto->setAvoidBall(false);
 
     // settings of intercept
     _sk_gk->setInterceptAdvance(true);

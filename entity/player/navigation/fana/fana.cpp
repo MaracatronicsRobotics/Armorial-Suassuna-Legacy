@@ -24,7 +24,7 @@
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
-#define OBSTACLE_RADIUS 0.40f
+#define OBSTACLE_RADIUS 0.45f
 #define HYSTERESIS_FACTOR 0.15f
 
 float FANA::_obstacleRadiusFactor = 1.0f;
