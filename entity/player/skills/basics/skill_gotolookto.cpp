@@ -27,7 +27,7 @@ QString Skill_GoToLookTo::name() {
 }
 
 Skill_GoToLookTo::Skill_GoToLookTo() {
-    _aimPosition = Position(true, 0.0, 0.0, 0.0);
+    _aimPosition = Position(false, 0.0, 0.0, 0.0);
     _desiredPosition = Position(true, 0.0, 0.0, 0.0);
     _avoidTeammates = true;
     _avoidOpponents = true;

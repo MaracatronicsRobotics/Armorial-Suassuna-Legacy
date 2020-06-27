@@ -52,20 +52,25 @@ void Behaviour_Receiver::configure() {
 };
 
 void Behaviour_Receiver::run() {
-    setQuadrant(QUADRANT_BOTMID);
-    _attackerId = 1;
-    /*
+    setQuadrant(getBestQuadrant());
+
+    _attackerId = NO_ATTACKER;
     for(quint8 id = 0; id < MRCConstants::_qtPlayers; id++){
         if(PlayerBus::ourPlayerAvailable(id))
             if(PlayerBus::ourPlayer(id)->hasBallPossession())
                 _attackerId = id;
     }
-    */
+
+    std::cout << "_attackerId: " << _attackerId << std::endl;
+
     if(_attackerId == NO_ATTACKER){
         // caso o atacante n esteja disponivel, posicionar da mesma forma que o attacker
         // ou seja, na projecao ortogonal da reta onde há angulação livre.
         //printf("[BEHAVIOUR RECEIVER] Attacker isn't available (Receiver ID: %u)\n", player()->playerId());
-        return ;
+        Position _desiredPosition = getBestPositionWithoutAttacker(_quadrant);
+
+        _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
+        _skill_GoToLookTo->setAimPosition(loc()->ourGoal());
     }
     else{
         Position _desiredPosition = getReceiverBestPosition(_quadrant, _attackerId, _minRadius, _maxRadius);
@@ -204,9 +209,101 @@ Position Behaviour_Receiver::getReceiverBestPosition(int quadrant, quint8 attack
     return goalLine.interceptionWith(attackerLine);
 }
 
+Position Behaviour_Receiver::getBestPositionWithoutAttacker(int quadrant){
+    if(quadrant == NO_QUADRANT){
+        printf("[BEHAVIOUR Receiver] Receiver with id %u: quadrant isn't set.\n", player()->playerId());
+        return Position(false, 0.0, 0.0, 0.0);
+    }
+
+    const Position goalPosition = loc()->ourGoal(); // Fundo do gol (pra pegar o goleiro deles)
+    const std::pair<Position, Position> quadrantPosition = getQuadrantInitialPosition(quadrant); // Par de posições do quadrante
+    float radius = 4.0; // pegar raio médio pra atuação
+
+    //
+    //    PARTE DO GOL   //
+                         //
+
+    // Free Angles do gol até as posições do quadrante
+    Position initialPos = quadrantPosition.first; // pega as posicoes dos quadrantes gerados
+    Position finalPos = quadrantPosition.second;
+
+    // Pega a lista de obstaculos pra remover o proprio attacker
+    QList<Obstacle> obstaclesList = FreeAngles::getObstacles(goalPosition, radius);
+    int size = obstaclesList.size();
+    for(int x = 0; x < size; x++){
+        Obstacle obstAt = obstaclesList.at(x);
+        if(obstAt.team() == player()->teamId() && obstAt.id() == player()->playerId()){
+            obstaclesList.removeAt(x);
+            break;
+        }
+    }
+
+    // Calcula free angles enviando a lista de obstaculos nova (receiver removido)
+    QList<FreeAngles::Interval> freeAnglesToGoal = FreeAngles::getFreeAngles(goalPosition, initialPos, finalPos, obstaclesList);
+    float largestGoalAngle = 0.0; // salvar aqui o maior angulo livre pra o gol
+    if(freeAnglesToGoal.isEmpty()){ // free angles desativado(?)
+        return Position(false, 0.0, 0.0, 0.0); // debugar dps
+    }else{
+        // descobrir o maior intervalo de ang livre, pegar o meio (mais provavel de estar certo (ruido?))
+        float largestAngle = 0.0, largestMid = 0.0;
+        QList<FreeAngles::Interval>::iterator it;
+        for(it = freeAnglesToGoal.begin(); it != freeAnglesToGoal.end(); it++){
+            float initialAngle = it->angInitial();
+            float finalAngle = it->angFinal();
+            float dif = WR::Utils::angleDiff(initialAngle, finalAngle);
+            if(dif > largestAngle){
+                // salvo o maior intervalo (dif) e salvo o meio desse intervalo (final - dif/2)
+                largestAngle = dif;
+                largestMid = finalAngle - (dif / 2.0);
+            }
+        }
+        largestGoalAngle = largestMid; // finalmente salvo o angulo (meio do maior intervalo)
+    }
+
+    Line goalLine = Line::getLine(goalPosition, largestGoalAngle);
+    double o_a, o_b;
+
+    if(goalLine.a() == 0.0) return Position(false, 0.0, 0.0, 0.0);
+    o_a = (-1)/goalLine.a();
+    o_b = player()->position().y() - (o_a * player()->position().x());
+
+    Line ortogonalLine(o_a, o_b);
+
+    Position desiredPos = goalLine.interceptionWith(ortogonalLine);
+
+    return desiredPos;
+}
+
+int Behaviour_Receiver::getBestQuadrant(){
+    double bestDist = 999;
+    int bestQuadrant = 0;
+    for(int x = QUADRANT_UP; x <= QUADRANT_BOT; x++){
+        Position quadrantBarycenter = getQuadrantBarycenter(x);
+        double dist = WR::Utils::distance(player()->position(), quadrantBarycenter);
+        if(dist < bestDist){
+            bestDist = dist;
+            bestQuadrant = x;
+        }
+    }
+
+    return bestQuadrant;
+}
+
+Position Behaviour_Receiver::getQuadrantBarycenter(int quadrant){
+    const float goal_x = loc()->ourGoal().x();
+    const float goal_y = loc()->ourGoal().y();
+
+    std::pair<Position, Position> points = getQuadrantInitialPosition(quadrant);
+
+    const float barycenter_x = (points.first.x() + points.second.x() + goal_x) / 3.0;
+    const float barycenter_y = (points.first.y() + points.second.y() + goal_y) / 3.0;
+
+    return Position(true, barycenter_x, barycenter_y, 0.0);
+}
+
 std::pair<Position, Position> Behaviour_Receiver::getQuadrantInitialPosition(int quadrant){
     if(quadrant == NO_QUADRANT){
-        printf("[BEHAVIOUR RECEIVER] Receiver with id %u: quadrant isn't set.\n", player()->playerId());
+        printf("[BEHAVIOUR ATTACKER] Attacker with id %u: quadrant isn't set.\n", player()->playerId());
         return std::make_pair(Position(false, 0.0, 0.0, 0.0), Position(false, 0.0, 0.0, 0.0));
     }
 
@@ -230,14 +327,14 @@ std::pair<Position, Position> Behaviour_Receiver::getQuadrantInitialPosition(int
         case QUADRANT_UP:
             return std::make_pair(up, upL);
         break;
-        case QUADRANT_UPMID:
-            return std::make_pair(cen, up);
+        case QUADRANT_MID:
+            return std::make_pair(up, bot);
         break;
         case QUADRANT_BOT:
             return std::make_pair(botL, bot);
         break;
-        case QUADRANT_BOTMID:
-            return std::make_pair(bot, cen);
+        default:
+            return std::make_pair(Position(false, 0.0, 0.0, 0.0), Position(false, 0.0, 0.0, 0.0));
         break;
         }
     }else{
@@ -245,14 +342,14 @@ std::pair<Position, Position> Behaviour_Receiver::getQuadrantInitialPosition(int
         case QUADRANT_UP:
             return std::make_pair(upR, up);
         break;
-        case QUADRANT_UPMID:
-            return std::make_pair(up, cen);
+        case QUADRANT_MID:
+            return std::make_pair(up, bot);
         break;
         case QUADRANT_BOT:
             return std::make_pair(bot, botR);
         break;
-        case QUADRANT_BOTMID:
-            return std::make_pair(cen, bot);
+        default:
+            return std::make_pair(Position(false, 0.0, 0.0, 0.0), Position(false, 0.0, 0.0, 0.0));
         break;
         }
     }
