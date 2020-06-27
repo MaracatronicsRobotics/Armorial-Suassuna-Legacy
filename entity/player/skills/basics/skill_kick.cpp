@@ -44,7 +44,7 @@ void Skill_Kick::run() {
         return;
 
     // Calc behind ball
-    Position behindBall = WR::Utils::threePoints(loc()->ball(), _aimPosition, 0.16f, GEARSystem::Angle::pi);
+    Position behindBall = WR::Utils::threePoints(loc()->ball(), _aimPosition, 0.2f, GEARSystem::Angle::pi);
 
     if(loc()->ballVelocity().abs() > BALLPREVISION_MINVELOCITY){
         // Calc unitary vector of velocity
