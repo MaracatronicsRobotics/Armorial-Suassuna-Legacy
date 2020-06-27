@@ -72,6 +72,9 @@ void Skill_Kick::run() {
 
         if(player()->isNearbyPosition(behindBall, 0.1f))
             _state = STATE_KICK;
+
+        // change this later (avoid areas)
+        player()->goToLookTo(desiredPos, _aimPosition, true, true, true, false, false);
     }
         break;
     case STATE_KICK: {
@@ -84,12 +87,12 @@ void Skill_Kick::run() {
         if(isBallInFront() == false){
             _state = STATE_POS;
         }
+
+        // change this later (avoid areas)
+        player()->goToLookTo(desiredPos, _aimPosition, true, true, false, false, false);
     }
         break;
     }
-
-    // change this later (avoid areas)
-    player()->goToLookTo(desiredPos, _aimPosition, true, true, false, false, false);
 
     if(isInFrontOfObjective())
         player()->kick(_power, _isChip);
