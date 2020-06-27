@@ -52,8 +52,9 @@ void Role_Default::run(){
 
     if(player()->playerId() == 1)
         setBehaviour(BHV_DONOTHING);
-    else
+    else if(player()->playerId() == 3)
         setBehaviour(1);
-
+    else if(player()->playerId() == 5)
+        setBehaviour(2);
 
 }

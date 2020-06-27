@@ -183,7 +183,7 @@ void Suassuna::setupOurPlayers() {
         // Add to world
         _world->addEntity(player, 2);
         // Enable PID
-        player->setPidActivated(true);
+        player->setPidActivated(false);
     }
 }
 

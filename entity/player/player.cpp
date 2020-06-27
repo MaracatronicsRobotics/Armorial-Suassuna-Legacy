@@ -148,17 +148,6 @@ QString Player::getRoleName() {
     return roleName;
 }
 
-QString Player::getActualBehaviourName() {
-    _mutexRole.lock();
-    QString behaviourName;
-    if(_role == NULL)
-        behaviourName = "UNKNOWN";
-    else
-        behaviourName = _role->getBehaviours().value(_role->getActualBehaviour())->name();
-    _mutexRole.unlock();
-    return behaviourName;
-}
-
 void Player::setRole(Role* b) {
     // Check same behavior
     if(b==_role)
@@ -399,31 +388,33 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
         angleOrigin2ball = acos(vectorRobot2BallX); //angulo que a bola faz com o eixo x em relação ao robo
     }
 
-    double minValue = 3.0;
-    double maxValue = 6.0;
-
+    double minValue = 1.0;
+    double maxValue = 3.0;
     double speed = 0.0;
 
     angleRobot2Ball = angleOrigin2Robot - angleOrigin2ball;
 
-    if(fabs(angleRobot2Ball) >= GEARSystem::Angle::toRadians(1.5)){ // se a dif for de até 1.5 grau
-        if(angleRobot2Ball < 0.0){
-            if(angleRobot2Ball < -GEARSystem::Angle::pi) speed = -maxValue;
-            else speed = maxValue;
+    if(fabs(angleRobot2Ball) >= M_PI / 52.0){
+        if(abs(angleRobot2Ball) < minValue){
+            if(angleRobot2Ball < 0.0){
+                if (speed != 0.0 && angleRobot2Ball < 0.2) speed = -minValue;    //Inverte a velocidade para frenagem
+                else speed = minValue;
+            }else{
+                if (speed != 0.0 && angleRobot2Ball < 0.2) speed = minValue;     //Inverte a velocidade para frenagem
+                else speed = -minValue;
+            }
         }else{
-            if(angleRobot2Ball < GEARSystem::Angle::pi) speed = -maxValue;
-            else speed = maxValue;
-        }
-
-        // Se estiver < 20 graus, seta uma minima para desalecerar um pouco
-        if(fabs(angleRobot2Ball) < GEARSystem::Angle::toRadians(20)){
-            if(angleRobot2Ball < 0.0) speed = (fabs(angleRobot2Ball) / GEARSystem::Angle::toRadians(20)) * minValue;
-            else speed = (fabs(angleRobot2Ball) / GEARSystem::Angle::toRadians(20)) * -minValue;
+            if(angleRobot2Ball < 0.0){
+                if(angleRobot2Ball < -M_PI) speed = -maxValue;
+                else speed = maxValue;
+            }else{
+                if(angleRobot2Ball < M_PI) speed = -maxValue;
+                else speed = maxValue;
+            }
         }
     }else{
-        speed = 0.0;
+        speed = 0;
     }
-
 
     if(isPidActivated()){
         double newSpeed = _vwPID->calculate(speed, angularSpeed().value());
@@ -437,55 +428,19 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
 }
 
 void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool avoidTeammates, bool avoidOpponents, bool avoidBall, bool avoidOurGoalArea, bool avoidTheirGoalArea){
-    /*
-    std::pair<float, float> a = goTo(targetPosition, offset, false);
-    std::pair<double, double> b = rotateTo(lookToPosition, offsetAngular, false);
-
-    if(fabs(a.first) <= 0.1){
-        if(a.first < 0) a.first = -0.1;
-        else a.first = 0.1;
-    }
-
-    if(fabs(a.second) <= 0.1){
-        if(a.second < 0) a.second = -0.1;
-        else a.second = 0.1;
-    }
-
-    WR::Utils::limitValue(&a.first, -2.5, 2.5);
-    WR::Utils::limitValue(&a.second, -2.5, 2.5);
-
-    double dist = WR::Utils::distance(position(), targetPosition);
-    if(dist <= 0.5f){ // se estiver a menos de 50cm do alvo
-        if(fabs(b.first) >= GEARSystem::Angle::toRadians(15)){ // se a diferença for maior que 15 deg
-            setSpeed(0.0, 0.0, b.second); // zera a linear e espera girar
-        }else{
-            setSpeed(a.first, a.second, b.second); // caso esteja de boa, gogo
-        }
-    }
-    else if(dist > 0.5f && dist <= 1.0f){ // se estiver entre 50cm a 1m do alvo
-        if(fabs(b.first) >= GEARSystem::Angle::toRadians(45)){ // se a diferença for maior que 45 deg
-            setSpeed(0.3 * a.first, 0.3 * a.second, b.second); // linear * 0.3 e gira
-        }else{
-            setSpeed(a.first, a.second, b.second); // caso esteja de boa, gogo
-        }
-    }
-    else if(dist > 1.0f){ // se estiver a mais de 1m do alvo
-        if(fabs(b.first) >= GEARSystem::Angle::toRadians(75)){ // se a diferença for maior que 75 deg
-            setSpeed(0.5 * a.first, 0.5 * a.second, b.second); // linear * 0.5 e gira
-        }else{
-            setSpeed(a.first, a.second, b.second); // caso esteja de boa, gogo
-        }
-    }
-    */
-
     Angle anglePP;
     std::pair<double, double> help = rotateTo(targetPosition);
-    if(lookToPosition.isUnknown())
+    if(targetPosition.isUnknown())
         anglePP = Angle(false, 0.0);
     else
         anglePP = Angle(true, help.first);
 
     std::pair<double, double> rotateSpeed = rotateTo(lookToPosition);
+    if(playerId() == 3){
+        std::cout << "rotateAngle: " << rotateSpeed.first << std::endl;
+        std::cout << "rotateSpeed: " << rotateSpeed.second << std::endl;
+        std::cout << "lookTo: " << lookToPosition.x() << " - " << lookToPosition.y() << std::endl;
+    }
     std::pair<Angle, float> a = getNavDirectionDistance(targetPosition, anglePP, avoidTeammates, avoidOpponents, avoidBall, avoidOurGoalArea, avoidTheirGoalArea);
 /*
     double vx = _vxPID->calculate(a.second * cos(a.first.value()), velocity().x());

@@ -57,15 +57,17 @@ private:
     };
 
     enum{
+        NO_QUADRANT,
         QUADRANT_UP,
-        QUADRANT_UPMID,
-        QUADRANT_BOT,
-        QUADRANT_BOTMID,
-        NO_QUADRANT
+        QUADRANT_MID,
+        QUADRANT_BOT
     };
 
     // Auxiliary functions
     Position getReceiverBestPosition(int quadrant, quint8 attackerId, float minRadius, float maxRadius);
+    Position getBestPositionWithoutAttacker(int quadrant);
+    int getBestQuadrant();
+    Position getQuadrantBarycenter(int quadrant);
     std::pair<Position, Position> getQuadrantInitialPosition(int quadrant);
 
 public:
