@@ -436,11 +436,6 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool a
         anglePP = Angle(true, help.first);
 
     std::pair<double, double> rotateSpeed = rotateTo(lookToPosition);
-    if(playerId() == 3){
-        std::cout << "rotateAngle: " << rotateSpeed.first << std::endl;
-        std::cout << "rotateSpeed: " << rotateSpeed.second << std::endl;
-        std::cout << "lookTo: " << lookToPosition.x() << " - " << lookToPosition.y() << std::endl;
-    }
     std::pair<Angle, float> a = getNavDirectionDistance(targetPosition, anglePP, avoidTeammates, avoidOpponents, avoidBall, avoidOurGoalArea, avoidTheirGoalArea);
 /*
     double vx = _vxPID->calculate(a.second * cos(a.first.value()), velocity().x());

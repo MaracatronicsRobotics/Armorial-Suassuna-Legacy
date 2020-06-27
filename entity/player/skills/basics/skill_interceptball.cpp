@@ -55,7 +55,7 @@ void Skill_InterceptBall::run() {
         objectivePos = WR::Utils::threePoints(objectivePos, loc()->ball(), 0.1f, 0.0);
 
     //player()->goToLookTo(objectivePos, objectivePos, true, true, false, false, false);
-    player()->goTo(objectivePos, 0, true, 0.3f);
+    player()->goTo(objectivePos, 0, true, 0.35f);
     player()->dribble(true);
 }
 
