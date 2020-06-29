@@ -36,6 +36,8 @@ void Behaviour_MarkBall::configure() {
 void Behaviour_MarkBall::run() {
     Position desired = WR::Utils::threePoints(player()->position(), loc()->ball(), 0.15f, true);
     _sk_GoToLookTo->setDesiredPosition(desired);
+    _sk_GoToLookTo->setAvoidBall(false);
+    _sk_GoToLookTo->setAvoidOpponents(false);
     for (int id = 0; id < MRCConstants::_qtPlayers; id++) {
         if(PlayerBus::theirPlayerAvailable(id)){
             if (PlayerBus::theirPlayer(id)->hasBallPossession()) {
