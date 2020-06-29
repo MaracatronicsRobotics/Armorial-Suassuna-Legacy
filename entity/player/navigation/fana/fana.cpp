@@ -24,9 +24,6 @@
 
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
-#define OBSTACLE_RADIUS 0.45f
-#define HYSTERESIS_FACTOR 0.15f
-
 float FANA::_obstacleRadiusFactor = 1.0f;
 
 FANA::FANA() {
@@ -135,13 +132,13 @@ void FANA::addOwnRobot(const Position &pos, const Velocity &vel) {
 }
 
 void FANA::addGoalArea(const Position &pos) {
-    addObstacle(pos);
+    addObstacle(pos, 2.0f);
 }
 
-void FANA::addObstacle(const Position &pos) {
+void FANA::addObstacle(const Position &pos, const double &radius) {
     Obstacle obst;
     obst.position() = pos;
-    obst.radius() = OBSTACLE_RADIUS * _obstacleRadiusFactor;
+    obst.radius() = radius * _obstacleRadiusFactor;
 
     _obstacles.push_back(obst);
 }
