@@ -25,7 +25,7 @@
 #include <utils/freeangles/freeangles.h>
 
 #define ATTACKER_MINBALLDIST 0.4f
-#define GOALPOSTS_ERROR 0.0f
+#define GOALPOSTS_ERROR 0.1f
 #define INTERCEPT_MINBALLVELOCITY 0.2f
 
 QString Behaviour_Goalkeeper::name() {
