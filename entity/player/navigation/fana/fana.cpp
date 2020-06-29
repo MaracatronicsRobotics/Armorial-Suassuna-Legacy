@@ -51,6 +51,7 @@ void FANA::run() {
     float angGoal = WR::Utils::getAngle(originPos(), goalPos());
     WR::Utils::angleLimitZeroTwoPi(&angGoal);
 
+
     // Remove obstacles outside destination radius
     QList<Obstacle> obstacles(_obstacles);
     const float destinationRadius = 1.15f*WR::Utils::distance(originPos(), goalPos());
@@ -132,7 +133,7 @@ void FANA::addOwnRobot(const Position &pos, const Velocity &vel) {
 }
 
 void FANA::addGoalArea(const Position &pos) {
-    addObstacle(pos, 2.0f);
+    addObstacle(pos, 3.0f);
 }
 
 void FANA::addObstacle(const Position &pos, const double &radius) {
