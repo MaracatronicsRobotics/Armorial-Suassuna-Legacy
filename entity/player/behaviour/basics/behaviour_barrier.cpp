@@ -117,6 +117,7 @@ void Behaviour_Barrier::run() {
     _sk_goto->setDesiredPosition(desiredPosition);
     _sk_goto->setAimPosition(aimPosition);
     _sk_goto->setAvoidBall(false);
+    _sk_goto->setAvoidOurGoalArea(true);
 
     // settings of intercept
     _sk_gk->setInterceptAdvance(true);
@@ -133,7 +134,7 @@ void Behaviour_Barrier::run() {
     if(player()->distBall() > INTERCEPT_MINBALLDIST && isBallComingToGoal(INTERCEPT_MINBALLVELOCITY)) {
         enableTransition(STATE_GK);
     } else {
-        if(player()->distBall() <= 0.3f && !loc()->isInsideOurArea(loc()->ball(), 1.05f)){
+        if(player()->distBall() <= 0.4f && !loc()->isInsideOurArea(loc()->ball(), 1.05f)){
             if(!isBehindBall(loc()->theirGoal())){
                 enableTransition(STATE_PUSH);
             }

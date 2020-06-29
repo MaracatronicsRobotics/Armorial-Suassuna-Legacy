@@ -22,6 +22,9 @@
 #ifndef FANA_H_
 #define FANA_H_
 
+#define OBSTACLE_RADIUS 0.45f
+#define HYSTERESIS_FACTOR 0.15f
+
 #include <entity/player/navigation/navalgorithm.h>
 #include <utils/freeangles/freeangles.h>
 
@@ -54,7 +57,7 @@ private:
     static float _obstacleRadiusFactor;
 
     // Internal
-    void addObstacle(const Position &pos);
+    void addObstacle(const Position &pos, const double &radius = OBSTACLE_RADIUS);
 
     // Resultant angle
     Angle _resultantAngle;
