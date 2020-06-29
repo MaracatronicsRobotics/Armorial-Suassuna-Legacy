@@ -103,6 +103,7 @@ public:
     bool isInsideField(const Position &pos, float dx, float dy);
     bool isNearWall(const Position &pos, float distance, Walls::Wall *wall = NULL);
     bool isNearOpponent(const Position &pos, float distance);
+    bool isVectorObstructed(Position start, Position end, quint8 ourPlayerToBeRemoved, float margin, bool isBallObstacle);
     Position ourAreaMargin(const Position &reference, float distance);
     Position theirAreaMargin(const Position &reference, float distance);
     //

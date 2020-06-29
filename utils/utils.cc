@@ -31,6 +31,33 @@ void Utils::initialize(MRCTeam *ourTeam, MRCTeam *opTeam) {
     FreeAngles::initialize(ourTeam, opTeam);
 }
 
+Position Utils::vectorSum(const Position &v1, const Position &v2, float m) {
+    return Position(true,
+                    v1.x() + m*v2.x(),
+                    v1.y() + m*v2.y(),
+                    v1.z() + m*v2.z());
+}
+
+Position Utils::vectorSum(const Position &v1, const Velocity &v2, float m) {
+    return Position(true,
+                    v1.x() + m*v2.x(),
+                    v1.y() + m*v2.y(),
+                    v1.z());
+}
+
+Position Utils::vectorSum(const Velocity &v1, const Position &v2, float m) {
+    return Position(true,
+                    v1.x() + m*v2.x(),
+                    v1.y() + m*v2.y(),
+                    m*v2.z());
+}
+
+Velocity Utils::vectorSum(const Velocity &v1, const Velocity &v2, float m) {
+    return Velocity(true,
+                    v1.x() + m*v2.x(),
+                    v1.y() + m*v2.y());
+}
+
 Position Utils::threePoints(const Position &near, const Position &far, float distance, float beta) {
     Angle alpha(true, atan2(far.y()-near.y(), far.x()-near.x()));
     Angle gama(true, alpha.value()+beta);
