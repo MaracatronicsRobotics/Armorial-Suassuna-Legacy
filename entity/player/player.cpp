@@ -255,6 +255,31 @@ Angle Player::angleTo(const Position &pos) const{
     return Angle(true, WR::Utils::getAngle(position(), pos));
 }
 
+Position Player::limitFieldDimensions(Position destination) {
+    const Locations *loc = playerTeam()->loc();
+
+    // X min
+    if(destination.x() < loc->fieldMinX()-MRCConstants::_robotRadius) {
+        destination.setPosition(loc->fieldMinX()-MRCConstants::_robotRadius, destination.y(), 0.0);
+    }
+    // X max
+    if(destination.x() > loc->fieldMaxX()+MRCConstants::_robotRadius) {
+        destination.setPosition(loc->fieldMaxX()+MRCConstants::_robotRadius, destination.y(), 0.0);
+    }
+
+    // Y min
+    if(destination.y() < loc->fieldMinY()-MRCConstants::_robotRadius) {
+        destination.setPosition(destination.x(), loc->fieldMinY()-MRCConstants::_robotRadius, 0.0);
+    }
+
+    // Y max
+    if(destination.y() > loc->fieldMaxY()+MRCConstants::_robotRadius) {
+        destination.setPosition(destination.x(), loc->fieldMaxY()+MRCConstants::_robotRadius, 0.0);
+    }
+
+    return destination;
+}
+
 /* Locomotion algorithms */
 
 std::pair<Angle,float> Player::getNavDirectionDistance(const Position &destination, const Angle &positionToLook, bool avoidTeammates, bool avoidOpponents, bool avoidBall, bool avoidOurGoalArea, bool avoidTheirGoalArea) {
@@ -306,6 +331,7 @@ void Player::setSpeed(float x, float y, float theta) {
 }
 
 std::pair<float, float> Player::goTo(Position targetPosition, double offset, bool setHere, double minVel){
+    targetPosition = limitFieldDimensions(targetPosition);
     double robot_x, robot_y, robotAngle = orientation().value();
     robot_x = position().x();
     robot_y = position().y();
@@ -428,6 +454,7 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
 }
 
 void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool avoidTeammates, bool avoidOpponents, bool avoidBall, bool avoidOurGoalArea, bool avoidTheirGoalArea){
+    targetPosition = limitFieldDimensions(targetPosition);
     Angle anglePP;
     std::pair<double, double> help = rotateTo(targetPosition);
     if(targetPosition.isUnknown())
