@@ -22,7 +22,7 @@
 #include "behaviour_timeout.h"
 
 QString Behaviour_TimeOut::name() {
-    return "Behaviour_FollowBall";
+    return "Behaviour_TimeOut";
 }
 
 Behaviour_TimeOut::Behaviour_TimeOut() {
