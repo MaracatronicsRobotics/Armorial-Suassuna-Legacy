@@ -97,6 +97,9 @@ public:
     void kick(float power, bool isChipKick = false);
     void dribble(bool isActive);
 
+    // Limit position
+    Position limitFieldDimensions(Position destination);
+
     // Role
     void setRole(Role *b);
     QString getRoleName();
