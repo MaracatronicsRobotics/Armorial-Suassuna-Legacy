@@ -41,7 +41,7 @@ Behaviour_Goalkeeper::Behaviour_Goalkeeper() {
     setRadius(0.5); // raio que define posse de bola para o goleiro dar takeout
     setTakeoutEnabled(true); // avançar na bola quando ela estiver na margem de aceitação (takeout vai dar goto e kick na bola)
     setTakeoutFactor(1.0); // fator de erro pra largura do gol (avançar na bola)
-    useAttackerOri(false); // pra levar o atacante em consideração na projeção no gol
+    useAttackerOri(true); // pra levar o atacante em consideração na projeção no gol
 }
 
 void Behaviour_Goalkeeper::configure() {
@@ -93,9 +93,10 @@ void Behaviour_Goalkeeper::run() {
     _skill_goToLookTo->setAimPosition(loc()->ball());
     _skill_goToLookTo->setAvoidBall(false);
     _skill_goToLookTo->setAvoidOurGoalArea(false);
+    _skill_goToLookTo->setIsGk(true);
 
     // machine if state begins for transitionsss
-    if(player()->distBall() > _radius && isBallComingToGoal(INTERCEPT_MINBALLVELOCITY, 1.1f)){ // bola nao ta em posse do goleiro e ta indo pro gol
+    if(player()->distBall() > _radius && isBallComingToGoal(INTERCEPT_MINBALLVELOCITY, 1.3f)){ // bola nao ta em posse do goleiro e ta indo pro gol
         enableTransition(STATE_GK); // defende!
     }else if(_takeoutEnabled){ // caso n esteja em posse, n esteja indo pro gol ou nenhum dos dois
         if(loc()->isInsideOurArea(loc()->ball(), _takeoutFactor)){ // ve se ta na nossa area com fator de takeout (uma area maiorzinha)

@@ -36,7 +36,7 @@ Skill_Kick::Skill_Kick() {
 
     _aimPosition.setUnknown();
 
-    _state = STATE_POS;
+    _state = STATE_KICK;
 }
 
 void Skill_Kick::run() {
@@ -44,7 +44,7 @@ void Skill_Kick::run() {
         return;
 
     // Calc behind ball
-    Position behindBall = WR::Utils::threePoints(loc()->ball(), _aimPosition, 0.2f, GEARSystem::Angle::pi);
+    Position behindBall = WR::Utils::threePoints(loc()->ball(), _aimPosition, 0.3f, GEARSystem::Angle::pi);
 
     if(loc()->ballVelocity().abs() > BALLPREVISION_MINVELOCITY){
         // Calc unitary vector of velocity
@@ -78,6 +78,11 @@ void Skill_Kick::run() {
     }
         break;
     case STATE_KICK: {
+        if(player()->distBall() <= 0.12f){ // holding ball already
+            player()->rotateTo(_aimPosition, 0.01f, true);
+            break;
+        }
+
         desiredPos = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.2f, GEARSystem::Angle::pi);
 
         if(player()->distBall() > 0.35f){
@@ -94,8 +99,9 @@ void Skill_Kick::run() {
         break;
     }
 
-    if(isInFrontOfObjective())
+    if(player()->isLookingTo(_aimPosition)){
         player()->kick(_power, _isChip);
+    }
 }
 
 bool Skill_Kick::isBehindBall(Position posObjective){

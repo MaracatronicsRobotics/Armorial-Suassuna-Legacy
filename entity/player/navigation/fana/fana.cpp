@@ -125,7 +125,6 @@ void FANA::run() {
     } else {
         _resultantAngle.setValue(angGoal);
     }
-
 }
 
 void FANA::addOwnRobot(const Position &pos, const Velocity &vel) {
