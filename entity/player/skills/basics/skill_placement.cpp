@@ -65,7 +65,7 @@ void Skill_Placement::run(){
     switch(_state){
     case STATE_POS:{
         player()->dribble(false);
-        player()->goToLookTo(behindBall, loc()->ball(), true, true, true, true, true);
+        player()->goToLookTo(behindBall, loc()->ball(), true, true, false, true, true);
 
         if(player()->distBall() < BALL_MINDIST && isBallInFront())
             _state = STATE_PUSH;
@@ -85,7 +85,7 @@ void Skill_Placement::run(){
     case STATE_DONE:{
         Position desired = WR::Utils::threePoints(loc()->ball(), _destination, 0.5f, GEARSystem::Angle::pi);
         player()->dribble(false);
-        player()->goToLookTo(desired, loc()->ball(), true, true, true, true, true);
+        player()->goToLookTo(desired, loc()->ball(), true, true, false, true, true);
 
         if(WR::Utils::distance(loc()->ball(), _destination) > MIN_DIST_TO_OBJECTIVE)
             _state = STATE_POS;

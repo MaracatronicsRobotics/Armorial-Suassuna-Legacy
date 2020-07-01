@@ -69,6 +69,7 @@ private:
     int getBestQuadrant();
     Position getQuadrantBarycenter(int quadrant);
     std::pair<Position, Position> getQuadrantInitialPosition(int quadrant);
+    bool isBallComing(float minVelocity, float radius);
 
 public:
     Behaviour_Receiver();

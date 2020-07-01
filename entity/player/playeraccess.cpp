@@ -35,7 +35,7 @@ PlayerAccess::~PlayerAccess() {
 void PlayerAccess::kick(float power) {
     if(_self==false)
         return;
-    _player->kick(false);
+    _player->kick(power, false);
 }
 
 quint8 PlayerAccess::playerId() const {

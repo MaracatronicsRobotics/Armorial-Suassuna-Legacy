@@ -58,6 +58,7 @@ void Behaviour_Attacker::configure() {
 };
 
 void Behaviour_Attacker::run() {
+    auto start = std::chrono::steady_clock::now();
     // Condiçoes de restrição para chute:
     /*
      * Bola na área inimiga
@@ -70,6 +71,10 @@ void Behaviour_Attacker::run() {
             || loc()->isOutsideField(loc()->ball(), OUT_FIELD_OFFSET) || loc()->isInsideOurArea(loc()->ball(), OUR_AREA_OFFSET))
         _state = STATE_CANTKICK;
 */
+    Position bestKickPosition = getBestPosition(getBestQuadrant());
+    Position bestAimPosition = getBestAimPosition();
+    if(bestAimPosition.isUnknown()) bestAimPosition = loc()->ourGoal();
+    Position impactPos = calcImpactPositionInGoal();
 
     switch(_state){
     case STATE_CANTKICK:{
@@ -107,14 +112,15 @@ void Behaviour_Attacker::run() {
     }
     break;
     case STATE_PUSH:{
+
+        if(player()->playerId() == 1){
+            _state = STATE_PASS;
+            break;
+        }
+
         // A ideia daqui é fazer o free angles pra o quadrante onde o atacante está, pegar a reta gerada
         // E com essa reta calcular a reta ortogonal (entre o robo e essa reta gerada) e posicionar o robo
         // na intersecção entre essas duas retas, arrastando a bola com o drible.
-
-        Position bestKickPosition = getBestPosition(getBestQuadrant());
-        Position bestAimPosition = getBestAimPosition();
-        if(bestAimPosition.isUnknown()) bestAimPosition = loc()->ourGoal();
-        Position impactPos = calcImpactPositionInGoal();
 
         if(bestKickPosition.isUnknown()){ // Nao existem aberturas para o gol
             /// TODO:
@@ -133,20 +139,24 @@ void Behaviour_Attacker::run() {
         bool ballHasFreePathToGoal = hasBallAnyPathTo(impactPos);
         bool isSufficientlyAlignedToAim =  WR::Utils::angleDiff(player()->angleTo(bestAimPosition), player()->orientation()) <= GEARSystem::Angle::toRadians(3);
         bool isCloseEnoughToGoal = player()->distanceTo(loc()->ourGoal()) <= MAX_DIST_KICK;
-
-        if((isInFront && (isAlignedToGoal && isSufficientlyAlignedToAim) && ballHasFreePathToGoal ) || isCloseEnoughToGoal){
+/*
+        std::cout << "isInFront: " << isInFront << std::endl;
+        std::cout << "isAlignedToGoal: " << isAlignedToGoal << std::endl;
+        std::cout << "ballHasFreePathToGoal: " << ballHasFreePathToGoal << std::endl;
+        std::cout << "isSufficientlyAlignedToAim: " << isSufficientlyAlignedToAim << std::endl;
+*/
+        if(isInFront && isAlignedToGoal && isSufficientlyAlignedToAim && ballHasFreePathToGoal){
+            _sk_kick->setState(1); // set state as kick
             _state = STATE_KICK;
         }
-        else if(_sk_push->getPushedDistance() >= _sk_push->getMaxPushDistance()){
+        else if(isCloseEnoughToGoal || (_sk_push->getPushedDistance() >= _sk_push->getMaxPushDistance())){
             // melhorar essa condição pra fazer passe
             _state = STATE_PASS;
         }
     }
     break;
     case STATE_KICK:{
-        Position bestKickPosition = getBestAimPosition();
-        if(bestKickPosition.isUnknown()) bestKickPosition = loc()->ourGoal();
-        _sk_kick->setAim(bestKickPosition);
+        _sk_kick->setAim(bestAimPosition);
         _sk_kick->setPower(MRCConstants::_maxKickPower);
 
         enableTransition(SKT_KICK);
@@ -158,7 +168,11 @@ void Behaviour_Attacker::run() {
     }
     break;
     case STATE_PASS:{
-        quint8 bestReceiverId = getBestReceiver();
+        quint8 bestReceiverId;
+        if(player()->playerId() != 5)
+            bestReceiverId = 5;
+        else
+            bestReceiverId = RECEIVER_INVALID_ID;
         if(bestReceiverId == RECEIVER_INVALID_ID) // Se não houverem receptores disponiveis, chuta
             _state = STATE_KICK;
         else{
@@ -168,8 +182,15 @@ void Behaviour_Attacker::run() {
                 /// Se habilitar apenas o kick, talvez possam acontecer alguns erros inesperados =c
                 /// Criar heurística para definir força do chute
                 Position recvPos = PlayerBus::ourPlayer(bestReceiverId)->position();
+                _sk_kick->setIsChip(false);
+                /*
+                if(!hasBallAnyPathTo(recvPos)){
+                    _sk_kick->setIsChip(true);
+                }
+                */
                 _sk_kick->setAim(recvPos);
-                _sk_kick->setPower(3.0);
+                float kickPower = std::min(6.0f, std::max(3.0f, WR::Utils::distance(player()->position(), recvPos)));
+                _sk_kick->setPower(kickPower);
 
                 enableTransition(SKT_KICK);
             }
@@ -187,6 +208,10 @@ void Behaviour_Attacker::run() {
     break;
     }
 
+    auto end = std::chrono::steady_clock::now();
+    std::chrono::duration<double> elapsed_seconds = end-start;
+    if(elapsed_seconds.count() >= 0.01)
+        std::cout << "elapsed time: " << elapsed_seconds.count() << "s\n";
 }
 
 Position Behaviour_Attacker::getBestAimPosition(){
@@ -216,7 +241,7 @@ Position Behaviour_Attacker::getBestAimPosition(){
     QList<Obstacle>::iterator obst;
 
     for(obst = obstacles.begin(); obst != obstacles.end(); obst++) {
-        obst->radius() = 1.2*MRCConstants::_robotRadius;
+        obst->radius() = 1.2 * MRCConstants::_robotRadius;
         // access the robot=
         PlayerAccess *robot = NULL;
 
@@ -473,7 +498,7 @@ bool Behaviour_Attacker::hasBallAnyPathTo(Position posObjective){
     // Getting angles
     Obstacle objective;
     objective.position() = posObjective;
-    objective.radius() = 0.025 * 1.5; // 1.5 * ballRadius
+    objective.radius() = 0.025 * 2.0; // 2.0 * ballRadius
     objective.calcAnglesFrom(loc()->ball());
 
     // Generating obstacle list

@@ -35,6 +35,7 @@ void Role_Default::initializeBehaviours(){
     usesBehaviour(BHV_DONOTHING, _bh_dn = new Behaviour_Attacker());
     usesBehaviour(1, _bh_gk = new Behaviour_Goalkeeper());
     usesBehaviour(2, _bh_bar = new Behaviour_Receiver());
+    usesBehaviour(3, _bh_dn2 = new Behaviour_Attacker());
 
 }
 
@@ -50,11 +51,16 @@ void Role_Default::run(){
      * set presentes neles)
     */
 
+    _bh_dn->addReceiver(5);
+
     if(player()->playerId() == 1)
         setBehaviour(BHV_DONOTHING);
     else if(player()->playerId() == 3)
         setBehaviour(1);
-    else if(player()->playerId() == 5)
-        setBehaviour(2);
-
+    else if(player()->playerId() == 5){
+        if(player()->hasBallPossession())
+            setBehaviour(3);
+        else
+            setBehaviour(2);
+    }
 }

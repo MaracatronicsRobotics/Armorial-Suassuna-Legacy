@@ -414,7 +414,7 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
         angleOrigin2ball = acos(vectorRobot2BallX); //angulo que a bola faz com o eixo x em relação ao robo
     }
 
-    double minValue = 1.0;
+    double minValue = 1.5;
     double maxValue = 3.0;
     double speed = 0.0;
 
@@ -453,16 +453,16 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
     }
 }
 
-void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool avoidTeammates, bool avoidOpponents, bool avoidBall, bool avoidOurGoalArea, bool avoidTheirGoalArea){
+void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool avoidTeammates, bool avoidOpponents, bool avoidBall, bool avoidOurGoalArea, bool avoidTheirGoalArea, bool isGk){
     targetPosition = limitFieldDimensions(targetPosition);
     Angle anglePP;
-    std::pair<double, double> help = rotateTo(targetPosition);
+    std::pair<double, double> help = rotateTo(targetPosition, 0.2, false);
     if(targetPosition.isUnknown())
         anglePP = Angle(false, 0.0);
     else
         anglePP = Angle(true, help.first);
 
-    std::pair<double, double> rotateSpeed = rotateTo(lookToPosition);
+    std::pair<double, double> rotateSpeed = rotateTo(lookToPosition, 0.2, false);
     std::pair<Angle, float> a = getNavDirectionDistance(targetPosition, anglePP, avoidTeammates, avoidOpponents, avoidBall, avoidOurGoalArea, avoidTheirGoalArea);
 /*
     double vx = _vxPID->calculate(a.second * cos(a.first.value()), velocity().x());
@@ -471,6 +471,12 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool a
     double vx = a.second * cos(a.first.value());
     double vy = a.second * sin(a.first.value());
     double dist = WR::Utils::distance(position(), targetPosition);
+
+    if(isGk){
+        setSpeed(vx, vy, rotateSpeed.second);
+        return;
+    }
+
     if(dist <= 0.5f){ // se estiver a menos de 50cm do alvo
         if(fabs(rotateSpeed.first) >= GEARSystem::Angle::toRadians(15)){ // se a diferença for maior que 15 deg
             setSpeed(0.0, 0.0, rotateSpeed.second); // zera a linear e espera girar
