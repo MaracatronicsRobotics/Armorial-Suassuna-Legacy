@@ -48,6 +48,7 @@ public:
     void setAim (Position pos) { _aimPosition = pos; }
     void setPower(float power) { _power = power; }
     void setIsChip(bool isChip) { _isChip = isChip; }
+    void setState(int state) { _state = state; }
 };
 
 #endif // SKILL_KICK_H

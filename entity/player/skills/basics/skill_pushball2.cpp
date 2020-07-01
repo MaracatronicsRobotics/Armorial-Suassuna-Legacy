@@ -86,11 +86,13 @@ void Skill_PushBall2::run(){
 
         player()->dribble(true);
 
-        if(!isInFrontOfObjective())
+        if(!isInFrontOfObjective()){
             player()->rotateTo(_aim);
+            _pushedDistance += WR::Utils::distance(_lastPos, _currPos);
+        }
         else{
             _pushedDistance += WR::Utils::distance(_lastPos, _currPos);
-            player()->goToLookTo(_destination, _aim, true, true, false, false, false);
+            player()->goTo(_destination, 0.01f, true, 0.2f);
         }
 
         if(player()->distBall() > BALL_MINDIST)
@@ -125,5 +127,5 @@ bool Skill_PushBall2::isInFrontOfObjective(){
     Angle anglePlayerObj = player()->angleTo(_aim);
     float diff = WR::Utils::angleDiff(anglePlayerObj, player()->orientation());
 
-    return (diff <= GEARSystem::Angle::toRadians(3)); // 3 graus de dif
+    return (fabs(diff) <= GEARSystem::Angle::toRadians(3)); // 3 graus de dif
 }

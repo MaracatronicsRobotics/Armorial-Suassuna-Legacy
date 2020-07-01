@@ -36,7 +36,7 @@ Behaviour_Receiver::Behaviour_Receiver() {
     _attackerId = NO_ATTACKER;
     setQuadrant(NO_QUADRANT);
     setFollowAttacker(true);
-    setActionRadius(2.5, 4.5);
+    setActionRadius(2.0, 4.0);
 }
 
 void Behaviour_Receiver::configure() {
@@ -45,8 +45,8 @@ void Behaviour_Receiver::configure() {
 
     setInitialSkill(_skill_GoToLookTo);
 
-    addTransition(SK_GOTO, _skill_GoToLookTo, _skill_Receiver);
-    addTransition(SK_RECV, _skill_Receiver, _skill_GoToLookTo);
+    addTransition(SK_RECV, _skill_GoToLookTo, _skill_Receiver);
+    addTransition(SK_GOTO, _skill_Receiver, _skill_GoToLookTo);
 
     _state = STATE_POSITION;
 };
@@ -54,33 +54,37 @@ void Behaviour_Receiver::configure() {
 void Behaviour_Receiver::run() {
     setQuadrant(getBestQuadrant());
 
-    _attackerId = NO_ATTACKER;
+    _attackerId = 1;
+    /*
     for(quint8 id = 0; id < MRCConstants::_qtPlayers; id++){
         if(PlayerBus::ourPlayerAvailable(id))
             if(PlayerBus::ourPlayer(id)->hasBallPossession())
                 _attackerId = id;
     }
+    */
 
-    std::cout << "_attackerId: " << _attackerId << std::endl;
-
-    if(_attackerId == NO_ATTACKER){
-        // caso o atacante n esteja disponivel, posicionar da mesma forma que o attacker
-        // ou seja, na projecao ortogonal da reta onde há angulação livre.
-        //printf("[BEHAVIOUR RECEIVER] Attacker isn't available (Receiver ID: %u)\n", player()->playerId());
-        Position _desiredPosition = getBestPositionWithoutAttacker(_quadrant);
-
-        _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
-        _skill_GoToLookTo->setAimPosition(loc()->ourGoal());
+    if(isBallComing(0.2f, 1.0f)){
+        _skill_Receiver->setInterceptAdvance(true);
+        enableTransition(SK_RECV);
     }
     else{
-        Position _desiredPosition = getReceiverBestPosition(_quadrant, _attackerId, _minRadius, _maxRadius);
+        enableTransition(SK_GOTO);
+        if(_attackerId == NO_ATTACKER){
+            // caso o atacante n esteja disponivel, posicionar da mesma forma que o attacker
+            // ou seja, na projecao ortogonal da reta onde há angulação livre.
+            //printf("[BEHAVIOUR RECEIVER] Attacker isn't available (Receiver ID: %u)\n", player()->playerId());
+            Position _desiredPosition = getBestPositionWithoutAttacker(_quadrant);
 
-        _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
-        _skill_GoToLookTo->setAimPosition(PlayerBus::ourPlayer(_attackerId)->position());
+            _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
+            _skill_GoToLookTo->setAimPosition(loc()->ourGoal());
+        }
+        else{
+            Position _desiredPosition = getReceiverBestPosition(_quadrant, _attackerId, _minRadius, _maxRadius);
+
+            _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
+            _skill_GoToLookTo->setAimPosition(PlayerBus::ourPlayer(_attackerId)->position());
+        }
     }
-
-    // fazer machine state aqui
-
 }
 
 Position Behaviour_Receiver::getReceiverBestPosition(int quadrant, quint8 attackerId, float minRadius, float maxRadius){
@@ -353,4 +357,23 @@ std::pair<Position, Position> Behaviour_Receiver::getQuadrantInitialPosition(int
         break;
         }
     }
+}
+
+bool Behaviour_Receiver::isBallComing(float minVelocity, float radius) {
+    const Position posBall = loc()->ball();
+    const Position posPlayer = player()->position();
+
+    // Check ball velocity
+    if(loc()->ballVelocity().abs() < minVelocity)
+        return false;
+
+    // Angle player
+    float angVel = loc()->ballVelocity().arg().value();
+    float angPlayer = WR::Utils::getAngle(posBall, posPlayer);
+
+    // Check angle difference
+    float angDiff = WR::Utils::angleDiff(angVel, angPlayer);
+    float angError = atan2(radius, player()->distBall());
+
+    return (fabs(angDiff) < fabs(angError));
 }

@@ -30,6 +30,7 @@ class Role_Default : public Role
 private:
     // Behaviours
     Behaviour_Attacker *_bh_dn;
+    Behaviour_Attacker *_bh_dn2;
     Behaviour_Goalkeeper *_bh_gk;
     Behaviour_Receiver *_bh_bar;
 
