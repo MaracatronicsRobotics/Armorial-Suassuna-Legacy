@@ -58,6 +58,9 @@ void StrategyState::initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, CoachUtils 
 }
 
 void StrategyState::runStrategyState() {
+    // don't make changes when timeout or halt is enabled
+    if(_ref->getGameInfo(_ourTeam->teamColor())->timeOut() || !_ref->getGameInfo(_ourTeam->teamColor())->canMove())
+        return;
     QList<Playbook*>::iterator it;
     // Run configurate(numOurPlayers) if num of players changed
     QHash<quint8,Player*> avPlayers = _ourTeam->avPlayers();
