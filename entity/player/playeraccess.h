@@ -32,8 +32,9 @@ private:
 public:
     PlayerAccess(bool self, Player *player, Locations *loc);
     virtual ~PlayerAccess();
-    // Kick
-    void kick(float power = 8.0);
+    // Kick and Dribble
+    void kick(float power = 6.0);
+    void dribble(double enabled);
     // General player info
     quint8 playerId() const;
     quint8 teamId() const;

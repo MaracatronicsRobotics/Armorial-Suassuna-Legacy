@@ -29,14 +29,25 @@ class Behaviour_TimeOut : public Behaviour {
 private:
     void configure();
     void run();
-    Position _desiredPosition;
     Skill_GoToLookTo *_skill_GoToLookTo;
+    Skill_DoNothing  *_skill_doNothing;
+
+    // Control halt
+    bool _alreadyReachedPosition;
+    Position _desiredPosition;
+
+    enum{
+        ENABLE_HALT,
+        ENABLE_POS
+    };
 
 public:
     Behaviour_TimeOut();
     QString name();
 
-    void setSkillPosition(Position pos);
+    // Control halt
+    void reset();
+    void getPlayerTimeOutId();
 };
 
 #endif // BEHAVIOUR_TIMEOUT_H

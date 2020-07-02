@@ -31,7 +31,7 @@ private:
     void run();
     int _state;
 
-    Skill_Placement *_skill_doNothing;
+    Skill_DoNothing *_skill_doNothing;
 public:
     Behaviour_DoNothing();
     QString name();

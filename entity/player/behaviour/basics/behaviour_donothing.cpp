@@ -29,9 +29,9 @@ Behaviour_DoNothing::Behaviour_DoNothing() {
 }
 
 void Behaviour_DoNothing::configure() {
-    usesSkill(_skill_doNothing = new Skill_Placement());
+    usesSkill(_skill_doNothing = new Skill_DoNothing());
 };
 
 void Behaviour_DoNothing::run() {
-    _skill_doNothing->setDestination(Position(true, 0.0, 0.0, 0.0));
+
 }

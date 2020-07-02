@@ -134,7 +134,7 @@ void Behaviour_Barrier::run() {
     if(player()->distBall() > INTERCEPT_MINBALLDIST && isBallComingToGoal(INTERCEPT_MINBALLVELOCITY)) {
         enableTransition(STATE_GK);
     } else {
-        if(player()->distBall() <= 0.4f && !loc()->isInsideOurArea(loc()->ball(), 1.05f)){
+        if(player()->distBall() <= 0.4f && !loc()->isInsideOurArea(loc()->ball(), 1.05f) && WR::Utils::distance(player()->position(), loc()->ourGoal()) <= (_radius + 1.0f)){
             if(!isBehindBall(loc()->theirGoal())){
                 enableTransition(STATE_PUSH);
             }
