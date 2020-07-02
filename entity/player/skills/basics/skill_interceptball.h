@@ -30,12 +30,14 @@ private:
     bool _interceptAdvance;
     bool isBehindBall(const Position &destination, float angularPrecision);
     Position _posLook;
+    bool _isGk;
 public:
     Skill_InterceptBall();
     QString name();
 
     void setInterceptAdvance(bool interceptAdvance) { _interceptAdvance = interceptAdvance; }
     void setPositionToLook(const Position &posLook) { _posLook = posLook; }
+    void setIsGk(bool isGk) { _isGk = isGk; }
 };
 
 #endif // SKILL_INTERCEPTBALL_H

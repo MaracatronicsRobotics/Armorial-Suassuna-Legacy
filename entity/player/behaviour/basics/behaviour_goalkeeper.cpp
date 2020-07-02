@@ -75,6 +75,8 @@ void Behaviour_Goalkeeper::run() {
 
     _skill_Goalkeeper->setInterceptAdvance(true);
     _skill_Goalkeeper->setPositionToLook(loc()->ball());
+    _skill_Goalkeeper->setIsGk(true);
+
     _skill_kick->setAim(loc()->theirGoal());
     _skill_kick->setPower(MRCConstants::_maxKickPower);
     _skill_kick->setIsChip(true);
@@ -181,14 +183,14 @@ Position Behaviour_Goalkeeper::calcAttackerBallImpact() {
     }
 
     if(poss == -1) // n tem ngm com a posse, mantem no centro do gol
-        return loc()->ourGoal();
+        return Position(false, 0.0, 0.0, 0.0);
 
     // check if ball is in front of player (avoid y errors)
     Position playerPos = PlayerBus::ourPlayer(quint8(poss))->position(); // ALTERA AQUI ZILDAO
     Angle anglePlayerBall = PlayerBus::ourPlayer(quint8(poss))->angleTo(loc()->ball()); // ALTERA AQUI ZILDAO
     float diff = WR::Utils::angleDiff(anglePlayerBall, PlayerBus::ourPlayer(quint8(poss))->orientation()); // ALTERA AQUI ZILDAO
     bool ans = (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
-    if(!ans) return loc()->ourGoal();
+    if(!ans) return Position(false, 0.0, 0.0, 0.0);
 
     /* calculando posicao de impacto no y */
     Angle angleAtk = PlayerBus::ourPlayer(quint8(poss))->orientation(); // ALTERA AQUI ZILDAO
@@ -250,7 +252,7 @@ Position Behaviour_Goalkeeper::calcAttackerBallImpact() {
     bool hasAnyPath = (freeAngles.isEmpty() == false);
 
     if(!hasAnyPath)
-        return loc()->ourGoal();
+        return Position(false, 0.0, 0.0, 0.0);
 
     return posImpact; // retorna o impacto, em caso de alguem ter posse da bola
 }
