@@ -38,6 +38,12 @@ void PlayerAccess::kick(float power) {
     _player->kick(power, false);
 }
 
+void PlayerAccess::dribble(double enabled) {
+    if(_self==false)
+        return;
+    _player->dribble(enabled);
+}
+
 quint8 PlayerAccess::playerId() const {
     return _player->playerId();
 }

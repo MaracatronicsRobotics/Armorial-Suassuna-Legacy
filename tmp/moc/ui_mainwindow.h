@@ -154,6 +154,7 @@ public:
     QCheckBox *enemyvel;
     QCheckBox *ballvel;
     QCheckBox *playerconf;
+    QCheckBox *playerpath;
     QGroupBox *groupBox_7;
     QLabel *sprite_7;
     QProgressBar *battery_7;
@@ -248,9 +249,10 @@ public:
         MainWindow->setEnabled(true);
         MainWindow->resize(1397, 842);
         QIcon icon;
-        icon.addFile(QString::fromUtf8(":/textures/textures/armorial.ico"), QSize(), QIcon::Normal, QIcon::Off);
+        icon.addFile(QString::fromUtf8(":/textures/textures/ui/armorial.ico"), QSize(), QIcon::Normal, QIcon::Off);
         MainWindow->setWindowIcon(icon);
         MainWindow->setAutoFillBackground(false);
+        MainWindow->setIconSize(QSize(48, 48));
         centralwidget = new QWidget(MainWindow);
         centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
         groupBox = new QGroupBox(centralwidget);
@@ -820,7 +822,7 @@ public:
         allievel->setFont(font2);
         enemyvel = new QCheckBox(page_cfg);
         enemyvel->setObjectName(QString::fromUtf8("enemyvel"));
-        enemyvel->setGeometry(QRect(10, 60, 191, 23));
+        enemyvel->setGeometry(QRect(10, 60, 201, 23));
         enemyvel->setFont(font2);
         ballvel = new QCheckBox(page_cfg);
         ballvel->setObjectName(QString::fromUtf8("ballvel"));
@@ -830,6 +832,10 @@ public:
         playerconf->setObjectName(QString::fromUtf8("playerconf"));
         playerconf->setGeometry(QRect(10, 110, 181, 23));
         playerconf->setFont(font2);
+        playerpath = new QCheckBox(page_cfg);
+        playerpath->setObjectName(QString::fromUtf8("playerpath"));
+        playerpath->setGeometry(QRect(10, 135, 181, 23));
+        playerpath->setFont(font2);
         tabWidget->addTab(page_cfg, QString());
         groupBox_7 = new QGroupBox(centralwidget);
         groupBox_7->setObjectName(QString::fromUtf8("groupBox_7"));
@@ -1350,10 +1356,11 @@ public:
         tabWidget->setTabText(tabWidget->indexOf(page_tree), QApplication::translate("MainWindow", "Coach Tree", nullptr));
         label_9->setText(QApplication::translate("MainWindow", "SoccerView Configs", nullptr));
         label_37->setText(QString());
-        allievel->setText(QApplication::translate("MainWindow", "Show allie velocity vector", nullptr));
-        enemyvel->setText(QApplication::translate("MainWindow", "Show enemy velocity vector", nullptr));
+        allievel->setText(QApplication::translate("MainWindow", "Show allies velocity vector", nullptr));
+        enemyvel->setText(QApplication::translate("MainWindow", "Show enemies velocity vector", nullptr));
         ballvel->setText(QApplication::translate("MainWindow", "Show ball velocity vector", nullptr));
         playerconf->setText(QApplication::translate("MainWindow", "Show players confidency", nullptr));
+        playerpath->setText(QApplication::translate("MainWindow", "Show allies path", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(page_cfg), QApplication::translate("MainWindow", "Configurations", nullptr));
         groupBox_7->setTitle(QApplication::translate("MainWindow", "Robot 6", nullptr));
         sprite_7->setText(QString());
