@@ -114,12 +114,12 @@ void Playbook::setCurrRolesToOld() {
 void Playbook::clearOldRoles() {
     int sz = _oldRoles.size();
     for(int x = 0; x < sz; x++)
-        if(_oldRoles.at(x) == NULL){
-            std::cout << "DALE ZILDAO" << std::endl;
+        if(_oldRoles.at(x) == NULL)
             continue;
-        }
         else
             delete _oldRoles.at(x);
+
+    _oldRoles.clear();
 }
 
 void Playbook::usesRole(Role *role) {

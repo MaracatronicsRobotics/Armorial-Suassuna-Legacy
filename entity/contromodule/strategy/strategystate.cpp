@@ -74,11 +74,6 @@ void StrategyState::runStrategyState() {
 
     // For each playbook, initialize (if necessary) and clear old players
     for(it = _playbookList.begin(); it != _playbookList.end(); it++) {
-        if((*it) == NULL){
-            std::cout << "PORRA ZILDAO 1" << std::endl;
-            continue;
-        }
-
         Playbook *playbook = *it;
         // Initialize playbooks (initialized before run() because it modifies
         // players in playbook and already needs it with available players lists)
@@ -101,11 +96,6 @@ void StrategyState::runStrategyState() {
 
     // Effectivelly run playbook
     for(it = _playbookList.begin(); it != _playbookList.end(); it++) {
-        if((*it) == NULL){
-            std::cout << "PORRA ZILDAO 2" << std::endl;
-            continue;
-        }
-
         (*it)->runPlaybook(name());
     }
 
@@ -119,11 +109,6 @@ void StrategyState::runStrategyState() {
 
     // Cleanup playbook old roles
     for(it = _playbookList.begin(); it != _playbookList.end(); it++) {
-        if((*it) == NULL){
-            std::cout << "PORRA ZILDAO 3" << std::endl;
-            continue;
-        }
-
         if((*it)->numPlayers()!=0)
             (*it)->clearOldRoles();
     }
@@ -143,7 +128,6 @@ void StrategyState::clearOldPlaybook() {
     int sz = _oldPlaybook.size();
     for(int x = 0; x < sz; x++){
         if(_oldPlaybook.at(x) == NULL){
-            std::cout << "DALE ZILDAO" << std::endl;
             continue;
         }
         else
