@@ -216,7 +216,7 @@ void Behaviour_Attacker::run() {
 
 Position Behaviour_Attacker::getBestAimPosition(){
     // Margin to avoid select the post as aim (or outside it)
-    float postMargin = 0.1*loc()->fieldDefenseWidth()/2;
+    float postMargin = 0.05*loc()->fieldDefenseWidth()/2;
 
     // Adjust margin
     if(loc()->ourSide().isRight()) {
