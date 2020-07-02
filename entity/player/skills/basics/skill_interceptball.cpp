@@ -29,20 +29,22 @@ QString Skill_InterceptBall::name() {
 
 Skill_InterceptBall::Skill_InterceptBall() {
     setInterceptAdvance(false);
+    _isGk = false;
 }
 
 void Skill_InterceptBall::run() {
     /* calculating projection of ball */
     Position objectivePos; // Position where the goalkeeper should be
 
+    // Unitary velocity vector (project point at goal)
     const Velocity ballVelocity = loc()->ballVelocity();
+    const Position posBall = loc()->ball();
+    const Position unitaryBallVelocity = Position(true, ballVelocity.x()/ballVelocity.abs(), ballVelocity.y()/ballVelocity.abs(), 0.0);
+
     // Check ball speed (maybe a error)
     if(ballVelocity.abs() <= 0.1)
         objectivePos = loc()->ball(); // manter posicao
     else{
-        // Unitary velocity vector (project point at goal)
-        const Position posBall = loc()->ball();
-        const Position unitaryBallVelocity = Position(true, ballVelocity.x()/ballVelocity.abs(), ballVelocity.y()/ballVelocity.abs(), 0.0);
 
         // Now ball velocity line (pos + uni_velocity vector)
         const Position ballVelocityLine = Position(true, posBall.x()+unitaryBallVelocity.x(), posBall.y()+unitaryBallVelocity.y(), 0.0);
@@ -55,11 +57,16 @@ void Skill_InterceptBall::run() {
         objectivePos = WR::Utils::threePoints(objectivePos, loc()->ball(), 0.1f, 0.0);
 
     //player()->goToLookTo(objectivePos, objectivePos, true, true, false, false, false);
-    player()->goTo(objectivePos, 0, true, 0.35f);
+    double distanceToPos = player()->distanceTo(objectivePos);
+    double ballDistanceToPos = WR::Utils::distance(posBall, objectivePos);
+
+    double timeNeededToReach = ballDistanceToPos / ballVelocity.abs();
+
+    double velocityNeeded = distanceToPos / (timeNeededToReach * 1.2);
+
+    player()->goTo(objectivePos, 0, true, velocityNeeded);
     player()->dribble(true);
 }
-
-
 
 bool Skill_InterceptBall::isBehindBall(const Position &destination, float angularPrecision) {
     Position posBall = loc()->ball();
