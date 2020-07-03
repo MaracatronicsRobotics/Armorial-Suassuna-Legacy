@@ -36,6 +36,7 @@ void Role_Default::initializeBehaviours(){
     usesBehaviour(1, _bh_gk = new Behaviour_Goalkeeper());
     usesBehaviour(2, _bh_bar = new Behaviour_Receiver());
     usesBehaviour(3, _bh_dn2 = new Behaviour_Attacker());
+    usesBehaviour(4, _bh_dn3 = new Behaviour_DoNothing());
 
 }
 
@@ -63,4 +64,5 @@ void Role_Default::run(){
         else
             setBehaviour(2);
     }
+
 }

@@ -58,7 +58,6 @@ void Behaviour_Attacker::configure() {
 };
 
 void Behaviour_Attacker::run() {
-    auto start = std::chrono::steady_clock::now();
     // Condiçoes de restrição para chute:
     /*
      * Bola na área inimiga
@@ -112,7 +111,6 @@ void Behaviour_Attacker::run() {
     }
     break;
     case STATE_PUSH:{
-
         if(player()->playerId() == 1){
             _state = STATE_PASS;
             break;
@@ -181,7 +179,7 @@ void Behaviour_Attacker::run() {
                 /// Driblar a bola até o nosso aliado e chutar
                 /// Se habilitar apenas o kick, talvez possam acontecer alguns erros inesperados =c
                 /// Criar heurística para definir força do chute
-                Position recvPos = PlayerBus::ourPlayer(bestReceiverId)->position();
+                Position recvPos = WR::Utils::getPlayerKickDevice(bestReceiverId);
                 _sk_kick->setIsChip(false);
                 /*
                 if(!hasBallAnyPathTo(recvPos)){
@@ -207,11 +205,6 @@ void Behaviour_Attacker::run() {
     }
     break;
     }
-
-    auto end = std::chrono::steady_clock::now();
-    std::chrono::duration<double> elapsed_seconds = end-start;
-    if(elapsed_seconds.count() >= 0.01)
-        std::cout << "elapsed time: " << elapsed_seconds.count() << "s\n";
 }
 
 Position Behaviour_Attacker::getBestAimPosition(){

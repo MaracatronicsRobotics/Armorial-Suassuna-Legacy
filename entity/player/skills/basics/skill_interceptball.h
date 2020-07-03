@@ -31,6 +31,7 @@ private:
     bool isBehindBall(const Position &destination, float angularPrecision);
     Position _posLook;
     bool _isGk;
+    bool _useKickDevice;
 public:
     Skill_InterceptBall();
     QString name();
@@ -38,6 +39,7 @@ public:
     void setInterceptAdvance(bool interceptAdvance) { _interceptAdvance = interceptAdvance; }
     void setPositionToLook(const Position &posLook) { _posLook = posLook; }
     void setIsGk(bool isGk) { _isGk = isGk; }
+    void setUseKickDevice(bool useKickDevice) { _useKickDevice = useKickDevice; }
 };
 
 #endif // SKILL_INTERCEPTBALL_H
