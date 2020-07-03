@@ -33,6 +33,8 @@ Behaviour_Barrier::Behaviour_Barrier() {
     setMarkBall();
     setD(0.2);
     setRadius(1.4); // radius from our goal center
+    setBarrierId(0);
+    setRadiusBetweenBarriers(0.2f);
 
     _sk_goto = NULL;
     _sk_gk = NULL;
@@ -105,6 +107,9 @@ void Behaviour_Barrier::run() {
 
     // Adjust position
     desiredPosition.setPosition(desiredPosition.x()+dx, desiredPosition.y()+dy, 0.0);
+
+    // Adjust for multiple barriers
+    /// TODO:
 
     // Error goal (desiredPosition sometimes goes off the field)
     if(loc()->ourSide().isRight() && desiredPosition.x() > loc()->ourGoal().x()-ERROR_GOAL_OFFSET){

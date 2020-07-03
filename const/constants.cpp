@@ -36,6 +36,9 @@ float MRCConstants::_maxKickPower            = 6.0;
 float MRCConstants::_robotRadius             = 0.09f;
 float MRCConstants::_ballRadius              = 0.025f;
 
+/* Ball Sensor constants */
+float MRCConstants::_distToConsiderBallMovement = 0.12;
+
 MRCConstants::MRCConstants()
 {
 

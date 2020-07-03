@@ -65,8 +65,10 @@ void Behaviour_Receiver::run() {
     }
     */
 
+    Position bestAim = getBestAimPosition();
+
     if(isBallComing(0.2f, 1.0f)){
-        //_skill_Receiver->setInterceptAdvance(true);
+        _skill_Receiver->setPositionToLook(bestAim);
         enableTransition(SK_RECV);
     }
     else{
@@ -82,10 +84,9 @@ void Behaviour_Receiver::run() {
         }
         else{
             Position _desiredPosition = getReceiverBestPosition(_quadrant, _attackerId, _minRadius, _maxRadius);
-
             _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
-            _skill_GoToLookTo->setAimPosition(getBestAimPosition());
-            //_skill_GoToLookTo->setAimPosition(PlayerBus::ourPlayer(_attackerId)->position());
+            //_skill_GoToLookTo->setAimPosition(bestAim);
+            _skill_GoToLookTo->setAimPosition(PlayerBus::ourPlayer(_attackerId)->position());
         }
     }
 }

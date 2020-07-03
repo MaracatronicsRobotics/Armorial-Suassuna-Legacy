@@ -364,18 +364,13 @@ std::pair<float, float> Player::goTo(Position targetPosition, double offset, boo
     if(isPidActivated()){
         newVX = _vxPID->calculate(robotVel.x(), velocity().x());
         newVY = _vyPID->calculate(robotVel.y(), velocity().y());
+        robotVel.setVelocity(newVX, newVY);
     }
 
-    if(isPidActivated()){
-        if(setHere)
-            setSpeed(robotVel.x(), robotVel.y(), 0.0);
-        return std::make_pair(robotVel.x(), robotVel.y());
-    }
-    else{
-        if(setHere)
-            setSpeed(robotVel.x(), robotVel.y(), 0.0);
-        return std::make_pair(robotVel.x(), robotVel.y());
-    }
+    if(setHere)
+        setSpeed(robotVel.x(), robotVel.y(), 0.0);
+
+    return std::make_pair(robotVel.x(), robotVel.y());
 }
 
 std::pair<double, double> Player::rotateTo(Position targetPosition, double offset, bool setHere) {
