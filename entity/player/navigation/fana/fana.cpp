@@ -132,7 +132,7 @@ void FANA::addOwnRobot(const Position &pos, const Velocity &vel) {
 }
 
 void FANA::addGoalArea(const Position &pos) {
-    addObstacle(pos, 3.0f);
+    addObstacle(pos);
 }
 
 void FANA::addObstacle(const Position &pos, const double &radius) {
