@@ -46,6 +46,10 @@ void Role_Barrier::run(){
      * set presentes neles)
     */
 
+    if(player()->playerId() == 0) _bh_bar->setBarrierId(0);
+    else if(player()->playerId() == 2) _bh_bar->setBarrierId(1);
+    else if(player()->playerId() == 4) _bh_bar->setBarrierId(2);
+
     setBehaviour(BHV_BARRIER);
 
 }

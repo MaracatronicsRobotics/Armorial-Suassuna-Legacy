@@ -24,6 +24,7 @@
 
 #include <entity/player/behaviour/behaviour.h>
 #include <entity/player/skills/skills_include.h>
+#include <utils/line/line.hh>
 
 class Behaviour_Barrier : public Behaviour {
 private:
@@ -36,6 +37,8 @@ private:
     float _radius;
     bool _markNearestPlayer;
     quint8 _markPlayerId;
+    quint8 _barrierId;
+    float _radiusBetweenBarriers;
 
     // Sk
     Skill_GoToLookTo *_sk_goto;
@@ -63,6 +66,8 @@ public:
     void setRadius(float radius) { _radius = radius; }
     void setMarkPlayer(quint8 playerId) { _markNearestPlayer = true; _markPlayerId = playerId; }
     void setMarkBall() { _markNearestPlayer = false; }
+    void setBarrierId(quint8 barrierId) { _barrierId = barrierId; };
+    void setRadiusBetweenBarriers(float radiusBetweenBarriers) { _radiusBetweenBarriers = radiusBetweenBarriers; }
 };
 
 #endif // BEHAVIOUR_BARRIER_H

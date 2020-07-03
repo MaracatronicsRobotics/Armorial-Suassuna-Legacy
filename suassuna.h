@@ -41,6 +41,8 @@
 
 #include <entity/ballprediction/ballprediction.h>
 
+#include <entity/ballsensor/ballsensor.h>
+
 class Suassuna
 {
 public:
@@ -76,6 +78,7 @@ private:
     SSLReferee *_ref;
     Coach *_coach;
     BallPrediction *_ballPred;
+    BallSensor *_ballSensor;
 
     // Times
     MRCTeam *_ourTeam;

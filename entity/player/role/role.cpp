@@ -53,6 +53,10 @@ Locations* Role::loc() {
     return _ourTeam->loc();
 }
 
+SSLReferee* Role::ref(){
+    return _ref;
+}
+
 void Role::initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc, SSLReferee *ref){
     _ourTeam = ourTeam;
     _theirTeam = theirTeam;
@@ -87,7 +91,7 @@ void Role::runRole(){
         if(_bh_dn->isInitialized() == false)
             _bh_dn->initialize(_loc);
 
-        // Configure
+        // Configure6
         _bh_dn->setPlayer(_player, _playerAccess);
         _bh_dn->runBehaviour();
     }

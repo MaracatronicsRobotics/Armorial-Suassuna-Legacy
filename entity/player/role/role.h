@@ -72,6 +72,7 @@ protected:
 
     // Utils, loc and player access
     Locations* loc();
+    SSLReferee* ref();
 
 private:
     // Implemented by role children
