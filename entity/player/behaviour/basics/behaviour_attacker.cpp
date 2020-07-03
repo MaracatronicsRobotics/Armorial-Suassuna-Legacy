@@ -111,10 +111,12 @@ void Behaviour_Attacker::run() {
     }
     break;
     case STATE_PUSH:{
+
         if(player()->playerId() == 1){
             _state = STATE_PASS;
             break;
         }
+
 
         // A ideia daqui é fazer o free angles pra o quadrante onde o atacante está, pegar a reta gerada
         // E com essa reta calcular a reta ortogonal (entre o robo e essa reta gerada) e posicionar o robo
@@ -187,7 +189,7 @@ void Behaviour_Attacker::run() {
                 }
                 */
                 _sk_kick->setAim(recvPos);
-                float kickPower = std::min(6.0f, std::max(3.0f, WR::Utils::distance(player()->position(), recvPos)));
+                float kickPower = std::min(6.0f, std::max(4.0f, 2.0f * WR::Utils::distance(player()->position(), recvPos)));
                 _sk_kick->setPower(kickPower);
 
                 enableTransition(SKT_KICK);
