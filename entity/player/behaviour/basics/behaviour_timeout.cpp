@@ -67,7 +67,7 @@ void Behaviour_TimeOut::reset(){
 
 void Behaviour_TimeOut::getPlayerTimeOutId(){
     Position initialPos = loc()->ourGoalLeftPost();
-    initialPos = Position(true, initialPos.x() + (loc()->ourSide().isLeft() ? 1.0f : -1.0f), initialPos.y() + (loc()->ourSide().isLeft() ? -0.5f : 0.5f), initialPos.z());
+    initialPos = Position(true, initialPos.x() + (loc()->ourSide().isLeft() ? 1.1f : -1.1f), initialPos.y() + (loc()->ourSide().isLeft() ? -0.5f : 0.5f), initialPos.z());
 
     // Get the player number in the array of available players
     int decision = player()->playerId();
