@@ -308,7 +308,7 @@ void Player::setSpeed(float x, float y, float theta) {
 
     float currSpeedAbs = sqrt(pow(x, 2) + pow(y, 2));
     float incSpeedAbs = currSpeedAbs - _lastSpeedAbs;
-    float maxAcc = 2.0;
+    float maxAcc = 2.5;
 
     if(fabs(incSpeedAbs) > maxAcc && incSpeedAbs > 0){
         float newSpeed = _lastSpeedAbs + maxAcc;
@@ -337,59 +337,44 @@ std::pair<float, float> Player::goTo(Position targetPosition, double offset, boo
     robot_y = position().y();
 
     // Define a velocidade do robô para chegar na bola
-    long double Vx = (targetPosition.x() - robot_x);
-    long double Vy = (targetPosition.y() - robot_y);
+    long double Dx = (targetPosition.x() - robot_x);
+    long double Dy = (targetPosition.y() - robot_y);
     long double theta = robotAngle;
-    long double moduloDistancia = sqrt(pow(Vx,2)+pow(Vy,2));
-    float vxSaida = (Vx * cos(theta) + Vy * sin(theta));
-    float vySaida = (Vy * cos(theta) - Vx * sin(theta));
+    float vxSaida = (Dx * cos(theta) + Dy * sin(theta));
+    float vySaida = (Dy * cos(theta) - Dx * sin(theta));
 
+    Velocity robotVel = Velocity(true, vxSaida, vySaida);
+    if(robotVel.abs() <= minVel){
+        // Transform in unitary vector
+        robotVel.setVelocity(robotVel.x() / robotVel.abs(), robotVel.y() / robotVel.abs());
+        // Multiply by minVel
+        robotVel.setVelocity(robotVel.x() * minVel, robotVel.y() * minVel);
+    }
+
+    /*
     // inverte pra dar frenagem
     // na simulação é bom colocar *= 0.0 pra ele realmente "parar" o robô
     if(moduloDistancia <= offset){
         vxSaida *= -1.0;
         vySaida *= -1.0;
     }
+    */
 
     float newVX, newVY;
     if(isPidActivated()){
-        newVX = _vxPID->calculate(vxSaida, velocity().x());
-        newVY = _vyPID->calculate(vySaida, velocity().y());
+        newVX = _vxPID->calculate(robotVel.x(), velocity().x());
+        newVY = _vyPID->calculate(robotVel.y(), velocity().y());
     }
 
     if(isPidActivated()){
-        if(setHere){
-            // aplicar velocidade minima ( só no intercept que goTo vai ser chamado pra ativar aqui ? )
-            if(fabs(newVX) <= minVel){
-                if(newVX < 0) newVX = -minVel;
-                else newVX = minVel;
-            }
-
-            if(fabs(newVY) <= minVel){
-                if(newVY < 0) newVY = -minVel;
-                else newVY = minVel;
-            }
-
-            setSpeed(newVX, newVY, 0.0);
-        }
-        return std::make_pair(newVX, newVY);
+        if(setHere)
+            setSpeed(robotVel.x(), robotVel.y(), 0.0);
+        return std::make_pair(robotVel.x(), robotVel.y());
     }
     else{
-        if(setHere){
-            // aplicar velocidade minima ( só no intercept que goTo vai ser chamado pra ativar aqui ? )
-            if(fabs(vxSaida) <= minVel){
-                if(vxSaida < 0) vxSaida = -minVel;
-                else vxSaida = minVel;
-            }
-
-            if(fabs(vySaida) <= minVel){
-                if(vySaida < 0) vySaida = -minVel;
-                else vySaida = minVel;
-            }
-
-            setSpeed(vxSaida, vySaida, 0.0);
-        }
-        return std::make_pair(vxSaida, vySaida);
+        if(setHere)
+            setSpeed(robotVel.x(), robotVel.y(), 0.0);
+        return std::make_pair(robotVel.x(), robotVel.y());
     }
 }
 

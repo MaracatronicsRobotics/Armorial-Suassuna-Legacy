@@ -30,6 +30,8 @@ namespace WR {
     class Utils {
 	public:
         static void initialize(MRCTeam *ourTeam, MRCTeam *opTeam);
+        static MRCTeam *_ourTeam;
+        static MRCTeam *_theirTeam;
 
         static Position threePoints(const Position &near, const Position &far, float distance, float beta);
 
@@ -65,7 +67,7 @@ namespace WR {
         static void limitMinValue(float *value, float minValue);
         static bool approximateToZero(float *value, float error = 1e-3);
 
-        //static Position getPlayerKickDevice(quint8 team, quint8 id);
+        static Position getPlayerKickDevice(quint8 id);
     };
 
 }

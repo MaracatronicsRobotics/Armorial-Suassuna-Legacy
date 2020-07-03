@@ -25,10 +25,14 @@
 #include <utils/knn/knn.hh>
 
 using namespace WR;
+MRCTeam* Utils::_ourTeam = NULL;
+MRCTeam* Utils::_theirTeam = NULL;
 
 void Utils::initialize(MRCTeam *ourTeam, MRCTeam *opTeam) {
     kNN::initialize(ourTeam, opTeam);
     FreeAngles::initialize(ourTeam, opTeam);
+    _ourTeam = ourTeam;
+    _theirTeam = opTeam;
 }
 
 Position Utils::vectorSum(const Position &v1, const Position &v2, float m) {
@@ -134,18 +138,17 @@ bool Utils::approximateToZero(float *value, float error){
     } else
         return false;
 }
-/*
-Position Utils::getPlayerKickDevice(quint8 team, quint8 id) {
-    const float robotR = 0.5;
 
-    const Angle ori = _wm->playerOrientation(team, id);
+Position Utils::getPlayerKickDevice(quint8 id) {
+    const float robotR = MRCConstants::_robotRadius;
+
+    const Angle ori = _ourTeam->avPlayers().value(id)->orientation();
     float dx = robotR * cos(ori.value());
     float dy = robotR * sin(ori.value());
 
-    const Position pos = _wm->playerPosition(team, id);
+    const Position pos = _ourTeam->avPlayers().value(id)->position();
     return Position(true, pos.x()+dx, pos.y()+dy, 0.0);
 }
-*/
 
 bool Utils::isPointAtLine(const Position &s1, const Position &s2, const Position &point) {
     const Position projectedPoint = Utils::projectPointAtLine(s1, s2, point);

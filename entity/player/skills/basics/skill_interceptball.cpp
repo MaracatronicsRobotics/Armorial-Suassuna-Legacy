@@ -30,6 +30,7 @@ QString Skill_InterceptBall::name() {
 Skill_InterceptBall::Skill_InterceptBall() {
     setInterceptAdvance(false);
     _isGk = false;
+    _useKickDevice = false;
 }
 
 void Skill_InterceptBall::run() {
@@ -45,12 +46,22 @@ void Skill_InterceptBall::run() {
     if(ballVelocity.abs() <= 0.1)
         objectivePos = loc()->ball(); // manter posicao
     else{
-
         // Now ball velocity line (pos + uni_velocity vector)
         const Position ballVelocityLine = Position(true, posBall.x()+unitaryBallVelocity.x(), posBall.y()+unitaryBallVelocity.y(), 0.0);
 
         // Call utils to get projection
         objectivePos = WR::Utils::projectPointAtLine(posBall, ballVelocityLine, player()->position()); //Intercepta em 90 graus
+
+        // Check if use kick bar
+        if(_useKickDevice){
+            Position kickDevicePosition = WR::Utils::getPlayerKickDevice(player()->playerId());
+            Position playerPosition = player()->position();
+
+            Position newPos = Position(true, playerPosition.x() - kickDevicePosition.x(), playerPosition.y() - kickDevicePosition.y(), 0.0);
+            newPos.setPosition(newPos.x() + objectivePos.x(), newPos.y() + objectivePos.y(), 0.0);
+
+            objectivePos = newPos;
+        }
     }
 
     if(_interceptAdvance)
@@ -59,10 +70,9 @@ void Skill_InterceptBall::run() {
     //player()->goToLookTo(objectivePos, objectivePos, true, true, false, false, false);
     double distanceToPos = player()->distanceTo(objectivePos);
     double ballDistanceToPos = WR::Utils::distance(posBall, objectivePos);
-
     double timeNeededToReach = ballDistanceToPos / ballVelocity.abs();
 
-    double velocityNeeded = distanceToPos / (timeNeededToReach * 1.2);
+    double velocityNeeded = distanceToPos / (0.8 * timeNeededToReach);
 
     player()->goTo(objectivePos, 0, true, velocityNeeded);
     player()->dribble(true);
