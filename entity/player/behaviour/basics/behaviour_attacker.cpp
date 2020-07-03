@@ -65,11 +65,11 @@ void Behaviour_Attacker::run() {
      * Bola fora do campo
      * Referee não permite que chutemos (cobrança do time inimigo)
     */
-/*
+
     if(!player()->canKickBall() || loc()->isInsideTheirArea(loc()->ball(), THEIR_AREA_OFFSET)
             || loc()->isOutsideField(loc()->ball(), OUT_FIELD_OFFSET) || loc()->isInsideOurArea(loc()->ball(), OUR_AREA_OFFSET))
         _state = STATE_CANTKICK;
-*/
+
     Position bestKickPosition = getBestPosition(getBestQuadrant());
     Position bestAimPosition = getBestAimPosition();
     if(bestAimPosition.isUnknown()) bestAimPosition = loc()->ourGoal();

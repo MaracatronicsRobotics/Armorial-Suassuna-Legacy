@@ -74,6 +74,10 @@ bool Suassuna::start() {
     _ref->addGameInfo(Colors::BLUE);
     _world->addEntity(_ref, 0);
 
+    // Ball moviment detect sensor
+    _ballSensor = new BallSensor(_ref, _world->getWorldMap());
+    _world->addEntity(_ballSensor, 0);
+
     // Setup teams
     setupTeams(opTeamId, opTeamColor, opFieldSide);
     _world->setTeams(_ourTeam, _theirTeam);

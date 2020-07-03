@@ -44,6 +44,9 @@ public:
     static float _maxKickPower;
     static float _robotRadius;
     static float _ballRadius;
+
+    /* Ball Sensor constants */
+    static float _distToConsiderBallMovement;
 };
 
 #endif // CONSTANTS_H
