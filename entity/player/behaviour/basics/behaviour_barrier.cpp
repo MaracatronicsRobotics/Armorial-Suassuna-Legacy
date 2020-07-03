@@ -34,7 +34,7 @@ Behaviour_Barrier::Behaviour_Barrier() {
     setD(0.2);
     setRadius(1.4); // radius from our goal center
     setBarrierId(0);
-    setRadiusBetweenBarriers(0.2f);
+    setRadiusBetweenBarriers(0.25f);
 
     _sk_goto = NULL;
     _sk_gk = NULL;
@@ -110,6 +110,21 @@ void Behaviour_Barrier::run() {
 
     // Adjust for multiple barriers
     /// TODO:
+    if(_barrierId != 0){
+        Position vector2Ball(true, loc()->ball().x() - desiredPosition.x(), loc()->ball().y() - desiredPosition.y(), 0.0);
+        double vectorMod = sqrt(pow(vector2Ball.x(), 2) + pow(vector2Ball.y(), 2));
+        vector2Ball.setPosition(vector2Ball.x()/vectorMod, vector2Ball.y()/vectorMod, 0.0);
+
+        float ang = acos(vector2Ball.x());
+        if(vector2Ball.y() < 0.0) ang = GEARSystem::Angle::twoPi - ang;
+        ang += GEARSystem::Angle::pi / 2.0;
+        WR::Utils::angleLimitZeroTwoPi(&ang);
+
+        double mult = (_barrierId == 1) ? 1.0 : -1.0;
+        vector2Ball.setPosition(mult * cos(ang) * _radiusBetweenBarriers, mult * sin(ang) * _radiusBetweenBarriers, 0.0);
+
+        desiredPosition.setPosition(desiredPosition.x() + vector2Ball.x(), desiredPosition.y() + vector2Ball.y(), 0.0);
+    }
 
     // Error goal (desiredPosition sometimes goes off the field)
     if(loc()->ourSide().isRight() && desiredPosition.x() > loc()->ourGoal().x()-ERROR_GOAL_OFFSET){
