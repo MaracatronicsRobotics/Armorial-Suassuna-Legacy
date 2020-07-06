@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef INSTANCECHECKER_HH
-#define INSTANCECHECKER_HH
+#ifndef INSTANCECHECKER_H
+#define INSTANCECHECKER_H
 
 #include <QString>
 
@@ -32,4 +32,4 @@ private:
     static unsigned getInstances(const QString &processName);
 };
 
-#endif // INSTANCECHECKER_HH
+#endif // INSTANCECHECKER_H

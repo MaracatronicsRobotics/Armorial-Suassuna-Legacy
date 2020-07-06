@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef SSLGAMEINFO_HH
-#define SSLGAMEINFO_HH
+#ifndef SSLGAMEINFO_H
+#define SSLGAMEINFO_H
 
 #include <QMutex>
 #include <utils/basics/color.hh>
@@ -156,4 +156,4 @@ public:
     RefProcessedState processedState();
 };
 
-#endif // SSLGAMEINFO_HH
+#endif // SSLGAMEINFO_H

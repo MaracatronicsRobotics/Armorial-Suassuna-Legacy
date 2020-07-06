@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef RRT_HH
-#define RRT_HH
+#ifndef RRT_H
+#define RRT_H
 
 #include <QMutexLocker>
 #include <entity/player/navigation/navalgorithm.h>

@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef NAVIGATIONALGORITHM_HH
-#define NAVIGATIONALGORITHM_HH
+#ifndef NAVIGATIONALGORITHM_H
+#define NAVIGATIONALGORITHM_H
 
 #include <GEARSystem/Types/types.hh>
 #include <utils/utils.hh>
@@ -96,4 +96,4 @@ private:
     float _distance;
 };
 
-#endif // NAVIGATIONALGORITHM_HH
+#endif // NAVIGATIONALGORITHM_H

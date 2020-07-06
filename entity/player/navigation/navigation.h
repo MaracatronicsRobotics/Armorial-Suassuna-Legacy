@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef NAVIGATION_HH
-#define NAVIGATION_HH
+#ifndef NAVIGATION_H
+#define NAVIGATION_H
 
 #include <entity/player/baseplayer.h>
 #include <entity/player/navigation/navalgorithm.h>
@@ -95,4 +95,4 @@ private:
     float _calculateAngularSpeed(float angGoal, Velocity velocity);
 };
 
-#endif // NAVIGATION_HH
+#endif // NAVIGATION_H

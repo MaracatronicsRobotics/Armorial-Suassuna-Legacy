@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef SSLREFEREE_HH
-#define SSLREFEREE_HH
+#ifndef SSLREFEREE_H
+#define SSLREFEREE_H
 
 #include <QUdpSocket>
 #include <QNetworkInterface>
@@ -61,4 +61,4 @@ private:
 
 };
 
-#endif // SSLREFEREE_HH
+#endif // SSLREFEREE_H

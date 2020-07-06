@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef SKILL_SAMPLE_HH
-#define SKILL_SAMPLE_HH
+#ifndef SKILL_SAMPLE_H
+#define SKILL_SAMPLE_H
 
 #include <entity/player/skills/skill.h>
 
@@ -32,4 +32,4 @@ public:
     QString name();
 };
 
-#endif // SKILL_SAMPLE_HH
+#endif // SKILL_SAMPLE_H

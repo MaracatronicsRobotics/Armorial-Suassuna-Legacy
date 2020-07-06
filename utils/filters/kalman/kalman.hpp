@@ -19,9 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef KALMANFILTER2D_H
+#ifndef KALMAN_H
 
-#define KALMANFILTER2D_H
+#define KALMAN_H
 
 #include <QString>
 #include <GEARSystem/gearsystem.hh>
@@ -86,4 +86,4 @@ public:
     bool getEnabled();
 
 };
-#endif
+#endif // KALMAN_H
