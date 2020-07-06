@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef SKILL_DONOTHING_HH
-#define SKILL_DONOTHING_HH
+#ifndef SKILL_DONOTHING_H
+#define SKILL_DONOTHING_H
 
 #include <entity/player/skills/skill.h>
 
@@ -34,4 +34,4 @@ public:
     QString name();
 };
 
-#endif // SKILL_DONOTHING_HH
+#endif // SKILL_DONOTHING_H

@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef EXITHANDLER_HH_
-#define EXITHANDLER_HH_
+#ifndef EXITHANDLER_H
+#define EXITHANDLER_H
 #include <QObject>
 #include <QApplication>
 class ExitHandler : public QObject {
@@ -33,4 +33,4 @@ public:
     static void setup();
     static void run(int s);
 };
-#endif // EXITHANDLER_HH_
+#endif // EXITHANDLER_H

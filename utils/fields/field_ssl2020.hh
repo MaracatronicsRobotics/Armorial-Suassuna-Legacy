@@ -19,6 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
+#ifndef FIELD_VSS2020_HH
+#define FIELD_VSS2020_HH
+
 #include <utils/fields/fields.hh>
 
 namespace Fields {
@@ -38,3 +41,5 @@ public:
 };
 
 }
+
+#endif // FIELD_VSS2020_HH

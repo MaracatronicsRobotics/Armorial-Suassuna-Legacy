@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef ENTITY_HH
-#define ENTITY_HH
+#ifndef ENTITY_H
+#define ENTITY_H
 #include <QThread>
 #include <QMutex>
 class Entity : public QThread {
@@ -58,4 +58,4 @@ private:
     QMutex _mutexPriority;
     QMutex _mutexLoopTime;
 };
-#endif // ENTITY_HH
+#endif // ENTITY_H

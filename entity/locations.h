@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef LOCATIONS_HH
-#define LOCATIONS_HH
+#ifndef LOCATIONS_H
+#define LOCATIONS_H
 #include <utils/fieldside/fieldside.hh>
 #include <utils/basics/wall.hh>
 #include <entity/contromodule/mrcteam.h>
@@ -119,4 +119,4 @@ private:
     bool _isInsideArea(const Position &pos, float factor, const Position &goalLeftPost, const Position &goalRightDeslocatedPost);
     bool _isOutsideField(const Position &pos, const float maxX, const float maxY);
 };
-#endif // LOCATIONS_HH
+#endif // LOCATIONS_H

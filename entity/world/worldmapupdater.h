@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef WORLDMAPUPDATER_HH
-#define WORLDMAPUPDATER_HH
+#ifndef WORLDMAPUPDATER_H
+#define WORLDMAPUPDATER_H
 
 #include <entity/player/baseplayer.h>
 #include <utils/fields/fields.hh>
@@ -52,4 +52,4 @@ private:
     Position _lastBallPosition;
 };
 
-#endif // WORLDMAPUPDATER_HH
+#endif // WORLDMAPUPDATER_H
