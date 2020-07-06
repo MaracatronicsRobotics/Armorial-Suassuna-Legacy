@@ -20,8 +20,8 @@
  ***/
 
 
-#ifndef BASEENTITY_HH
-#define BASEENTITY_HH
+#ifndef BASEENTITY_H
+#define BASEENTITY_H
 
 class Entity;
 class CoachView;
@@ -35,4 +35,4 @@ class WorldMapUpdater;
 class MainWindow;
 class MRCTeam;
 
-#endif // BASEENTITY_HH
+#endif // BASEENTITY_H

@@ -19,8 +19,8 @@
 */
 //========================================================================
 
-#ifndef __UTIL_H__
-#define __UTIL_H__
+#ifndef UTIL_H
+#define UTIL_H
 
 #include <math.h>
 #include <string.h>
@@ -427,7 +427,7 @@ real abs_bound_angle(real bound_angle,real tolerance,real a)
 }
 
 //==== Array Functions ===============================================//
-
+00
 template <class data>
 int find_item(const data *arr,int num,data key)
 {
@@ -553,4 +553,4 @@ inline void mzero(data *d,int n)
 # define unlikely(x) (x)
 #endif
 
-#endif
+#endif // UTIL_H
