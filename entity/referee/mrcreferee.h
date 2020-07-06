@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef REFEREE_HH
-#define REFEREE_HH
+#ifndef REFEREE_H
+#define REFEREE_H
 
 #include <entity/entity.h>
 
@@ -31,4 +31,4 @@ public:
 };
 
 
-#endif // REFEREE_HH
+#endif // REFEREE_H

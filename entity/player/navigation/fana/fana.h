@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef FANA_H_
-#define FANA_H_
+#ifndef FANA_H
+#define FANA_H
 
 #define OBSTACLE_RADIUS 0.45f
 #define HYSTERESIS_FACTOR 0.15f
@@ -67,4 +67,4 @@ private:
     QList<Obstacle> _obstacles;
 };
 
-#endif // FANA_H_
+#endif // FANA_H

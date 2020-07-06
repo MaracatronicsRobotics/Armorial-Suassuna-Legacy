@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef RRTVERTEX_HH
-#define RRTVERTEX_HH
+#ifndef RRTVERTEX_H
+#define RRTVERTEX_H
 
 #include <GEARSystem/gearsystem.hh>
 #include <utils/graph/graph.hh>
@@ -36,4 +36,4 @@ private:
     Position _pos;
 };
 
-#endif // RRTVERTEX_HH
+#endif // RRTVERTEX_H

@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef WORLD_HH
-#define WORLD_HH
+#ifndef WORLD_H
+#define WORLD_H
 
 #include <QReadWriteLock>
 #include <iostream>
@@ -94,4 +94,4 @@ private:
     void stopAndDeleteEntities();
 };
 
-#endif // WORLD_HH
+#endif // WORLD_H
