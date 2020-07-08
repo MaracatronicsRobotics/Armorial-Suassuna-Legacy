@@ -427,7 +427,7 @@ real abs_bound_angle(real bound_angle,real tolerance,real a)
 }
 
 //==== Array Functions ===============================================//
-00
+
 template <class data>
 int find_item(const data *arr,int num,data key)
 {
