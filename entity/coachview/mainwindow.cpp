@@ -39,6 +39,7 @@ void MainWindow::resetRobots(){
 }
 
 void MainWindow::setRobotVisionStatus(quint8 id, bool status){
+    playerBoxes.at(id)->setDisabled(!status);
     if(status)
         playerVisionStatus.at(id)->setText("On");
     else
