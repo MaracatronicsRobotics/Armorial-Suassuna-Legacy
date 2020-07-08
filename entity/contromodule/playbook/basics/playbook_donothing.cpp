@@ -33,21 +33,35 @@ int Playbook_DoNothing::maxNumPlayer() {
 }
 
 void Playbook_DoNothing::configure(int numPlayers) {
-    for(int i = 0; i < numPlayers; i++) {
-        Role_Default *rl_def = new Role_Default();
+    _rl_gk = new Role_Goalkeeper();
+    usesRole(_rl_gk);
+
+    for(int i = 0; i < 3; i++){
+        Role_Defender *rl_def = new Role_Defender();
         usesRole(rl_def);
         _rl_def.push_back(rl_def);
-
-        Role_Barrier *rl_bar = new Role_Barrier();
-        usesRole(rl_bar);
-        _rl_bar.push_back(rl_bar);
     }
+
+    _rl_def_midf = new Role_Defensive_Midfielder();
+    usesRole(_rl_def_midf);
 }
 
 void Playbook_DoNothing::run(int numPlayers) {
-    for(int i = 0; i < numPlayers; i++){
+    quint8 playerId = dist()->getPlayer();
+    if(playerId != DIST_INVALID_ID){
+        setPlayerRole(playerId, _rl_gk);
+    }
+
+    playerId = dist()->getPlayer();
+    if(playerId != DIST_INVALID_ID){
+        setPlayerRole(playerId, _rl_def_midf);
+    }
+
+    for(int i = 0; i < 3; i++){
         quint8 playerId = dist()->getPlayer();
-        if(playerId % 2) setPlayerRole(playerId, _rl_def.at(i));
-        else setPlayerRole(playerId, _rl_bar.at(i));
+        if(playerId != DIST_INVALID_ID){
+            setPlayerRole(playerId, _rl_def.at(i));
+            _rl_def.at(i)->setBarrierId(i);
+        }
     }
 }

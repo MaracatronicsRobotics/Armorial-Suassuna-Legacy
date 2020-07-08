@@ -19,25 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef PLAYBOOK_DONOTHING_H
-#define PLAYBOOK_DONOTHING_H
+#include "role_defender.h"
 
-#include <entity/contromodule/playbook/playbook.h>
-#include <entity/player/role/mrcroles.h>
+QString Role_Defender::name(){
+    return "Role_Defender";
+}
 
-class Playbook_DoNothing : public Playbook {
-private:
-    // Roles
-    Role_Goalkeeper *_rl_gk;
-    QList<Role_Defender*> _rl_def;
-    Role_Defensive_Midfielder *_rl_def_midf;
+Role_Defender::Role_Defender() {
+    _bh_bar = NULL;
+}
 
-    void configure(int numPlayers);
-    void run(int numPlayers);
-    int maxNumPlayer();
-public:
-    Playbook_DoNothing();
-    QString name();
-};
+void Role_Defender::initializeBehaviours(){
+    usesBehaviour(BEHAVIOUR_BARRIER, _bh_bar = new Behaviour_Barrier());
+}
 
-#endif // PLAYBOOK_DONOTHING_H
+void Role_Defender::configure(){
+    _barrierId = 0;
+}
+
+void Role_Defender::run(){
+    _bh_bar->setBarrierId(_barrierId);
+    _bh_bar->setD(0.0);
+    setBehaviour(BEHAVIOUR_BARRIER);
+}

@@ -19,25 +19,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef PLAYBOOK_DONOTHING_H
-#define PLAYBOOK_DONOTHING_H
+#ifndef ROLE_GOALKEEPER_H
+#define ROLE_GOALKEEPER_H
 
-#include <entity/contromodule/playbook/playbook.h>
-#include <entity/player/role/mrcroles.h>
+#include <entity/player/behaviour/mrcbehaviours.h>
+#include <entity/player/role/role.h>
 
-class Playbook_DoNothing : public Playbook {
+class Role_Goalkeeper : public Role
+{
 private:
-    // Roles
-    Role_Goalkeeper *_rl_gk;
-    QList<Role_Defender*> _rl_def;
-    Role_Defensive_Midfielder *_rl_def_midf;
+    // Behaviours
+    Behaviour_Goalkeeper *_bh_gk;
+    Behaviour_Penalty_GK *_bh_penaltyGk;
 
-    void configure(int numPlayers);
-    void run(int numPlayers);
-    int maxNumPlayer();
+    // Behaviours Enum
+    enum{
+        BEHAVIOUR_GK,
+        BEHAVIOUR_PENALTYGK
+    };
+
+    // Inherited functions
+    void configure();
+    void run();
+
 public:
-    Playbook_DoNothing();
+    Role_Goalkeeper();
+    void initializeBehaviours();
     QString name();
 };
 
-#endif // PLAYBOOK_DONOTHING_H
+#endif // ROLE_GOALKEEPER_H

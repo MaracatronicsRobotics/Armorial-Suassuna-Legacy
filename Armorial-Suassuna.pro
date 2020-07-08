@@ -57,6 +57,9 @@ SOURCES += \
     entity/player/navigation/rrt/rrttree.cpp \
     entity/player/navigation/rrt/rrtvertex.cpp \
     entity/player/role/basics/role_barrier.cpp \
+    entity/player/role/basics/role_defender.cpp \
+    entity/player/role/basics/role_defensive_midfielder.cpp \
+    entity/player/role/basics/role_goalkeeper.cpp \
     entity/player/skills/basics/skill_aroundtheball.cpp \
     entity/player/skills/basics/skill_dribble.cpp \
     entity/player/skills/basics/skill_goto.cpp \
@@ -188,6 +191,9 @@ HEADERS += \
     entity/player/navigation/rrt/rrttree.h \
     entity/player/navigation/rrt/rrtvertex.h \
     entity/player/role/basics/role_barrier.h \
+    entity/player/role/basics/role_defender.h \
+    entity/player/role/basics/role_defensive_midfielder.h \
+    entity/player/role/basics/role_goalkeeper.h \
     entity/player/skills/basics/skill_aroundtheball.h \
     entity/player/skills/basics/skill_dribble.h \
     entity/player/skills/basics/skill_goto.h \

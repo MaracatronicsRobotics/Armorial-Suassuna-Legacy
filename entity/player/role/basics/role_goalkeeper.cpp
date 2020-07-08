@@ -19,25 +19,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef PLAYBOOK_DONOTHING_H
-#define PLAYBOOK_DONOTHING_H
+#include "role_goalkeeper.h"
 
-#include <entity/contromodule/playbook/playbook.h>
-#include <entity/player/role/mrcroles.h>
+QString Role_Goalkeeper::name(){
+    return "Role_Goalkeeper";
+}
 
-class Playbook_DoNothing : public Playbook {
-private:
-    // Roles
-    Role_Goalkeeper *_rl_gk;
-    QList<Role_Defender*> _rl_def;
-    Role_Defensive_Midfielder *_rl_def_midf;
+Role_Goalkeeper::Role_Goalkeeper() {
+    _bh_gk = NULL;
+    _bh_penaltyGk = NULL;
+}
 
-    void configure(int numPlayers);
-    void run(int numPlayers);
-    int maxNumPlayer();
-public:
-    Playbook_DoNothing();
-    QString name();
-};
+void Role_Goalkeeper::initializeBehaviours(){
+    usesBehaviour(BEHAVIOUR_GK, _bh_gk = new Behaviour_Goalkeeper());
+    usesBehaviour(BEHAVIOUR_PENALTYGK, _bh_penaltyGk = new Behaviour_Penalty_GK());
+}
 
-#endif // PLAYBOOK_DONOTHING_H
+void Role_Goalkeeper::configure(){
+
+}
+
+void Role_Goalkeeper::run(){
+    if(ref()->getGameInfo(player()->team()->teamColor())->theirPenaltyKick()){
+        setBehaviour(BEHAVIOUR_PENALTYGK);
+    }
+    else{
+        setBehaviour(BEHAVIOUR_GK);
+    }
+}
