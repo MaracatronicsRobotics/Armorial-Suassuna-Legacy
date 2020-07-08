@@ -21,7 +21,7 @@ QT += core \
         opengl
 
 DEFINES += QT_DEPRECATED_WARNINGS
-LIBS *= -lprotobuf -lGLU -pthread -lsfml-graphics -lsfml-window -lsfml-system -lGEARSystem -lomniORB4 -lomnithread -lQt5Core -lpthread
+LIBS *= -lprotobuf -lGLU -pthread -lGEARSystem -lomniORB4 -lomnithread -lQt5Core -lpthread
 
 
 # The following define makes your compiler emit warnings if you use
