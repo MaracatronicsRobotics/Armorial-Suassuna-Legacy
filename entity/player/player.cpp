@@ -452,6 +452,17 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool a
     double vy = a.second * sin(a.first.value());
     double dist = WR::Utils::distance(position(), targetPosition);
 
+    Velocity robotVel = Velocity(true, vx, vy);
+    if(robotVel.abs() <= 0.1){
+        // Transform in unitary vector
+        robotVel.setVelocity(robotVel.x() / robotVel.abs(), robotVel.y() / robotVel.abs());
+        // Multiply by minVel
+        robotVel.setVelocity(robotVel.x() * 0.1, robotVel.y() * 0.1);
+    }
+
+    vx = robotVel.x();
+    vy = robotVel.y();
+
     if(isGk){
         setSpeed(vx, vy, rotateSpeed.second);
         return;

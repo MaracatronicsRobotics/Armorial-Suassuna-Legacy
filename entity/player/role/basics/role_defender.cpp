@@ -39,8 +39,8 @@ void Role_Defender::configure(){
 
 void Role_Defender::run(){
     if(loc()->isInsideOurField(loc()->ball())){
-        if(_barrierId == 0) _bh_bar->setDistanceFromGk(0.2);
-        else if(_barrierId == 1) _bh_bar->setDistanceFromGk(-0.2);
+        if(_barrierId == 0) _bh_bar->setDistanceFromGk(0.15);
+        else if(_barrierId == 1) _bh_bar->setDistanceFromGk(-0.15);
     }
     else{
         if(_barrierId == 0) _bh_bar->setDistanceFromGk(1.0);

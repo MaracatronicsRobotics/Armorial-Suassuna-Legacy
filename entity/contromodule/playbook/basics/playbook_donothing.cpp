@@ -51,12 +51,12 @@ void Playbook_DoNothing::run(int numPlayers) {
     if(playerId != DIST_INVALID_ID){
         setPlayerRole(playerId, _rl_gk);
     }
-
+/*
     playerId = dist()->getPlayer();
     if(playerId != DIST_INVALID_ID){
         setPlayerRole(playerId, _rl_def_midf);
     }
-
+*/
     for(int i = 0; i < 3; i++){
         quint8 playerId = dist()->getPlayer();
         if(playerId != DIST_INVALID_ID){
