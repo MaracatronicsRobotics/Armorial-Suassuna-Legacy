@@ -23,7 +23,7 @@
 
 #define INTERCEPT_MINBALLVELOCITY 0.2f
 #define INTERCEPT_MINBALLDIST 0.5f
-#define ERROR_GOAL_OFFSET 0.3f
+#define ERROR_GOAL_OFFSET 0.15f
 
 QString Behaviour_Barrier::name() {
     return "Behaviour_Barrier";
@@ -31,10 +31,8 @@ QString Behaviour_Barrier::name() {
 
 Behaviour_Barrier::Behaviour_Barrier() {
     setMarkBall();
-    setD(0.1);
+    setDistanceFromGk(0.0); // distance from our gk line to ball
     setRadius(1.4); // radius from our goal center
-    setBarrierId(0);
-    setRadiusBetweenBarriers(0.2f);
 
     _sk_goto = NULL;
     _sk_gk = NULL;
@@ -87,30 +85,8 @@ void Behaviour_Barrier::run() {
     // Position to look
     Position aimPosition = WR::Utils::threePoints(loc()->ourGoal(), markPosition, 1000.0f, 0.0); // high distance (always will look)
 
-    // Angle
-    const Position projected(true, loc()->ourGoal().x(), markPosition.y(), 0.0);
-    float bx = WR::Utils::distance(markPosition, projected);
-    float by = markPosition.y();
-    float angle = atan2(by, bx);
-
-    // Position variation
-    if(loc()->ourSide().isCenter())
-        _d = 0.0f;
-    float dx = _d*sin(angle);
-    float dy = _d*cos(angle);
-    if(loc()->ourSide().isLeft())
-        dy = -dy;
-    if((loc()->ourSide().isRight() && markPosition.y() >= 0.015) || (loc()->ourSide().isLeft() && markPosition.y() < -0.015)) {
-        dx = -dx;
-        dy = -dy;
-    }
-
-    // Adjust position
-    desiredPosition.setPosition(desiredPosition.x()+dx, desiredPosition.y()+dy, 0.0);
-
-    // Adjust for multiple barriers
-    /// TODO:
-    if(_barrierId != 0){
+    // Adjust _d
+    if(_distanceFromGK != 0.0){
         Position vector2Ball(true, loc()->ball().x() - desiredPosition.x(), loc()->ball().y() - desiredPosition.y(), 0.0);
         double vectorMod = sqrt(pow(vector2Ball.x(), 2) + pow(vector2Ball.y(), 2));
         vector2Ball.setPosition(vector2Ball.x()/vectorMod, vector2Ball.y()/vectorMod, 0.0);
@@ -120,8 +96,7 @@ void Behaviour_Barrier::run() {
         ang += GEARSystem::Angle::pi / 2.0;
         WR::Utils::angleLimitZeroTwoPi(&ang);
 
-        double mult = (_barrierId == 1) ? 1.0 : -1.0;
-        vector2Ball.setPosition(mult * cos(ang) * _radiusBetweenBarriers, mult * sin(ang) * _radiusBetweenBarriers, 0.0);
+        vector2Ball.setPosition(cos(ang) * _distanceFromGK, sin(ang) * _distanceFromGK, 0.0);
 
         desiredPosition.setPosition(desiredPosition.x() + vector2Ball.x(), desiredPosition.y() + vector2Ball.y(), 0.0);
     }

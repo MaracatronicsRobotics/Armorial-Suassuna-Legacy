@@ -23,7 +23,7 @@
 #define INVALID_ID 200
 
 QString Role_Defensive_Midfielder::name(){
-    return "Role_Defensive_Midfielder";
+    return "Role_Def_Midfielder";
 }
 
 Role_Defensive_Midfielder::Role_Defensive_Midfielder() {

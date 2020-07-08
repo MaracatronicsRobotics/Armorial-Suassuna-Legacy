@@ -33,12 +33,10 @@ private:
     int _state;
 
     // Param
-    float _d;
+    float _distanceFromGK;
     float _radius;
     bool _markNearestPlayer;
     quint8 _markPlayerId;
-    quint8 _barrierId;
-    float _radiusBetweenBarriers;
 
     // Sk
     Skill_GoToLookTo *_sk_goto;
@@ -63,14 +61,11 @@ public:
     Behaviour_Barrier();
     QString name();
 
-    void setD(float d) { _d = d; }
+    void setDistanceFromGk(float distanceFromGK) { _distanceFromGK = distanceFromGK; }
     void setRadius(float radius) { _radius = radius; }
     float getRadius() { return _radius; }
     void setMarkPlayer(quint8 playerId) { _markNearestPlayer = true; _markPlayerId = playerId; }
     void setMarkBall() { _markNearestPlayer = false; }
-    void setBarrierId(quint8 barrierId) { _barrierId = barrierId; };
-    void setRadiusBetweenBarriers(float radiusBetweenBarriers) { _radiusBetweenBarriers = radiusBetweenBarriers; }
-
 };
 
 #endif // BEHAVIOUR_BARRIER_H
