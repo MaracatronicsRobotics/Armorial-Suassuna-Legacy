@@ -63,4 +63,6 @@ void Behaviour_MarkPlayer::run() {
     _sk_goto->setDesiredPosition(_desiredPosition);
     _sk_goto->setAimPosition(_aimPosition);
 
+    player()->dribble(true);
+
 }

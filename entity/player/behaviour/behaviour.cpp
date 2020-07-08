@@ -38,22 +38,12 @@ Behaviour::~Behaviour() {
     QList<SkillTransition*> transitions = _transitionTable.values();
     QList<SkillTransition*>::iterator it;
     for(it=transitions.begin(); it!=transitions.end(); it++){
-        if((*it) == NULL){
-            std::cout << "DALE ZILDAO" << std::endl;
-            continue;
-        }
-        else
             delete *it;
     }
     _transitionTable.clear();
     // Delete skills
     QList<Skill*>::iterator it2;
     for(it2=_skillList.begin(); it2!=_skillList.end(); it2++){
-        if((*it2) == NULL){
-            std::cout << "DALE ZILDAO" << std::endl;
-            continue;
-        }
-        else
             delete *it2;
     }
     _skillList.clear();

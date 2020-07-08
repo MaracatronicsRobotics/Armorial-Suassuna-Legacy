@@ -86,12 +86,16 @@ void Role::runRole(){
         return ;
     }
 
+    // Disabling dribble when occur an stop
+    if(!player()->canKickBall())
+        player()->dribble(false);
+
     if(!_ref->getGameInfo(player()->team()->teamColor())->canMove()){
         // If is in halt
         if(_bh_dn->isInitialized() == false)
             _bh_dn->initialize(_loc);
 
-        // Configure6
+        // Configure
         _bh_dn->setPlayer(_player, _playerAccess);
         _bh_dn->runBehaviour();
     }

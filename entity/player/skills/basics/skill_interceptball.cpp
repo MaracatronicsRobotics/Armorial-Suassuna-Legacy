@@ -71,7 +71,7 @@ void Skill_InterceptBall::run() {
     double velocityNeeded = (ballVelocity.abs() * player()->distanceTo(objectivePos)) / (WR::Utils::distance(posBall, objectivePos));
 
     // Boost the GK
-    if(_isGk) factor = 1.3;
+    if(_isGk) factor = 1.2;
 
     player()->goTo(objectivePos, 0, true, factor * velocityNeeded);
     player()->dribble(true);

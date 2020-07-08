@@ -57,6 +57,7 @@ private:
     // Auxiliary
     bool isBallComingToGoal(float minSpeed, float postsFactor = 1.0);
     bool isBehindBall(Position posObjective);
+    bool isBallComing(float minVelocity, float radius);
 
 public:
     Behaviour_Barrier();
@@ -64,10 +65,12 @@ public:
 
     void setD(float d) { _d = d; }
     void setRadius(float radius) { _radius = radius; }
+    float getRadius() { return _radius; }
     void setMarkPlayer(quint8 playerId) { _markNearestPlayer = true; _markPlayerId = playerId; }
     void setMarkBall() { _markNearestPlayer = false; }
     void setBarrierId(quint8 barrierId) { _barrierId = barrierId; };
     void setRadiusBetweenBarriers(float radiusBetweenBarriers) { _radiusBetweenBarriers = radiusBetweenBarriers; }
+
 };
 
 #endif // BEHAVIOUR_BARRIER_H
