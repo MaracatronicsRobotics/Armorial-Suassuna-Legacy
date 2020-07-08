@@ -31,10 +31,10 @@ QString Behaviour_Barrier::name() {
 
 Behaviour_Barrier::Behaviour_Barrier() {
     setMarkBall();
-    setD(0.2);
+    setD(0.1);
     setRadius(1.4); // radius from our goal center
     setBarrierId(0);
-    setRadiusBetweenBarriers(0.25f);
+    setRadiusBetweenBarriers(0.2f);
 
     _sk_goto = NULL;
     _sk_gk = NULL;
@@ -137,6 +137,8 @@ void Behaviour_Barrier::run() {
     _sk_goto->setDesiredPosition(desiredPosition);
     _sk_goto->setAimPosition(aimPosition);
     _sk_goto->setAvoidBall(false);
+    _sk_goto->setAvoidTeammates(false);
+    _sk_goto->setAvoidOpponents(false);
     _sk_goto->setAvoidOurGoalArea(true);
 
     // settings of intercept
@@ -151,10 +153,10 @@ void Behaviour_Barrier::run() {
     _sk_push->setDestination(desiredPosition);
 
     // Transitions
-    if(player()->distBall() > INTERCEPT_MINBALLDIST && isBallComingToGoal(INTERCEPT_MINBALLVELOCITY)) {
+    if(player()->distBall() > INTERCEPT_MINBALLDIST && (isBallComing(INTERCEPT_MINBALLVELOCITY, 1.0f) || isBallComingToGoal(INTERCEPT_MINBALLDIST))) {
         enableTransition(STATE_GK);
     } else {
-        if(player()->distBall() <= 0.4f && !loc()->isInsideOurArea(loc()->ball(), 1.05f) && WR::Utils::distance(player()->position(), loc()->ourGoal()) <= (_radius + 1.0f)){
+        if(player()->canKickBall() && player()->distBall() <= 0.4f && !loc()->isInsideOurArea(loc()->ball(), 1.05f) && WR::Utils::distance(player()->position(), loc()->ourGoal()) <= (_radius + 1.5f)){
             if(!isBehindBall(loc()->theirGoal())){
                 enableTransition(STATE_PUSH);
             }
@@ -166,6 +168,25 @@ void Behaviour_Barrier::run() {
         }
     }
 
+}
+
+bool Behaviour_Barrier::isBallComing(float minVelocity, float radius) {
+    const Position posBall = loc()->ball();
+    const Position posPlayer = player()->position();
+
+    // Check ball velocity
+    if(loc()->ballVelocity().abs() < minVelocity)
+        return false;
+
+    // Angle player
+    float angVel = loc()->ballVelocity().arg().value();
+    float angPlayer = WR::Utils::getAngle(posBall, posPlayer);
+
+    // Check angle difference
+    float angDiff = WR::Utils::angleDiff(angVel, angPlayer);
+    float angError = atan2(radius, player()->distBall());
+
+    return (fabs(angDiff) < fabs(angError));
 }
 
 bool Behaviour_Barrier::isBallComingToGoal(float minSpeed, float postsFactor){

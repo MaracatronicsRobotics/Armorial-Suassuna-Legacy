@@ -34,7 +34,10 @@ void Behaviour_MarkBall::configure() {
 };
 
 void Behaviour_MarkBall::run() {
-    Position desired = WR::Utils::threePoints(player()->position(), loc()->ball(), 0.15f, true);
+    if(player()->distBall() <= 0.2f)
+        player()->kick(MRCConstants::_maxKickPower);
+
+    Position desired = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.15f, GEARSystem::Angle::pi);
     _sk_GoToLookTo->setDesiredPosition(desired);
     _sk_GoToLookTo->setAvoidBall(false);
     _sk_GoToLookTo->setAvoidOpponents(false);
@@ -43,6 +46,8 @@ void Behaviour_MarkBall::run() {
             if (PlayerBus::theirPlayer(id)->hasBallPossession()) {
                 if (PlayerBus::theirPlayer(id)->orientation().value() < 0 && PlayerBus::theirPlayer(id)->orientation().value() > -3.141592654)
                     _sk_GoToLookTo->setAimPosition(PlayerBus::theirPlayer(id)->position());
+
+                break;
             }
         }
         else _sk_GoToLookTo->setAimPosition(loc()->ball());

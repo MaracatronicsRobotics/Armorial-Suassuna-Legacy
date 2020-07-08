@@ -25,4 +25,9 @@
 #include <entity/player/role/basics/role_default.h>
 #include <entity/player/role/basics/role_barrier.h>
 
+// New roles
+#include <entity/player/role/basics/role_goalkeeper.h>
+#include <entity/player/role/basics/role_defender.h>
+#include <entity/player/role/basics/role_defensive_midfielder.h>
+
 #endif // MRCROLES_H

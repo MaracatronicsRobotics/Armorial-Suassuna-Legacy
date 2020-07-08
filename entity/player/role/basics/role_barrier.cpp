@@ -46,10 +46,25 @@ void Role_Barrier::run(){
      * set presentes neles)
     */
 
+    double a = -0.06;
+    double b = 0.35;
+    double c = -1.45;
+
+    double x = -loc()->ball().x();
+    double eq = a * pow(x, 2) + b * x + c;
+
+    if(player()->team()->hasBallPossession())
+        _bh_bar->setRadius(std::min(std::max(1.4, 4.5 + eq), 2.7));
+    else
+        _bh_bar->setRadius(1.4);
+
+/*
+
     if(player()->playerId() == 0) _bh_bar->setBarrierId(0);
     else if(player()->playerId() == 2) _bh_bar->setBarrierId(1);
     else if(player()->playerId() == 4) _bh_bar->setBarrierId(2);
 
+    */
     setBehaviour(BHV_BARRIER);
 
 }

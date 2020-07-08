@@ -73,10 +73,11 @@ void Behaviour_Goalkeeper::configure() {
 
 void Behaviour_Goalkeeper::run() {
 
-    _skill_Goalkeeper->setInterceptAdvance(true);
+    _skill_Goalkeeper->setInterceptAdvance(false);
     _skill_Goalkeeper->setPositionToLook(loc()->ball());
     _skill_Goalkeeper->setIsGk(true);
 
+    // Ver com geogebra e led dps a mira
     _skill_kick->setAim(loc()->theirGoal());
     _skill_kick->setPower(MRCConstants::_maxKickPower);
     _skill_kick->setIsChip(true);
@@ -98,18 +99,19 @@ void Behaviour_Goalkeeper::run() {
     _skill_goToLookTo->setIsGk(true);
 
     // machine if state begins for transitionsss
-    if(player()->distBall() > _radius && isBallComingToGoal(INTERCEPT_MINBALLVELOCITY, 1.1f)){ // bola nao ta em posse do goleiro e ta indo pro gol
+    if(isBallComingToGoal(INTERCEPT_MINBALLVELOCITY, 1.1f)){ // bola nao ta em posse do goleiro e ta indo pro gol
         enableTransition(STATE_GK); // defende!
     }else if(_takeoutEnabled){ // caso n esteja em posse, n esteja indo pro gol ou nenhum dos dois
         if(loc()->isInsideOurArea(loc()->ball(), _takeoutFactor)){ // ve se ta na nossa area com fator de takeout (uma area maiorzinha)
             if(!isBehindBall(loc()->theirGoal())){
                 _skill_push->setAim(loc()->theirGoal());
-                _skill_push->setDestination(loc()->ourPenaltyMark());
+                _skill_push->setDestination(player()->position());
                 enableTransition(STATE_PUSH);
             }else{
                 enableTransition(STATE_KICK); // se tiver perto e na nossa area, chuta!!!!
             }
-        }else if(loc()->isInsideOurArea(loc()->ball(), 1.1 * _takeoutFactor) == false){ // evitar oscilação (ruido) do visao
+        }
+        else{ // evitar oscilação (ruido) do visao
             enableTransition(STATE_GOTO); // goTo na bolota se n estiver na area
         }
     }else{

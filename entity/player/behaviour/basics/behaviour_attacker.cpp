@@ -111,12 +111,12 @@ void Behaviour_Attacker::run() {
     }
     break;
     case STATE_PUSH:{
-
+        /*
         if(player()->playerId() == 1){
             _state = STATE_PASS;
             break;
         }
-
+        */
 
         // A ideia daqui é fazer o free angles pra o quadrante onde o atacante está, pegar a reta gerada
         // E com essa reta calcular a reta ortogonal (entre o robo e essa reta gerada) e posicionar o robo
