@@ -78,7 +78,7 @@ void Skill_Kick::run() {
     }
         break;
     case STATE_KICK: {
-        if(player()->distBall() <= 0.12f){ // holding ball already
+        if(player()->distBall() <= 0.12f && isBallInFront()){ // holding ball already
             player()->rotateTo(_aimPosition, 0.01f, true);
             break;
         }
