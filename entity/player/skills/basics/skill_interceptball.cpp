@@ -29,7 +29,7 @@ QString Skill_InterceptBall::name() {
 
 Skill_InterceptBall::Skill_InterceptBall() {
     setInterceptAdvance(false);
-    _isGk = false;
+    _speedFactor = 1.0;
     _useKickDevice = false;
 }
 
@@ -67,13 +67,9 @@ void Skill_InterceptBall::run() {
     if(_interceptAdvance)
         objectivePos = WR::Utils::threePoints(objectivePos, loc()->ball(), 0.1f, 0.0);
 
-    double factor = 1.0;
     double velocityNeeded = (ballVelocity.abs() * player()->distanceTo(objectivePos)) / (WR::Utils::distance(posBall, objectivePos));
 
-    // Boost the GK
-    if(_isGk) factor = 1.2;
-
-    player()->goTo(objectivePos, 0, true, factor * velocityNeeded);
+    player()->goTo(objectivePos, 0, true, _speedFactor * velocityNeeded);
     player()->dribble(true);
 }
 
