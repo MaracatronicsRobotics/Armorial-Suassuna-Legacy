@@ -40,11 +40,12 @@ private:
     Position _kickPosition;
     QMutex _mutex;
 
-    Position getBestAimPosition();
+    std::pair<Position, double> getBestAimPosition();
     Position calcImpactPositionInGoal();
     bool isBallInFront();
     bool isBallAlignedToGoal();
     bool hasBallAnyPathTo(Position posObjective);
+    bool isBallComing(float minVelocity, float radius);
     quint8 getBestReceiver();
 
     // Quadrant
@@ -52,6 +53,12 @@ private:
     Position getQuadrantBarycenter(int quadrant);
     std::pair<Position, Position> getQuadrantInitialPosition(int quadrant);
     Position getBestPosition(int quadrant);
+
+    // Info
+    Position bestKickPosition;
+    std::pair<Position, double> bestAimPosition;
+    Position impactPos;
+    Timer timer;
 
 public:
     Behaviour_Attacker();
