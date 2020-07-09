@@ -47,10 +47,21 @@ void Playbook_DoNothing::configure(int numPlayers) {
 
     _rl_default = new Role_Default();
     usesRole(_rl_default);
+
+    _rl_default2 = new Role_Default();
+    usesRole(_rl_default2);
 }
 
 void Playbook_DoNothing::run(int numPlayers) {
-    quint8 playerId = dist()->getPlayer();
+    quint8 playerId = 1;
+    dist()->removePlayer(playerId);
+    setPlayerRole(playerId, _rl_default);
+
+    playerId = 5;
+    dist()->removePlayer(playerId);
+    setPlayerRole(playerId, _rl_default2);
+
+    playerId = dist()->getPlayer();
     if(playerId != DIST_INVALID_ID){
         setPlayerRole(playerId, _rl_gk);
     }
@@ -60,11 +71,6 @@ void Playbook_DoNothing::run(int numPlayers) {
         setPlayerRole(playerId, _rl_def_midf);
     }
 */
-
-    playerId = dist()->getPlayer();
-    if(playerId != DIST_INVALID_ID){
-        setPlayerRole(playerId, _rl_default);
-    }
 
     int placedBarriers = 0;
     for(int i = 0; i < 3; i++){

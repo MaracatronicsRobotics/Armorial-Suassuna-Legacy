@@ -53,6 +53,20 @@ void Role_Default::run(){
     */
 
     //_bh_dn->addReceiver(5);
-    setBehaviour(BHV_DONOTHING);
+    if(player()->playerId() == 1){
+        if(player()->distBall() <= 0.5f)
+            setBehaviour(BHV_DONOTHING);
+        else{
+            _bh_bar->setAttackerId(5);
+            setBehaviour(2);
+        }
+    }else{
+        if(player()->distBall() <= 0.5f)
+            setBehaviour(BHV_DONOTHING);
+        else{
+            _bh_bar->setAttackerId(1);
+            setBehaviour(2);
+        }
+    }
 
 }
