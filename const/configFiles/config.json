@@ -1,0 +1,42 @@
+{
+    "TeamName": "Maracatronics",
+    "InitialAgressivity": "equilibrated",
+    "FirstGoalie": 0,
+    "NumberOfPlayers": 12,
+    "MaxKickPower": 6.0,
+
+
+    "RobotRadius": 0.09,
+    "DistToConsiderBallMovement": 0.12,
+    
+
+    "LinearPID": {
+        "kp": 1.5,
+        "ki": 0.0,
+        "kd": 0.0
+    },
+
+    "AngularPID": {
+        "kp": 0.7,
+        "ki": 0.1,
+        "kd": 0.0
+    },
+
+    "ThreadFrequency": 60,
+    "GuiUpdateFrequency": 30,
+    "BallRadius": 0.025,
+
+    "MLP":{
+
+
+    },
+
+    "FPP":{
+        "FPPBallThreshHold":0.2, 
+        "FPPRobotThreshHold":0.09,
+        "FPPBreakDistance":0.42,
+        "FPPSmoothPathResolution":0.3
+    },
+
+
+}
