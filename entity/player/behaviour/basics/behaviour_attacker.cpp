@@ -72,7 +72,6 @@ void Behaviour_Attacker::run() {
 
     Position bestKickPosition = getBestPosition(getBestQuadrant());
     Position bestAimPosition = getBestAimPosition();
-    if(bestAimPosition.isUnknown()) bestAimPosition = loc()->ourGoal();
     Position impactPos = calcImpactPositionInGoal();
 
     switch(_state){
@@ -122,10 +121,8 @@ void Behaviour_Attacker::run() {
         // E com essa reta calcular a reta ortogonal (entre o robo e essa reta gerada) e posicionar o robo
         // na intersecção entre essas duas retas, arrastando a bola com o drible.
 
-        if(bestKickPosition.isUnknown()){ // Nao existem aberturas para o gol
-            /// TODO:
-            /// Ver o que fazer nessa situação
-            std::cout << "bestkick is unknown" << std::endl;
+        if(bestKickPosition.isUnknown() || bestAimPosition.isUnknown()){ // Nao existem aberturas para o gol
+            _state = STATE_PASS;
         }
         else{                             // Abertura para chute
             _sk_push->setDestination(bestKickPosition);
@@ -136,7 +133,7 @@ void Behaviour_Attacker::run() {
 
         bool isInFront = isBallInFront();
         bool isAlignedToGoal = isBallAlignedToGoal();
-        bool ballHasFreePathToGoal = hasBallAnyPathTo(impactPos);
+        bool ballHasFreePathToGoal = (impactPos.y() >= -0.5 + (0.05*loc()->fieldDefenseWidth()/2) && impactPos.y() <= (0.5 - 0.05*loc()->fieldDefenseWidth()/2)) ? hasBallAnyPathTo(impactPos) : false;
         bool isSufficientlyAlignedToAim =  WR::Utils::angleDiff(player()->angleTo(bestAimPosition), player()->orientation()) <= GEARSystem::Angle::toRadians(3);
         bool isCloseEnoughToGoal = player()->distanceTo(loc()->ourGoal()) <= MAX_DIST_KICK;
 /*
@@ -156,6 +153,7 @@ void Behaviour_Attacker::run() {
     }
     break;
     case STATE_KICK:{
+        if(bestAimPosition.isUnknown()) bestAimPosition = loc()->ourGoal();
         _sk_kick->setAim(bestAimPosition);
         _sk_kick->setPower(MRCConstants::_maxKickPower);
 
