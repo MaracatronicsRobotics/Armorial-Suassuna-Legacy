@@ -75,7 +75,7 @@ void Behaviour_Goalkeeper::run() {
 
     _skill_Goalkeeper->setInterceptAdvance(false);
     _skill_Goalkeeper->setPositionToLook(loc()->ball());
-    _skill_Goalkeeper->setIsGk(true);
+    _skill_Goalkeeper->setSpeedFactor(1.2);
 
     // Ver com geogebra e led dps a mira
     _skill_kick->setAim(loc()->theirGoal());

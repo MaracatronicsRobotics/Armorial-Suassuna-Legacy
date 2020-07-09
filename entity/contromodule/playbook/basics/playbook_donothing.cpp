@@ -44,6 +44,9 @@ void Playbook_DoNothing::configure(int numPlayers) {
 
     _rl_def_midf = new Role_Defensive_Midfielder();
     usesRole(_rl_def_midf);
+
+    _rl_default = new Role_Default();
+    usesRole(_rl_default);
 }
 
 void Playbook_DoNothing::run(int numPlayers) {
@@ -57,9 +60,25 @@ void Playbook_DoNothing::run(int numPlayers) {
         setPlayerRole(playerId, _rl_def_midf);
     }
 */
+
+    playerId = dist()->getPlayer();
+    if(playerId != DIST_INVALID_ID){
+        setPlayerRole(playerId, _rl_default);
+    }
+
+    int placedBarriers = 0;
     for(int i = 0; i < 3; i++){
         quint8 playerId = dist()->getPlayer();
         if(playerId != DIST_INVALID_ID){
+            // place the first barrier in the "quadrant" of the ball
+            if(placedBarriers == 0){
+                if(loc()->ball().y() < 0.0) _rl_def.at(i)->setBarrierId(1);
+                else _rl_def.at(i)->setBarrierId(0);
+                placedBarriers++;
+            }else{
+                if(loc()->ball().y() < 0.0) _rl_def.at(i)->setBarrierId(0);
+                else _rl_def.at(i)->setBarrierId(1);
+            }
             setPlayerRole(playerId, _rl_def.at(i));
             _rl_def.at(i)->setBarrierId(i);
         }

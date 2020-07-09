@@ -31,6 +31,8 @@ private:
     void run();
     Skill_InterceptBall *_skill_Goalkeeper;
     Skill_GoToLookTo *_skill_goToLookTo;
+    Skill_PushBall2 *_skill_push;
+    Skill_Kick *_skill_kick;
     double _offsetBall;
 
     // Parameters
@@ -43,14 +45,15 @@ private:
     Position getAttackerInterceptPosition();
     Position calcAttackerBallImpact();
     bool isBallComingToGoal(float minSpeed, float postsFactor = 1.0);
+    bool isBehindBall(Position posObjective);
 
     // Skill transitions
     enum{
         STATE_GOTO,
         STATE_KICK,
-        STATE_GK
+        STATE_GK,
+        STATE_PUSH
     };
-
 
 public:
     Behaviour_Penalty_GK();

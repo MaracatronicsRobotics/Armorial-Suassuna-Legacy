@@ -30,7 +30,7 @@ private:
     bool _interceptAdvance;
     bool isBehindBall(const Position &destination, float angularPrecision);
     Position _posLook;
-    bool _isGk;
+    float _speedFactor;
     bool _useKickDevice;
 public:
     Skill_InterceptBall();
@@ -38,7 +38,7 @@ public:
 
     void setInterceptAdvance(bool interceptAdvance) { _interceptAdvance = interceptAdvance; }
     void setPositionToLook(const Position &posLook) { _posLook = posLook; }
-    void setIsGk(bool isGk) { _isGk = isGk; }
+    void setSpeedFactor(float speedFactor) { _speedFactor = speedFactor; }
     void setUseKickDevice(bool useKickDevice) { _useKickDevice = useKickDevice; }
 };
 

@@ -52,17 +52,7 @@ void Role_Default::run(){
      * set presentes neles)
     */
 
-    _bh_dn->addReceiver(5);
-
-    if(player()->playerId() == 1)
-        setBehaviour(BHV_DONOTHING);
-    else if(player()->playerId() == 3)
-        setBehaviour(1);
-    else if(player()->playerId() == 5){
-        if(player()->hasBallPossession())
-            setBehaviour(3);
-        else
-            setBehaviour(2);
-    }
+    //_bh_dn->addReceiver(5);
+    setBehaviour(BHV_DONOTHING);
 
 }
