@@ -21,23 +21,23 @@
 
 #include "constants.h"
 
-int MRCConstants::_threadFrequency           = 60; // frequencia das threads criadas
-int MRCConstants::_guiUpdateFrequency        = 30;  // frequencia de update da GUI
+int MRCConstants::_threadFrequency; // frequencia das threads criadas
+int MRCConstants::_guiUpdateFrequency;  // frequencia de update da GUI
 
 /* Fast Path Planning */
-float MRCConstants::_FPPBallThreshHold       = 0.2f;
-float MRCConstants::_FPPRobotThreshHold      = 0.09f;
-float MRCConstants::_FPPBreakDistance        = 0.42f;
-float MRCConstants::_FPPSmoothPathResolution = 0.3f;
+float MRCConstants::_FPPBallThreshHold;
+float MRCConstants::_FPPRobotThreshHold;
+float MRCConstants::_FPPBreakDistance;
+float MRCConstants::_FPPSmoothPathResolution;
 
 /* Soccer constants */
-int MRCConstants::_qtPlayers                 = 12;
-float MRCConstants::_maxKickPower            = 6.0;
-float MRCConstants::_robotRadius             = 0.09f;
-float MRCConstants::_ballRadius              = 0.025f;
+int MRCConstants::_qtPlayers;
+float MRCConstants::_maxKickPower;
+float MRCConstants::_robotRadius;
+float MRCConstants::_ballRadius;
 
 /* Ball Sensor constants */
-float MRCConstants::_distToConsiderBallMovement = 0.12;
+float MRCConstants::_distToConsiderBallMovement;
 
 /* Colors */
 std::string MRCConstants::red = "\033[1;31m";
@@ -50,6 +50,32 @@ std::string MRCConstants::defaultBold = "\033[1m";
 std::string MRCConstants::reset = "\033[0m";
 
 MRCConstants::MRCConstants()
+MRCConstants::MRCConstants(QString configFileName)
 {
+    file.setFileName(configFileName);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    val = file.readAll();
+    file.close();
 
+    QJsonDocument document = QJsonDocument::fromJson(val.toUtf8());
+
+    QJsonObject docObject = document.object();
+    QVariantMap doc_map = docObject.toVariantMap();
+
+    MRCConstants::_qtPlayers               = doc_map["NumberOfPlayers"].toInt();
+    MRCConstants::_maxKickPower            = doc_map["MaxKickPower"].toFloat();
+    MRCConstants::_robotRadius             = doc_map["RobotRadius"].toFloat();
+    MRCConstants::_ballRadius              = doc_map["BallRadius"].toFloat();
+
+    MRCConstants::_distToConsiderBallMovement=doc_map["DistToConsiderBallMovement"].toFloat();
+
+    MRCConstants::_threadFrequency=doc_map["ThreadFrequency"].toInt();
+    MRCConstants::_guiUpdateFrequency=doc_map["GuiUpdateFrequency"].toInt();
+
+
+    QVariantMap fpp_map = doc_map["LinearPID"].toMap();
+    MRCConstants::_FPPBallThreshHold=fpp_map["FPPBallThreshHold"].toFloat();
+    MRCConstants::_FPPRobotThreshHold=fpp_map["FPPRobotThreshHold"].toFloat();
+    MRCConstants::_FPPBreakDistance=fpp_map["FPPBreakDistance"].toFloat();
+    MRCConstants::_FPPSmoothPathResolution=fpp_map["FPPSmoothPathResolution"].toFloat();
 }
