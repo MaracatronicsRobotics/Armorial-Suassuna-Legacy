@@ -56,7 +56,7 @@ void Behaviour_Receiver::run() {
     _skill_Receiver->setInterceptAdvance(true);
     setQuadrant(getBestQuadrant());
 
-    _attackerId = 1;
+    //_attackerId = 1;
     /*
     for(quint8 id = 0; id < MRCConstants::_qtPlayers; id++){
         if(PlayerBus::ourPlayerAvailable(id))
