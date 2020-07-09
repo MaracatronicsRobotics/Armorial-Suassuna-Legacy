@@ -24,13 +24,18 @@
 
 #include <iostream>
 
+#include <QtCore>
+
+
 class MRCConstants
 {
 private:
     static int _threadFrequency;
     static int _guiUpdateFrequency;
+    QString val;
+    QFile file;
 public:
-    MRCConstants();
+    MRCConstants(QString fileName);
 
     static int threadFrequency() { return _threadFrequency; }
     static int guiUpdateFrequency() { return _guiUpdateFrequency; }
