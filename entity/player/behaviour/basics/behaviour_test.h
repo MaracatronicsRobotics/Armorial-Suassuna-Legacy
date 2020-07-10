@@ -19,39 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef ROLE_DEFAULT_H
-#define ROLE_DEFAULT_H
+#ifndef BEHAVIOUR_TEST_H
+#define BEHAVIOUR_TEST_H
 
-#include <entity/player/behaviour/mrcbehaviours.h>
-#include <entity/player/role/role.h>
+#include <entity/player/behaviour/behaviour.h>
+#include <entity/player/skills/skills_include.h>
 
-class Role_Default : public Role
-{
+class Behaviour_Test : public Behaviour {
 private:
-    // Behaviours
-    Behaviour_Attacker *_bh_dn;
-    Behaviour_Attacker *_bh_dn2;
-    Behaviour_Goalkeeper *_bh_gk;
-    Behaviour_Receiver *_bh_bar;
-    Behaviour_DoNothing *_bh_dn3;
-    Behaviour_Test *_bh_tst;
-
-    // Behaviours ids!
-    enum{
-        BHV_DONOTHING
-    };
-
-    // Inherited functions
     void configure();
     void run();
+    int _state;
 
-    // Mutex
-    QMutex _mutex;
-
+    Skill_Test *_skill_test;
 public:
-    Role_Default();
-    void initializeBehaviours();
+    Behaviour_Test();
     QString name();
 };
 
-#endif // ROLE_DEFAULT_H
+#endif // BEHAVIOUR_TEST_H

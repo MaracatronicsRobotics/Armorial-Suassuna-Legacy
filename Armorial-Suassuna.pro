@@ -47,6 +47,7 @@ SOURCES += \
     entity/player/behaviour/basics/behaviour_intercept.cpp \
     entity/player/behaviour/basics/behaviour_markball.cpp \
     entity/player/behaviour/basics/behaviour_penalty_cf.cpp \
+    entity/player/behaviour/basics/behaviour_test.cpp \
     entity/player/navigation/fana/fana.cpp \
     entity/player/navigation/fpp/fastpathplanning.cpp \
     entity/player/navigation/navalgorithm.cpp \
@@ -68,6 +69,7 @@ SOURCES += \
     entity/player/skills/basics/skill_placement.cpp \
     entity/player/skills/basics/skill_pushball2.cpp \
     entity/player/skills/basics/skill_rotateto.cpp \
+    entity/player/skills/basics/skill_test.cpp \
     entity/referee/mrcreferee.cpp \
     entity/world/world.cpp \
     entity/world/worldmapupdater.cpp \
@@ -179,6 +181,7 @@ HEADERS += \
     entity/coachview/soccerview/util/util.h \
     entity/entity.h \
     entity/player/behaviour/basics/behaviour_intercept.h \
+    entity/player/behaviour/basics/behaviour_test.h \
     entity/player/navigation/fana/fana.h \
     entity/player/navigation/fpp/fastpathplanning.h \
     entity/player/navigation/navalgorithm.h \
@@ -202,6 +205,7 @@ HEADERS += \
     entity/player/skills/basics/skill_placement.h \
     entity/player/skills/basics/skill_pushball2.h \
     entity/player/skills/basics/skill_rotateto.h \
+    entity/player/skills/basics/skill_test.h \
     entity/referee/mrcreferee.h \
     entity/world/world.h \
     entity/world/worldmapupdater.h \

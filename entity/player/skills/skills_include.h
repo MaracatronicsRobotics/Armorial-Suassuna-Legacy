@@ -36,6 +36,9 @@
 #include <entity/player/skills/basics/skill_placement.h>
 #include <entity/player/skills/basics/skill_pushball2.h>
 
+// skill test
+#include <entity/player/skills/basics/skill_test.h>
+
 // normal includes
 #include <entity/player/player.h>
 #include <utils/utils.hh>
