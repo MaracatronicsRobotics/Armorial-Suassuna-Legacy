@@ -19,39 +19,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef ROLE_DEFAULT_H
-#define ROLE_DEFAULT_H
+#include "behaviour_test.h"
 
-#include <entity/player/behaviour/mrcbehaviours.h>
-#include <entity/player/role/role.h>
+QString Behaviour_Test::name() {
+    return "Behaviour_Test";
+}
 
-class Role_Default : public Role
-{
-private:
-    // Behaviours
-    Behaviour_Attacker *_bh_dn;
-    Behaviour_Attacker *_bh_dn2;
-    Behaviour_Goalkeeper *_bh_gk;
-    Behaviour_Receiver *_bh_bar;
-    Behaviour_DoNothing *_bh_dn3;
-    Behaviour_Test *_bh_tst;
+Behaviour_Test::Behaviour_Test() {
+}
 
-    // Behaviours ids!
-    enum{
-        BHV_DONOTHING
-    };
-
-    // Inherited functions
-    void configure();
-    void run();
-
-    // Mutex
-    QMutex _mutex;
-
-public:
-    Role_Default();
-    void initializeBehaviours();
-    QString name();
+void Behaviour_Test::configure() {
+    usesSkill(_skill_test = new Skill_Test());
 };
 
-#endif // ROLE_DEFAULT_H
+void Behaviour_Test::run() {
+    _skill_test->setAim(loc()->ourGoal());
+    _skill_test->setDestination(loc()->fieldCenter());
+    _skill_test->shootWhenAligned(true);
+}

@@ -115,7 +115,10 @@ void Player::loop(){
         }
     }
     else{
+        // Reset idle count
         _idleCount = 0;
+        // Disable kick
+        _ctr->kick(teamId(), playerId(), 0.0);
 
         _mutexRole.lock();
         if(_role != NULL){
@@ -308,7 +311,7 @@ void Player::setSpeed(float x, float y, float theta) {
 
     float currSpeedAbs = sqrt(pow(x, 2) + pow(y, 2));
     float incSpeedAbs = currSpeedAbs - _lastSpeedAbs;
-    float maxAcc = 2.5;
+    float maxAcc = 0.5;
 
     if(fabs(incSpeedAbs) > maxAcc && incSpeedAbs > 0){
         float newSpeed = _lastSpeedAbs + maxAcc;
@@ -322,12 +325,18 @@ void Player::setSpeed(float x, float y, float theta) {
     // watchdog on speed
     if(isnan(x)) x = 0.0;
     if(isnan(y)) y = 0.0;
-    WR::Utils::limitValue(&x, -2.5, 2.5);
-    WR::Utils::limitValue(&y, -2.5, 2.5);
 
-    _ctr->setSpeed((int)_team->teamId(), (int)playerId(), x, y, theta);
-    _ctr->kick(_team->teamId(), playerId(), 0.0);
+    // Limit max speed
+    float maxSpeed = 2.5;
+    Velocity robotVel = Velocity(true, x, y);
+    if(robotVel.abs() >= maxSpeed){
+        // Transform in unitary vector
+        robotVel.setVelocity(robotVel.x() / robotVel.abs(), robotVel.y() / robotVel.abs());
+        // Multiply by minVel
+        robotVel.setVelocity(robotVel.x() * maxSpeed, robotVel.y() * maxSpeed);
+    }
 
+    _ctr->setSpeed((int)_team->teamId(), (int)playerId(), robotVel.x(), robotVel.y(), theta);
 }
 
 std::pair<float, float> Player::goTo(Position targetPosition, double offset, bool setHere, double minVel){
@@ -394,14 +403,20 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
         angleOrigin2ball = acos(vectorRobot2BallX); //angulo que a bola faz com o eixo x em relação ao robo
     }
 
-    double minValue = 1.5;
-    double maxValue = 3.0;
+    double minValue = 2.5;
+    double maxValue = 5.0;
     double speed = 0.0;
 
     angleRobot2Ball = angleOrigin2Robot - angleOrigin2ball;
 
-    if(fabs(angleRobot2Ball) >= M_PI / 52.0){
-        if(abs(angleRobot2Ball) < minValue){
+    if(fabs(angleRobot2Ball) >= GEARSystem::Angle::toRadians(1.0)){
+        if(fabs(angleRobot2Ball) < 0.5){
+            if(angleRobot2Ball < 0.0)
+                speed = 0.5;
+            else
+                speed = -0.5;
+        }
+        else if(fabs(angleRobot2Ball) < minValue){
             if(angleRobot2Ball < 0.0){
                 if (speed != 0.0 && angleRobot2Ball < 0.2) speed = -minValue;    //Inverte a velocidade para frenagem
                 else speed = minValue;
@@ -409,7 +424,8 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
                 if (speed != 0.0 && angleRobot2Ball < 0.2) speed = minValue;     //Inverte a velocidade para frenagem
                 else speed = -minValue;
             }
-        }else{
+        }
+        else{
             if(angleRobot2Ball < 0.0){
                 if(angleRobot2Ball < -M_PI) speed = -maxValue;
                 else speed = maxValue;
