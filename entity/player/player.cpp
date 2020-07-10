@@ -118,7 +118,8 @@ void Player::loop(){
         // Reset idle count
         _idleCount = 0;
         // Disable kick
-        _ctr->kick(teamId(), playerId(), 0.0);
+        _ctr->kickOnTouch(teamId(), playerId(), false, 0.0);
+        _ctr->chipKickOnTouch(teamId(), playerId(), false, 0.0);
 
         _mutexRole.lock();
         if(_role != NULL){
@@ -403,11 +404,14 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
         angleOrigin2ball = acos(vectorRobot2BallX); //angulo que a bola faz com o eixo x em relação ao robo
     }
 
-    double minValue = 2.5;
+    double minValue = 3.0;
     double maxValue = 5.0;
     double speed = 0.0;
 
     angleRobot2Ball = angleOrigin2Robot - angleOrigin2ball;
+
+    if(angleRobot2Ball > M_PI) angleRobot2Ball -= 2.0 * M_PI;
+    if(angleRobot2Ball < -M_PI) angleRobot2Ball += 2.0 * M_PI;
 
     if(fabs(angleRobot2Ball) >= GEARSystem::Angle::toRadians(1.0)){
         if(fabs(angleRobot2Ball) < 0.5){
@@ -416,7 +420,7 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
             else
                 speed = -0.5;
         }
-        else if(fabs(angleRobot2Ball) < minValue){
+        else if(fabs(angleRobot2Ball) < M_PI / 2.0){
             if(angleRobot2Ball < 0.0){
                 if (speed != 0.0 && angleRobot2Ball < 0.2) speed = -minValue;    //Inverte a velocidade para frenagem
                 else speed = minValue;
@@ -518,10 +522,10 @@ void Player::aroundTheBall(Position targetPosition, double offset, double offset
 
 void Player::kick(float power, bool isChipKick){
     if(!isChipKick){
-        _ctr->kick(_team->teamId(), playerId(), power);
+        _ctr->kickOnTouch(_team->teamId(), playerId(), true, power);
     }
     else{
-        _ctr->chipKick(_team->teamId(), playerId(), power); // rever esse power dps
+        _ctr->chipKickOnTouch(_team->teamId(), playerId(), true, power); // rever esse power dps
     }
 }
 
