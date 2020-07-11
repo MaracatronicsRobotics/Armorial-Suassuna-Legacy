@@ -82,7 +82,7 @@ void Role::setPlayer(Player *player, PlayerAccess *playerAccess){
 
 void Role::runRole(){
     if(_behaviourList.size() == 0){
-        std::cout << "[ERROR] " << name().toStdString() << " has no behaviours set!\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << " has no behaviours set!\n";
         return ;
     }
 
@@ -135,7 +135,7 @@ QHash<int, Behaviour*> Role::getBehaviours(){
 
 void Role::usesBehaviour(int id, Behaviour *behaviour){
     if(_configureEnabled == false){
-        std::cout << "[WARNING] Blocked '" << name().toStdString() << "' setting Behaviour to use outside configure().\n";
+        std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << "Blocked '" << name().toStdString() << "' setting Behaviour to use outside configure().\n";
         return ;
     }
 
@@ -149,7 +149,7 @@ void Role::usesBehaviour(int id, Behaviour *behaviour){
             _actualBehaviour = id;
         }
     }else{
-        std::cout << "[WARNING] Blocked '" << name().toStdString() << "' adding behaviours with same id!\n";
+        std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << "Blocked '" << name().toStdString() << "' adding behaviours with same id!\n";
     }
 
 }
@@ -163,13 +163,13 @@ void Role::setBehaviour(int behaviour_id){
         _behaviour = _behaviourList.value(behaviour_id);
         _actualBehaviour = behaviour_id;
     }else{
-        std::cout << "[ERROR] " << name().toStdString() << " setting behaviour with id '" << behaviour_id << "' that isn't at behaviours list.\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << " setting behaviour with id '" << behaviour_id << "' that isn't at behaviours list.\n";
     }
 }
 
 PlayerAccess* Role::player(){
     if(_playerAccess == NULL){
-        std::cout << "[ERROR] " << name().toStdString() << ", requesting player(), playerAccess not set!\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting player(), playerAccess not set!\n";
     }
     return _playerAccess;
 }

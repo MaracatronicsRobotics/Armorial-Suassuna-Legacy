@@ -65,7 +65,7 @@ SSLStrategy::SSLGameState SSLStrategy::refState2SSLGameState(SSLGameInfo::RefPro
 
         case SSLGameInfo::STATE_UNDEFINED:
         default:
-            std::cout << "[ERROR] SSLStrategy: undefined state, should never reach here!\n";
+            std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "SSLStrategy: undefined state, should never reach here!\n";
             return UNDEFINED;
     }
 }

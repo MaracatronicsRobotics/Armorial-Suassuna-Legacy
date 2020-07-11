@@ -199,7 +199,7 @@ quint8 PlayersDistribution::getKicker(const Position &posBall) {
                 if(_players.size() >= 2)
                     return _players.takeAt(1).id;
                 else {
-                    std::cout << "[WARNING] No players available in state to avoid double touch!\n";
+                    std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << "No players available in state to avoid double touch!\n";
                     return _players.takeFirst().id;
                 }
             }

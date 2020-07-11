@@ -43,7 +43,7 @@ Skill_Test::Skill_Test() {
 
 void Skill_Test::run(){
     if(_destination.isUnknown())
-        std::cout << "[WARNING]" << name().toStdString() << ": destination not set!\n";
+        std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << name().toStdString() << ": destination not set!\n";
 
 
     // Calc behind ball
@@ -83,9 +83,9 @@ void Skill_Test::run(){
         std::pair<double, double> p = player()->rotateTo(_aim);
         if(_shootWhenAligned){
             double angleToObjective = fabs(GEARSystem::Angle::toDegrees(p.first));
-            std::cout << "angleToObjective: " << angleToObjective << std::endl;
             if(angleToObjective <= 1.0){
-                std::cout << "chutei" << std::endl;
+                std::cout << MRCConstants::red << "angleToObjective: " << MRCConstants::reset << angleToObjective << std::endl;
+                std::cout << MRCConstants::cyan << "shooted" << MRCConstants::reset << std::endl;
                 player()->kick(MRCConstants::_maxKickPower);
             }
         }

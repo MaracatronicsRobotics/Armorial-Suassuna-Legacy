@@ -53,7 +53,7 @@ void Playbook::initialize(MRCTeam *ourTeam, MRCTeam *opTeam, CoachUtils *utils, 
 void Playbook::runPlaybook(QString strategyState) {
     // Check if StrategyState set players to this playbook
     if(_players.size()==0) {
-        std::cout << "[WARNING] " << strategyState.toStdString() << "->" << name().toStdString() << " has no players set!\n";
+        std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << strategyState.toStdString() << "->" << name().toStdString() << " has no players set!\n";
         return;
     }
     // Run configure(numPlayers) if num of players in this playbook changed
@@ -78,7 +78,7 @@ void Playbook::runPlaybook(QString strategyState) {
     }
     // Check excessive players on playbook, and print warning
     if(_players.size() > maxNumPlayer()) {
-        std::cout << "[WARNING] " << strategyState.toStdString() << "->" << name().toStdString() << " has excessive players (num=" << _players.size() << ", max=" << maxNumPlayer() << ").\n";
+        std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << strategyState.toStdString() << "->" << name().toStdString() << " has excessive players (num=" << _players.size() << ", max=" << maxNumPlayer() << ").\n";
     }
     // Run playbook (implemented by child)
     // This will update assignment table with current desired player-role pairs
@@ -102,7 +102,7 @@ void Playbook::updatePlayersRoles() {
         player->setRole(role);
         // Warning to inform that some player isn't being used on playbook
         if(role==NULL)
-            std::cout << "[WARNING] " << name().toStdString() << ", player #" << (int)id << " has no Role assigned!\n";
+            std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << name().toStdString() << ", player #" << (int)id << " has no Role assigned!\n";
     }
 }
 
@@ -125,12 +125,12 @@ void Playbook::clearOldRoles() {
 void Playbook::usesRole(Role *role) {
     // Check if call is inside configure()
     if(_configureEnabled==false) {
-        std::cout << "[WARNING] Blocked playbook '" << name().toStdString() << "' setting Role to use outside configure().\n";
+        std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << "Blocked playbook '" << name().toStdString() << "' setting Role to use outside configure().\n";
         return;
     }
     // Check null pointer
     if(role==NULL) {
-        std::cout << "[ERROR] " << name().toStdString() << "::usesRole(NULL), &role==NULL.\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << "::usesRole(NULL), &role==NULL.\n";
         return;
     }
     // Add role
@@ -143,17 +143,17 @@ void Playbook::setPlayerRole(quint8 id, Role *role) {
         return;
     // Check if player is on this playbook
     if(_players.contains(id)==false) {
-        std::cout << "[ERROR] " << name().toStdString() << "::setPlayerRole(" << (int)id << ", " << role->name().toStdString() << "), player #" << (int)id << " wasn't added to this playbook!\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << "::setPlayerRole(" << (int)id << ", " << role->name().toStdString() << "), player #" << (int)id << " wasn't added to this playbook!\n";
         return;
     }
     // Check pointer
     if(role==NULL) {
-        std::cout << "[ERROR] " << name().toStdString() << "::setPlayerRole(" << (int)id << ", NULL), &role==NULL!\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << "::setPlayerRole(" << (int)id << ", NULL), &role==NULL!\n";
         return;
     }
     // Check if role is on this playbook
     if(_rolesList.contains(role)==false) {
-        std::cout << "[ERROR] " << name().toStdString() << "::setPlayerRole(" << (int)id << ", " << role->name().toStdString() << "), role " << role->name().toStdString() << " wasn't added to this playbook!\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << "::setPlayerRole(" << (int)id << ", " << role->name().toStdString() << "), role " << role->name().toStdString() << " wasn't added to this playbook!\n";
         return;
     }
     // Check if old player still has the role
@@ -177,7 +177,7 @@ void Playbook::addPlayer(quint8 id) {
     // Check if player id is on available players hash
     QHash<quint8,Player*> avPlayers = _ourTeam->avPlayers();
     if(avPlayers.contains(id)==false) {
-        std::cout << "[ERROR] " << name().toStdString() << "::addPlayer(" << (int)id << "), player #" << (int)id << " doesn't exist!\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << "::addPlayer(" << (int)id << "), player #" << (int)id << " doesn't exist!\n";
         return;
     }
     // Add player id to this playbook and to distribution

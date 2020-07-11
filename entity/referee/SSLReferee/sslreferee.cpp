@@ -45,7 +45,7 @@ SSLGameInfo* SSLReferee::getGameInfo(Colors::Color color) {
     if(_gameInfo.contains(color))
         return _gameInfo.value(color);
     else {
-        std::cout << "[ERROR] SSLReferee::getGameInfo(" << (color==Colors::YELLOW?"yellow":"blue") << "), color doesnt exists!\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "SSLReferee::getGameInfo(" << (color==Colors::YELLOW?"yellow":"blue") << "), color doesnt exists!\n";
         return NULL;
     }
 }
@@ -73,11 +73,11 @@ void SSLReferee::initialization() {
 
     // Bind socket
     if(_socket->bind(QHostAddress::AnyIPv4, _port, QUdpSocket::ShareAddress)==false)
-        std::cout << "[ERROR] SSLReferee: bind socket error (" << _socket->errorString().toStdString() << ")\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "SSLReferee: bind socket error (" << _socket->errorString().toStdString() << ")\n";
 
     // Join multicast group
     if(_socket->joinMulticastGroup(_ipAddress)==false)
-        std::cout << "[ERROR] SSLReferee: failed to join multicast group (" << _socket->errorString().toStdString() << ")\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "SSLReferee: failed to join multicast group (" << _socket->errorString().toStdString() << ")\n";
 
     std::cout << "[SSLREFEREE] thread started.\n";
 }
@@ -95,7 +95,7 @@ void SSLReferee::loop() {
 
         // Parse protobuf structure
         if(refereePacket.ParseFromArray(buffer, len)==false)
-            std::cout << "[ERROR] SSLReferee: protobuf referee packet parsing error!\n";
+            std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "SSLReferee: protobuf referee packet parsing error!\n";
 
         // Update game infos
         QList<SSLGameInfo*> gameInfos = _gameInfo.values();

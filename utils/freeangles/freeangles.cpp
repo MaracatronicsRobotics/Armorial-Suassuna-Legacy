@@ -31,7 +31,7 @@ MRCTeam* FreeAngles::_opTeam = NULL;
 
 QList<Obstacle> FreeAngles::getObstacles(const Position &watcher, float distanceRadius) {
     if(_ourTeam==NULL || _opTeam==NULL) {
-        std::cout << "[ERROR] FreeAngles::getObstacles() cannot be called with _ourTeam==NULL || _opTeam==NULL!\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "FreeAngles::getObstacles() cannot be called with _ourTeam==NULL || _opTeam==NULL!\n";
         return QList<Obstacle>();
     }
 
