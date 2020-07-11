@@ -32,7 +32,7 @@ Obstacle::Obstacle() {
 
 void Obstacle::calcAnglesFrom(const Position &watcher, float radiusFactor) {
     if(_radius==0) {
-        std::cout << "[ERROR] Obstacle::calcAnglesFrom() with radius==0!\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "Obstacle::calcAnglesFrom() with radius==0!\n";
         return;
     }
 

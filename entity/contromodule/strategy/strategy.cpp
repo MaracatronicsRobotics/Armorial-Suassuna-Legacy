@@ -93,7 +93,7 @@ void Strategy::setStrategyState(int gameState, StrategyState *strategyState) {
 StrategyState* Strategy::getStrategyState(int gameState) {
     // Check if child strategy set that game state
     if(_strategyStatesTable.contains(gameState)==false) {
-        std::cout << "[ERROR] Strategy '" << name().toStdString() << "' has not set state " << state2str(gameState).toStdString() << ".\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "Strategy '" << name().toStdString() << "' has not set state " << state2str(gameState).toStdString() << ".\n";
         return NULL;
     }
     // Return StrategyState

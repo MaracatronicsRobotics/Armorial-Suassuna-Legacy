@@ -39,6 +39,14 @@ float MRCConstants::_ballRadius              = 0.025f;
 /* Ball Sensor constants */
 float MRCConstants::_distToConsiderBallMovement = 0.12;
 
+/* Colors */
+std::string MRCConstants::red = "\033[1;31m";
+std::string MRCConstants::green = "\033[1;32m";
+std::string MRCConstants::yellow = "\033[1;33m";
+std::string MRCConstants::cyan = "\033[1;36m";
+std::string MRCConstants::magenta = "\033[1;35m";
+std::string MRCConstants::reset = "\033[0m";
+
 MRCConstants::MRCConstants()
 {
 

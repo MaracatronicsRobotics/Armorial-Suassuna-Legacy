@@ -104,7 +104,7 @@ void StrategyState::runStrategyState() {
         quint8 id = _dist->getPlayer();
         Player* player = avPlayers.value(id);
         player->setRole(NULL);
-        std::cout << "[WARNING] " << name().toStdString() << ", player #" << (int)id << " wasn't allocated in a Playbook!\n";
+        std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << name().toStdString() << ", player #" << (int)id << " wasn't allocated in a Playbook!\n";
     }
 
     // Cleanup playbook old roles
@@ -140,7 +140,7 @@ void StrategyState::clearOldPlaybook() {
 void StrategyState::usesPlaybook(Playbook *playbook) {
     // Check if call is inside configure()
     if(_configureEnabled==false) {
-        std::cout << "[WARNING] Blocked strategy state '" << name().toStdString() << "' setting Playbook to use outside configure().\n";
+        std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << "Blocked strategy state '" << name().toStdString() << "' setting Playbook to use outside configure().\n";
         return;
     }
     // Check null pointer

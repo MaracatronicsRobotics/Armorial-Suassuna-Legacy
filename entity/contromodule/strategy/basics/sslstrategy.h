@@ -23,6 +23,7 @@
 #define SSLSTRATEGY_H
 
 #include <entity/contromodule/strategy/strategy.h>
+#include <const/constants.h>
 
 class SSLStrategy : public Strategy {
 public:

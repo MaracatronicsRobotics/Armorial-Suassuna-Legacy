@@ -21,8 +21,11 @@
 
 #ifndef ENTITY_H
 #define ENTITY_H
+
 #include <QThread>
 #include <QMutex>
+#include <const/constants.h>
+
 class Entity : public QThread {
 public:
     enum EntityType {ENT_WORLD, ENT_PLAYER, ENT_CONTROLMODULE, ENT_SENSOR, ENT_REFEREE, ENT_GUI, ENT_GRSIMULATOR, ENT_BALLSENSOR, ENT_BALLPREDICTION};

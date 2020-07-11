@@ -22,6 +22,8 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include <iostream>
+
 class MRCConstants
 {
 private:
@@ -47,6 +49,14 @@ public:
 
     /* Ball Sensor constants */
     static float _distToConsiderBallMovement;
+
+    /* Colors */
+    static std::string red;
+    static std::string green;
+    static std::string yellow;
+    static std::string cyan;
+    static std::string magenta;
+    static std::string reset;
 };
 
 #endif // CONSTANTS_H

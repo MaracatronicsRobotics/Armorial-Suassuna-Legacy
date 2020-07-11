@@ -66,7 +66,7 @@ void Behaviour::setPlayer(Player *player, PlayerAccess *playerAccess) {
 void Behaviour::runBehaviour() {
     // Check if behavior has at least one skill set
     if(_skillList.size()==0) {
-        std::cout << "[ERROR] " << name().toStdString() << " has no skills set!\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << " has no skills set!\n";
         return;
     }
     // Run behavior (implemented by child)
@@ -80,7 +80,7 @@ void Behaviour::runBehaviour() {
 
 void Behaviour::usesSkill(Skill *skill) {
     if(_configureEnabled==false) {
-        std::cout << "[WARNING] Blocked '" << name().toStdString() << "' setting Skill to use outside configure().\n";
+        std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << "Blocked '" << name().toStdString() << "' setting Skill to use outside configure().\n";
         return;
     }
     if(_skillList.contains(skill)==false) {
@@ -97,7 +97,7 @@ void Behaviour::setInitialSkill(Skill *skill) {
     if(_skillList.contains(skill))
         _skill = skill;
     else
-        std::cout << "[ERROR] " << name().toStdString() << " setting initial skill '" << skill->name().toStdString() << "' that isn't at skill list!\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << " setting initial skill '" << skill->name().toStdString() << "' that isn't at skill list!\n";
 }
 
 void Behaviour::addTransition(int id, Skill *source, Skill *target) {
@@ -108,7 +108,7 @@ void Behaviour::addTransition(int id, Skill *source, Skill *target) {
         for(it=transitions.constBegin(); it!=transitions.constEnd(); it++) {
             const SkillTransition *transition = *it;
             if(transition->source()==source) {
-                std::cout << "[ERROR] " << name().toStdString() << " adding invalid transition from " << source->name().toStdString() << " to " << target->name().toStdString() << "; source already has a transition with id " << id << "!\n";
+                std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << " adding invalid transition from " << source->name().toStdString() << " to " << target->name().toStdString() << "; source already has a transition with id " << id << "!\n";
                 return;
             }
         }
@@ -121,7 +121,7 @@ void Behaviour::addTransition(int id, Skill *source, Skill *target) {
 void Behaviour::enableTransition(int id) {
     // Check if transition exists
     if(_transitionTable.contains(id)==false) {
-        std::cout << "[ERROR] " << name().toStdString() << ", enabling transition id '" << id << "' not found!\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", enabling transition id '" << id << "' not found!\n";
         return;
     }
     // Get transitions in transition table
@@ -141,12 +141,12 @@ void Behaviour::enableTransition(int id) {
 
 PlayerAccess* Behaviour::player() {
     if(_playerAccess==NULL)
-        std::cout << "[ERROR] " << name().toStdString() << ", requesting player(), playerAccess not set!\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting player(), playerAccess not set!\n";
     return _playerAccess;
 }
 
 Locations* Behaviour::loc() {
     if(_loc==NULL)
-        std::cout << "[ERROR] " << name().toStdString() << ", requesting loc(), loc not initialized!\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting loc(), loc not initialized!\n";
     return _loc;
 }

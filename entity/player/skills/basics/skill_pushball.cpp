@@ -41,7 +41,7 @@ Skill_PushBall::Skill_PushBall() {
 
 void Skill_PushBall::run(){
     if(_destination.isUnknown())
-        std::cout << "[WARNING]" << name().toStdString() << ": destination not set!\n";
+        std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << name().toStdString() << ": destination not set!\n";
 
     // Calc behind ball
     Position behindBall = WR::Utils::threePoints(loc()->ball(), _destination, 0.2f, GEARSystem::Angle::pi);
