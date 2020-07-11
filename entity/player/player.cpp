@@ -417,29 +417,25 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
     if(angleRobot2Ball > M_PI) angleRobot2Ball -= 2.0 * M_PI;
     if(angleRobot2Ball < -M_PI) angleRobot2Ball += 2.0 * M_PI;
 
-    if(fabs(angleRobot2Ball) >= GEARSystem::Angle::toRadians(1.0)){
-        if(fabs(angleRobot2Ball) < 0.5){
+    if(fabs(angleRobot2Ball) >= GEARSystem::Angle::toRadians(3.0)){
+        if(fabs(angleRobot2Ball) < M_PI / 4.0){
             if(angleRobot2Ball < 0.0)
-                speed = 0.5;
+                speed = 1.0;
             else
-                speed = -0.5;
+                speed = -1.0;
         }
         else if(fabs(angleRobot2Ball) < M_PI / 2.0){
             if(angleRobot2Ball < 0.0){
-                if (speed != 0.0 && angleRobot2Ball < 0.2) speed = -minValue;    //Inverte a velocidade para frenagem
-                else speed = minValue;
+                speed = minValue;
             }else{
-                if (speed != 0.0 && angleRobot2Ball < 0.2) speed = minValue;     //Inverte a velocidade para frenagem
-                else speed = -minValue;
+                speed = -minValue;
             }
         }
         else{
             if(angleRobot2Ball < 0.0){
-                if(angleRobot2Ball < -M_PI) speed = -maxValue;
-                else speed = maxValue;
+                speed = maxValue;
             }else{
-                if(angleRobot2Ball < M_PI) speed = -maxValue;
-                else speed = maxValue;
+                speed = -maxValue;
             }
         }
     }else{
