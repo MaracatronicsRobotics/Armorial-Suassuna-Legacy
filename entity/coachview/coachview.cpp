@@ -71,7 +71,7 @@ CoachView::~CoachView(){
 }
 
 void CoachView::initialization(){
-    std::cout << "[CoachView] thread started.\n";
+   std::cout << MRCConstants::defaultBold << "[COACHVIEW] " << MRCConstants::green << "Thread started.\n" << MRCConstants::reset;
 }
 
 void CoachView::loop(){
@@ -152,5 +152,5 @@ void CoachView::updateTree(StrategyState *strat){
 }
 
 void CoachView::finalization(){
-    std::cout << "[CoachView] thread ended.\n";
+    std::cout << MRCConstants::defaultBold << "[COACHVIEW] " << MRCConstants::green << "Thread ended.\n" << MRCConstants::reset;
 }
