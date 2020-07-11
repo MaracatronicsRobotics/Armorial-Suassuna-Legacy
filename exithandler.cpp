@@ -47,12 +47,12 @@ void ExitHandler::run(int s) {
     ExitHandler::_counter++;
     switch(ExitHandler::_counter) {
         case 1:
-            std::cout << "\n[EXIT HANDLER] Closing Armorial Suassuna...\n";
+            std::cout << MRCConstants::defaultBold << "\n[EXIT HANDLER] " << MRCConstants::green << "Closing Armorial Suassuna...\n" << MRCConstants::reset;
             // Close application
             ExitHandler::_app->exit();
         break;
         case 2:
-            std::cout << "\n[EXIT HANDLER] Halting Armorial Suassuna...\n";
+            std::cout << MRCConstants::defaultBold << "\n[EXIT HANDLER] " << MRCConstants::red << "Halting Armorial Suassuna...\n" << MRCConstants::reset;
             exit(EXIT_FAILURE);
         break;
     }

@@ -54,8 +54,10 @@ public:
     static std::string red;
     static std::string green;
     static std::string yellow;
-    static std::string cyan;
+    static std::string blue;
     static std::string magenta;
+    static std::string cyan;
+    static std::string defaultBold;
     static std::string reset;
 };
 

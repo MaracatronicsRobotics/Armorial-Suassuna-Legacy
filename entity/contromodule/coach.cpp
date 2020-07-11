@@ -227,7 +227,7 @@ std::string Coach::calculateAgressivity(std::vector<double> &gaussians){
 
 void Coach::run(){
     if(_ourTeam->avPlayersSize() == 0){
-        std::cout << "[COACH] No players available!" << std::endl;
+        std::cout << MRCConstants::defaultBold << "[COACH] " << MRCConstants::red << "No players available!" << MRCConstants::reset << std::endl;
         return ;
     }
 /*
