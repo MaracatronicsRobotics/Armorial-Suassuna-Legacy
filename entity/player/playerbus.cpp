@@ -45,7 +45,7 @@ bool PlayerBus::theirPlayerAvailable(quint8 id) {
 PlayerAccess* PlayerBus::ourPlayer(quint8 id) {
     QHash<quint8,Player*> avPlayers = PlayerBus::_ourTeam->avPlayers();
     if(avPlayers.contains(id)==false) {
-        std::cout << "[ERROR] PlayerBus::ourPlayer(" << (int)id << "), requesting unavailable player id!\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "PlayerBus::ourPlayer(" << (int)id << "), requesting unavailable player id!\n";
         return NULL; // generates seg. fault
     }
     return avPlayers.value(id)->access();
@@ -54,7 +54,7 @@ PlayerAccess* PlayerBus::ourPlayer(quint8 id) {
 PlayerAccess* PlayerBus::theirPlayer(quint8 id) {
     QHash<quint8,Player*> avOpPlayers = PlayerBus::_theirTeam->avPlayers();
     if(avOpPlayers.contains(id)==false) {
-        std::cout << "[ERROR] PlayerBus::theirPlayer(" << (int)id << "), requesting unavailable player id!\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "PlayerBus::theirPlayer(" << (int)id << "), requesting unavailable player id!\n";
         return NULL; // generates seg. fault
     }
     return avOpPlayers.value(id)->access();

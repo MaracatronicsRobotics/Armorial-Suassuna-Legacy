@@ -144,12 +144,12 @@ void Suassuna::setServerAddress(QString ipAddress, int port) {
 bool Suassuna::connectToServer() {
     // Server connection
     if(_ctr->connect(_serverAddress, _serverPort) == false) {
-        std::cout << "[ERROR] failed to connect to GEARSystem's server!";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "failed to connect to GEARSystem's server!";
         return false;
     }
     // Check if GEARSystem's Sensor is connected
     if(_ctr->teams().size() < 2) {
-        std::cout << "[ERROR] no teams on controller, GEARSystem's sensor is not connected!";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "no teams on controller, GEARSystem's sensor is not connected!";
         return false;
     }
     return true;

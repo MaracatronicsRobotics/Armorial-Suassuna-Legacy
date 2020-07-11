@@ -42,7 +42,7 @@ Skill_PushBall2::Skill_PushBall2() {
 
 void Skill_PushBall2::run(){
     if(_destination.isUnknown())
-        std::cout << "[WARNING]" << name().toStdString() << ": destination not set!\n";
+        std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << name().toStdString() << ": destination not set!\n";
 
 
     // Calc behind ball

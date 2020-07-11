@@ -43,7 +43,7 @@ void Entity::run() {
             if(rest >= 0)
                 msleep(rest);
             else
-                std::cout << "[TIMER OVEREXTENDED] " << name().toStdString() << " for " <<  -rest  << " ms.\n";
+                std::cout << MRCConstants::yellow << "[TIMER OVEREXTENDED] " << MRCConstants::reset << name().toStdString() << " for " <<  -rest  << " ms.\n";
         }
     }
     finalization();

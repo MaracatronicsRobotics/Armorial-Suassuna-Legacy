@@ -90,7 +90,7 @@ void FANA::run() {
 
     // Check if found an interval
     if(goalIntervalFound==false) {
-        std::cout << "[ERROR] FANA::run() not finding interval of goal! (should never reach here)\n";
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset <<  "FANA::run() not finding interval of goal! (should never reach here)\n";
         _resultantAngle.setUnknown();
         return;
     }

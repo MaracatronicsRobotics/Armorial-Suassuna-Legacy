@@ -40,7 +40,7 @@ Skill_Placement::Skill_Placement() {
 
 void Skill_Placement::run(){
     if(_destination.isUnknown())
-        std::cout << "[WARNING]" << name().toStdString() << ": destination not set!\n";
+        std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << name().toStdString() << ": destination not set!\n";
 
     // Calc behind ball
     Position behindBall = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.16f, GEARSystem::Angle::pi);

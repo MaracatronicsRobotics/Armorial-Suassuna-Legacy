@@ -135,7 +135,7 @@ void Player::loop(){
             _defaultRole->setPlayer(this, _playerAccessSelf);
             _defaultRole->runRole();
         }else{
-            std::cout << "[ERROR] No role found for player #" << (int)playerId() << "!" << std::endl;
+            std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "No role found for player #" << (int)playerId() << "!" << std::endl;
         }
         _mutexRole.unlock();
     }
@@ -404,8 +404,8 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
         angleOrigin2ball = acos(vectorRobot2BallX); //angulo que a bola faz com o eixo x em relação ao robo
     }
 
-    double minValue = 3.0;
-    double maxValue = 5.0;
+    double minValue = 4.0;
+    double maxValue = 6.0;
     double speed = 0.0;
 
     angleRobot2Ball = angleOrigin2Robot - angleOrigin2ball;
