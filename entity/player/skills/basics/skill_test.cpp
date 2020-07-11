@@ -84,8 +84,8 @@ void Skill_Test::run(){
         if(_shootWhenAligned){
             double angleToObjective = fabs(GEARSystem::Angle::toDegrees(p.first));
             if(angleToObjective <= 1.0){
-                std::cout << MRCConstants::red << "angleToObjective: " << MRCConstants::reset << angleToObjective << std::endl;
-                std::cout << MRCConstants::cyan << "shooted" << MRCConstants::reset << std::endl;
+                //std::cout << MRCConstants::red << "angleToObjective: " << MRCConstants::reset << angleToObjective << std::endl;
+                //std::cout << MRCConstants::cyan << "shooted" << MRCConstants::reset << std::endl;
                 player()->kick(MRCConstants::_maxKickPower);
             }
         }
