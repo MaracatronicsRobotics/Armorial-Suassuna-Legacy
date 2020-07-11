@@ -103,7 +103,9 @@ quint8 Player::opTeamId() const{
 
 /* Entity inherit virtual methods */
 void Player::initialization(){
-    printf("[TEAM %d PLAYER %2d] thread started.\n", (int)_team->teamId(), (int)playerId());
+    std::string teamColor = this->teamColor() == Colors::BLUE ? "BLUE" : "YELLOW";
+    std::string teamColorCmd = this->teamColor() == Colors::BLUE ? MRCConstants::blue : MRCConstants::yellow;
+    printf("%s[TEAM %s%s%s%s PLAYER %2d] %sThread started.\n%s", MRCConstants::defaultBold.c_str(), teamColorCmd.c_str(), teamColor.c_str(), MRCConstants::reset.c_str(), MRCConstants::defaultBold.c_str(), (int)playerId(), MRCConstants::green.c_str(), MRCConstants::reset.c_str());
 }
 
 void Player::loop(){
@@ -170,7 +172,9 @@ void Player::finalization(){
             this->msleep(this->loopTime()/4);
         }
     }
-    printf("[TEAM %d PLAYER %2d] thread ended.\n", (int)_team->teamId(), (int)playerId());
+    std::string teamColor = this->teamColor() == Colors::BLUE ? "BLUE" : "YELLOW";
+    std::string teamColorCmd = this->teamColor() == Colors::BLUE ? MRCConstants::blue : MRCConstants::yellow;
+    printf("%s[TEAM %s%s%s%s PLAYER %2d] %sThread ended.\n%s", MRCConstants::defaultBold.c_str(), teamColorCmd.c_str(), teamColor.c_str(), MRCConstants::reset.c_str(), MRCConstants::defaultBold.c_str(), (int)playerId(), MRCConstants::green.c_str(), MRCConstants::reset.c_str());
 }
 
 /* Auxiliary Methods */

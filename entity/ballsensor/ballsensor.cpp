@@ -10,11 +10,11 @@ BallSensor::BallSensor(SSLReferee *ref, WorldMap *wm) : Entity(ENT_BALLSENSOR){
 }
 
 QString BallSensor::name() {
-    return "Ball_Sensor";
+    return "BALL_SENSOR";
 }
 
 void BallSensor::initialization() {
-    std::cout << "[Ball_Sensor] thread started.\n";
+    std::cout << MRCConstants::defaultBold << "[BALL_SENSOR] " << MRCConstants::green << "Thread started.\n" << MRCConstants::reset;
 }
 
 void BallSensor::loop() {
@@ -32,5 +32,5 @@ void BallSensor::loop() {
 }
 
 void BallSensor::finalization() {
-    std::cout << "[Ball_Sensor] thread ended.\n";
+    std::cout << MRCConstants::defaultBold << "[BALL_SENSOR] " << MRCConstants::green << "Thread ended.\n" << MRCConstants::reset;
 }

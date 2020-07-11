@@ -23,6 +23,7 @@
 #define EXITHANDLER_H
 #include <QObject>
 #include <QApplication>
+#include <const/constants.h>
 class ExitHandler : public QObject {
 private:
     static QApplication *_app;

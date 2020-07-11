@@ -24,7 +24,7 @@
 #include <entity/referee/SSLReferee/sslgameinfo.h>
 
 QString SSLReferee::name() {
-    return "SSLReferee";
+    return "REFEREE";
 }
 
 SSLReferee::SSLReferee(QString ipAddress, int port) {
@@ -79,7 +79,7 @@ void SSLReferee::initialization() {
     if(_socket->joinMulticastGroup(_ipAddress)==false)
         std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "SSLReferee: failed to join multicast group (" << _socket->errorString().toStdString() << ")\n";
 
-    std::cout << "[SSLREFEREE] thread started.\n";
+    std::cout << MRCConstants::defaultBold << "[REFEREE] " << MRCConstants::green << "Thread started.\n" << MRCConstants::reset;
 }
 
 void SSLReferee::loop() {
@@ -114,5 +114,5 @@ void SSLReferee::finalization() {
     // Delete socket
     delete _socket;
 
-    std::cout << "[SSLREFEREE] thread ended.\n";
+    std::cout << MRCConstants::defaultBold << "[REFEREE] " << MRCConstants::green << "Thread started.\n" << MRCConstants::reset;
 }

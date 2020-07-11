@@ -30,7 +30,7 @@ void BallPrediction::initialization(){
     // Start Timer
     _timer.start();
 
-    std::cout << "[BALLPREDICTION] Thread started.\n";
+    std::cout << MRCConstants::defaultBold << "[BALLPREDICTION] " << MRCConstants::green << "Thread started.\n" << MRCConstants::reset;
 }
 
 void BallPrediction::loop(){
@@ -72,7 +72,7 @@ void BallPrediction::loop(){
 }
 
 void BallPrediction::finalization(){
-    std::cout << "[BALLPREDICTION] Thread ended.\n";
+    std::cout << MRCConstants::defaultBold << "[BALLPREDICTION] " << MRCConstants::green << "Thread ended.\n" << MRCConstants::reset;
 }
 
 bool BallPrediction::nobodyHasPoss(){

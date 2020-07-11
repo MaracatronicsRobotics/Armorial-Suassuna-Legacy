@@ -43,8 +43,10 @@ float MRCConstants::_distToConsiderBallMovement = 0.12;
 std::string MRCConstants::red = "\033[1;31m";
 std::string MRCConstants::green = "\033[1;32m";
 std::string MRCConstants::yellow = "\033[1;33m";
-std::string MRCConstants::cyan = "\033[1;36m";
+std::string MRCConstants::blue = "\033[1;34m";
 std::string MRCConstants::magenta = "\033[1;35m";
+std::string MRCConstants::cyan = "\033[1;36m";
+std::string MRCConstants::defaultBold = "\033[1m";
 std::string MRCConstants::reset = "\033[0m";
 
 MRCConstants::MRCConstants()

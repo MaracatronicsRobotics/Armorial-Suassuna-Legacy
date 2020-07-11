@@ -67,7 +67,7 @@ void World::setTeams(MRCTeam *ourTeam, MRCTeam *theirTeam) {
 }
 
 void World::initialization() {
-    std::cout << "[WORLD] thread started.\n";
+    std::cout << MRCConstants::defaultBold << "[WORLD] " << MRCConstants::green << "Thread started.\n" << MRCConstants::reset;
 
     // Get priorities
     QList<int> priorities = _priorityLevels.keys();
@@ -120,7 +120,7 @@ void World::finalization() {
     // Stop all entities and delete them
     stopAndDeleteEntities();
 
-    std::cout << "[WORLD] thread ended.\n";
+    std::cout << MRCConstants::defaultBold << "[WORLD] " << MRCConstants::green << "Thread ended.\n" << MRCConstants::reset;
 }
 
 void World::stopAndDeleteEntities() {
