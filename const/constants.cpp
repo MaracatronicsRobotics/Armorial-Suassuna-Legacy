@@ -53,7 +53,10 @@ std::string MRCConstants::cyan = "\033[1;36m";
 std::string MRCConstants::defaultBold = "\033[1m";
 std::string MRCConstants::reset = "\033[0m";
 
-MRCConstants::MRCConstants()
+
+
+
+
 MRCConstants::MRCConstants(QString configFileName)
 {
     file.setFileName(configFileName);
@@ -66,28 +69,57 @@ MRCConstants::MRCConstants(QString configFileName)
     QJsonObject docObject = document.object();
     QVariantMap doc_map = docObject.toVariantMap();
 
-    std::cout<<"oi "<<doc_map["NumberOfPlayers"].toInt()<<std::endl;
+    _qtPlayers = doc_map["NumberOfPlayers"].toInt();
+    std::cout<< MRCConstants::defaultBold << "NumberOfPlayers: "<< MRCConstants::green <<_qtPlayers<<std::endl<< MRCConstants::reset;
 
-    // MRCConstants::_maxKickPower            = doc_map["MaxKickPower"].toFloat();
-    // MRCConstants::_robotRadius             = doc_map["RobotRadius"].toFloat();
-    // MRCConstants::_ballRadius              = doc_map["BallRadius"].toFloat();
+    _maxKickPower = doc_map["MaxKickPower"].toFloat();
+    std::cout<< MRCConstants::defaultBold << "MaxKickPower: "<< MRCConstants::green <<doc_map["NumberOfPlayers"].toInt()<<std::endl<< MRCConstants::reset;
 
-    // MRCConstants::_distToConsiderBallMovement=doc_map["DistToConsiderBallMovement"].toFloat();
+    _robotRadius = doc_map["RobotRadius"].toFloat();
+    std::cout<< MRCConstants::defaultBold << "RobotRadius: "<< MRCConstants::green <<_robotRadius<<std::endl<< MRCConstants::reset;
 
-    // MRCConstants::_threadFrequency=doc_map["ThreadFrequency"].toInt();
-    // MRCConstants::_guiUpdateFrequency=doc_map["GuiUpdateFrequency"].toInt();
+    _ballRadius = doc_map["BallRadius"].toFloat();
+    std::cout<< MRCConstants::defaultBold << "BallRadius: "<< MRCConstants::green <<_ballRadius<<std::endl<< MRCConstants::reset;
 
+    _distToConsiderBallMovement=doc_map["DistToConsiderBallMovement"].toFloat();
+    std::cout<< MRCConstants::defaultBold << "DistToConsiderBallMovement: "<< MRCConstants::green <<_distToConsiderBallMovement<<std::endl<< MRCConstants::reset;
 
-    // QVariantMap fpp_map = doc_map["FPP"].toMap();
-    // MRCConstants::_FPPBallThreshHold=fpp_map["FPPBallThreshHold"].toFloat();
-    // MRCConstants::_FPPRobotThreshHold=fpp_map["FPPRobotThreshHold"].toFloat();
-    // MRCConstants::_FPPBreakDistance=fpp_map["FPPBreakDistance"].toFloat();
-    // MRCConstants::_FPPSmoothPathResolution=fpp_map["FPPSmoothPathResolution"].toFloat();
+    _threadFrequency=doc_map["ThreadFrequency"].toInt();
+    std::cout<< MRCConstants::defaultBold << "ThreadFrequency: "<< MRCConstants::green <<_threadFrequency<<std::endl<< MRCConstants::reset;
+
+    _guiUpdateFrequency=doc_map["GuiUpdateFrequency"].toInt();
+    std::cout<< MRCConstants::defaultBold << "GuiUpdateFrequency: "<< MRCConstants::green <<_guiUpdateFrequency<<std::endl<< MRCConstants::reset;
+
+    // Path to files
+    _clustersPath=doc_map["ClusterAbsolutePath"].toString();
+    std::cout<< MRCConstants::defaultBold << "ClusterAbsolutePath: "<< MRCConstants::green << _clustersPath.toStdString() << std::endl<< MRCConstants::reset;
+
+    _MLPPath=doc_map["MLPAbsolutePath"].toString();
+    std::cout<< MRCConstants::defaultBold << "MLPAbsolutePath: "<< MRCConstants::green << _MLPPath.toStdString() << std::endl<< MRCConstants::reset;
+
+    // Path Planning Constants
+    QVariantMap fpp_map = doc_map["FPP"].toMap();
+    _FPPBallThreshHold=fpp_map["FPPBallThreshHold"].toFloat();
+    std::cout<< MRCConstants::defaultBold << "FPPBallThreshHold: "<< MRCConstants::green << _FPPBallThreshHold << std::endl<< MRCConstants::reset;
+
+    _FPPRobotThreshHold=fpp_map["FPPRobotThreshHold"].toFloat();
+    std::cout<< MRCConstants::defaultBold << "FPPRobotThreshHold: "<< MRCConstants::green << _FPPRobotThreshHold << std::endl<< MRCConstants::reset;
+
+    _FPPBreakDistance=fpp_map["FPPBreakDistance"].toFloat();
+    std::cout<< MRCConstants::defaultBold << "FPPBreakDistance: "<< MRCConstants::green << _FPPBreakDistance << std::endl<< MRCConstants::reset;
+
+    _FPPSmoothPathResolution=fpp_map["FPPSmoothPathResolution"].toFloat();
+    std::cout<< MRCConstants::defaultBold << "FPPSmoothPathResolution: "<< MRCConstants::green << _FPPSmoothPathResolution << std::endl<< MRCConstants::reset;
 }
 
-QString MRCConstants::getClusters() const
+QString MRCConstants::getMLPPath() const
 {
-    return _clusters;
+    return _MLPPath;
+}
+
+QString MRCConstants::getClustersPath() const
+{
+    return _clustersPath;
 }
 
 int MRCConstants::getThreadFrequency() const
