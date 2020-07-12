@@ -33,6 +33,7 @@ private:
     Behaviour_Attacker *_bh_dn2;
     Behaviour_Goalkeeper *_bh_gk;
     Behaviour_Receiver *_bh_bar;
+    Behaviour_Receiver *_bh_bar2;
     Behaviour_DoNothing *_bh_dn3;
     Behaviour_Test *_bh_tst;
 
