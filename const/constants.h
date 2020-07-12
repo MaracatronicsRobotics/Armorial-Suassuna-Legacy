@@ -30,27 +30,22 @@
 class MRCConstants
 {
 private:
-    static int _threadFrequency;
-    static int _guiUpdateFrequency;
+    int _threadFrequency;
+    int _guiUpdateFrequency;
     QString val;
     QFile file;
-public:
-    MRCConstants(QString fileName);
-
-    static int threadFrequency() { return _threadFrequency; }
-    static int guiUpdateFrequency() { return _guiUpdateFrequency; }
 
     /* Fast Path Planning */
-    static float _FPPBallThreshHold;
-    static float _FPPRobotThreshHold;
-    static float _FPPBreakDistance;
-    static float _FPPSmoothPathResolution;
+    float _FPPBallThreshHold;
+    float _FPPRobotThreshHold;
+    float _FPPBreakDistance;
+    float _FPPSmoothPathResolution;
 
     /* Soccer constants */
-    static int _qtPlayers;
-    static float _maxKickPower;
-    static float _robotRadius;
-    static float _ballRadius;
+    int _qtPlayers;
+    float _maxKickPower;
+    float _robotRadius;
+    float _ballRadius;
 
     /* Ball Sensor constants */
     static float _distToConsiderBallMovement;
@@ -64,6 +59,27 @@ public:
     static std::string cyan;
     static std::string defaultBold;
     static std::string reset;
+    float _distToConsiderBallMovement;
+
+    /*Files Path*/
+    QString _clusters;
+
+public:
+    MRCConstants(QString fileName);
+
+
+    float getDistToConsiderBallMovement() const;
+    float getBallRadius() const;
+    float getRobotRadius() const;
+    float getMaxKickPower() const;
+    int getQtPlayers() const;
+    float getFPPSmoothPathResolution() const;
+    float getFPPBreakDistance() const;
+    float getFPPRobotThreshHold() const;
+    float getFPPBallThreshHold() const;
+    QString getClusters() const;
+    int getThreadFrequency() const;
+    int getGuiUpdateFrequency() const;
 };
 
 #endif // CONSTANTS_H
