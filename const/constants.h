@@ -50,19 +50,11 @@ private:
     /* Ball Sensor constants */
     static float _distToConsiderBallMovement;
 
-    /* Colors */
-    static std::string red;
-    static std::string green;
-    static std::string yellow;
-    static std::string blue;
-    static std::string magenta;
-    static std::string cyan;
-    static std::string defaultBold;
-    static std::string reset;
-    float _distToConsiderBallMovement;
+
 
     /*Files Path*/
-    QString _clusters;
+    QString _clustersPath;
+    QString _MLPPath;
 
 public:
     MRCConstants(QString fileName);
@@ -77,9 +69,23 @@ public:
     float getFPPBreakDistance() const;
     float getFPPRobotThreshHold() const;
     float getFPPBallThreshHold() const;
-    QString getClusters() const;
+    QString getClustersPath() const;
     int getThreadFrequency() const;
     int getGuiUpdateFrequency() const;
+
+    /* Colors */
+    static std::string red;
+    static std::string green;
+    static std::string yellow;
+    static std::string blue;
+    static std::string magenta;
+    static std::string cyan;
+    static std::string defaultBold;
+    static std::string reset;
+
+
+
+    QString getMLPPath() const;
 };
 
 #endif // CONSTANTS_H

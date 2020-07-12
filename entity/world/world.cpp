@@ -42,7 +42,7 @@ World::World(Controller *ctr, Fields::Field *defaultField) : Entity(ENT_WORLD) {
     _wmUpdater->setDefaultFieldGeometry(_wm);
 
     // Set self loop time
-    this->setLoopFrequency(MRCConstants::threadFrequency());
+    this->setLoopFrequency(MRCConstants::getThreadFrequency());
 
     // Initialize
     _ctrModule = NULL;
