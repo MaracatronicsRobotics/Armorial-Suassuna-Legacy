@@ -56,11 +56,11 @@ void Playbook_DoNothing::run(int numPlayers) {
     quint8 playerId = 1;
     dist()->removePlayer(playerId);
     setPlayerRole(playerId, _rl_default);
-/*
-    playerId = 5;
+
+    playerId = 3;
     dist()->removePlayer(playerId);
     setPlayerRole(playerId, _rl_default2);
-*/
+
     playerId = dist()->getPlayer();
     if(playerId != DIST_INVALID_ID){
         setPlayerRole(playerId, _rl_gk);
