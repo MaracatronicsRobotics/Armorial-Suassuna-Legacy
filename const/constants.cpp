@@ -20,24 +20,28 @@
  ***/
 
 #include "constants.h"
+#include <iostream>
 
-int MRCConstants::_threadFrequency; // frequencia das threads criadas
-int MRCConstants::_guiUpdateFrequency;  // frequencia de update da GUI
 
-/* Fast Path Planning */
-float MRCConstants::_FPPBallThreshHold;
-float MRCConstants::_FPPRobotThreshHold;
-float MRCConstants::_FPPBreakDistance;
-float MRCConstants::_FPPSmoothPathResolution;
 
-/* Soccer constants */
-int MRCConstants::_qtPlayers;
-float MRCConstants::_maxKickPower;
-float MRCConstants::_robotRadius;
-float MRCConstants::_ballRadius;
+//int MRCConstants::_threadFrequency           = 60; // frequencia das threads criadas
+//int MRCConstants::_guiUpdateFrequency        = 30;  // frequencia de update da GUI
 
-/* Ball Sensor constants */
-float MRCConstants::_distToConsiderBallMovement;
+///* Fast Path Planning */
+//float MRCConstants::_FPPBallThreshHold       = 0.2f;
+//float MRCConstants::_FPPRobotThreshHold      = 0.09f;
+//float MRCConstants::_FPPBreakDistance        = 0.42f;
+//float MRCConstants::_FPPSmoothPathResolution = 0.3f;
+
+///* Soccer constants */
+//int MRCConstants::_qtPlayers                 = 12;
+//float MRCConstants::_maxKickPower            = 6.0;
+//float MRCConstants::_robotRadius             = 0.09f;
+//float MRCConstants::_ballRadius              = 0.025f;
+
+///* Ball Sensor constants */
+//float MRCConstants::_distToConsiderBallMovement;
+
 
 /* Colors */
 std::string MRCConstants::red = "\033[1;31m";
@@ -62,20 +66,85 @@ MRCConstants::MRCConstants(QString configFileName)
     QJsonObject docObject = document.object();
     QVariantMap doc_map = docObject.toVariantMap();
 
-    MRCConstants::_qtPlayers               = doc_map["NumberOfPlayers"].toInt();
-    MRCConstants::_maxKickPower            = doc_map["MaxKickPower"].toFloat();
-    MRCConstants::_robotRadius             = doc_map["RobotRadius"].toFloat();
-    MRCConstants::_ballRadius              = doc_map["BallRadius"].toFloat();
+    std::cout<<"oi "<<doc_map["NumberOfPlayers"].toInt()<<std::endl;
 
-    MRCConstants::_distToConsiderBallMovement=doc_map["DistToConsiderBallMovement"].toFloat();
+    // MRCConstants::_maxKickPower            = doc_map["MaxKickPower"].toFloat();
+    // MRCConstants::_robotRadius             = doc_map["RobotRadius"].toFloat();
+    // MRCConstants::_ballRadius              = doc_map["BallRadius"].toFloat();
 
-    MRCConstants::_threadFrequency=doc_map["ThreadFrequency"].toInt();
-    MRCConstants::_guiUpdateFrequency=doc_map["GuiUpdateFrequency"].toInt();
+    // MRCConstants::_distToConsiderBallMovement=doc_map["DistToConsiderBallMovement"].toFloat();
+
+    // MRCConstants::_threadFrequency=doc_map["ThreadFrequency"].toInt();
+    // MRCConstants::_guiUpdateFrequency=doc_map["GuiUpdateFrequency"].toInt();
 
 
-    QVariantMap fpp_map = doc_map["LinearPID"].toMap();
-    MRCConstants::_FPPBallThreshHold=fpp_map["FPPBallThreshHold"].toFloat();
-    MRCConstants::_FPPRobotThreshHold=fpp_map["FPPRobotThreshHold"].toFloat();
-    MRCConstants::_FPPBreakDistance=fpp_map["FPPBreakDistance"].toFloat();
-    MRCConstants::_FPPSmoothPathResolution=fpp_map["FPPSmoothPathResolution"].toFloat();
+    // QVariantMap fpp_map = doc_map["FPP"].toMap();
+    // MRCConstants::_FPPBallThreshHold=fpp_map["FPPBallThreshHold"].toFloat();
+    // MRCConstants::_FPPRobotThreshHold=fpp_map["FPPRobotThreshHold"].toFloat();
+    // MRCConstants::_FPPBreakDistance=fpp_map["FPPBreakDistance"].toFloat();
+    // MRCConstants::_FPPSmoothPathResolution=fpp_map["FPPSmoothPathResolution"].toFloat();
 }
+
+QString MRCConstants::getClusters() const
+{
+    return _clusters;
+}
+
+int MRCConstants::getThreadFrequency() const
+{
+    return _threadFrequency;
+}
+
+int MRCConstants::getGuiUpdateFrequency() const
+{
+    return _guiUpdateFrequency;
+}
+
+
+
+float MRCConstants::getDistToConsiderBallMovement() const
+{
+    return _distToConsiderBallMovement;
+}
+
+float MRCConstants::getBallRadius() const
+{
+    return _ballRadius;
+}
+
+float MRCConstants::getRobotRadius() const
+{
+    return _robotRadius;
+}
+
+float MRCConstants::getMaxKickPower() const
+{
+    return _maxKickPower;
+}
+
+int MRCConstants::getQtPlayers() const
+{
+    return _qtPlayers;
+}
+
+float MRCConstants::getFPPSmoothPathResolution() const
+{
+    return _FPPSmoothPathResolution;
+}
+
+float MRCConstants::getFPPBreakDistance() const
+{
+    return _FPPBreakDistance;
+}
+
+float MRCConstants::getFPPRobotThreshHold() const
+{
+    return _FPPRobotThreshHold;
+}
+
+float MRCConstants::getFPPBallThreshHold() const
+{
+    return _FPPBallThreshHold;
+}
+
+
