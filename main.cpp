@@ -24,6 +24,7 @@
 #include <suassuna.h>
 #include <exithandler.h>
 #include <instancechecker.h>
+#include <const/constants.h>
 
 #include <utils/fieldside/fieldside.hh>
 #include <utils/fields/wrfields.hh>
@@ -80,6 +81,8 @@ int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     app.setApplicationName("Armorial Suassuna");
     app.setApplicationVersion("1.0.0");
+    MRCConstants *mr = new MRCConstants("../const/config.json");
+    
 
     // Duplicated instance checking
     InstanceChecker::waitIfDuplicated(app.applicationName());
