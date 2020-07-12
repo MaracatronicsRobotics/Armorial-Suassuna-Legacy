@@ -38,6 +38,7 @@ void Role_Default::initializeBehaviours(){
     usesBehaviour(3, _bh_dn2 = new Behaviour_Attacker());
     usesBehaviour(4, _bh_dn3 = new Behaviour_DoNothing());
     usesBehaviour(5, _bh_tst = new Behaviour_Test());
+    usesBehaviour(6, _bh_bar2 = new Behaviour_Receiver());
 
 }
 
@@ -53,8 +54,21 @@ void Role_Default::run(){
      * set presentes neles)
     */
 
-    if(player()->playerId() == 1)
-        setBehaviour(5);
+    if(player()->playerId() == 1){
+        if(player()->distBall() <= 0.4f) setBehaviour(5);
+        else{
+            _bh_bar2->setAttackerId(3);
+            setBehaviour(6);
+        }
+    }
+    else if(player()->playerId() == 3){
+        if(player()->hasBallPossession()){
+            setBehaviour(5);
+        }else{
+            setBehaviour(2);
+            _bh_bar->setAttackerId(1);
+        }
+    }
 
     /*
     //_bh_dn->addReceiver(5);

@@ -69,7 +69,8 @@ void Skill_InterceptBall::run() {
 
     double velocityNeeded = (ballVelocity.abs() * player()->distanceTo(objectivePos)) / (WR::Utils::distance(posBall, objectivePos));
 
-    player()->goTo(objectivePos, 0, true, _speedFactor * velocityNeeded);
+    player()->goToLookTo(objectivePos, loc()->ball(), true, true, false, false, false, true, _speedFactor * velocityNeeded);
+    //player()->goTo(objectivePos, 0, true, _speedFactor * velocityNeeded);
     player()->dribble(true);
 }
 

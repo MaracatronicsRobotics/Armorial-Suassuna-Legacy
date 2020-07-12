@@ -65,6 +65,8 @@ void Behaviour_Receiver::run() {
     }
     */
 
+    player()->dribble(true);
+
     Position bestAim = getBestAimPosition();
 
     if(isBallComing(0.2f, 1.0f)){

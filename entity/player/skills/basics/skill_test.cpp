@@ -66,11 +66,12 @@ void Skill_Test::run(){
         }
     }
 
+    player()->dribble(true);
+
     switch(_state){
     case STATE_POS:{
         _currPos.setUnknown();
         _pushedDistance = 0.0;
-        player()->dribble(false);
         player()->goToLookTo(behindBall, loc()->ball(), true, true, false, false, false);
 
         if(player()->distBall() <= BALL_MINDIST && isBallInFront())
@@ -78,14 +79,12 @@ void Skill_Test::run(){
     }
     break;
     case STATE_PUSH:{
-        player()->dribble(true);
-
         std::pair<double, double> p = player()->rotateTo(_aim);
         if(_shootWhenAligned){
             double angleToObjective = fabs(GEARSystem::Angle::toDegrees(p.first));
-            if(angleToObjective <= 1.0){
-                //std::cout << MRCConstants::red << "angleToObjective: " << MRCConstants::reset << angleToObjective << std::endl;
-                //std::cout << MRCConstants::cyan << "shooted" << MRCConstants::reset << std::endl;
+            if(angleToObjective <= 3.0){
+                std::cout << MRCConstants::red << "angleToObjective: " << MRCConstants::reset << angleToObjective << std::endl;
+                std::cout << MRCConstants::cyan << "shooted" << MRCConstants::reset << std::endl;
                 player()->kick(MRCConstants::_maxKickPower);
             }
         }
