@@ -23,6 +23,7 @@
 #define SKILL_TEST_H
 
 #include <entity/player/skills/skill.h>
+#include <utils/freeangles/freeangles.h>
 
 class Skill_Test : public Skill {
 private:
@@ -46,9 +47,8 @@ private:
     int _state;
 
     void run();
-    bool isBehindBall(Position posObjective);
     bool isBallInFront();
-    bool isInFrontOfObjective();
+    bool isBehindBall(Position posObjective);
 
 public:
     Skill_Test();

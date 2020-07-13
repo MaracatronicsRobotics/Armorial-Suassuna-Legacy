@@ -453,7 +453,7 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
     }
 }
 
-void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool avoidTeammates, bool avoidOpponents, bool avoidBall, bool avoidOurGoalArea, bool avoidTheirGoalArea, bool isGk, double minVel){
+void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool avoidTeammates, bool avoidOpponents, bool avoidBall, bool avoidOurGoalArea, bool avoidTheirGoalArea, double minVel, bool isGk){
     targetPosition = limitFieldDimensions(targetPosition);
     Angle anglePP;
     std::pair<double, double> help = rotateTo(targetPosition, 0.2, false);
@@ -473,7 +473,7 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool a
     double dist = WR::Utils::distance(position(), targetPosition);
 
     Velocity robotVel = Velocity(true, vx, vy);
-    if(robotVel.abs() <= minVel){
+    if(minVel != 0.0 && robotVel.abs() <= minVel){
         // Transform in unitary vector
         robotVel.setVelocity(robotVel.x() / robotVel.abs(), robotVel.y() / robotVel.abs());
         // Multiply by minVel
