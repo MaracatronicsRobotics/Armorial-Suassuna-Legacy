@@ -72,10 +72,11 @@ void Skill_Test::run(){
     case STATE_POS:{
         _currPos.setUnknown();
         _pushedDistance = 0.0;
-        player()->goToLookTo(behindBall, loc()->ball(), true, true, false, false, false);
 
         if(player()->distBall() <= BALL_MINDIST && isBallInFront())
             _state = STATE_PUSH;
+        else
+            player()->goToLookTo(behindBall, loc()->ball(), true, true, false, false, false);
     }
     break;
     case STATE_PUSH:{
@@ -83,8 +84,8 @@ void Skill_Test::run(){
         if(_shootWhenAligned){
             double angleToObjective = fabs(GEARSystem::Angle::toDegrees(p.first));
             if(angleToObjective <= 3.0){
-                std::cout << MRCConstants::red << "angleToObjective: " << MRCConstants::reset << angleToObjective << std::endl;
-                std::cout << MRCConstants::cyan << "shooted" << MRCConstants::reset << std::endl;
+                //std::cout << MRCConstants::red << "angleToObjective: " << MRCConstants::reset << angleToObjective << std::endl;
+                //std::cout << MRCConstants::cyan << "shooted" << MRCConstants::reset << std::endl;
                 player()->kick(MRCConstants::_maxKickPower);
             }
         }
@@ -96,6 +97,13 @@ void Skill_Test::run(){
     }
 }
 
+bool Skill_Test::isBallInFront(){
+    Angle anglePlayerBall = player()->angleTo(loc()->ball());
+    float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
+
+    return (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
+}
+
 bool Skill_Test::isBehindBall(Position posObjective){
     Position posBall = loc()->ball();
     Position posPlayer = player()->position();
@@ -104,18 +112,4 @@ bool Skill_Test::isBehindBall(Position posObjective){
     float diff = WR::Utils::angleDiff(anglePlayer, angleDest);
 
     return (diff>GEARSystem::Angle::pi/2.0f);
-}
-
-bool Skill_Test::isBallInFront(){
-    Angle anglePlayerBall = player()->angleTo(loc()->ball());
-    float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
-
-    return (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
-}
-
-bool Skill_Test::isInFrontOfObjective(){
-    Angle anglePlayerObj = player()->angleTo(_aim);
-    float diff = WR::Utils::angleDiff(anglePlayerObj, player()->orientation());
-
-    return (fabs(diff) <= GEARSystem::Angle::toRadians(3)); // 3 graus de dif
 }

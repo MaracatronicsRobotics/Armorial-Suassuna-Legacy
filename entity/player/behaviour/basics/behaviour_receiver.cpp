@@ -49,11 +49,13 @@ void Behaviour_Receiver::configure() {
     addTransition(SK_GOTO, _skill_Receiver, _skill_GoToLookTo);
 
     _state = STATE_POSITION;
+
+    // Initial config
+    _skill_Receiver->setUseKickDevice(true);
+    _skill_Receiver->setInterceptAdvance(true);
 };
 
 void Behaviour_Receiver::run() {
-    _skill_Receiver->setUseKickDevice(true);
-    _skill_Receiver->setInterceptAdvance(true);
     setQuadrant(getBestQuadrant());
 
     //_attackerId = 1;
@@ -66,6 +68,7 @@ void Behaviour_Receiver::run() {
     */
 
     player()->dribble(true);
+
 
     Position bestAim = getBestAimPosition();
 

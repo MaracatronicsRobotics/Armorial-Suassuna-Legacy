@@ -69,7 +69,7 @@ void Skill_PushBall2::run(){
     case STATE_POS:{
         _currPos.setUnknown();
         _pushedDistance = 0.0;
-        player()->dribble(false);
+        player()->dribble(true);
         player()->goToLookTo(behindBall, loc()->ball(), true, true, false, false, false);
 
         if(player()->distBall() <= BALL_MINDIST && isBallInFront())

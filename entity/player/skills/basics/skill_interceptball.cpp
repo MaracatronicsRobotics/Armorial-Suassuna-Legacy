@@ -31,9 +31,12 @@ Skill_InterceptBall::Skill_InterceptBall() {
     setInterceptAdvance(false);
     _speedFactor = 1.0;
     _useKickDevice = false;
+    _posLook = Position(false, 0.0, 0.0, 0.0);
 }
 
 void Skill_InterceptBall::run() {
+    if(_posLook.isUnknown())
+        _posLook = loc()->ball();
     /* calculating projection of ball */
     Position objectivePos; // Position where the goalkeeper should be
 
@@ -69,7 +72,7 @@ void Skill_InterceptBall::run() {
 
     double velocityNeeded = (ballVelocity.abs() * player()->distanceTo(objectivePos)) / (WR::Utils::distance(posBall, objectivePos));
 
-    player()->goToLookTo(objectivePos, loc()->ball(), true, true, false, false, false, true, _speedFactor * velocityNeeded);
+    player()->goToLookTo(objectivePos, _posLook, true, true, false, false, false, _speedFactor * velocityNeeded, true);
     //player()->goTo(objectivePos, 0, true, _speedFactor * velocityNeeded);
     player()->dribble(true);
 }
