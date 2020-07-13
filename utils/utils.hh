@@ -32,6 +32,7 @@ namespace WR {
         static void initialize(MRCTeam *ourTeam, MRCTeam *opTeam);
         static MRCTeam *_ourTeam;
         static MRCTeam *_theirTeam;
+        MRCConstants *_mrcconstants;
 
         static Position threePoints(const Position &near, const Position &far, float distance, float beta);
 
@@ -67,9 +68,9 @@ namespace WR {
         static void limitMinValue(float *value, float minValue);
         static bool approximateToZero(float *value, float error = 1e-3);
 
-        static Position getPlayerKickDevice(quint8 id);
 
         static std::pair<Position, Position> getQuadrantPositions(int quadrant, const FieldSide &side, const Position &ourGoal, const Position &ourFieldTopCorner);
+        static Position getPlayerKickDevice(quint8 id, float robotRadius = 0.09f);
     };
 
 }
