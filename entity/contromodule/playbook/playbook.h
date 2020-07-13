@@ -38,7 +38,7 @@ public:
 
     // Called one time before run is first called
     bool isInitialized() { return _initialized; }
-    void initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, CoachUtils *utils, qint8 *kickerId, SSLGameInfo::RefProcessedState *lastState, SSLReferee *ref);
+    void initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, CoachUtils *utils, qint8 *kickerId, SSLGameInfo::RefProcessedState *lastState, SSLReferee *ref, MRCConstants *mrcconstants);
 
     // Called in StrategyState loop
     void runPlaybook(QString strategyState);
@@ -92,6 +92,7 @@ private:
     MRCTeam *_opTeam;
     CoachUtils *_utils;
     SSLReferee *_ref;
+    MRCConstants *_mrcconstants;
 
     // Players in this playbook list
     PlayersDistribution *_dist;

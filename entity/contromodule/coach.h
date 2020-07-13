@@ -29,7 +29,7 @@
 class Coach : public ControlModule
 {
 public:
-    Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam);
+    Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam, MRCConstants *mrcconstants);
     virtual ~Coach();
     QString name();
 
@@ -45,6 +45,7 @@ private:
     // Game info
     SSLReferee *_ref;
     CoachUtils *_utils;
+    MRCConstants *_mrcconstants;
 
     // Teams
     MRCTeam *_ourTeam;
