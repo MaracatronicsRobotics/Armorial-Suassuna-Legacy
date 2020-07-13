@@ -36,6 +36,7 @@ Behaviour_Goalkeeper::Behaviour_Goalkeeper() {
     _skill_Goalkeeper = NULL;
     _skill_goToLookTo = NULL;
     _skill_push = NULL;
+    _mrcconstants=getConstants();
 
     setRadius(0.5); // raio que define posse de bola para o goleiro dar takeout
     setTakeoutEnabled(true); // avançar na bola quando ela estiver na margem de aceitação (takeout vai dar goto e kick na bola)

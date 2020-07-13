@@ -40,7 +40,7 @@ public:
 
     // Initialization
     bool isInitialized() { return _initialized; }
-    void initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc, SSLReferee *ref);
+    void initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc, SSLReferee *ref, MRCConstants *mrcconstants);
     void setPlayer(Player *player, PlayerAccess *playerAccess);
 
     // Called in Playbook loop
@@ -54,6 +54,7 @@ public:
     QHash<int, Behaviour*> getBehaviours();
     virtual QString name() = 0;
     int getActualBehaviour();
+    MRCConstants *getConstants(){return _mrcconstants;}
 
     // PlayerAcess
     PlayerAccess* player();
@@ -87,6 +88,7 @@ private:
 
     // Game Info
     Locations *_loc;
+    MRCConstants *_mrcconstants;
     MRCTeam *_ourTeam;
     MRCTeam *_theirTeam;
     CoachUtils *_utils;

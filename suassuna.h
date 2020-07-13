@@ -73,6 +73,7 @@ private:
     const FieldSide _fieldSide;
     const bool _enableGui;
     Fields::Field* _defaultField;
+    MRCConstants *_mrcconstants;
 
     // Modules
     World *_world;
