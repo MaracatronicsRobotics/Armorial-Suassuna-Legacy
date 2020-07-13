@@ -52,7 +52,7 @@ void RRT::reset() {
 
 // Add objects
 void RRT::addBall(const Position &pos, const Velocity &vel) {
-    addObstacles(pos, 2*MRCConstants::_ballRadius);
+    addObstacles(pos, 2*getConstants()->getBallRadius());
 }
 
 void RRT::addGoalArea(const Position &pos) {

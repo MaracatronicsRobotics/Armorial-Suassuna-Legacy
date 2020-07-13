@@ -9,6 +9,7 @@ private:
     // External access
     SSLReferee *_ref;
     WorldMap *_wm;
+    MRCConstants *_mrcconstants;
 
     // Internal
     Position _lastBallPos;
@@ -17,7 +18,7 @@ private:
     void loop();
     void finalization();
 public:
-    BallSensor(SSLReferee *ref, WorldMap *wm);
+    BallSensor(SSLReferee *ref, WorldMap *wm, MRCConstants *mrcconstants);
     QString name();
 };
 

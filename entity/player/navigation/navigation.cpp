@@ -24,7 +24,7 @@
 #include <entity/player/player.h>
 #include <entity/contromodule/mrcteam.h>
 
-Navigation::Navigation(Player *player, NavigationAlgorithm *navAlg) {
+Navigation::Navigation(Player *player, NavigationAlgorithm *navAlg, MRCConstants *mrcconstants) {
     _player = player;
     _navAlg = navAlg;
 
@@ -33,7 +33,7 @@ Navigation::Navigation(Player *player, NavigationAlgorithm *navAlg) {
     _loc = _player->playerTeam()->loc();
 
     if(_navAlg!=NULL)
-        _navAlg->initialize(_loc);
+        _navAlg->initialize(_loc, mrcconstants);
 }
 
 Navigation::~Navigation() {

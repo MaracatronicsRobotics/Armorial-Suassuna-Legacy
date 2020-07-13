@@ -32,8 +32,9 @@ Skill::~Skill(){
 
 }
 
-void Skill::initialize(Locations *loc){
+void Skill::initialize(Locations *loc,  MRCConstants *mrcconstants){
     _loc = loc;
+    _mrcconstants = mrcconstants;
     _initialized = true;
 }
 

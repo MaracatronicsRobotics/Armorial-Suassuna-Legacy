@@ -23,6 +23,7 @@
 #define SKILL_H
 
 #include <entity/player/baseplayer.h>
+#include <const/constants.h>
 
 class Skill
 {
@@ -32,7 +33,7 @@ public:
 
     // Called one time before run is first called
     bool isInitialized() const { return _initialized; }
-    void initialize(Locations *loc);
+    void initialize(Locations *loc,  MRCConstants *mrcconstants);
     void setPlayer(Player *player);
     // Called every time before run is called; update general variables
     void runSkill();
@@ -41,6 +42,7 @@ public:
 protected:
     Player *player() { return _player; }
     Locations *loc() { return _loc; }
+    MRCConstants *getConstants(){return _mrcconstants;}
 
 private:
     virtual void run() = 0;
@@ -50,6 +52,7 @@ private:
 
     // Game info
     Locations *_loc;
+     MRCConstants *_mrcconstants;
 
     // Skill initialized
     bool _initialized;

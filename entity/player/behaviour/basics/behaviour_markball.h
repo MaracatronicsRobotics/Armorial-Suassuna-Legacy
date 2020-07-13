@@ -31,6 +31,7 @@ private:
     void run();
     int _state;
     Skill_GoToLookTo *_sk_GoToLookTo;
+    MRCConstants *_mrcconstants;
 
 public:
     Behaviour_MarkBall();
