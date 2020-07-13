@@ -28,10 +28,11 @@ QString World::name() {
     return (_ctrModule==NULL? "World" : _ctrModule->name());
 }
 
-World::World(Controller *ctr, Fields::Field *defaultField) : Entity(ENT_WORLD) {
+World::World(Controller *ctr, Fields::Field *defaultField,MRCConstants *mrcconstants) : Entity(ENT_WORLD) {
 
     _ctr = ctr;
     _ourTeam = _theirTeam = NULL;
+    _mrcconstants=mrcconstants;
 
     // Create WorldMap
     _wm = new WorldMap();
@@ -42,7 +43,7 @@ World::World(Controller *ctr, Fields::Field *defaultField) : Entity(ENT_WORLD) {
     _wmUpdater->setDefaultFieldGeometry(_wm);
 
     // Set self loop time
-    this->setLoopFrequency(MRCConstants::getThreadFrequency());
+    this->setLoopFrequency(_mrcconstants->getThreadFrequency());
 
     // Initialize
     _ctrModule = NULL;
@@ -84,9 +85,9 @@ void World::initialization() {
         // Start entity thread
         for(QList<Entity*>::const_iterator ie=ents.constBegin(); ie!=ents.constEnd(); ie++) {
             if((*ie)->entityType() == EntityType::ENT_GUI)
-                (*ie)->setLoopFrequency(MRCConstants::guiUpdateFrequency());
+                (*ie)->setLoopFrequency(_mrcconstants->getGuiUpdateFrequency());
              else
-                (*ie)->setLoopFrequency(MRCConstants::threadFrequency());
+                (*ie)->setLoopFrequency(_mrcconstants->getThreadFrequency());
 
             (*ie)->start();
         }

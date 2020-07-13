@@ -25,11 +25,12 @@ QString Playbook_DoNothing::name() {
     return "Playbook_DoNothing";
 }
 
-Playbook_DoNothing::Playbook_DoNothing() {
+Playbook_DoNothing::Playbook_DoNothing(MRCConstants *mrcconstants) {
+    _mrcconstants=mrcconstants;
 }
 
 int Playbook_DoNothing::maxNumPlayer() {
-    return MRCConstants::_qtPlayers;
+    return _mrcconstants->getQtPlayers();
 }
 
 void Playbook_DoNothing::configure(int numPlayers) {

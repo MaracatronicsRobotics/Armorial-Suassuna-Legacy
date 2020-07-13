@@ -26,6 +26,7 @@ QString Behaviour_MarkBall::name() {
 }
 
 Behaviour_MarkBall::Behaviour_MarkBall() {
+    _mrcconstants=getConstants();
     _sk_GoToLookTo = NULL;
 }
 
@@ -35,13 +36,13 @@ void Behaviour_MarkBall::configure() {
 
 void Behaviour_MarkBall::run() {
     if(player()->distBall() <= 0.2f)
-        player()->kick(MRCConstants::_maxKickPower);
+        player()->kick(_mrcconstants->getMaxKickPower());
 
     Position desired = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.15f, GEARSystem::Angle::pi);
     _sk_GoToLookTo->setDesiredPosition(desired);
     _sk_GoToLookTo->setAvoidBall(false);
     _sk_GoToLookTo->setAvoidOpponents(false);
-    for (int id = 0; id < MRCConstants::_qtPlayers; id++) {
+    for (int id = 0; id < _mrcconstants->getQtPlayers() ; id++) {
         if(PlayerBus::theirPlayerAvailable(id)){
             if (PlayerBus::theirPlayer(id)->hasBallPossession()) {
                 if (PlayerBus::theirPlayer(id)->orientation().value() < 0 && PlayerBus::theirPlayer(id)->orientation().value() > -3.141592654)

@@ -33,12 +33,13 @@ private:
     Role_Default *_rl_default2;
     QList<Role_Defender*> _rl_def;
     Role_Defensive_Midfielder *_rl_def_midf;
+    MRCConstants *_mrcconstants;
 
     void configure(int numPlayers);
     void run(int numPlayers);
     int maxNumPlayer();
 public:
-    Playbook_DoNothing();
+    Playbook_DoNothing(MRCConstants *mrcconstants);
     QString name();
 };
 

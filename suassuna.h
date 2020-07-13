@@ -46,7 +46,7 @@
 class Suassuna
 {
 public:
-    Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide);
+    Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide, MRCConstants *mrcconstants);
     ~Suassuna();
 
     // Start
@@ -72,6 +72,7 @@ private:
     const Colors::Color _teamColor;
     const FieldSide _fieldSide;
     Fields::Field* _defaultField;
+    MRCConstants *_mrcconstants;
 
     // Modules
     World *_world;

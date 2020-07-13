@@ -28,14 +28,14 @@
 #include <entity/referee/SSLReferee/sslreferee.h>
 #include <utils/mrctimer/mrctimer.h>
 #include <include/timer.h>
-
+#include <const/constants.h>
 #include <entity/coachview/soccerview/soccerview.h>
 #include <const/constants.h>
 
 class CoachView : public Entity
 {
 public:
-    CoachView();
+    CoachView(MRCConstants *mrcconstants);
     ~CoachView();
 
     QString name();
@@ -70,6 +70,8 @@ private:
 
     // Timer
     Timer _timer;
+
+    MRCConstants *_mrcconstants;
 };
 
 #endif // COACHVIEW_H

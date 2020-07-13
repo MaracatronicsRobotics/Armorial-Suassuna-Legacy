@@ -35,7 +35,7 @@
 class Player : public Entity
 {
 public:
-    Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Role *defaultRole, SSLReferee *ref, PID *vxPID, PID *vyPID, PID *vwPID, NavigationAlgorithm *navAlg);
+    Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Role *defaultRole, SSLReferee *ref, PID *vxPID, PID *vyPID, PID *vwPID, NavigationAlgorithm *navAlg, MRCConstants *mrcconstants);
     ~Player();
     QString name();
     void reset();
@@ -136,6 +136,7 @@ private:
     MRCTeam *_team;
     PlayerAccess *_playerAccessSelf;
     PlayerAccess *_playerAccessBus;
+    MRCConstants *_mrcconstants;
 
     // World for sync
     World *_world;

@@ -25,6 +25,7 @@
 #include <entity/player/baseplayer.h>
 #include <entity/player/playeraccess.h>
 #include <entity/player/playerbus.h>
+#include <const/constants.h>
 #include <QObject>
 
 class Behaviour : public QObject {
@@ -35,7 +36,7 @@ public:
 
     // Called one time before run is first called
     bool isInitialized() { return _initialized; }
-    void initialize(Locations *loc);
+    void initialize(Locations *loc, MRCConstants *mrcconstants);
     void setPlayer(Player *player, PlayerAccess *playerAccess);
 
     // Called in Player loop
@@ -51,6 +52,7 @@ protected:
     // Filtered player access on behavior
     PlayerAccess* player();
     Locations *loc();
+    MRCConstants *getConstants();
 private:
     class SkillTransition {
     private:
@@ -75,6 +77,7 @@ private:
 
     // Game info
     Locations *_loc;
+    MRCConstants *_mrcconstants;
 
     // State machine encapsulation
     QHash<int,SkillTransition*> _transitionTable;

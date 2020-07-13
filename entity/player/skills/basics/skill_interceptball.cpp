@@ -82,8 +82,8 @@ bool Skill_InterceptBall::isBehindBall(const Position &destination, float angula
     Position posPlayer = player()->position();
 
     // Translate the position of the player to the front
-    float xPlayer = posPlayer.x() + cos(player()->orientation().value())*MRCConstants::_robotRadius;
-    float yPlayer = posPlayer.y() + sin(player()->orientation().value())*MRCConstants::_robotRadius;
+    float xPlayer = posPlayer.x() + cos(player()->orientation().value())*getConstants()->getRobotRadius();
+    float yPlayer = posPlayer.y() + sin(player()->orientation().value())*getConstants()->getRobotRadius();
     posPlayer.setPosition(xPlayer, yPlayer, posPlayer.z());
 
     // Calc

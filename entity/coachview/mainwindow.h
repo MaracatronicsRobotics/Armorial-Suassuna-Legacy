@@ -41,7 +41,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(QWidget *parent = nullptr, MRCConstants *mrcconstants=nullptr);
     ~MainWindow();
 
     // general
@@ -108,5 +108,6 @@ private:
     QPixmap getRolePixmap(QString role);
     QPixmap getPlaybookPixmap(QString playbook);
     QList<QPixmap> robotsPixmaps;
+    MRCConstants *_mrcconstants;
 };
 #endif // MAINWINDOW_H

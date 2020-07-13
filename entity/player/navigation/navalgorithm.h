@@ -23,6 +23,7 @@
 #define NAVIGATIONALGORITHM_H
 
 #include <GEARSystem/Types/types.hh>
+#include <const/constants.h>
 #include <utils/utils.hh>
 
 class NavigationAlgorithm {
@@ -34,7 +35,7 @@ public:
     virtual QString name();
 
     // Access to Navigation
-    void initialize(Locations *loc);
+    void initialize(Locations *loc, MRCConstants *mrcconstants);
     void runNavigationAlgorithm();
 
     // Reset algorithm
@@ -57,6 +58,7 @@ public:
 
 protected:
     Locations* loc() { return _loc; }
+    MRCConstants * getConstants(){return _mrcconstants;}
 
     // Origin access
     Position originPos() const { return _originPos; }
@@ -76,6 +78,7 @@ private:
 
     // Locations access
     Locations *_loc;
+    MRCConstants *_mrcconstants;
 
     // NavigationAlgorithm positions
     // Origin

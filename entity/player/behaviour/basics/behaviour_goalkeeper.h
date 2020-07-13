@@ -34,6 +34,7 @@ private:
     Skill_PushBall2 *_skill_push;
     Skill_Kick *_skill_kick;
     double _offsetBall;
+    MRCConstants *_mrcconstants;
 
     // Parameters
     float _radius;

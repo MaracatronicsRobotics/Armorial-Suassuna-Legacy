@@ -67,7 +67,7 @@ std::pair<Position, double> Behaviour_Test::getBestAimPosition(){
     QList<Obstacle>::iterator obst;
 
     for(obst = obstacles.begin(); obst != obstacles.end(); obst++) {
-        obst->radius() = 1.2 * MRCConstants::_robotRadius;
+        obst->radius() = 1.2 * getConstants()->getRobotRadius();
         // access the robot=
         PlayerAccess *robot = NULL;
 
@@ -128,7 +128,7 @@ std::pair<Position, double> Behaviour_Test::getBestAimPosition(){
     Position impactPos(true, posTheirGoal.x(), pos_y, 0.0);
 
     // Check if impact pos has enough space for the ball
-    bool obstructedWay = loc()->isVectorObstructed(loc()->ball(), impactPos, player()->playerId(), MRCConstants::_ballRadius*1.5, false);
+    bool obstructedWay = loc()->isVectorObstructed(loc()->ball(), impactPos, player()->playerId(), getConstants()->getBallRadius()*1.5, false);
 
     if(obstructedWay) {
         return std::make_pair(Position(false, 0.0, 0.0, 0.0), 0.0);

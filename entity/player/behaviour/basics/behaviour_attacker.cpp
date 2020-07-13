@@ -36,6 +36,7 @@ QString Behaviour_Attacker::name() {
 }
 
 Behaviour_Attacker::Behaviour_Attacker() {
+    _mrcconstants=getConstants();
 }
 
 void Behaviour_Attacker::configure() {
@@ -163,7 +164,7 @@ void Behaviour_Attacker::run() {
     case STATE_KICK:{
         if(bestAimPosition.first.isUnknown()) bestAimPosition.first = loc()->ourGoal();
         _sk_kick->setAim(bestAimPosition.first);
-        _sk_kick->setPower(MRCConstants::_maxKickPower);
+        _sk_kick->setPower(_mrcconstants->getMaxKickPower());
 
         enableTransition(SKT_KICK);
 
@@ -262,7 +263,7 @@ std::pair<Position, double> Behaviour_Attacker::getBestAimPosition(){
     QList<Obstacle>::iterator obst;
 
     for(obst = obstacles.begin(); obst != obstacles.end(); obst++) {
-        obst->radius() = 1.2 * MRCConstants::_robotRadius;
+        obst->radius() = 1.2 * _mrcconstants->getRobotRadius();
         // access the robot=
         PlayerAccess *robot = NULL;
 
@@ -323,7 +324,7 @@ std::pair<Position, double> Behaviour_Attacker::getBestAimPosition(){
     Position impactPos(true, posTheirGoal.x(), pos_y, 0.0);
 
     // Check if impact pos has enough space for the ball
-    bool obstructedWay = loc()->isVectorObstructed(loc()->ball(), impactPos, player()->playerId(), MRCConstants::_ballRadius*1.5, false);
+    bool obstructedWay = loc()->isVectorObstructed(loc()->ball(), impactPos, player()->playerId(), _mrcconstants->getBallRadius()*1.5, false);
 
     if(obstructedWay) {
         return std::make_pair(Position(false, 0.0, 0.0, 0.0), 0.0);

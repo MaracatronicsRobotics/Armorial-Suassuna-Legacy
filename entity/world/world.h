@@ -38,7 +38,7 @@
 
 class World : public Entity {
 public:
-    World(Controller *ctr, Fields::Field *defaultField);
+    World(Controller *ctr, Fields::Field *defaultField, MRCConstants *mrcconstants);
     ~World();
     QString name();
 
@@ -77,6 +77,8 @@ private:
     // WorldMap
     WorldMap *_wm;
     WorldMapUpdater *_wmUpdater;
+
+    MRCConstants *_mrcconstants;
 
     // Control module
     ControlModule *_ctrModule;

@@ -49,7 +49,7 @@ Behaviour::~Behaviour() {
     _skillList.clear();
 }
 
-void Behaviour::initialize(Locations *loc) {
+void Behaviour::initialize(Locations *loc, MRCConstants *mrcconstants) {
     _loc = loc;
     // Configurate skills to be used
     _configureEnabled = true;
@@ -149,4 +149,9 @@ Locations* Behaviour::loc() {
     if(_loc==NULL)
         std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting loc(), loc not initialized!\n";
     return _loc;
+}
+MRCConstants *Behaviour::getConstants() {
+    if(_mrcconstants==NULL)
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting getConstants(), _mrcconstants not initialized!\n";
+    return _mrcconstants;
 }

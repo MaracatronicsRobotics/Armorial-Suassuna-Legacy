@@ -59,6 +59,7 @@ private:
     std::pair<Position, double> bestAimPosition;
     Position impactPos;
     Timer timer;
+    MRCConstants *_mrcconstants;
 
 public:
     Behaviour_Attacker();

@@ -30,7 +30,7 @@ QString Player::name(){
     return "Player #"+QString::number((int)_team->teamId())+":"+QString::number((int)_playerId);
 }
 
-Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Role *defaultRole, SSLReferee *ref, PID *vxPID, PID *vyPID, PID *vwPID, NavigationAlgorithm *navAlg) : Entity(Entity::ENT_PLAYER){
+Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Role *defaultRole, SSLReferee *ref, PID *vxPID, PID *vyPID, PID *vwPID, NavigationAlgorithm *navAlg, MRCConstants *mrcconstants) : Entity(Entity::ENT_PLAYER){
     _world = world;
     _team = team;
     _playerId = playerID;
@@ -39,6 +39,7 @@ Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Ro
     _role = NULL;
     _defaultRole = defaultRole;
     _nav = new Navigation(this, navAlg);
+    _mrcconstants=mrcconstants;
 
     _playerAccessSelf = new PlayerAccess(true, this, team->loc());
     _playerAccessBus = new PlayerAccess(false, this, team->loc());
@@ -267,22 +268,22 @@ Position Player::limitFieldDimensions(Position destination) {
     const Locations *loc = playerTeam()->loc();
 
     // X min
-    if(destination.x() < loc->fieldMinX()-MRCConstants::_robotRadius) {
-        destination.setPosition(loc->fieldMinX()-MRCConstants::_robotRadius, destination.y(), 0.0);
+    if(destination.x() < loc->fieldMinX()-_mrcconstants->getRobotRadius()) {
+        destination.setPosition(loc->fieldMinX()-_mrcconstants->getRobotRadius(), destination.y(), 0.0);
     }
     // X max
-    if(destination.x() > loc->fieldMaxX()+MRCConstants::_robotRadius) {
-        destination.setPosition(loc->fieldMaxX()+MRCConstants::_robotRadius, destination.y(), 0.0);
+    if(destination.x() > loc->fieldMaxX()+_mrcconstants->getRobotRadius()) {
+        destination.setPosition(loc->fieldMaxX()+_mrcconstants->getRobotRadius(), destination.y(), 0.0);
     }
 
     // Y min
-    if(destination.y() < loc->fieldMinY()-MRCConstants::_robotRadius) {
-        destination.setPosition(destination.x(), loc->fieldMinY()-MRCConstants::_robotRadius, 0.0);
+    if(destination.y() < loc->fieldMinY()-_mrcconstants->getRobotRadius()) {
+        destination.setPosition(destination.x(), loc->fieldMinY()-_mrcconstants->getRobotRadius(), 0.0);
     }
 
     // Y max
-    if(destination.y() > loc->fieldMaxY()+MRCConstants::_robotRadius) {
-        destination.setPosition(destination.x(), loc->fieldMaxY()+MRCConstants::_robotRadius, 0.0);
+    if(destination.y() > loc->fieldMaxY()+_mrcconstants->getRobotRadius()) {
+        destination.setPosition(destination.x(), loc->fieldMaxY()+_mrcconstants->getRobotRadius(), 0.0);
     }
 
     return destination;

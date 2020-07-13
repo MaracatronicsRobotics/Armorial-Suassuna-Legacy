@@ -27,7 +27,7 @@
 
 class Navigation {
 public:
-    Navigation(Player *player, NavigationAlgorithm *navAlg);
+    Navigation(Player *player, NavigationAlgorithm *navAlg, MRCConstants *mrcconstants);
 
     virtual ~Navigation();
 

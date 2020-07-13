@@ -29,13 +29,13 @@
 #include <entity/player/navigation/navalgorithm.h>
 #include <entity/player/navigation/fana/fana.h>
 
-Suassuna::Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide)
-    : _teamId(teamId), _teamColor(teamColor), _fieldSide(fieldSide){
+Suassuna::Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide, MRCConstants *mrcconstants)
+    : _teamId(teamId), _teamColor(teamColor), _fieldSide(fieldSide), _mrcconstants(mrcconstants){
     // Create controller
     _ctr = new Controller();
 
     // Create GUI
-    _ourGUI = new CoachView();
+    _ourGUI = new CoachView(_mrcconstants);
     //_ourGUI = NULL;
     
     // Default field setup
@@ -75,7 +75,7 @@ bool Suassuna::start() {
     _world->addEntity(_ref, 0);
 
     // Ball moviment detect sensor
-    _ballSensor = new BallSensor(_ref, _world->getWorldMap());
+    _ballSensor = new BallSensor(_ref, _world->getWorldMap(), _mrcconstants);
     _world->addEntity(_ballSensor, 0);
 
     // Setup teams
@@ -173,7 +173,7 @@ void Suassuna::setupTeams(quint8 opTeamId, Colors::Color opTeamColor, FieldSide 
 void Suassuna::setupOurPlayers() {
     // Create OUR PLAYERS
     QList<quint8> playerList = _world->getWorldMap()->players(_teamId);
-    for(quint8 i=0; i<playerList.size() && i<MRCConstants::_qtPlayers; i++) {
+    for(quint8 i=0; i<playerList.size() && i<_mrcconstants->getQtPlayers(); i++) {
         // Create Player
         PID *vxPID = new PID(0.5, 0.0, 0.0, 2.5, -2.5);
         PID *vyPID = new PID(0.5, 0.0, 0.0, 2.5, -2.5);
@@ -194,7 +194,7 @@ void Suassuna::setupOurPlayers() {
 void Suassuna::setupOppPlayers(quint8 opTeamId) {
     // Create opp. players
     const QList<quint8> opPlayerList = _world->getWorldMap()->players(opTeamId);
-    for(quint8 i=0; i<opPlayerList.size() && i<MRCConstants::_qtPlayers; i++) {
+    for(quint8 i=0; i<opPlayerList.size() && i<_mrcconstants->getQtPlayers(); i++) {
         // Create Player
         Player *opPlayer = new Player(_world, _theirTeam, _ctr, opPlayerList.at(i), NULL, _ref, NULL, NULL, NULL, NULL);
         // Disable (op team doesnt run)
