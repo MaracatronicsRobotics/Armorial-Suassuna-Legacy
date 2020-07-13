@@ -24,6 +24,7 @@
 
 #include <entity/contromodule/basecoach.h>
 #include <entity/referee/SSLReferee/sslgameinfo.h>
+#include <const/constants.h>
 
 class Strategy
 {
@@ -32,7 +33,7 @@ public:
     virtual ~Strategy();
 
     bool isInitialized() { return _initialized; }
-    void initialize(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam, CoachUtils *utils);
+    void initialize(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam, CoachUtils *utils, MRCConstants *mrcconstants);
 
     // Coach loop
     virtual void runStrategy() = 0;
@@ -59,6 +60,7 @@ private:
     // Teams
     MRCTeam *_ourTeam;
     MRCTeam *_theirTeam;
+    MRCConstants *_mrcconstants;
 
     // Player distribution
     // here goes things like kickerId, ref last state and playerdistribution itself
