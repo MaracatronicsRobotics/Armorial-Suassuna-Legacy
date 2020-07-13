@@ -55,16 +55,17 @@ void CoachView::setReferee(SSLReferee *ref){
     _ref = ref;
 }
 
-CoachView::CoachView() : Entity(ENT_GUI)
+CoachView::CoachView( MRCConstants *mrcconstants) : Entity(ENT_GUI)
 {
-
-    _suassunaUI = new MainWindow();
+    _mrcconstants = mrcconstants;
+    _suassunaUI = new MainWindow(nullptr,mrcconstants);
     _suassunaUI->show();
 
     _timer.start();
 
     // half of the openGL application update
-    timeToUpdate = (1000.0 / MRCConstants::guiUpdateFrequency()) / 2.0;
+    timeToUpdate = (1000.0 / _mrcconstants->getGuiUpdateFrequency()) / 2.0;
+    
 
     // set as enabled
     _isEnabled = true;
@@ -117,7 +118,7 @@ void CoachView::loop(){
 
         // process players avaliability
         QHash<quint8, Player*> ourPlayers = _ourTeam->avPlayers();
-        for(quint8 x = 0; x < MRCConstants::_qtPlayers; x++){
+        for(quint8 x = 0; x <_mrcconstants->getQtPlayers(); x++){
             bool status = PlayerBus::ourPlayerAvailable(x);
             _suassunaUI->setRobotVisionStatus(x, status);
             if(status) _suassunaUI->setPlayerRole(x, PlayerBus::ourPlayer(x)->roleName());

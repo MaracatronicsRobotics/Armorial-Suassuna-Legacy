@@ -80,6 +80,7 @@ private:
 
     // Game info
     Locations *_loc;
+    MRCConstants *_mrcconstants;
 
     // State machine encapsulation
     QHash<int,SkillTransition*> _transitionTable;

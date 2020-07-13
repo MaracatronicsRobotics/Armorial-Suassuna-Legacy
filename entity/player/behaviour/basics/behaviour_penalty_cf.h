@@ -35,6 +35,7 @@ private:
     int _state;
     Position _kickPosition;
     Position getBestKickPosition();
+    MRCConstants *_mrcconstants;
 
     // Auxiliary
     bool isGKRight();

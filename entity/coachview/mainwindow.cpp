@@ -29,7 +29,7 @@
 #include <QStyleFactory>
 
 void MainWindow::resetRobots(){
-    for(quint8 x = 0; x < MRCConstants::_qtPlayers; x++){
+    for(quint8 x = 0; x < _mrcconstants->getQtPlayers(); x++){
         setPlayerBattery(x, 0);
         setPlayerKickCharge(x, 0);
         setPlayerRole(x, "None");
@@ -276,7 +276,7 @@ void MainWindow::setupTeams(MRCTeam *our, MRCTeam *their, QString opTeam){
         ui->team_y->setPixmap(QPixmap(":/textures/textures/ui/defaultteam.png"));
     }
 
-    for(int x = 0; x < MRCConstants::_qtPlayers; x++){
+    for(int x = 0; x < _mrcconstants->getQtPlayers(); x++){
         char str[50];
         if(_ourTeam->teamColor() == Colors::Color::YELLOW) sprintf(str, ":/textures/textures/robots/yellow/y%d.png", x);
         else sprintf(str, ":/textures/textures/robots/blue/b%d.png", x);
@@ -370,9 +370,10 @@ bool MainWindow::enableAttackerDebug(){
     return (ui->attackerdebug->checkState() == Qt::CheckState::Checked) ? true : false;
 }
 
-MainWindow::MainWindow(QWidget *parent)
+
+MainWindow::MainWindow(QWidget *parent, MRCConstants *mrcconstants)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow), _mrcconstants(mrcconstants)
 {
     ui->setupUi(this);
 

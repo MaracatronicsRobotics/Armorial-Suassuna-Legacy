@@ -49,8 +49,9 @@ QString NavigationAlgorithm::name() {
     return "Not defined";
 }
 
-void NavigationAlgorithm::initialize(Locations *loc) {
+void NavigationAlgorithm::initialize(Locations *loc, MRCConstants *mrcconstants) {
     _loc = loc;
+    _mrcconstants=mrcconstants;
 }
 
 void NavigationAlgorithm::runNavigationAlgorithm() {

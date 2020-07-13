@@ -60,6 +60,8 @@ private:
     static constexpr float _sigma_a = 0.01; // affects Q
     static constexpr float _r = 0.000283; // affects R
 
+    MRCConstants *_mrcconstants;
+
     // Private methods
 
     void updateMatrices(const float T);
@@ -67,7 +69,7 @@ private:
 
 public:
 
-    KalmanFilter2D();
+    KalmanFilter2D(MRCConstants *mrcconstants);
 
     QString name();
 
