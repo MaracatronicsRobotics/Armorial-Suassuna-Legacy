@@ -33,8 +33,8 @@ Role_Defensive_Midfielder::Role_Defensive_Midfielder() {
 }
 
 void Role_Defensive_Midfielder::initializeBehaviours(){
-    usesBehaviour(BEHAVIOUR_BARRIER, _bh_bar = new Behaviour_Barrier());
-    usesBehaviour(BEHAVIOUR_MARKBALL, _bh_mkBall = new Behaviour_MarkBall());
+    usesBehaviour(BEHAVIOUR_BARRIER, _bh_bar = new Behaviour_Barrier(getConstants()));
+    usesBehaviour(BEHAVIOUR_MARKBALL, _bh_mkBall = new Behaviour_MarkBall(getConstants()));
 }
 
 void Role_Defensive_Midfielder::configure(){
@@ -117,7 +117,7 @@ void Role_Defensive_Midfielder::run(){
 quint8 Role_Defensive_Midfielder::getOurPlayerClosestToBall(){
     float closestDist = 999.0f;
     quint8 playerId   = DIST_INVALID_ID;
-    for(quint8 id = 0; id < MRCConstants::_qtPlayers; id++){
+    for(quint8 id = 0; id < getConstants()->getQtPlayers(); id++){
         if(id == player()->playerId()) continue;
         if(PlayerBus::ourPlayerAvailable(id)){
             float distToBall = PlayerBus::ourPlayer(id)->distBall();
@@ -134,7 +134,7 @@ quint8 Role_Defensive_Midfielder::getOurPlayerClosestToBall(){
 quint8 Role_Defensive_Midfielder::getTheirPlayerClosestToBall(){
     float closestDist = 999.0f;
     quint8 playerId   = DIST_INVALID_ID;
-    for(quint8 id = 0; id < MRCConstants::_qtPlayers; id++){
+    for(quint8 id = 0; id < getConstants()->getQtPlayers(); id++){
         if(PlayerBus::theirPlayerAvailable(id)){
             float distToBall = PlayerBus::theirPlayer(id)->distBall();
             if(distToBall <= closestDist){

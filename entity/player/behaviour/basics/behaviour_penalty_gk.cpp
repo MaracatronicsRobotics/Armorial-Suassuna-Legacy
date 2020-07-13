@@ -33,6 +33,7 @@ QString Behaviour_Penalty_GK::name() {
 }
 
 Behaviour_Penalty_GK::Behaviour_Penalty_GK() {
+    _mrcconstants=getConstants();
     _skill_Goalkeeper = NULL;
     _skill_kick = NULL;
     _skill_goToLookTo = NULL;
@@ -79,7 +80,7 @@ void Behaviour_Penalty_GK::run() {
 
     // Ver com geogebra e led dps a mira
     _skill_kick->setAim(loc()->theirGoal());
-    _skill_kick->setPower(MRCConstants::_maxKickPower);
+    _skill_kick->setPower(_mrcconstants->getMaxKickPower());
     _skill_kick->setIsChip(true);
 
     // goToLookTo (posicionamento do goleiro

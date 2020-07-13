@@ -26,6 +26,7 @@ QString Behaviour_MarkBall::name() {
 }
 
 Behaviour_MarkBall::Behaviour_MarkBall() {
+    _mrcconstants=getConstants();
     _sk_GoToLookTo = NULL;
 }
 

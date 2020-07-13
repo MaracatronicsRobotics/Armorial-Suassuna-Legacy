@@ -33,6 +33,7 @@ private:
     Skill_GoToLookTo *_skill_goToLookTo;
     Skill_Test *_skill_push;
     double _offsetBall;
+    MRCConstants *_mrcconstants;
 
     // Parameters
     float _radius;

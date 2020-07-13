@@ -152,6 +152,11 @@ Locations* Behaviour::loc() {
         std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting loc(), loc not initialized!\n";
     return _loc;
 }
+MRCConstants *Behaviour::getConstants() {
+    if(_mrcconstants==NULL)
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting getConstants(), _mrcconstants not initialized!\n";
+    return _mrcconstants;
+}
 
 SSLReferee* Behaviour::ref() {
     if(_ref==NULL)

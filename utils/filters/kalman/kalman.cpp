@@ -25,8 +25,9 @@ QString KalmanFilter2D::name() {
     return "KalmanFilter2D";
 }
 
-KalmanFilter2D::KalmanFilter2D() {
+KalmanFilter2D::KalmanFilter2D(MRCConstants *mrcconstants) {
     _has1stPosition = _has2ndPosition = false;
+    _mrcconstants=mrcconstants;
 
     // Initialize state matrices
     _Px = Matrix::diag(3, KalmanFilter2D::_p);
@@ -122,7 +123,7 @@ void KalmanFilter2D::predict() {
 
     // Get iteration time
     _timer.stop();
-    const float T = (1.0 / MRCConstants::threadFrequency()) * 1E3; // ms;
+    const float T = (1.0 / _mrcconstants->getThreadFrequency()) * 1E3; // ms;
     _timer.start();
 
     // Check initial states, if do not have, quit. cannot make prevision...

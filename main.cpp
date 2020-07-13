@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     app.setApplicationName("Armorial Suassuna");
     app.setApplicationVersion("1.0.0");
-    MRCConstants *mr = new MRCConstants("../const/config.json");
+    MRCConstants *mrcconstants = new MRCConstants("../const/config.json");
     
 
     // Duplicated instance checking

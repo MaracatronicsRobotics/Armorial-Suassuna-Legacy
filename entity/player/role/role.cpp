@@ -57,11 +57,12 @@ SSLReferee* Role::ref(){
     return _ref;
 }
 
-void Role::initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc, SSLReferee *ref){
+void Role::initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc, SSLReferee *ref, MRCConstants *mrcconstants){
     _ourTeam = ourTeam;
     _theirTeam = theirTeam;
     _loc = loc;
     _ref = ref;
+    _mrcconstants=mrcconstants;
 
     // Configure Role
     _configureEnabled = true;

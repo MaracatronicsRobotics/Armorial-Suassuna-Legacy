@@ -2,9 +2,10 @@
 
 #include <utils/utils.hh>
 
-BallSensor::BallSensor(SSLReferee *ref, WorldMap *wm) : Entity(ENT_BALLSENSOR){
+BallSensor::BallSensor(SSLReferee *ref, WorldMap *wm,  MRCConstants *mrcconstants) : Entity(ENT_BALLSENSOR){
     _ref = ref;
     _wm = wm;
+    _mrcconstants=mrcconstants;
 
     _lastBallPos.setUnknown();
 }
@@ -24,7 +25,7 @@ void BallSensor::loop() {
         Position pos = _wm->ballPosition(0);
 
         float dist = WR::Utils::distance(pos, _lastBallPos);
-        if(dist >= MRCConstants::_distToConsiderBallMovement) {
+        if(dist >= _mrcconstants->getDistToConsiderBallMovement()) {
             _lastBallPos = pos;
             _ref->setBallKicked();
         }
