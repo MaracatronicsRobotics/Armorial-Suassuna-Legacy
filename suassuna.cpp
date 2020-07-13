@@ -58,15 +58,12 @@ bool Suassuna::start() {
     Colors::Color opTeamColor = (_teamColor==Colors::YELLOW? Colors::BLUE : Colors::YELLOW);
     FieldSide opFieldSide = (_fieldSide.isRight()? Sides::LEFT : Sides::RIGHT);
 
-    // Initialize utils
-    WR::Utils::initialize(_ourTeam, _theirTeam);
-
     // Server connection
     if(connectToServer()==false)
         return false;
 
     // Create World
-    _world = new World(_ctr, _defaultField);
+    _world = new World(_ctr, _defaultField, _mrcconstants);
 
     // Create SSLReferee
     _ref = new SSLReferee();
@@ -87,7 +84,7 @@ bool Suassuna::start() {
     setupOppPlayers(opTeamId);
 
     // Create coach
-    _coach = new Coach(_ref, _ourTeam, _theirTeam);
+    _coach = new Coach(_ref, _ourTeam, _theirTeam, _mrcconstants);
     _world->setControlModule(_coach);
 
     // Setup strategy for coach
@@ -179,7 +176,7 @@ void Suassuna::setupOurPlayers() {
         PID *vyPID = new PID(0.5, 0.0, 0.0, 2.5, -2.5);
         PID *vwPID = new PID(0.7, 0.0, 0.1, 6.0, -6.0);
         NavigationAlgorithm *navAlg = new FANA();
-        Player *player = new Player(_world, _ourTeam, _ctr, playerList.at(i), new Role_Default(), _ref, vxPID, vyPID, vwPID, navAlg);
+        Player *player = new Player(_world, _ourTeam, _ctr, playerList.at(i), new Role_Default(), _ref, vxPID, vyPID, vwPID, navAlg, _mrcconstants);
         // Enable
         player->enable(true);
         // Add to team
@@ -196,7 +193,7 @@ void Suassuna::setupOppPlayers(quint8 opTeamId) {
     const QList<quint8> opPlayerList = _world->getWorldMap()->players(opTeamId);
     for(quint8 i=0; i<opPlayerList.size() && i<_mrcconstants->getQtPlayers(); i++) {
         // Create Player
-        Player *opPlayer = new Player(_world, _theirTeam, _ctr, opPlayerList.at(i), NULL, _ref, NULL, NULL, NULL, NULL);
+        Player *opPlayer = new Player(_world, _theirTeam, _ctr, opPlayerList.at(i), NULL, _ref, NULL, NULL, NULL, NULL, NULL);
         // Disable (op team doesnt run)
         opPlayer->enable(false);
         // Add to team

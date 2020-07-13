@@ -56,6 +56,7 @@ void Behaviour::initialize(Locations *loc, MRCConstants *mrcconstants) {
     configure();
     _configureEnabled = false;
     _initialized = true;
+    _mrcconstants=mrcconstants;
 }
 
 void Behaviour::setPlayer(Player *player, PlayerAccess *playerAccess) {
@@ -73,7 +74,7 @@ void Behaviour::runBehaviour() {
     run();
     // Run skill (implemented by skill)
     if(_skill->isInitialized()==false)
-        _skill->initialize(_loc);
+        _skill->initialize(_loc, getConstants());
     _skill->setPlayer(_player);
     _skill->runSkill();
 }

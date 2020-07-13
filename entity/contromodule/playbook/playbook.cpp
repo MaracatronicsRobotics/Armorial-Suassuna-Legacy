@@ -41,11 +41,12 @@ Locations* Playbook::loc() const {
     return _ourTeam->loc();
 }
 
-void Playbook::initialize(MRCTeam *ourTeam, MRCTeam *opTeam, CoachUtils *utils, qint8 *kickerId, SSLGameInfo::RefProcessedState *lastState, SSLReferee *ref) {
+void Playbook::initialize(MRCTeam *ourTeam, MRCTeam *opTeam, CoachUtils *utils, qint8 *kickerId, SSLGameInfo::RefProcessedState *lastState, SSLReferee *ref, MRCConstants *mrcconstants) {
     _ourTeam = ourTeam;
     _opTeam = opTeam;
     _utils = utils;
     _ref = ref;
+    _mrcconstants = mrcconstants;
     _dist = new PlayersDistribution(_ourTeam, kickerId, lastState, ref);
     _initialized = true;
 }

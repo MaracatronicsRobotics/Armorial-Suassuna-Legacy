@@ -122,7 +122,7 @@ void Behaviour_Barrier::run() {
     _sk_gk->setPositionToLook(loc()->theirGoal());
 
     _sk_kick->setAim(loc()->theirGoal());
-    _sk_kick->setPower(_mrcconstants.getMaxKickPower());
+    _sk_kick->setPower(_mrcconstants->getMaxKickPower());
     _sk_kick->setIsChip(true);
 
     _sk_push->setAim(loc()->theirGoal());

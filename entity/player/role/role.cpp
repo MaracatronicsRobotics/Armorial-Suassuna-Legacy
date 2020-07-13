@@ -63,6 +63,9 @@ void Role::initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc, SSLR
     _loc = loc;
     _ref = ref;
     _mrcconstants=mrcconstants;
+    if(_mrcconstants == NULL){
+        std::cout<<"NULOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"<<std::endl;
+    }
 
     // Configure Role
     _configureEnabled = true;
@@ -94,7 +97,7 @@ void Role::runRole(){
     if(!_ref->getGameInfo(player()->team()->teamColor())->canMove()){
         // If is in halt
         if(_bh_dn->isInitialized() == false)
-            _bh_dn->initialize(_loc);
+            _bh_dn->initialize(_loc, _mrcconstants);
 
         // Configure
         _bh_dn->setPlayer(_player, _playerAccess);
@@ -103,7 +106,7 @@ void Role::runRole(){
     else if(_ref->getGameInfo(player()->team()->teamColor())->timeOut()){
         // If is in timeout
         if(_bh_tm->isInitialized() == false)
-            _bh_tm->initialize(_loc);
+            _bh_tm->initialize(_loc,_mrcconstants);
 
         // Configure
         _bh_tm->setPlayer(_player, _playerAccess);
@@ -119,7 +122,7 @@ void Role::runRole(){
 
         // Run Behaviour
         if(_behaviour->isInitialized() == false){
-            _behaviour->initialize(_loc);
+            _behaviour->initialize(_loc,_mrcconstants);
         }
         _behaviour->setPlayer(_player, _playerAccess);
         _behaviour->runBehaviour();

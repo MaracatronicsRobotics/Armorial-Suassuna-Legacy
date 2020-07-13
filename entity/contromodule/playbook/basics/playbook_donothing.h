@@ -39,7 +39,7 @@ private:
     void run(int numPlayers);
     int maxNumPlayer();
 public:
-    Playbook_DoNothing(MRCConstants *mrcconstants);
+    Playbook_DoNothing();
     QString name();
 };
 

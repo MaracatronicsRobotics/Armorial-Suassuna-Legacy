@@ -29,6 +29,7 @@ MRCTeam* Utils::_ourTeam = NULL;
 MRCTeam* Utils::_theirTeam = NULL;
 
 void Utils::initialize(MRCTeam *ourTeam, MRCTeam *opTeam) {
+
     kNN::initialize(ourTeam, opTeam);
     FreeAngles::initialize(ourTeam, opTeam);
     _ourTeam = ourTeam;
@@ -139,8 +140,9 @@ bool Utils::approximateToZero(float *value, float error){
         return false;
 }
 
-Position Utils::getPlayerKickDevice(quint8 id) {
-    const float robotR = MRCConstants::_robotRadius + 0.02f + (MRCConstants::_ballRadius)/2.0;
+
+Position Utils::getPlayerKickDevice(quint8 id, float robotRadius) {
+    float robotR = robotRadius + 0.02f;
 
     const Angle ori = _ourTeam->avPlayers().value(id)->orientation();
     float dx = robotR * cos(ori.value());

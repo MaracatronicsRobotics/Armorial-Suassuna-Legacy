@@ -48,7 +48,7 @@ private:
     float _ballRadius;
 
     /* Ball Sensor constants */
-    static float _distToConsiderBallMovement;
+   float _distToConsiderBallMovement;
 
 
 

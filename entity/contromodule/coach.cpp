@@ -32,11 +32,12 @@ QString Coach::name(){
     return "Coach";
 }
 
-Coach::Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam)
+Coach::Coach(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam, MRCConstants *mrcconstants)
 {
     _ref = ref;
     _ourTeam = ourTeam;
     _theirTeam = theirTeam;
+    _mrcconstants = mrcconstants;
 
     // Initialize PlayerBus
     PlayerBus::initialize(ourTeam, theirTeam);
@@ -245,7 +246,7 @@ void Coach::run(){
     // run strategy
     if(strat != NULL){
         if(strat->isInitialized() == false){
-            strat->initialize(_ref, _ourTeam, _theirTeam, _utils);
+            strat->initialize(_ref, _ourTeam, _theirTeam, _utils, _mrcconstants);
         }
         strat->runStrategy();
     }

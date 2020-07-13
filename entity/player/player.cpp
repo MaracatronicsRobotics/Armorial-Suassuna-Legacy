@@ -38,8 +38,8 @@ Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Ro
     _ctr = ctr;
     _role = NULL;
     _defaultRole = defaultRole;
-    _nav = new Navigation(this, navAlg);
     _mrcconstants=mrcconstants;
+    _nav = new Navigation(this, navAlg, _mrcconstants);
 
     _playerAccessSelf = new PlayerAccess(true, this, team->loc());
     _playerAccessBus = new PlayerAccess(false, this, team->loc());
@@ -127,13 +127,13 @@ void Player::loop(){
         _mutexRole.lock();
         if(_role != NULL){
             if(_role->isInitialized() == false){
-                _role->initialize(_team, _team->opTeam(), _team->loc(), _ref);
+                _role->initialize(_team, _team->opTeam(), _team->loc(), _ref, _mrcconstants);
             }
             _role->setPlayer(this, _playerAccessSelf);
             _role->runRole();
         }else if(_defaultRole != NULL){
             if(_defaultRole->isInitialized() == false){
-                _defaultRole->initialize(_team, _team->opTeam(), _team->loc(), _ref);
+                _defaultRole->initialize(_team, _team->opTeam(), _team->loc(), _ref, _mrcconstants);
             }
             _defaultRole->setPlayer(this, _playerAccessSelf);
             _defaultRole->runRole();
