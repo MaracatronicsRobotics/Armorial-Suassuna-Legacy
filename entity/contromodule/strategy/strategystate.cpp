@@ -46,7 +46,7 @@ Locations* StrategyState::loc() const {
     return _ourTeam->loc();
 }
 
-void StrategyState::initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, CoachUtils *utils, PlayersDistribution *dist, qint8 *kickerId, SSLGameInfo::RefProcessedState *lastState, SSLReferee *ref) {
+void StrategyState::initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, CoachUtils *utils, PlayersDistribution *dist, qint8 *kickerId, SSLGameInfo::RefProcessedState *lastState, SSLReferee *ref, MRCConstants *mrcconstants) {
     _ourTeam = ourTeam;
     _theirTeam = theirTeam;
     _utils = utils;
@@ -54,6 +54,7 @@ void StrategyState::initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, CoachUtils 
     _kickerId = kickerId;
     _lastState = lastState;
     _ref = ref;
+    _mrcconstants=mrcconstants;
     _initialized = true;
 }
 
@@ -78,7 +79,7 @@ void StrategyState::runStrategyState() {
         // Initialize playbooks (initialized before run() because it modifies
         // players in playbook and already needs it with available players lists)
         if(playbook->isInitialized()==false)
-            playbook->initialize(_ourTeam, _theirTeam, _utils, _kickerId, _lastState, _ref);
+            playbook->initialize(_ourTeam, _theirTeam, _utils, _kickerId, _lastState, _ref, _mrcconstants);
         // Clear old players added
         playbook->clearPlayers();
     }

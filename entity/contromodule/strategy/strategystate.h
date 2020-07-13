@@ -24,6 +24,7 @@
 
 #include <entity/contromodule/basecoach.h>
 #include <entity/referee/SSLReferee/sslgameinfo.h>
+#include <const/constants.h>
 
 class StrategyState {
 public:
@@ -32,7 +33,7 @@ public:
 
     // Called one time before run is first called
     bool isInitialized() { return _initialized; }
-    void initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, CoachUtils *utils, PlayersDistribution *dist, qint8 *kickerId, SSLGameInfo::RefProcessedState *lastState, SSLReferee *ref);
+    void initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, CoachUtils *utils, PlayersDistribution *dist, qint8 *kickerId, SSLGameInfo::RefProcessedState *lastState, SSLReferee *ref, MRCConstants *mrcconstants);
 
     // Called in Coach -> Strategy loop
     void runStrategyState();
@@ -74,6 +75,7 @@ private:
     MRCTeam *_ourTeam;
     MRCTeam *_theirTeam;
     CoachUtils *_utils;
+    MRCConstants *_mrcconstants;
 
     // Playbook list
     QList<Playbook*> _playbookList;

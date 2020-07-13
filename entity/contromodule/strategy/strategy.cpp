@@ -49,12 +49,12 @@ Strategy::~Strategy(){
         delete _dist;
 }
 
-void Strategy::initialize(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam, CoachUtils *utils){
+void Strategy::initialize(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam, CoachUtils *utils, MRCConstants *mrcconstants){
     _ref = ref;
     _ourTeam = ourTeam;
     _theirTeam = theirTeam;
     _utils = utils;
-
+    _mrcconstants=mrcconstants;
     _dist = new PlayersDistribution(_ourTeam, &_kickerId, &_lastState, _ref);
 
     // Configure strategy states
@@ -73,7 +73,7 @@ void Strategy::runStrategy(int gameState, SSLGameInfo::RefProcessedState refStat
     StrategyState *strategyState = getStrategyState(gameState);
     if(strategyState!=NULL) {
         if(strategyState->isInitialized()==false)
-            strategyState->initialize(_ourTeam, _theirTeam, _utils, _dist, &_kickerId, &_lastState, _ref);
+            strategyState->initialize(_ourTeam, _theirTeam, _utils, _dist, &_kickerId, &_lastState, _ref, _mrcconstants);
 
         _lastStrategy = strategyState;
         strategyState->runStrategyState();

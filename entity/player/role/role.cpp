@@ -63,6 +63,9 @@ void Role::initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc, SSLR
     _loc = loc;
     _ref = ref;
     _mrcconstants=mrcconstants;
+    if(_mrcconstants == NULL){
+        std::cout<<"NULOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"<<std::endl;
+    }
 
     // Configure Role
     _configureEnabled = true;

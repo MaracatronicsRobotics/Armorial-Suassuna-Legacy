@@ -33,8 +33,8 @@ Role_Defensive_Midfielder::Role_Defensive_Midfielder() {
 }
 
 void Role_Defensive_Midfielder::initializeBehaviours(){
-    usesBehaviour(BEHAVIOUR_BARRIER, _bh_bar = new Behaviour_Barrier(getConstants()));
-    usesBehaviour(BEHAVIOUR_MARKBALL, _bh_mkBall = new Behaviour_MarkBall(getConstants()));
+    usesBehaviour(BEHAVIOUR_BARRIER, _bh_bar = new Behaviour_Barrier());
+    usesBehaviour(BEHAVIOUR_MARKBALL, _bh_mkBall = new Behaviour_MarkBall());
 }
 
 void Role_Defensive_Midfielder::configure(){
