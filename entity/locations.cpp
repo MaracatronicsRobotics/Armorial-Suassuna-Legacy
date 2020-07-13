@@ -351,7 +351,6 @@ QHash<quint8, Player*> Locations::getMRCPlayers(){
 }
 
 bool Locations::isVectorObstructed(Position start, Position end, quint8 ourPlayerToBeRemoved, float margin, bool isBallObstacle) {
-
     // Get the list of available Ids from ourTeam and iterates over it
     QList<Player*> ourPlayers =  _team->avPlayers().values();
 
