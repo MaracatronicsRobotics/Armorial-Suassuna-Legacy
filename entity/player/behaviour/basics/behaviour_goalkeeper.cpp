@@ -37,7 +37,7 @@ Behaviour_Goalkeeper::Behaviour_Goalkeeper() {
     _skill_kick = NULL;
     _skill_goToLookTo = NULL;
     _skill_push = NULL;
-    _mrcconstants=getConstants();
+
 
     setRadius(0.5); // raio que define posse de bola para o goleiro dar takeout
     setTakeoutEnabled(true); // avançar na bola quando ela estiver na margem de aceitação (takeout vai dar goto e kick na bola)
@@ -80,7 +80,7 @@ void Behaviour_Goalkeeper::run() {
 
     // Ver com geogebra e led dps a mira
     _skill_kick->setAim(loc()->theirGoal());
-    _skill_kick->setPower(_mrcconstants->getMaxKickPower());
+    _skill_kick->setPower(getConstants()->getMaxKickPower());
     _skill_kick->setIsChip(true);
 
     // goToLookTo (posicionamento do goleiro

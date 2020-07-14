@@ -68,7 +68,7 @@ namespace WR {
         static void limitMinValue(float *value, float minValue);
         static bool approximateToZero(float *value, float error = 1e-3);
 
-        static Position getPlayerKickDevice(quint8 id, float robotRadius = 0.09f);
+        static Position getPlayerKickDevice(quint8 id, float robotRadius = 0.09f, float ballRadius = 0.025f);
     };
 
 }

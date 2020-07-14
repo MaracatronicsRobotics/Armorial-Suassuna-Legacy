@@ -51,12 +51,12 @@ Behaviour::~Behaviour() {
 
 void Behaviour::initialize(Locations *loc, MRCConstants *mrcconstants) {
     _loc = loc;
+    _mrcconstants=mrcconstants;
     // Configurate skills to be used
     _configureEnabled = true;
     configure();
     _configureEnabled = false;
     _initialized = true;
-    _mrcconstants=mrcconstants;
 }
 
 void Behaviour::setPlayer(Player *player, PlayerAccess *playerAccess) {

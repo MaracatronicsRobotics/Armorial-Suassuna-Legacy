@@ -141,8 +141,8 @@ bool Utils::approximateToZero(float *value, float error){
 }
 
 
-Position Utils::getPlayerKickDevice(quint8 id, float robotRadius) {
-    float robotR = robotRadius + 0.02f;
+Position Utils::getPlayerKickDevice(quint8 id, float robotRadius, float ballRadius) {
+    float robotR = robotRadius + 0.02f + (ballRadius/2.0f);
 
     const Angle ori = _ourTeam->avPlayers().value(id)->orientation();
     float dx = robotR * cos(ori.value());
