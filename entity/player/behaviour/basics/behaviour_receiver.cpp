@@ -32,7 +32,7 @@ QString Behaviour_Receiver::name() {
 }
 
 Behaviour_Receiver::Behaviour_Receiver() {
-    _mrcconstants=getConstants();
+
     _skill_GoToLookTo = NULL;
     _attackerId = NO_ATTACKER;
     setQuadrant(NO_QUADRANT);
