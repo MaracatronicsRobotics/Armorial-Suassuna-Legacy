@@ -315,7 +315,7 @@ std::pair<float, Position> Behaviour_Attacker::getBestAimPosition(){
     }
 
     for(obst = obstacles.begin(); obst != obstacles.end(); obst++) {
-        obst->radius() = 1.2 * _mrcconstants->getRobotRadius();
+        obst->radius() = 1.2 * getConstants()->getRobotRadius();
         // access the robot=
         PlayerAccess *robot = NULL;
 
@@ -376,7 +376,7 @@ std::pair<float, Position> Behaviour_Attacker::getBestAimPosition(){
     Position impactPos(true, posTheirGoal.x(), pos_y, 0.0);
 
     // Check if impact pos has enough space for the ball
-    bool obstructedWay = loc()->isVectorObstructed(loc()->ball(), impactPos, player()->playerId(), _mrcconstants->getBallRadius()*1.5, false);
+    bool obstructedWay = loc()->isVectorObstructed(loc()->ball(), impactPos, player()->playerId(), getConstants()->getBallRadius()*1.5, false);
 
     if(obstructedWay) {
         return std::make_pair(0.0, Position(false, 0.0, 0.0, 0.0));
