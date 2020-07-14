@@ -50,15 +50,15 @@ Behaviour::~Behaviour() {
     _skillList.clear();
 }
 
-void Behaviour::initialize(Locations *loc, SSLReferee *ref) {
+void Behaviour::initialize(Locations *loc, SSLReferee *ref, MRCConstants *mrcconstants) {
     _loc = loc;
     _ref = ref;
+    _mrcconstants=mrcconstants;
     // Configurate skills to be used
     _configureEnabled = true;
     configure();
     _configureEnabled = false;
     _initialized = true;
-    _mrcconstants=mrcconstants;
 }
 
 void Behaviour::setPlayer(Player *player, PlayerAccess *playerAccess) {
