@@ -196,7 +196,7 @@ void Suassuna::setupOppPlayers(quint8 opTeamId) {
     const QList<quint8> opPlayerList = _world->getWorldMap()->players(opTeamId);
     for(quint8 i=0; i<opPlayerList.size() && i<MRCConstants::_qtPlayers; i++) {
         // Create Player
-        Player *opPlayer = new Player(_world, _theirTeam, _ctr, opPlayerList.at(i), NULL, _ref, NULL, NULL, NULL, NULL);
+        Player *opPlayer = new Player(_world, _theirTeam, NULL, opPlayerList.at(i), NULL, _ref, NULL, NULL, NULL, NULL);
         // Disable (op team doesnt run)
         opPlayer->enable(false);
         // Add to team
