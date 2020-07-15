@@ -120,8 +120,10 @@ void Player::loop(){
         // Reset idle count
         _idleCount = 0;
         // Disable kick
-        _ctr->kickOnTouch(teamId(), playerId(), false, 0.0);
-        _ctr->chipKickOnTouch(teamId(), playerId(), false, 0.0);
+        if(_ctr != NULL){ // avoid set on enemy players
+            _ctr->kickOnTouch(teamId(), playerId(), false, 0.0);
+            _ctr->chipKickOnTouch(teamId(), playerId(), false, 0.0);
+        }
 
         _mutexRole.lock();
         if(_role != NULL){
@@ -341,7 +343,9 @@ void Player::setSpeed(float x, float y, float theta) {
         robotVel.setVelocity(robotVel.x() * maxSpeed, robotVel.y() * maxSpeed);
     }
 
-    _ctr->setSpeed((int)_team->teamId(), (int)playerId(), robotVel.x(), robotVel.y(), theta);
+    if(_ctr != NULL){ // avoid set on enemy players
+        _ctr->setSpeed((int)_team->teamId(), (int)playerId(), robotVel.x(), robotVel.y(), theta);
+    }
 }
 
 std::pair<float, float> Player::goTo(Position targetPosition, double offset, bool setHere, double minVel){
@@ -521,11 +525,13 @@ void Player::aroundTheBall(Position targetPosition, double offset, double offset
 }
 
 void Player::kick(float power, bool isChipKick){
-    if(!isChipKick){
-        _ctr->kickOnTouch(_team->teamId(), playerId(), true, power);
-    }
-    else{
-        _ctr->chipKickOnTouch(_team->teamId(), playerId(), true, power); // rever esse power dps
+    if(_ctr != NULL){ // avoid set on enemy players
+        if(!isChipKick){
+            _ctr->kickOnTouch(_team->teamId(), playerId(), true, power);
+        }
+        else{
+            _ctr->chipKickOnTouch(_team->teamId(), playerId(), true, power); // rever esse power dps
+        }
     }
 }
 
@@ -538,5 +544,7 @@ QLinkedList<Position> Player::getPath() const {
 }
 
 void Player::dribble(bool isActive){
-    _ctr->holdBall(_team->teamId(), playerId(), isActive);
+    if(_ctr != NULL){ // avoid set on enemy players
+        _ctr->holdBall(_team->teamId(), playerId(), isActive);
+    }
 }
