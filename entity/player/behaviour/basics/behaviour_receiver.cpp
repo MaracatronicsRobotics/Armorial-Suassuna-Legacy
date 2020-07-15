@@ -73,7 +73,7 @@ void Behaviour_Receiver::run() {
     Position bestAim = getBestAimPosition();
 
     if(isBallComing(0.2f, 1.0f)){
-        _skill_Receiver->setPositionToLook(bestAim);
+        _skill_Receiver->setPositionToLook(loc()->ball());
         enableTransition(SK_RECV);
     }
     else{
