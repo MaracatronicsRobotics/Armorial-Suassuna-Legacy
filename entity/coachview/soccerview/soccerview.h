@@ -46,7 +46,7 @@
 using namespace std;
 
 //#define FIELD_COLOR 0.0,0.5686,0.0980,1.0
-#define FIELD_COLOR 0.0,0.4627,0.0,1.0
+#define FIELD_COLOR 0.25,0.25,0.25,1.0
 #define FIELD_LINES_COLOR 1.0,1.0,1.0,1.0
 
 #define PATHDRAWING_FRAMES 20
