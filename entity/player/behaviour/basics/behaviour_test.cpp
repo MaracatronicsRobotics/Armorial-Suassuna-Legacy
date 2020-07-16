@@ -36,7 +36,6 @@ void Behaviour_Test::run() {
     Position aimPos = (PlayerBus::ourPlayerAvailable(3) && player()->playerId() != 3) ? PlayerBus::ourPlayer(3)->position() : getBestAimPosition().first;
     //std::pair<Position, double> aim = getBestAimPosition();
     _skill_test->setAim(aimPos);
-    _skill_test->setDestination(loc()->fieldCenter());
     _skill_test->shootWhenAligned(true);
 }
 

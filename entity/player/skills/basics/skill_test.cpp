@@ -22,12 +22,12 @@
 #include "skill_test.h"
 #include <entity/player/skills/skills_include.h>
 
-#define BALL_MINDIST 0.12f
-#define BALL_MINPUSHDISTANCE 0.1f
+#define BALL_MINDIST 0.12
+#define BALL_MINPUSHDISTANCE 0.1
 
-#define BALLPREVISION_MINVELOCITY 0.02f
-#define BALLPREVISION_VELOCITY_FACTOR 3.0f
-#define BALLPREVISION_FACTOR_LIMIT 0.15f
+#define BALLPREVISION_MINVELOCITY 0.02
+#define BALLPREVISION_VELOCITY_FACTOR 3.0
+#define BALLPREVISION_FACTOR_LIMIT 0.15
 
 QString Skill_Test::name() {
     return "Skill_Test";
@@ -43,9 +43,8 @@ Skill_Test::Skill_Test() {
 }
 
 void Skill_Test::run(){
-    if(_destination.isUnknown())
-        std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << name().toStdString() << ": destination not set!\n";
-
+    if(_aim.isUnknown())
+        std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << name().toStdString() << ": aim not set!\n";
 
     // Calc behind ball
     Position behindBall = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.2f, GEARSystem::Angle::pi);
@@ -103,9 +102,26 @@ void Skill_Test::run(){
         }
     }
     case STATE_PUSH:{
-        std::pair<double, double> p = player()->rotateTo(_aim);
+        if(_destination.isUnknown())
+            player()->rotateTo(_aim);
+        else{
+            if(_currPos.isUnknown()){
+                _currPos = loc()->ball();
+                _pushedDistance = 0.0;
+            }
+            _lastPos = _currPos;
+            _currPos = loc()->ball();
+
+            _pushedDistance += WR::Utils::distance(_lastPos, _currPos);
+
+            if(_pushedDistance >= _maxPushDistance)
+                _destination.setUnknown();
+            else
+                player()->goToLookTo(_destination, _aim, true, true, false, false, false);
+        }
+
         if(_shootWhenAligned){
-            double angleToObjective = fabs(GEARSystem::Angle::toDegrees(p.first));
+            double angleToObjective = fabs(GEARSystem::Angle::toDegrees(player()->getPlayerRotateAngleTo(_aim)));
             if(angleToObjective <= 3.0){
                 //std::cout << MRCConstants::red << "angleToObjective: " << MRCConstants::reset << angleToObjective << std::endl;
                 //std::cout << MRCConstants::cyan << "shooted" << MRCConstants::reset << std::endl;
@@ -113,7 +129,7 @@ void Skill_Test::run(){
             }
         }
 
-        if(player()->distBall() > BALL_MINDIST || !isBallInFront())
+        if(player()->distBall() > (BALL_MINDIST + 0.02) || !isBallInFront())
             _state = STATE_POS;
     }
     break;
