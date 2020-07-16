@@ -132,6 +132,10 @@ Angle PlayerAccess::angleTo(const Position &pos) const {
     return _player->angleTo(pos);
 }
 
+double PlayerAccess::getPlayerRotateAngleTo(const Position &pos){
+    return _player->getPlayerRotateAngleTo(pos);
+}
+
 QString PlayerAccess::roleName(){
     return _player->getRoleName();
 }
