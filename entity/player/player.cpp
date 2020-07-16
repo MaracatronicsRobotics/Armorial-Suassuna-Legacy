@@ -428,7 +428,13 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
     double speed = 0.0;
 
     if(fabs(angleRobotToObjective) >= GEARSystem::Angle::toRadians(3.0)){
-        if(fabs(angleRobotToObjective) < M_PI / 12.0){
+        if(fabs(angleRobotToObjective) < M_PI / 16.0){
+            if(angleRobotToObjective < 0.0)
+                speed = 0.5;
+            else
+                speed = -0.5;
+        }
+        else if(fabs(angleRobotToObjective) < M_PI / 12.0){
             if(angleRobotToObjective < 0.0)
                 speed = 1.0;
             else

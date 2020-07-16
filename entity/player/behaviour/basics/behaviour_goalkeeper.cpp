@@ -34,7 +34,6 @@ QString Behaviour_Goalkeeper::name() {
 
 Behaviour_Goalkeeper::Behaviour_Goalkeeper() {
     _skill_Goalkeeper = NULL;
-    _skill_kick = NULL;
     _skill_goToLookTo = NULL;
     _skill_push = NULL;
 
@@ -47,27 +46,19 @@ Behaviour_Goalkeeper::Behaviour_Goalkeeper() {
 void Behaviour_Goalkeeper::configure() {
     usesSkill(_skill_Goalkeeper = new Skill_InterceptBall());
     usesSkill(_skill_goToLookTo = new Skill_GoToLookTo());
-    usesSkill(_skill_kick = new Skill_Kick());
-    usesSkill(_skill_push = new Skill_PushBall2());
+    usesSkill(_skill_push = new Skill_Test());
 
     // goto
     setInitialSkill(_skill_Goalkeeper);
 
     // todas as combinações
-    addTransition(STATE_KICK, _skill_goToLookTo, _skill_kick);
-    addTransition(STATE_KICK, _skill_Goalkeeper, _skill_kick);
-    addTransition(STATE_KICK, _skill_push, _skill_kick);
-    //
-    addTransition(STATE_GK, _skill_kick, _skill_Goalkeeper);
     addTransition(STATE_GK, _skill_goToLookTo, _skill_Goalkeeper);
     addTransition(STATE_GK, _skill_push, _skill_Goalkeeper);
     //
     addTransition(STATE_GOTO, _skill_Goalkeeper, _skill_goToLookTo);
-    addTransition(STATE_GOTO, _skill_kick, _skill_goToLookTo);
     addTransition(STATE_GOTO, _skill_push, _skill_goToLookTo);
     //
     addTransition(STATE_PUSH, _skill_Goalkeeper, _skill_push);
-    addTransition(STATE_PUSH, _skill_kick, _skill_push);
     addTransition(STATE_PUSH, _skill_goToLookTo, _skill_push);
 };
 
@@ -76,11 +67,6 @@ void Behaviour_Goalkeeper::run() {
     _skill_Goalkeeper->setInterceptAdvance(false);
     _skill_Goalkeeper->setPositionToLook(loc()->ball());
     _skill_Goalkeeper->setSpeedFactor(1.2);
-
-    // Ver com geogebra e led dps a mira
-    _skill_kick->setAim(loc()->theirGoal());
-    _skill_kick->setPower(MRCConstants::_maxKickPower);
-    _skill_kick->setIsChip(true);
 
     // goToLookTo (posicionamento do goleiro
     Position desiredPosition = getAttackerInterceptPosition();
@@ -99,17 +85,13 @@ void Behaviour_Goalkeeper::run() {
     _skill_goToLookTo->setIsGk(true);
 
     // machine if state begins for transitionsss
-    if(isBallComingToGoal(INTERCEPT_MINBALLVELOCITY, 1.1f)){ // bola nao ta em posse do goleiro e ta indo pro gol
+    if(isBallComingToGoal(INTERCEPT_MINBALLVELOCITY, 1.1f) && !player()->hasBallPossession()){ // bola nao ta em posse do goleiro e ta indo pro gol
         enableTransition(STATE_GK); // defende!
     }else if(_takeoutEnabled){ // caso n esteja em posse, n esteja indo pro gol ou nenhum dos dois
         if(loc()->isInsideOurArea(loc()->ball(), _takeoutFactor)){ // ve se ta na nossa area com fator de takeout (uma area maiorzinha)
-            if(!isBehindBall(loc()->theirGoal())){
-                _skill_push->setAim(loc()->theirGoal());
-                _skill_push->setDestination(player()->position());
-                enableTransition(STATE_PUSH);
-            }else{
-                enableTransition(STATE_KICK); // se tiver perto e na nossa area, chuta!!!!
-            }
+            _skill_push->shootWhenAligned(true);
+            _skill_push->setAim(loc()->theirGoal());
+            enableTransition(STATE_PUSH);
         }
         else{ // evitar oscilação (ruido) do visao
             enableTransition(STATE_GOTO); // goTo na bolota se n estiver na area
