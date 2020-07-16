@@ -73,6 +73,8 @@ void Skill_Test::run(){
         _currPos.setUnknown();
         _pushedDistance = 0.0;
 
+        std::cout << "ball dist: " << player()->distBall() << " . " << "isBallinFront: " << isBallInFront() << std::endl;
+
         if(player()->distBall() <= BALL_MINDIST && isBallInFront())
             _state = STATE_PUSH;
         else
@@ -90,7 +92,7 @@ void Skill_Test::run(){
             }
         }
 
-        if(player()->distBall() > BALL_MINDIST)
+        if(player()->distBall() >= (BALL_MINDIST + 0.02) || !isBallInFront())
             _state = STATE_POS;
     }
     break;
@@ -98,10 +100,8 @@ void Skill_Test::run(){
 }
 
 bool Skill_Test::isBallInFront(){
-    Angle anglePlayerBall = player()->angleTo(loc()->ball());
-    float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
-
-    return (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
+    double diff = fabs(player()->getPlayerRotateAngleTo(loc()->ball()));
+    return (diff <= 0.6); // 0.6rad ~= 35 deg
 }
 
 bool Skill_Test::isBehindBall(Position posObjective){

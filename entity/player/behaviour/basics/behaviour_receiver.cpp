@@ -68,8 +68,6 @@ void Behaviour_Receiver::run() {
     */
 
     player()->dribble(true);
-
-
     Position bestAim = getBestAimPosition();
 
     if(isBallComing(0.2f, 1.0f)){
@@ -91,7 +89,8 @@ void Behaviour_Receiver::run() {
             Position _desiredPosition = getReceiverBestPosition(_quadrant, _attackerId, _minRadius, _maxRadius);
             _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
             //_skill_GoToLookTo->setAimPosition(bestAim);
-            _skill_GoToLookTo->setAimPosition(PlayerBus::ourPlayer(_attackerId)->position());
+            _skill_GoToLookTo->setAimPosition(loc()->ball());
+            //_skill_GoToLookTo->setAimPosition(PlayerBus::ourPlayer(_attackerId)->position());
         }
     }
 }

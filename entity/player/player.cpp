@@ -391,14 +391,14 @@ std::pair<float, float> Player::goTo(Position targetPosition, double offset, boo
     return std::make_pair(robotVel.x(), robotVel.y());
 }
 
-std::pair<double, double> Player::rotateTo(Position targetPosition, double offset, bool setHere) {
+double Player::getPlayerRotateAngleTo(const Position &pos){
     double robot_x, robot_y, angleOrigin2Robot = orientation().value();
     robot_x = position().x();
     robot_y = position().y();
 
     // Define a velocidade angular do robô para visualizar a bola
-    double vectorRobot2BallX = (targetPosition.x() - robot_x);
-    double vectorRobot2BallY = (targetPosition.y() - robot_y);
+    double vectorRobot2BallX = (pos.x() - robot_x);
+    double vectorRobot2BallY = (pos.y() - robot_y);
     double modVectorRobot2Ball = sqrt(pow(vectorRobot2BallX, 2) + pow(vectorRobot2BallY, 2));
 
     vectorRobot2BallX = vectorRobot2BallX / modVectorRobot2Ball;
@@ -412,31 +412,37 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
         angleOrigin2ball = acos(vectorRobot2BallX); //angulo que a bola faz com o eixo x em relação ao robo
     }
 
-    double minValue = 4.0;
-    double maxValue = 6.0;
-    double speed = 0.0;
-
     angleRobot2Ball = angleOrigin2Robot - angleOrigin2ball;
 
     if(angleRobot2Ball > M_PI) angleRobot2Ball -= 2.0 * M_PI;
     if(angleRobot2Ball < -M_PI) angleRobot2Ball += 2.0 * M_PI;
 
-    if(fabs(angleRobot2Ball) >= GEARSystem::Angle::toRadians(3.0)){
-        if(fabs(angleRobot2Ball) < M_PI / 4.0){
-            if(angleRobot2Ball < 0.0)
+    return angleRobot2Ball;
+}
+
+std::pair<double, double> Player::rotateTo(Position targetPosition, double offset, bool setHere) {
+    double angleRobotToObjective = getPlayerRotateAngleTo(targetPosition);
+
+    double minValue = 5.0;
+    double maxValue = 6.0;
+    double speed = 0.0;
+
+    if(fabs(angleRobotToObjective) >= GEARSystem::Angle::toRadians(3.0)){
+        if(fabs(angleRobotToObjective) < M_PI / 4.0){
+            if(angleRobotToObjective < 0.0)
                 speed = 1.0;
             else
                 speed = -1.0;
         }
-        else if(fabs(angleRobot2Ball) < M_PI / 2.0){
-            if(angleRobot2Ball < 0.0){
+        else if(fabs(angleRobotToObjective) < M_PI / 2.0){
+            if(angleRobotToObjective < 0.0){
                 speed = minValue;
             }else{
                 speed = -minValue;
             }
         }
         else{
-            if(angleRobot2Ball < 0.0){
+            if(angleRobotToObjective < 0.0){
                 speed = maxValue;
             }else{
                 speed = -maxValue;
@@ -449,11 +455,11 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
     if(isPidActivated()){
         double newSpeed = _vwPID->calculate(speed, angularSpeed().value());
         if(setHere) setSpeed(0.0, 0.0, newSpeed);
-        return std::make_pair(angleRobot2Ball, newSpeed);
+        return std::make_pair(angleRobotToObjective, newSpeed);
     }
     else{
         if(setHere) setSpeed(0.0, 0.0, speed);
-        return std::make_pair(angleRobot2Ball, speed);
+        return std::make_pair(angleRobotToObjective, speed);
     }
 }
 
