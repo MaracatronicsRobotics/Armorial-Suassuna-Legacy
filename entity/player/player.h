@@ -87,6 +87,7 @@ public:
 
     // Angles
     Angle angleTo(const Position &pos) const;
+    double getPlayerRotateAngleTo(const Position &pos);
 
     // Player skills
     void setSpeed(float x, float y, float theta);

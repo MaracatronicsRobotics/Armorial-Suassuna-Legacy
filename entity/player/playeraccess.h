@@ -66,6 +66,7 @@ public:
     float distTheirGoal() const;
     // Angles
     Angle angleTo(const Position &pos) const;
+    double getPlayerRotateAngleTo(const Position &pos);
     // Roles
     QString roleName();
     // Idle
