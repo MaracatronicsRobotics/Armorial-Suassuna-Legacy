@@ -41,8 +41,8 @@ private:
     // State machine
     enum {
         STATE_POS,
-        STATE_PUSH,
-        STATE_DONE
+        STATE_TRY,
+        STATE_PUSH
     };
     int _state;
 

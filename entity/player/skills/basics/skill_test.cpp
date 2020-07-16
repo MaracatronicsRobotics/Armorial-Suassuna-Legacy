@@ -23,6 +23,7 @@
 #include <entity/player/skills/skills_include.h>
 
 #define BALL_MINDIST 0.12f
+#define BALL_MINPUSHDISTANCE 0.1f
 
 #define BALLPREVISION_MINVELOCITY 0.02f
 #define BALLPREVISION_VELOCITY_FACTOR 3.0f
@@ -73,14 +74,34 @@ void Skill_Test::run(){
         _currPos.setUnknown();
         _pushedDistance = 0.0;
 
-        std::cout << "ball dist: " << player()->distBall() << " . " << "isBallinFront: " << isBallInFront() << std::endl;
-
         if(player()->distBall() <= BALL_MINDIST && isBallInFront())
-            _state = STATE_PUSH;
+            _state = STATE_TRY;
         else
             player()->goToLookTo(behindBall, loc()->ball(), true, true, false, false, false);
     }
     break;
+    case STATE_TRY:{
+        if(_currPos.isUnknown()){
+            _currPos = loc()->ball();
+            _pushedDistance = 0.0;
+        }
+        _lastPos = _currPos;
+        _currPos = loc()->ball();
+
+        _pushedDistance += WR::Utils::distance(_lastPos, _currPos);
+
+        player()->rotateTo(_aim);
+
+        if(!isBallInFront()){ // se n ta na frente, reposiciona
+            _state = STATE_POS;
+        }
+        else if(_pushedDistance >= BALL_MINPUSHDISTANCE && isBallInFront()){ // se puxou e a bola ta na frente, pode puxar o resto
+            _state = STATE_PUSH;
+        }
+        else if(_pushedDistance >= BALL_MINPUSHDISTANCE && !isBallInFront()){ // se puxou e a bola n ta na frente, reposiciona
+            _state = STATE_POS;
+        }
+    }
     case STATE_PUSH:{
         std::pair<double, double> p = player()->rotateTo(_aim);
         if(_shootWhenAligned){
@@ -92,7 +113,7 @@ void Skill_Test::run(){
             }
         }
 
-        if(player()->distBall() >= (BALL_MINDIST + 0.02) || !isBallInFront())
+        if(player()->distBall() > BALL_MINDIST || !isBallInFront())
             _state = STATE_POS;
     }
     break;
@@ -100,8 +121,10 @@ void Skill_Test::run(){
 }
 
 bool Skill_Test::isBallInFront(){
-    double diff = fabs(player()->getPlayerRotateAngleTo(loc()->ball()));
-    return (diff <= 0.6); // 0.6rad ~= 35 deg
+    Angle anglePlayerBall = player()->angleTo(loc()->ball());
+    float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
+
+    return (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
 }
 
 bool Skill_Test::isBehindBall(Position posObjective){
