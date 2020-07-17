@@ -78,12 +78,12 @@ public:
 
     // setters
     void setFollowAttacker(bool followAttacker) { _followAttacker = followAttacker; }
-    void setAttackerId (quint8 attackerId) { _attackerId = attackerId; }
+    void setAttackerId (int attackerId) { _attackerId = attackerId; }
     void setQuadrant(int quadrant) { _quadrant = quadrant; }
     void setActionRadius(float minRadius, float maxRadius) { _minRadius = minRadius; _maxRadius = maxRadius;}
 
     // getters
-    quint8 getAttackerId(){ return _attackerId; }
+    int getAttackerId(){ return _attackerId; }
     int getQuadrant() { return _quadrant; }
     float getMinRadius() { return _minRadius; }
     float getMaxRadius() { return _maxRadius; }

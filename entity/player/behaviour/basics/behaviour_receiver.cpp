@@ -81,7 +81,7 @@ void Behaviour_Receiver::run() {
             Position _desiredPosition = getBestPositionWithoutAttacker(_quadrant);
 
             _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
-            _skill_GoToLookTo->setAimPosition(loc()->ourGoal());
+            _skill_GoToLookTo->setAimPosition(loc()->ball());
         }
         else{
             Position _desiredPosition = getReceiverBestPosition(_quadrant, _attackerId, _minRadius, _maxRadius);
@@ -169,7 +169,7 @@ Position Behaviour_Receiver::getReceiverBestPosition(int quadrant, quint8 attack
     size = attackerObstaclesList.size();
     for(int x = 0; x < size; x++){
         Obstacle obstAt = attackerObstaclesList.at(x);
-        if((obstAt.team() == player()->teamId() && obstAt.id() == player()->playerId())){
+        if((obstAt.team() == player()->teamId() && (obstAt.id() == player()->playerId() || obstAt.id() == _attackerId))){
             attackerObstaclesList.removeAt(x);
             break;
         }
