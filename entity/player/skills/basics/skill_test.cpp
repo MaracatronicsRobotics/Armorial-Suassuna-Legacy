@@ -37,7 +37,10 @@ Skill_Test::Skill_Test() {
     _currPos.setUnknown();
     _lastPos.setUnknown();
     _state = STATE_POS;
-    _shootWhenAligned = false;
+
+    shootWhenAligned(false);
+    setKickPower(MRCConstants::_maxKickPower);
+    setIsParabolic(false);
     setMaxPushDistance(1.0);
 }
 
@@ -102,7 +105,7 @@ void Skill_Test::run(){
             if(angleToObjective <= player()->aError()){
                 //std::cout << MRCConstants::red << "angleToObjective: " << MRCConstants::reset << angleToObjective << std::endl;
                 //std::cout << MRCConstants::cyan << "shooted" << MRCConstants::reset << std::endl;
-                player()->kick(MRCConstants::_maxKickPower);
+                player()->kick(_kickPower, _isParabolic);
             }
         }
 

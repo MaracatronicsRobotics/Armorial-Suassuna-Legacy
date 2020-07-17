@@ -37,6 +37,8 @@ private:
     Position _lastPos;
     float _maxPushDistance;
     float _pushedDistance;
+    float _kickPower;
+    bool _isParabolic;
 
     // State machine
     enum {
@@ -53,10 +55,14 @@ private:
 public:
     Skill_Test();
     QString name();
+    // kick
+    void shootWhenAligned(bool shootWhenAligned) { _shootWhenAligned = shootWhenAligned; }
+    void setKickPower(float kickPower) { _kickPower = kickPower; }
+    void setIsParabolic(bool isParabolic) { _isParabolic = isParabolic; }
+    // Push
+    void setMaxPushDistance(float dist) { _maxPushDistance = dist; }
     void setDestination(const Position &destination) { _destination = destination; }
     void setAim(const Position &aim) { _aim = aim; }
-    void shootWhenAligned(bool shootWhenAligned) { _shootWhenAligned = shootWhenAligned; }
-    void setMaxPushDistance(float dist) { _maxPushDistance = dist; }
     float getMaxPushDistance() { return _maxPushDistance; }
     float getPushedDistance() { return _pushedDistance; }
 };
