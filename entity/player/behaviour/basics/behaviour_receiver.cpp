@@ -36,7 +36,7 @@ Behaviour_Receiver::Behaviour_Receiver() {
     _attackerId = NO_ATTACKER;
     setQuadrant(NO_QUADRANT);
     setFollowAttacker(true);
-    setActionRadius(2.0, 4.0);
+    setActionRadius(1.5, 3.5);
 }
 
 void Behaviour_Receiver::configure() {
@@ -56,8 +56,6 @@ void Behaviour_Receiver::configure() {
 };
 
 void Behaviour_Receiver::run() {
-    setQuadrant(getBestQuadrant());
-
     //_attackerId = 1;
     /*
     for(quint8 id = 0; id < MRCConstants::_qtPlayers; id++){

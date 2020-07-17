@@ -81,10 +81,18 @@ Colors::Color Player::teamColor() const{
 void Player::reset(){
     // Errors
     _lError = 0.015;
-    _aError = Angle::toRadians(4.0);
+    _aError = Angle::toRadians(3.0);
 }
 
 /* player info methods */
+double Player::aError(){
+    return _aError;
+}
+
+double Player::lError(){
+    return _lError;
+}
+
 quint8 Player::playerId() const{
     return _playerId;
 }
@@ -427,7 +435,7 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
     double maxValue = 6.0;
     double speed = 0.0;
 
-    if(fabs(angleRobotToObjective) >= GEARSystem::Angle::toRadians(3.0)){
+    if(fabs(angleRobotToObjective) >= _aError){
         if(fabs(angleRobotToObjective) < M_PI / 16.0){
             if(angleRobotToObjective < 0.0)
                 speed = 0.5;

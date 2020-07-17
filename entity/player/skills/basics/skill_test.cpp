@@ -22,12 +22,11 @@
 #include "skill_test.h"
 #include <entity/player/skills/skills_include.h>
 
-#define BALL_MINDIST 0.12
-#define BALL_MINPUSHDISTANCE 0.1
+#define BALL_MINDIST 0.115f
 
-#define BALLPREVISION_MINVELOCITY 0.02
-#define BALLPREVISION_VELOCITY_FACTOR 3.0
-#define BALLPREVISION_FACTOR_LIMIT 0.15
+#define BALLPREVISION_MINVELOCITY 0.02f
+#define BALLPREVISION_VELOCITY_FACTOR 3.0f
+#define BALLPREVISION_FACTOR_LIMIT 0.15f
 
 QString Skill_Test::name() {
     return "Skill_Test";
@@ -39,7 +38,7 @@ Skill_Test::Skill_Test() {
     _lastPos.setUnknown();
     _state = STATE_POS;
     _shootWhenAligned = false;
-    setMaxPushDistance(1.0f);
+    setMaxPushDistance(1.0);
 }
 
 void Skill_Test::run(){
@@ -73,34 +72,12 @@ void Skill_Test::run(){
         _currPos.setUnknown();
         _pushedDistance = 0.0;
 
-        if(player()->distBall() <= BALL_MINDIST && isBallInFront())
-            _state = STATE_TRY;
+        if(player()->distBall() < BALL_MINDIST && isBallInFront())
+            _state = STATE_PUSH;
         else
             player()->goToLookTo(behindBall, loc()->ball(), true, true, false, false, false);
     }
     break;
-    case STATE_TRY:{
-        if(_currPos.isUnknown()){
-            _currPos = loc()->ball();
-            _pushedDistance = 0.0;
-        }
-        _lastPos = _currPos;
-        _currPos = loc()->ball();
-
-        _pushedDistance += WR::Utils::distance(_lastPos, _currPos);
-
-        player()->rotateTo(_aim);
-
-        if(!isBallInFront()){ // se n ta na frente, reposiciona
-            _state = STATE_POS;
-        }
-        else if(_pushedDistance >= BALL_MINPUSHDISTANCE && isBallInFront()){ // se puxou e a bola ta na frente, pode puxar o resto
-            _state = STATE_PUSH;
-        }
-        else if(_pushedDistance >= BALL_MINPUSHDISTANCE && !isBallInFront()){ // se puxou e a bola n ta na frente, reposiciona
-            _state = STATE_POS;
-        }
-    }
     case STATE_PUSH:{
         if(_destination.isUnknown())
             player()->rotateTo(_aim);
@@ -121,15 +98,15 @@ void Skill_Test::run(){
         }
 
         if(_shootWhenAligned){
-            double angleToObjective = fabs(GEARSystem::Angle::toDegrees(player()->getPlayerRotateAngleTo(_aim)));
-            if(angleToObjective <= 3.0){
+            double angleToObjective = fabs(player()->getPlayerRotateAngleTo(_aim));
+            if(angleToObjective <= player()->aError()){
                 //std::cout << MRCConstants::red << "angleToObjective: " << MRCConstants::reset << angleToObjective << std::endl;
                 //std::cout << MRCConstants::cyan << "shooted" << MRCConstants::reset << std::endl;
                 player()->kick(MRCConstants::_maxKickPower);
             }
         }
 
-        if(player()->distBall() > (BALL_MINDIST + 0.02) || !isBallInFront())
+        if(player()->distBall() > (BALL_MINDIST + 0.04f) || !isBallInFront())
             _state = STATE_POS;
     }
     break;

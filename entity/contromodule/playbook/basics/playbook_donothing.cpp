@@ -50,6 +50,9 @@ void Playbook_DoNothing::configure(int numPlayers) {
 
     _rl_default2 = new Role_Default();
     usesRole(_rl_default2);
+
+    _rl_default3 = new Role_Default();
+    usesRole(_rl_default3);
 }
 
 void Playbook_DoNothing::run(int numPlayers) {
@@ -60,6 +63,10 @@ void Playbook_DoNothing::run(int numPlayers) {
     playerId = 3;
     dist()->removePlayer(playerId);
     setPlayerRole(playerId, _rl_default2);
+
+    playerId = 5;
+    dist()->removePlayer(playerId);
+    setPlayerRole(playerId, _rl_default3);
 
     playerId = dist()->getPlayer();
     if(playerId != DIST_INVALID_ID){
