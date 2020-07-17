@@ -33,8 +33,27 @@ void Behaviour_Test::configure() {
 };
 
 void Behaviour_Test::run() {
-    Position aimPos = (PlayerBus::ourPlayerAvailable(3) && player()->playerId() != 3) ? PlayerBus::ourPlayer(3)->position() : getBestAimPosition().first;
-    //std::pair<Position, double> aim = getBestAimPosition();
+    std::pair<Position, double> aim = getBestAimPosition();
+    Position aimPos = aim.first;
+    if(aimPos.isUnknown()){
+        //std::cout << "Tava unknown, ajustei pro centro" << std::endl;
+        aimPos = loc()->ourGoal();
+    }
+    double aimAngle = GEARSystem::Angle::toDegrees(aim.second);
+    //std::cout << MRCConstants::red << "aimAngle = " << MRCConstants::reset << aimAngle << std::endl;
+
+    if(aimAngle <= 7.0 || player()->playerId() == 1){
+        if(player()->playerId() == 3){
+            aimPos = PlayerBus::ourPlayer(1)->position();
+        }
+        else if(player()->playerId() == 1){
+            aimPos = PlayerBus::ourPlayer(5)->position();
+        }
+        else if(player()->playerId() == 5){
+            aimPos = PlayerBus::ourPlayer(3)->position();
+        }
+    }
+
     _skill_test->setAim(aimPos);
     _skill_test->shootWhenAligned(true);
 }

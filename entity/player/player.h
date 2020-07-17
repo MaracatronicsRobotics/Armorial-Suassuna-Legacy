@@ -79,6 +79,10 @@ public:
     bool hasBallPossession() const;
     bool canKickBall() const;
 
+    // Errors
+    double aError();
+    double lError();
+
     // Distances
     float distanceTo(const Position &pos) const;
     float distBall() const;

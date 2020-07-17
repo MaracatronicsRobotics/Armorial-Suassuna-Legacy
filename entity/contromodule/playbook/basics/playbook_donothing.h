@@ -31,6 +31,7 @@ private:
     Role_Goalkeeper *_rl_gk;
     Role_Default *_rl_default;
     Role_Default *_rl_default2;
+    Role_Default *_rl_default3;
     QList<Role_Defender*> _rl_def;
     Role_Defensive_Midfielder *_rl_def_midf;
 

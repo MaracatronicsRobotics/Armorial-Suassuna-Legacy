@@ -54,19 +54,40 @@ void Role_Default::run(){
      * set presentes neles)
     */
 
+    if(PlayerBus::ourPlayerAvailable(1)){
+        if(PlayerBus::ourPlayer(1)->hasBallPossession())
+            _bh_bar->setActionRadius(1.0, 2.0);
+        else
+            if(player()->playerId() != 1) _bh_bar->setActionRadius(1.5, 3.5);
+            else _bh_bar->setActionRadius(2.0, 4.0);
+    }
+
     if(player()->playerId() == 1){
-        if(player()->distBall() <= 0.4f) setBehaviour(5);
+        if(player()->hasBallPossession()){
+            setBehaviour(5);
+        }
         else{
-            _bh_bar2->setAttackerId(3);
-            setBehaviour(6);
+            _bh_bar->setQuadrant(2);
+            _bh_bar->setAttackerId(5);
+            setBehaviour(2);
         }
     }
     else if(player()->playerId() == 3){
         if(player()->hasBallPossession()){
             setBehaviour(5);
         }else{
-            setBehaviour(2);
+            _bh_bar->setQuadrant(1);
             _bh_bar->setAttackerId(1);
+            setBehaviour(2);
+        }
+    }
+    else if(player()->playerId() == 5){
+        if(player()->hasBallPossession()){
+            setBehaviour(5);
+        }else{
+            _bh_bar->setQuadrant(3);
+            _bh_bar->setAttackerId(1);
+            setBehaviour(2);
         }
     }
 
