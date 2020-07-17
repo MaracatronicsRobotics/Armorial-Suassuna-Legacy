@@ -35,8 +35,8 @@ private:
     bool _shootWhenAligned;
     Position _currPos;
     Position _lastPos;
-    double _maxPushDistance;
-    double _pushedDistance;
+    float _maxPushDistance;
+    float _pushedDistance;
 
     // State machine
     enum {
@@ -56,9 +56,9 @@ public:
     void setDestination(const Position &destination) { _destination = destination; }
     void setAim(const Position &aim) { _aim = aim; }
     void shootWhenAligned(bool shootWhenAligned) { _shootWhenAligned = shootWhenAligned; }
-    void setMaxPushDistance(double dist) { _maxPushDistance = dist; }
-    double getMaxPushDistance() { return _maxPushDistance; }
-    double getPushedDistance() { return _pushedDistance; }
+    void setMaxPushDistance(float dist) { _maxPushDistance = dist; }
+    float getMaxPushDistance() { return _maxPushDistance; }
+    float getPushedDistance() { return _pushedDistance; }
 };
 
 #endif // SKILL_TEST_H
