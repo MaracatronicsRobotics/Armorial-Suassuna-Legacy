@@ -390,3 +390,53 @@ bool Locations::isVectorObstructed(Position start, Position end, quint8 ourPlaye
 
     return false;
 }
+
+bool Locations::isVectorObstructed(Position start, Position end, QList<quint8> &ourPlayersToBeRemoved, float margin, bool isBallObstacle) {
+    // Get the list of available Ids from ourTeam and iterates over it
+    QList<Player*> ourPlayers =  _team->avPlayers().values();
+
+    for(int i = 0; i <ourPlayers.size(); i++){
+        Player *currPlayer = ourPlayers.at(i);
+        // Remove a player from the equasion
+        bool removed = false;
+        for(int j = 0; j < ourPlayersToBeRemoved.size(); j++){
+            if(currPlayer->playerId() == ourPlayersToBeRemoved.at(j)){
+                ourPlayers.removeAt(i);
+                i--;
+                removed = true;
+                break;
+            }
+        }
+        if(removed) {
+            continue;
+        }
+
+        // Calculates if the robot is inside the vector considering its margin
+        float distance = WR::Utils::distanceToSegment(start, end, currPlayer->position());
+        if(distance < margin) {
+            return true;
+        }
+    }
+
+    // the same for the rest below
+    QList<Player*> theirPlayers =  _team->opTeam()->avPlayers().values();
+
+    for(int i = 0; i < theirPlayers.size(); i++){
+        Player *currPlayer = theirPlayers.at(i);
+        // Calculates if the robot is inside the vector considering its margin
+        float distance = WR::Utils::distanceToSegment(start, end, currPlayer->position());
+        if(distance < margin) {
+            return true;
+        }
+    }
+
+    if(isBallObstacle){
+        // Calculates if the robot is inside the vector considering its margin
+        float distance = WR::Utils::distanceToSegment(start, end, this->ball());
+        if(distance < margin) {
+            return true;
+        }
+    }
+
+    return false;
+}

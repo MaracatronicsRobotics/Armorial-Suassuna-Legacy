@@ -43,15 +43,40 @@ void Behaviour_Test::run() {
     //std::cout << MRCConstants::red << "aimAngle = " << MRCConstants::reset << aimAngle << std::endl;
 
     if(aimAngle <= 7.0 || player()->playerId() == 1){
+        bool isParabolic = false;
         if(player()->playerId() == 3){
             aimPos = PlayerBus::ourPlayer(1)->position();
+            QList<quint8> removedList;
+            removedList.push_back(1);
+            removedList.push_back(3);
+            isParabolic = loc()->isVectorObstructed(player()->position(), aimPos, removedList, MRCConstants::_robotRadius * 1.5, false);
         }
         else if(player()->playerId() == 1){
             aimPos = PlayerBus::ourPlayer(5)->position();
+            QList<quint8> removedList;
+            removedList.push_back(1);
+            removedList.push_back(5);
+            isParabolic = loc()->isVectorObstructed(player()->position(), aimPos, removedList, MRCConstants::_robotRadius * 1.5, false);
         }
         else if(player()->playerId() == 5){
             aimPos = PlayerBus::ourPlayer(3)->position();
+            QList<quint8> removedList;
+            removedList.push_back(5);
+            removedList.push_back(3);
+            isParabolic = loc()->isVectorObstructed(player()->position(), aimPos, removedList, MRCConstants::_robotRadius * 1.5, false);
         }
+        // set more low kickPower
+        if(isParabolic){
+            _skill_test->setKickPower(0.75 * sqrt((player()->distanceTo(aimPos) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0))));
+            _skill_test->setIsParabolic(isParabolic);
+        }else{
+            _skill_test->setKickPower(std::min(6.0, std::max(3.0, 2.0 * player()->distanceTo(aimPos))));
+            _skill_test->setIsParabolic(isParabolic);
+        }
+    }else{
+        // max kick power
+        _skill_test->setIsParabolic(false);
+        _skill_test->setKickPower(MRCConstants::_maxKickPower);
     }
 
     _skill_test->setAim(aimPos);
