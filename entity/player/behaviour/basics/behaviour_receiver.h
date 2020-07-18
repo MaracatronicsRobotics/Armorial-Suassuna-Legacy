@@ -59,16 +59,14 @@ private:
     enum{
         NO_QUADRANT,
         QUADRANT_UP,
-        QUADRANT_MID,
+        QUADRANT_UPMID,
+        QUADRANT_BOTMID,
         QUADRANT_BOT
     };
 
     // Auxiliary functions
     Position getReceiverBestPosition(int quadrant, quint8 attackerId, float minRadius, float maxRadius);
     Position getBestPositionWithoutAttacker(int quadrant);
-    Position getBestAimPosition();
-    int getBestQuadrant();
-    Position getQuadrantBarycenter(int quadrant);
     std::pair<Position, Position> getQuadrantInitialPosition(int quadrant);
     bool isBallComing(float minVelocity, float radius);
 

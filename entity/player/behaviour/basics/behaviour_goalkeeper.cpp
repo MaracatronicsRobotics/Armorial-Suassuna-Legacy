@@ -66,7 +66,7 @@ void Behaviour_Goalkeeper::run() {
 
     _skill_Goalkeeper->setInterceptAdvance(false);
     _skill_Goalkeeper->setPositionToLook(loc()->ball());
-    _skill_Goalkeeper->setSpeedFactor(1.2);
+    _skill_Goalkeeper->setSpeedFactor(1.3f);
 
     // goToLookTo (posicionamento do goleiro
     Position desiredPosition = getAttackerInterceptPosition();
@@ -89,8 +89,10 @@ void Behaviour_Goalkeeper::run() {
         enableTransition(STATE_GK); // defende!
     }else if(_takeoutEnabled){ // caso n esteja em posse, n esteja indo pro gol ou nenhum dos dois
         if(loc()->isInsideOurArea(loc()->ball(), _takeoutFactor)){ // ve se ta na nossa area com fator de takeout (uma area maiorzinha)
-            _skill_push->shootWhenAligned(true);
+            _skill_push->setKickPower(MRCConstants::_maxKickPower);
             _skill_push->setAim(loc()->theirGoal());
+            _skill_push->shootWhenAligned(true);
+            _skill_push->setIsParabolic(true);
             enableTransition(STATE_PUSH);
         }
         else{ // evitar oscilação (ruido) do visao
