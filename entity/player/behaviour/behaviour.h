@@ -25,6 +25,7 @@
 #include <entity/player/baseplayer.h>
 #include <entity/player/playeraccess.h>
 #include <entity/player/playerbus.h>
+#include <entity/referee/SSLReferee/sslreferee.h>
 #include <QObject>
 
 class Behaviour : public QObject {
@@ -35,7 +36,7 @@ public:
 
     // Called one time before run is first called
     bool isInitialized() { return _initialized; }
-    void initialize(Locations *loc);
+    void initialize(Locations *loc, SSLReferee *ref);
     void setPlayer(Player *player, PlayerAccess *playerAccess);
 
     // Called in Player loop
@@ -51,6 +52,7 @@ protected:
     // Filtered player access on behavior
     PlayerAccess* player();
     Locations *loc();
+    SSLReferee *ref();
 private:
     class SkillTransition {
     private:
@@ -72,6 +74,9 @@ private:
     // Player access
     Player *_player;
     PlayerAccess *_playerAccess;
+
+    // Referee
+    SSLReferee *_ref;
 
     // Game info
     Locations *_loc;

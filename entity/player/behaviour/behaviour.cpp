@@ -30,6 +30,7 @@ Behaviour::Behaviour() {
     _player = NULL;
     _playerAccess = NULL;
     _loc = NULL;
+    _ref = NULL;
     _initialized = false;
 }
 
@@ -49,8 +50,9 @@ Behaviour::~Behaviour() {
     _skillList.clear();
 }
 
-void Behaviour::initialize(Locations *loc) {
+void Behaviour::initialize(Locations *loc, SSLReferee *ref) {
     _loc = loc;
+    _ref = ref;
     // Configurate skills to be used
     _configureEnabled = true;
     configure();
@@ -149,4 +151,10 @@ Locations* Behaviour::loc() {
     if(_loc==NULL)
         std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting loc(), loc not initialized!\n";
     return _loc;
+}
+
+SSLReferee* Behaviour::ref() {
+    if(_ref==NULL)
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting ref(), ref not initialized!\n";
+    return _ref;
 }
