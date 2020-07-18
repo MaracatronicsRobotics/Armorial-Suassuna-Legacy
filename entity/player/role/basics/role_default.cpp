@@ -54,28 +54,28 @@ void Role_Default::run(){
      * set presentes neles)
     */
 
-    if(PlayerBus::ourPlayerAvailable(1)){
-        if(PlayerBus::ourPlayer(1)->hasBallPossession())
-            _bh_bar->setActionRadius(1.0, 2.0);
-        else
-            if(player()->playerId() != 1) _bh_bar->setActionRadius(1.5, 3.5);
-            else _bh_bar->setActionRadius(2.0, 4.0);
-    }
-
+    //_bh_dn->addReceiver(5);
     if(player()->playerId() == 1){
-        if(player()->hasBallPossession()){
-            setBehaviour(5);
-        }
-        else{
+        //if(player()->distBall() <= 0.5f){
+            setBehaviour(BHV_DONOTHING);
+            _bh_dn->clearReceivers();
+            _bh_dn->addReceiver(3);
+            _bh_dn->addReceiver(5);
+        //}
+        /*else{
             _bh_bar->setQuadrant(2);
             _bh_bar->setAttackerId(5);
             setBehaviour(2);
-        }
+        }*/
     }
     else if(player()->playerId() == 3){
         if(player()->hasBallPossession()){
-            setBehaviour(5);
-        }else{
+            setBehaviour(BHV_DONOTHING);
+            _bh_dn->clearReceivers();
+            _bh_dn->addReceiver(1);
+            _bh_dn->addReceiver(5);
+        }
+        else{
             _bh_bar->setQuadrant(1);
             _bh_bar->setAttackerId(1);
             setBehaviour(2);
@@ -83,31 +83,17 @@ void Role_Default::run(){
     }
     else if(player()->playerId() == 5){
         if(player()->hasBallPossession()){
-            setBehaviour(5);
-        }else{
-            _bh_bar->setQuadrant(3);
+            setBehaviour(BHV_DONOTHING);
+            _bh_dn->clearReceivers();
+            _bh_dn->addReceiver(3);
+            _bh_dn->addReceiver(1);
+        }
+        else{
+            _bh_bar->setQuadrant(4);
             _bh_bar->setAttackerId(1);
             setBehaviour(2);
         }
     }
 
-    /*
-    //_bh_dn->addReceiver(5);
-    if(player()->playerId() == 1){
-        if(player()->distBall() <= 0.5f)
-            setBehaviour(BHV_DONOTHING);
-        else{
-            _bh_bar->setAttackerId(5);
-            setBehaviour(2);
-        }
-    }else{
-        if(player()->distBall() <= 0.5f)
-            setBehaviour(BHV_DONOTHING);
-        else{
-            _bh_bar->setAttackerId(1);
-            setBehaviour(2);
-        }
-    }
-    */
 
 }

@@ -25,77 +25,47 @@
 #include <entity/player/behaviour/behaviour.h>
 #include <entity/player/skills/skills_include.h>
 #include <utils/mrctimer/mrctimer.h>
-#include <QObject>
 
 class Behaviour_Attacker : public Behaviour {
-    Q_OBJECT
 private:
     void configure();
     void run();
+
+    // Machine state
     int _state;
+    enum {
+        STATE_CANTKICK,
+        STATE_PUSH
+    };
 
-    QList<quint8> _recvs;
+    // Skill Transitions
+    enum {
+        SKT_POS,
+        SKT_PUSH,
+        SKT_KICK
+    };
 
-    quint8 _bestReceiver;
-    Position _kickPosition;
-    QMutex _mutex;
-
-    std::pair<Position, double> getBestAimPosition();
-    Position calcImpactPositionInGoal();
-    bool isBallInFront();
-    bool isBallAlignedToGoal();
-    bool hasBallAnyPathTo(Position posObjective);
-    bool isBallComing(float minVelocity, float radius);
+    // Receivers
+    QList<quint8> _receiversList;
     quint8 getBestReceiver();
 
-    // Quadrant
-    int getBestQuadrant();
-    Position getQuadrantBarycenter(int quadrant);
-    std::pair<Position, Position> getQuadrantInitialPosition(int quadrant);
-    Position getBestPosition(int quadrant);
-
-    // Info
-    Position bestKickPosition;
-    std::pair<Position, double> bestAimPosition;
-    Position impactPos;
-    Timer timer;
+    // Utils functions
+    bool canTakeBall();
+    quint8 getTheirClosestPlayerToGoal();
+    std::pair<float, Position> getBestAimPosition();
 
 public:
     Behaviour_Attacker();
     QString name();
 
+    // Skills
+    Skill_GoToLookTo *_sk_goToLookTo;
+    Skill_Test *_sk_push;
     Skill_Kick *_sk_kick;
-    Skill_GoToLookTo *_sk_goto;
-    Skill_PushBall2 *_sk_push;
 
-    enum{
-        SKT_KICK,
-        SKT_PUSH,
-        SKT_GOTO
-    };
-
-    enum{
-        STATE_GOTO,
-        STATE_KICK,
-        STATE_PUSH,
-        STATE_PASS,
-        STATE_CANTKICK
-    };
-
-    enum{
-        NO_QUADRANT,
-        QUADRANT_UP,
-        QUADRANT_MID,
-        QUADRANT_BOT
-    };
-
-    void addReceiver(quint8 recvId) { _recvs.push_back(recvId); }
-    void clearReceivers() { _recvs.clear(); }
-
-
-signals:
-    void goingToShoot(quint8 id);
-    void shooted(quint8 id);
+    // Receivers add
+    void addReceiver(quint8 id) { _receiversList.push_back(id); }
+    void clearReceivers()       { _receiversList.clear(); }
 };
 
 #endif // BEHAVIOUR_ATTACKER_H

@@ -56,17 +56,7 @@ void Behaviour_Receiver::configure() {
 };
 
 void Behaviour_Receiver::run() {
-    //_attackerId = 1;
-    /*
-    for(quint8 id = 0; id < MRCConstants::_qtPlayers; id++){
-        if(PlayerBus::ourPlayerAvailable(id))
-            if(PlayerBus::ourPlayer(id)->hasBallPossession())
-                _attackerId = id;
-    }
-    */
-
     player()->dribble(true);
-    Position bestAim = getBestAimPosition();
 
     if(isBallComing(0.2f, 1.0f)){
         _skill_Receiver->setPositionToLook(loc()->ball());
@@ -86,9 +76,7 @@ void Behaviour_Receiver::run() {
         else{
             Position _desiredPosition = getReceiverBestPosition(_quadrant, _attackerId, _minRadius, _maxRadius);
             _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
-            //_skill_GoToLookTo->setAimPosition(bestAim);
             _skill_GoToLookTo->setAimPosition(loc()->ball());
-            //_skill_GoToLookTo->setAimPosition(PlayerBus::ourPlayer(_attackerId)->position());
         }
     }
 }
@@ -103,7 +91,7 @@ Position Behaviour_Receiver::getReceiverBestPosition(int quadrant, quint8 attack
         return Position(false, 0.0, 0.0, 0.0);
     }
 
-    const Position goalPosition = loc()->ourGoal(); // Fundo do gol (pra pegar o goleiro deles)
+    const Position goalPosition = loc()->theirGoal(); // Fundo do gol (pra pegar o goleiro deles)
     const Position attackerPos = PlayerBus::ourPlayer(attackerId)->position(); // Pegar posicao do attacker
     const float distToAttacker = WR::Utils::distance(player()->position(), attackerPos); // Distancia até o atacante
     const std::pair<Position, Position> quadrantPosition = getQuadrantInitialPosition(_quadrant); // Par de posições do quadrante
@@ -225,7 +213,7 @@ Position Behaviour_Receiver::getBestPositionWithoutAttacker(int quadrant){
         return Position(false, 0.0, 0.0, 0.0);
     }
 
-    const Position goalPosition = loc()->ourGoal(); // Fundo do gol (pra pegar o goleiro deles)
+    const Position goalPosition = loc()->theirGoal(); // Fundo do gol (pra pegar o goleiro deles)
     const std::pair<Position, Position> quadrantPosition = getQuadrantInitialPosition(quadrant); // Par de posições do quadrante
     float radius = 4.0; // pegar raio médio pra atuação
 
@@ -284,33 +272,6 @@ Position Behaviour_Receiver::getBestPositionWithoutAttacker(int quadrant){
     return desiredPos;
 }
 
-int Behaviour_Receiver::getBestQuadrant(){
-    double bestDist = 999;
-    int bestQuadrant = 0;
-    for(int x = QUADRANT_UP; x <= QUADRANT_BOT; x++){
-        Position quadrantBarycenter = getQuadrantBarycenter(x);
-        double dist = WR::Utils::distance(player()->position(), quadrantBarycenter);
-        if(dist < bestDist){
-            bestDist = dist;
-            bestQuadrant = x;
-        }
-    }
-
-    return bestQuadrant;
-}
-
-Position Behaviour_Receiver::getQuadrantBarycenter(int quadrant){
-    const float goal_x = loc()->ourGoal().x();
-    const float goal_y = loc()->ourGoal().y();
-
-    std::pair<Position, Position> points = getQuadrantInitialPosition(quadrant);
-
-    const float barycenter_x = (points.first.x() + points.second.x() + goal_x) / 3.0;
-    const float barycenter_y = (points.first.y() + points.second.y() + goal_y) / 3.0;
-
-    return Position(true, barycenter_x, barycenter_y, 0.0);
-}
-
 std::pair<Position, Position> Behaviour_Receiver::getQuadrantInitialPosition(int quadrant){
     if(quadrant == NO_QUADRANT){
         printf("[BEHAVIOUR ATTACKER] Attacker with id %u: quadrant isn't set.\n", player()->playerId());
@@ -330,18 +291,21 @@ std::pair<Position, Position> Behaviour_Receiver::getQuadrantInitialPosition(int
     const Position cen(true, 0.0, 0.0, 0.0);
 
     // Depois trocar isso pra loc().theirSide() !!!!!!
-    bool sideIsLeft = loc()->ourSide().isLeft();
+    bool isRight = loc()->theirSide().isRight();
 
-    if(sideIsLeft){
+    if(isRight){
         switch(quadrant){
         case QUADRANT_UP:
-            return std::make_pair(up, upL);
+            return std::make_pair(upR, up);
         break;
-        case QUADRANT_MID:
-            return std::make_pair(up, bot);
+        case QUADRANT_UPMID:
+            return std::make_pair(up, cen);
+        break;
+        case QUADRANT_BOTMID:
+            return std::make_pair(cen, bot);
         break;
         case QUADRANT_BOT:
-            return std::make_pair(botL, bot);
+            return std::make_pair(bot, botR);
         break;
         default:
             return std::make_pair(Position(false, 0.0, 0.0, 0.0), Position(false, 0.0, 0.0, 0.0));
@@ -350,13 +314,16 @@ std::pair<Position, Position> Behaviour_Receiver::getQuadrantInitialPosition(int
     }else{
         switch(quadrant){
         case QUADRANT_UP:
-            return std::make_pair(upR, up);
+            return std::make_pair(up, upL);
         break;
-        case QUADRANT_MID:
-            return std::make_pair(up, bot);
+        case QUADRANT_UPMID:
+            return std::make_pair(cen, up);
+        break;
+        case QUADRANT_BOTMID:
+            return std::make_pair(bot, cen);
         break;
         case QUADRANT_BOT:
-            return std::make_pair(bot, botR);
+            return std::make_pair(botL, bot);
         break;
         default:
             return std::make_pair(Position(false, 0.0, 0.0, 0.0), Position(false, 0.0, 0.0, 0.0));
@@ -382,101 +349,4 @@ bool Behaviour_Receiver::isBallComing(float minVelocity, float radius) {
     float angError = atan2(radius, player()->distBall());
 
     return (fabs(angDiff) < fabs(angError));
-}
-
-Position Behaviour_Receiver::getBestAimPosition(){
-    // Margin to avoid select the post as aim (or outside it)
-    float postMargin = 0.05*loc()->fieldDefenseWidth()/2;
-
-    // Adjust margin
-    if(loc()->ourSide().isRight()) {
-        postMargin = -postMargin;
-    }
-
-    // shift the position of the post to the center of the goal
-    Position theirGoalRightPost = loc()->ourGoalRightPost();
-    theirGoalRightPost.setPosition(theirGoalRightPost.x(),
-                                   theirGoalRightPost.y() + postMargin,
-                                   theirGoalRightPost.z());
-    Position theirGoalLeftPost = loc()->ourGoalLeftPost();
-    theirGoalLeftPost.setPosition(theirGoalLeftPost.x(),
-                                  theirGoalLeftPost.y() - postMargin,
-                                  theirGoalLeftPost.z());
-    Position posTheirGoal = loc()->ourGoal();
-
-    // get obstacles
-    QList<Obstacle> obstacles = FreeAngles::getObstacles(loc()->ball());
-
-    // Shift the obstacles
-    QList<Obstacle>::iterator obst;
-
-    for(obst = obstacles.begin(); obst != obstacles.end(); obst++) {
-        obst->radius() = 1.2 * MRCConstants::_robotRadius;
-        // access the robot=
-        PlayerAccess *robot = NULL;
-
-        if(player()->opTeamId() == obst->team()) {
-            robot = PlayerBus::theirPlayer(obst->id());
-        } else {
-            robot = PlayerBus::ourPlayer(obst->id());
-        }
-
-        Velocity robotVel;
-        if(robot != NULL) {
-            robotVel = robot->velocity();
-        }
-
-        if(robotVel.abs() > 2*0.015) {
-            float time = WR::Utils::distance(loc()->ball(), obst->position())/8.0f;
-            if(robotVel.abs()*time > 0.2f) {
-                time = 0.2f/robotVel.abs();
-            }
-            obst->position() = WR::Utils::vectorSum(obst->position(), robotVel, time);
-        }
-    }
-
-    // get free angle with the shifted obstacles
-    QList<FreeAngles::Interval> freeAngles = FreeAngles::getFreeAngles(loc()->ball(), theirGoalRightPost, theirGoalLeftPost, obstacles);
-
-    // Get the largest
-
-    float largestAngle=0, largestMid=0;
-
-    if(freeAngles.size()==0) { // Without free angles
-        return Position(false, 0.0, 0.0, 0.0);
-    } else {
-        for(int i=0; i<freeAngles.size(); i++) {
-            float angI = freeAngles.at(i).angInitial();
-            float angF = freeAngles.at(i).angFinal();
-            WR::Utils::angleLimitZeroTwoPi(&angI);
-            WR::Utils::angleLimitZeroTwoPi(&angF);
-            float dif = angF - angI;
-            WR::Utils::angleLimitZeroTwoPi(&dif);
-
-            if(dif>largestAngle) {
-                largestAngle = dif;
-                largestMid = angF - dif/2;
-            }
-        }
-    }
-
-    // With free angles
-
-    // Triangle
-    float x = posTheirGoal.x() - loc()->ball().x();
-    float tg = tan(largestMid);
-    float y = tg*x;
-
-    // Impact point
-    float pos_y = loc()->ball().y() + y;
-    Position impactPos(true, posTheirGoal.x(), pos_y, 0.0);
-
-    // Check if impact pos has enough space for the ball
-    bool obstructedWay = loc()->isVectorObstructed(loc()->ball(), impactPos, player()->playerId(), MRCConstants::_ballRadius*1.5, false);
-
-    if(obstructedWay) {
-        return Position(false, 0.0, 0.0, 0.0);
-    }
-
-    return impactPos;
 }

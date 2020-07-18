@@ -172,7 +172,7 @@ void SSLGameInfo::setBallKicked() {
     if(getState() & READY) {
         setState(GAME_ON);
         if(_color==Colors::YELLOW) // Avoid printing for both yellow and blue
-            std::cout << "[SSLGameInfo] Ball KICKED, game state set to GAMEON.\n";
+            std::cout << MRCConstants::cyan << "[SSLGameInfo] " << MRCConstants::reset << MRCConstants::defaultBold << "Ball KICKED, game state set to GAMEON.\n" << MRCConstants::reset;
     }
 }
 
@@ -221,10 +221,10 @@ void SSLGameInfo::processCommand() {
 
     if(_color==Colors::YELLOW) { // Avoid printing for both yellow and blue
         std::string strcommand = refCommandToString(ref_command);
-        std::cout << "[SSLGameInfo] Processed SSLReferee command: " << strcommand.c_str() << "\n";
+        std::cout << MRCConstants::cyan << "[SSLGameInfo] " << MRCConstants::reset << MRCConstants::defaultBold << "Processed SSLReferee command: " << MRCConstants::reset << strcommand.c_str() << "\n";
         if(ref_command == Referee_Command_BALL_PLACEMENT_BLUE
            || ref_command == Referee_Command_BALL_PLACEMENT_YELLOW){
-            std::cout << "[SSLGameInfo] Placement Position X: " << desiredPosition().x() << " Y: " << desiredPosition().y() << "\n";
+            std::cout << MRCConstants::cyan << "[SSLGameInfo] " << MRCConstants::reset << MRCConstants::defaultBold << "Placement Position X: " << MRCConstants::reset << desiredPosition().x() << MRCConstants::defaultBold << " Y: " << MRCConstants::reset << desiredPosition().y() << "\n";
         }
     }
 }
