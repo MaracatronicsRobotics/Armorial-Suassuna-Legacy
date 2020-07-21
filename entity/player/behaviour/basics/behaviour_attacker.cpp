@@ -110,7 +110,7 @@ void Behaviour_Attacker::run() {
                 bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverPosition, shootList, MRCConstants::_robotRadius * 1.5, false);
 
                 // Adjust kick power based on obstructed path or distance to receiver
-                if(isObstructed) _sk_kick->setPower(0.75 * sqrt((player()->distanceTo(ourReceiverPosition) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0))));
+                if(isObstructed) _sk_kick->setPower(std::min(6.0, 0.75 * sqrt((player()->distanceTo(ourReceiverPosition) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
                 else             _sk_kick->setPower(std::min(6.0, std::max(3.0, 2.0 * player()->distanceTo(ourReceiverPosition))));
 
                 // Set if is parabolic
@@ -155,7 +155,7 @@ void Behaviour_Attacker::run() {
                     bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverPosition, shootList, MRCConstants::_robotRadius * 1.5, false);
                     float power;
                     // Adjust kick power based on obstructed path or distance to receiver
-                    if(isObstructed) power = (0.75 * sqrt((player()->distanceTo(ourReceiverPosition) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0))));
+                    if(isObstructed) power = std::min(6.0, (0.75 * sqrt((player()->distanceTo(ourReceiverPosition) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
                     else             power = (std::min(6.0, std::max(3.0, 2.0 * player()->distanceTo(ourReceiverPosition))));
 
 
