@@ -178,7 +178,7 @@ Position Behaviour_Receiver::getReceiverBestPosition(int quadrant, quint8 attack
     }
 
     //  Pegando free angles do atacante com o free angles do gol
-    float posMinAngle = WR::Utils::getAngle(loc()->ball(), loc()->theirGoal());
+    float posMinAngle = WR::Utils::getAngle(loc()->ball(), posMinRadius);
     float posMaxAngle = WR::Utils::getAngle(loc()->ball(), intersec);
     WR::Utils::angleLimitZeroTwoPi(&posMinAngle);
     WR::Utils::angleLimitZeroTwoPi(&posMaxAngle);
@@ -192,9 +192,9 @@ Position Behaviour_Receiver::getReceiverBestPosition(int quadrant, quint8 attack
     // Switch as posicoes para que o free angles nao pegue um intervalo falso (a posicao menor tem q ser a inicial)
     if(posMaxAngle > posMinAngle){
         initialPos = posMinRadius;
-        finalPos = posMaxRadius;
+        finalPos = intersec;
     }else{
-        initialPos = posMaxRadius;
+        initialPos = intersec;
         finalPos = posMinRadius;
     }
 
