@@ -134,7 +134,7 @@ Position Behaviour_Goalkeeper::getAttackerInterceptPosition() {
         return interceptPosition;
 
     // Calc ball impact based on attacker ori and check if its going to the goal
-    Position posImpact = calcAttackerBallImpact();
+    Position posImpact = ballProjection();
     if(posImpact.isUnknown())
         return interceptPosition;
 
@@ -154,6 +154,37 @@ Position Behaviour_Goalkeeper::getAttackerInterceptPosition() {
     }
 
     return interceptPosition;
+}
+
+Position Behaviour_Goalkeeper::ballProjection(){
+    int poss = -1;
+    float projection;
+    double coefAng;
+    QHash<quint8, Player*>::iterator it;
+    QHash<quint8, Player*> avPlayers = loc()->getOpPlayers();
+
+    for(it=avPlayers.begin(); it!=avPlayers.end(); it++){
+        if((*it)->hasBallPossession()){
+            poss = (*it)->playerId();
+            break;
+        }
+    }
+
+    if (poss == -1){
+        return Position(false, 0.0, 0.0, 0.0);
+    } else {
+        if(!isBallAlignedToGoal(quint8(poss))) return Position(false, 0.0, 0.0, 0.0);
+
+        Position playerPos = PlayerBus::theirPlayer(quint8(poss))->position();
+        Angle anglePlayerBall = PlayerBus::theirPlayer(quint8(poss))->angleTo(loc()->ball());
+
+        coefAng = tan(anglePlayerBall.value());
+        projection = coefAng*(loc()->ourGoal().x() - playerPos.x()) + playerPos.y();
+
+        WR::Utils::limitValue(&projection, -loc()->fieldDefenseWidth()/2.0, loc()->fieldDefenseWidth()/2.0);
+
+        return Position(true, loc()->ourGoal().x(), projection, 0.0);  //coordenada em Y
+    }
 }
 
 Position Behaviour_Goalkeeper::calcAttackerBallImpact() {
@@ -251,4 +282,22 @@ bool Behaviour_Goalkeeper::isBehindBall(Position posObjective){
     float diff = WR::Utils::angleDiff(anglePlayer, angleDest);
 
     return (diff>GEARSystem::Angle::pi/1.5f);
+}
+
+
+
+bool Behaviour_Goalkeeper::isBallAlignedToGoal(quint8 theirPlayerId) {
+    const Position posRightPost = loc()->theirGoalRightPost();
+    const Position posLeftPost = loc()->theirGoalLeftPost();
+
+    Angle angPlayerBall = PlayerBus::theirPlayer(theirPlayerId)->angleTo(loc()->ball());
+    Angle angRightPost = PlayerBus::theirPlayer(theirPlayerId)->angleTo(posRightPost);
+    Angle angLeftPost = PlayerBus::theirPlayer(theirPlayerId)->angleTo(posLeftPost);
+
+    float angDiffPosts = WR::Utils::angleDiff(angRightPost, angLeftPost);
+    // Check angle difference with posts
+    float angDiffRight = WR::Utils::angleDiff(angPlayerBall, angRightPost);
+    float angDiffLeft = WR::Utils::angleDiff(angPlayerBall, angLeftPost);
+
+    return (fabs(angDiffRight)<angDiffPosts && fabs(angDiffLeft)<angDiffPosts);
 }

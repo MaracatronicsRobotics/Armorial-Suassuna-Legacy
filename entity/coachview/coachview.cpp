@@ -32,6 +32,7 @@ MRCTeam* CoachView::_theirTeam = NULL;
 MainWindow* CoachView::_suassunaUI = NULL;
 SSLReferee* CoachView::_ref = NULL;
 Coach* CoachView::_coach = NULL;
+bool CoachView::_isEnabled = false;
 
 QString CoachView::name(){
     return "COACHVIEW";
@@ -62,6 +63,9 @@ CoachView::CoachView() : Entity(ENT_GUI)
 
     // half of the openGL application update
     timeToUpdate = (1000.0 / MRCConstants::guiUpdateFrequency()) / 2.0;
+
+    // set as enabled
+    _isEnabled = true;
 }
 
 CoachView::~CoachView(){

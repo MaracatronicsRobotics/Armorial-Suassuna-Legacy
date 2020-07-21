@@ -29,14 +29,15 @@
 #include <entity/player/navigation/navalgorithm.h>
 #include <entity/player/navigation/fana/fana.h>
 
-Suassuna::Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide)
-    : _teamId(teamId), _teamColor(teamColor), _fieldSide(fieldSide){
+Suassuna::Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide, bool enableGui)
+    : _teamId(teamId), _teamColor(teamColor), _fieldSide(fieldSide), _enableGui(enableGui){
     // Create controller
     _ctr = new Controller();
 
     // Create GUI
-    _ourGUI = new CoachView();
-    //_ourGUI = NULL;
+    if(_enableGui){
+        _ourGUI = new CoachView();
+    }
     
     // Default field setup
     _defaultField = new Fields::SSL2020();
@@ -96,10 +97,12 @@ bool Suassuna::start() {
     _coach->setStrategy(strategy);
 
     // Setup GUI
-    _ourGUI->setTeams(_ourTeam, _theirTeam);
-    _ourGUI->setCoach(_coach);
-    _ourGUI->setReferee(_ref);
-    _world->addEntity(_ourGUI, 2);
+    if(_enableGui){
+        _ourGUI->setTeams(_ourTeam, _theirTeam);
+        _ourGUI->setCoach(_coach);
+        _ourGUI->setReferee(_ref);
+        _world->addEntity(_ourGUI, 2);
+    }
 
     // Setup ball prediction
     /*

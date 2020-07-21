@@ -46,7 +46,7 @@
 class Suassuna
 {
 public:
-    Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide);
+    Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide, bool enableGui);
     ~Suassuna();
 
     // Start
@@ -71,6 +71,7 @@ private:
     Controller *_ctr;
     const Colors::Color _teamColor;
     const FieldSide _fieldSide;
+    const bool _enableGui;
     Fields::Field* _defaultField;
 
     // Modules

@@ -326,7 +326,7 @@ void Player::setSpeed(float x, float y, float theta) {
 
     float currSpeedAbs = sqrt(pow(x, 2) + pow(y, 2));
     float incSpeedAbs = currSpeedAbs - _lastSpeedAbs;
-    float maxAcc = 0.5;
+    float maxAcc = 1.0;
 
     if(fabs(incSpeedAbs) > maxAcc && incSpeedAbs > 0){
         float newSpeed = _lastSpeedAbs + maxAcc;
