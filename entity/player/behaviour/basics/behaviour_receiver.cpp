@@ -51,8 +51,8 @@ void Behaviour_Receiver::configure() {
     _state = STATE_POSITION;
 
     // Initial config
-    _skill_Receiver->setUseKickDevice(true);
-    _skill_Receiver->setInterceptAdvance(true);
+    _skill_Receiver->setUseKickDevice(false);
+    _skill_Receiver->setInterceptAdvance(false);
 };
 
 void Behaviour_Receiver::run() {

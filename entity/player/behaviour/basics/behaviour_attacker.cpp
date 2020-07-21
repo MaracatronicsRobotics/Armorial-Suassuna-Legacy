@@ -102,16 +102,16 @@ void Behaviour_Attacker::run() {
             quint8 bestReceiver = getBestReceiver();
             if(bestReceiver != RECEIVER_INVALID_ID){
                 // Aim to our best receiver
-                Position ourReceiverPosition = PlayerBus::ourPlayer(bestReceiver)->position();
-                _sk_kick->setAim(ourReceiverPosition);
+                Position ourReceiverKickDevice = WR::Utils::getPlayerKickDevice(bestReceiver);
+                _sk_kick->setAim(ourReceiverKickDevice);
 
                 // Check if the path is obstructed
                 QList<quint8> shootList = {player()->playerId(), bestReceiver};
-                bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverPosition, shootList, MRCConstants::_robotRadius * 1.5, false);
+                bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverKickDevice, shootList, MRCConstants::_robotRadius * 1.5, false);
 
                 // Adjust kick power based on obstructed path or distance to receiver
-                if(isObstructed) _sk_kick->setPower(std::min(6.0, 0.75 * sqrt((player()->distanceTo(ourReceiverPosition) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
-                else             _sk_kick->setPower(std::min(6.0, std::max(3.0, 2.0 * player()->distanceTo(ourReceiverPosition))));
+                if(isObstructed) _sk_kick->setPower(std::min(6.0, 0.75 * sqrt((player()->distanceTo(ourReceiverKickDevice) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
+                else             _sk_kick->setPower(std::min(6.0, std::max(3.0, 2.0 * player()->distanceTo(ourReceiverKickDevice))));
 
                 // Set if is parabolic
                 _sk_kick->setIsChip(isObstructed);
@@ -148,26 +148,26 @@ void Behaviour_Attacker::run() {
                 quint8 bestReceiver = getBestReceiver();
                 if(bestReceiver != RECEIVER_INVALID_ID){
                     // Aim to our best receiver
-                    Position ourReceiverPosition = PlayerBus::ourPlayer(bestReceiver)->position();
+                    Position ourReceiverKickDevice = WR::Utils::getPlayerKickDevice(bestReceiver);
 
                     // Check if the path is obstructed
                     QList<quint8> shootList = {player()->playerId(), bestReceiver};
-                    bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverPosition, shootList, MRCConstants::_robotRadius * 1.5, false);
+                    bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverKickDevice, shootList, MRCConstants::_robotRadius * 1.5, false);
                     float power;
                     // Adjust kick power based on obstructed path or distance to receiver
-                    if(isObstructed) power = std::min(6.0, (0.75 * sqrt((player()->distanceTo(ourReceiverPosition) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
-                    else             power = (std::min(6.0, std::max(3.0, 2.0 * player()->distanceTo(ourReceiverPosition))));
+                    if(isObstructed) power = std::min(6.0, (0.75 * sqrt((player()->distanceTo(ourReceiverKickDevice) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
+                    else             power = (std::min(6.0, std::max(3.0, 2.0 * player()->distanceTo(ourReceiverKickDevice))));
 
 
                     // Set if is parabolic and make it shoot when sufficiently aligned to the receiver
                     if(ref()->getGameInfo(player()->team()->teamColor())->ourDirectKick() || ref()->getGameInfo(player()->team()->teamColor())->ourKickoff()){
-                        _sk_kick->setAim(ourReceiverPosition);
+                        _sk_kick->setAim(ourReceiverKickDevice);
                         _sk_kick->setIsChip(isObstructed);
                         _sk_kick->setPower(power);
 
                         enableTransition(SKT_KICK);
                     }else{
-                        _sk_push->setAim(ourReceiverPosition);
+                        _sk_push->setAim(ourReceiverKickDevice);
                         _sk_push->setIsParabolic(isObstructed);
                         _sk_push->setKickPower(power);
                         _sk_push->shootWhenAligned(true);
