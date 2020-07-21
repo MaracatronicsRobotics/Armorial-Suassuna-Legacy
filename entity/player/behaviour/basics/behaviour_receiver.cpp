@@ -147,10 +147,10 @@ Position Behaviour_Receiver::getReceiverBestPosition(int quadrant, quint8 attack
     //Criando o ponto de interseção do free angles do gol com os limites do quadrante
     float intersec_x, intersec_y;
     if (getQuadrant() == QUADRANT_UP){
-        intersec_y = 3.0;
+        intersec_y = loc()->fieldWidth()/2.0;
         intersec_x = (intersec_y / tan(largestGoalAngle)) + loc()->theirGoal().x();
     } else if (getQuadrant() == QUADRANT_BOT){
-        intersec_y = -3.0;
+        intersec_y = -loc()->fieldWidth()/2.0;
         intersec_x = (intersec_y / tan(largestGoalAngle)) + loc()->theirGoal().x();
     } else if (getQuadrant() == QUADRANT_UPMID || getQuadrant() == QUADRANT_BOTMID){
         intersec_x = 0.0;
