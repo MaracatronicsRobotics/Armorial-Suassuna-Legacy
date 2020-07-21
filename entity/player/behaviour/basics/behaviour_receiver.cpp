@@ -144,13 +144,27 @@ Position Behaviour_Receiver::getReceiverBestPosition(int quadrant, quint8 attack
     float posY = radius * sin(posAngle);
     Position goalLinePos(true, goalPosition.x() - posX, posY, 0.0);
 
+    //Criando o ponto de interseção do free angles do gol com os limites do quadrante
+    float intersec_x, intersec_y;
+    if (getQuadrant() == QUADRANT_UP){
+        intersec_y = 3.0;
+        intersec_x = (intersec_y / tan(largestGoalAngle)) + loc()->theirGoal().x();
+    } else if (getQuadrant() == QUADRANT_BOT){
+        intersec_y = -3.0;
+        intersec_x = (intersec_y / tan(largestGoalAngle)) + loc()->theirGoal().x();
+    } else if (getQuadrant() == QUADRANT_UPMID || getQuadrant() == QUADRANT_BOTMID){
+        intersec_x = 0.0;
+        intersec_y = tan(largestGoalAngle)*(intersec_x - loc()->theirGoal().x());
+    }
+    Position intersec = Position(true, intersec_x, intersec_y, 0.0);
+
     //
     //    PARTE DO ATACANTE   //
                               //
 
     // Gerando pontos colineares com a reta formada pela posição do gol com a posição acima, deslocada com o raio minimo e maximo declarados
     const Position posMinRadius = WR::Utils::threePoints(goalPosition, goalLinePos, minRadius, 0.0);
-    const Position posMaxRadius = WR::Utils::threePoints(goalPosition, goalLinePos, maxRadius, 0.0);
+    const Position posMaxRadius = WR::Utils::threePoints(goalPosition, goalLinePos, maxRadius, 0.0);  
 
     // Pegando obstáculos até o atacante para remover o receiver
     QList<Obstacle> attackerObstaclesList = FreeAngles::getObstacles(loc()->ball(), distToAttacker);
@@ -163,11 +177,17 @@ Position Behaviour_Receiver::getReceiverBestPosition(int quadrant, quint8 attack
         }
     }
 
-    // Pegando free angles a partir do atacante
-    float posMinAngle = WR::Utils::getAngle(loc()->ball(), posMinRadius);
-    float posMaxAngle = WR::Utils::getAngle(loc()->ball(), posMaxRadius);
+    //  Pegando free angles do atacante com o free angles do gol
+    float posMinAngle = WR::Utils::getAngle(loc()->ball(), loc()->theirGoal());
+    float posMaxAngle = WR::Utils::getAngle(loc()->ball(), intersec);
     WR::Utils::angleLimitZeroTwoPi(&posMinAngle);
     WR::Utils::angleLimitZeroTwoPi(&posMaxAngle);
+
+//    // Pegando free angles a partir do atacante
+//    float posMinAngle = WR::Utils::getAngle(loc()->ball(), posMinRadius);
+//    float posMaxAngle = WR::Utils::getAngle(loc()->ball(), posMaxRadius);
+//    WR::Utils::angleLimitZeroTwoPi(&posMinAngle);
+//    WR::Utils::angleLimitZeroTwoPi(&posMaxAngle);
 
     // Switch as posicoes para que o free angles nao pegue um intervalo falso (a posicao menor tem q ser a inicial)
     if(posMaxAngle > posMinAngle){
