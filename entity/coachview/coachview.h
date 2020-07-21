@@ -47,6 +47,9 @@ public:
 
     double timeToUpdate;
 
+    // GUI enabled status
+    static bool _isEnabled;
+
 private:
     void initialization();
     void loop();
