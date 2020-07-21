@@ -45,6 +45,8 @@ private:
     Position calcAttackerBallImpact();
     bool isBallComingToGoal(float minSpeed, float postsFactor = 1.0);
     bool isBehindBall(Position posObjective);
+    Position ballProjection();
+    bool isBallAlignedToGoal(quint8 theirPlayerId);
 
     // Skill transitions
     enum{

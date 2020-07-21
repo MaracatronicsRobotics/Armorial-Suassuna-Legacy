@@ -83,77 +83,62 @@ int main(int argc, char *argv[]) {
 
     // Duplicated instance checking
     InstanceChecker::waitIfDuplicated(app.applicationName());
-/*
+
     // Command line parser, get arguments
     QCommandLineParser parser;
     parser.setApplicationDescription("Suassuna application help.");
     parser.addHelpOption();
     parser.addVersionOption();
-    parser.addPositionalArgument("category", "Sets the category ('ssl' or 'vss', default='ssl').");
     parser.addPositionalArgument("teamColor", "Sets the team color ('yellow' or 'blue', default='yellow').");
     parser.addPositionalArgument("fieldSide", "Sets the field side ('right' or 'left', default='right').");
     parser.addPositionalArgument("enableGUI", "Enable or disable the GUI ('true' or 'false', default='true').");
     parser.process(app);
     QStringList args = parser.positionalArguments();
-*/
 
     // Suassuna parameters (with default values)
-    Competitions::Competition competition = Competitions::SSL;
     quint8 ourTeamId = 0;
     Colors::Color ourTeamColor = Colors::YELLOW;
     FieldSide ourFieldSide = Sides::RIGHT;
-    bool enableGUI = false;
+    bool enableGUI = true;
 
     // Check arguments
     // Category
-    /*
+    // Team color
     if(args.size() >= 1) {
         bool valid;
-        competition = validateCategory(args.at(0), &valid);
+        ourTeamColor = validateTeamColor(args.at(0), &valid);
         if(valid==false) {
-            std::cout << ">> Armorial Suassuna: Invalid category argument '" << args.at(0).toStdString() << "'.\n>> Please check help below.\n\n";
-            parser.showHelp();
-            return EXIT_FAILURE;
-        }
-    }
-    
-    // Team color
-    if(args.size() >= 2) {
-        bool valid;
-        ourTeamColor = validateTeamColor(args.at(1), &valid);
-        if(valid==false) {
-            std::cout << ">> Armorial Suassuna: Invalid team color argument '" << args.at(1).toStdString() << "'.\n>> Please check help below.\n\n";
+            std::cout << ">> Armorial Suassuna: Invalid team color argument '" << args.at(0).toStdString() << "'.\n>> Please check help below.\n\n";
             parser.showHelp();
             return EXIT_FAILURE;
         }
     }
     // Field side
-    if(args.size() >= 3) {
+    if(args.size() >= 2) {
         bool valid;
-        ourFieldSide = validateFieldSide(args.at(2), &valid);
+        ourFieldSide = validateFieldSide(args.at(1), &valid);
         if(valid==false) {
-            std::cout << ">> Armorial Suassuna: Invalid field side argument '" << args.at(2).toStdString() << "'.\n>> Please check help below.\n\n";
+            std::cout << ">> Armorial Suassuna: Invalid field side argument '" << args.at(1).toStdString() << "'.\n>> Please check help below.\n\n";
             parser.showHelp();
             return EXIT_FAILURE;
         }
     }
     // Enable GUI
-    if(args.size() >= 4) {
+    if(args.size() >= 3) {
         bool valid;
-        enableGUI = validateEnableGUI(args.at(3), &valid);
+        enableGUI = validateEnableGUI(args.at(2), &valid);
         if(valid==false) {
             std::cout << ">> Armorial Suassuna: Invalid enable GUI argument '" << args.at(2).toStdString() << "'.\n>> Please check help below.\n\n";
             parser.showHelp();
             return EXIT_FAILURE;
         }
     }
-    */
 
     // Setup ExitHandler
     ExitHandler::setApplication(&app);
     ExitHandler::setup();
     // Create and start Suassuna
-    Suassuna suassuna(ourTeamId, ourTeamColor, ourFieldSide);
+    Suassuna suassuna(ourTeamId, ourTeamColor, ourFieldSide, enableGUI);
     suassuna.start();
     // Block main thread
     bool retn = app.exec();
