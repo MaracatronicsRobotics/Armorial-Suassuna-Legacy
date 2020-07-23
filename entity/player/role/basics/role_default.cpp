@@ -55,19 +55,19 @@ void Role_Default::run(){
     */
 
     //_bh_dn->addReceiver(5);
-    if(player()->playerId() == 1){
+    /*if(player()->playerId() == 1){
         //if(player()->distBall() <= 0.5f){
             setBehaviour(BHV_DONOTHING);
             _bh_dn->clearReceivers();
             _bh_dn->addReceiver(3);
-            _bh_dn->addReceiver(5);
+            _bh_dn->addReceiver(5);*/
         //}
         /*else{
             _bh_bar->setQuadrant(2);
             _bh_bar->setAttackerId(5);
             setBehaviour(2);
         }*/
-    }
+    /*}
     else if(player()->playerId() == 3){
         if(player()->hasBallPossession()){
             setBehaviour(BHV_DONOTHING);
@@ -93,7 +93,6 @@ void Role_Default::run(){
             _bh_bar->setAttackerId(1);
             setBehaviour(2);
         }
-    }
-
-
+    }*/
+    setBehaviour(4);
 }
