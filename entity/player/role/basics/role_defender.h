@@ -41,14 +41,17 @@ private:
     void run();
 
     // Parameters
-    int _barrierId;
+    char _barrierSide;
+
+    // Auxiliary Functions
+    float distanceFromMidGoalShoot(char side);
 
 public:
     Role_Defender();
     void initializeBehaviours();
     QString name();
 
-    void setBarrierId(int barrierId) { _barrierId = barrierId; }
+    void setBarrierSide(char barrierSide) { _barrierSide = barrierSide; }
 };
 
 #endif // ROLE_DEFENDER_H
