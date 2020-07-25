@@ -19,43 +19,58 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef ROLE_DEFENDER_H
-#define ROLE_DEFENDER_H
+#ifndef ROLE_STRIKER_H
+#define ROLE_STRIKER_H
 
 #include <entity/player/behaviour/mrcbehaviours.h>
 #include <entity/player/role/role.h>
 
-class Role_Defender : public Role
+class Role_Striker : public Role
 {
+    Q_OBJECT
 private:
     // Behaviours
-    Behaviour_Barrier *_bh_bar;
+    Behaviour_Attacker   *_bh_atk;
+    Behaviour_Penalty_CF *_bh_atp;
+    Behaviour_Receiver   *_bh_rcv;
+    Behaviour_MarkBall   *_bh_mkb;
+    Behaviour_MarkPlayer *_bh_mkp;
 
     // Behaviours Enum
     enum{
-        BEHAVIOUR_BARRIER
+        BEHAVIOUR_ATTACKER,
+        BEHAVIOUR_PENALTYATK,
+        BEHAVIOUR_RECEIVER,
+        BEHAVIOUR_MARKBALL,
+        BEHAVIOUR_MARKPLAYER
     };
+
+    // Parameters
+    bool _config;
+    bool _isMarkNeeded;
+    quint8 _attackerId;
+
+    // Utils functions
+    bool isBallComing(float minVelocity, float radius);
 
     // Inherited functions
     void configure();
     void run();
 
-    // Parameters
-    int _barrierId;
-    bool _barrierCanTakeout;
-    char _barrierSide;
-
-    // Auxiliary Functions
-    float distanceFromMidGoalShoot(char side);
-
 public:
-    Role_Defender();
+    Role_Striker();
     void initializeBehaviours();
     QString name();
 
-    void setBarrierId(int barrierId) { _barrierId = barrierId; }
-    void setBarrierCanTakeout(bool barrierCanTakeout) { _barrierCanTakeout = barrierCanTakeout; }
-    void setBarrierSide(char barrierSide) { _barrierSide = barrierSide; }
+signals:
+    void requestReceivers(quint8 playerId);
+    void requestAttacker();
+    void requestIsMarkNeeded();
+
+public slots:
+    void takeReceiver(quint8 receiverId);
+    void takeAttacker(quint8 attackerId);
+    void takeIsMarkNeeded(bool isMarkNeeded);
 };
 
-#endif // ROLE_DEFENDER_H
+#endif // ROLE_CENTRE_FORWARD_H

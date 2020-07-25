@@ -136,6 +136,7 @@ private:
     FieldDimensions fieldDim;
 
 private:
+    friend class MainWindow;
     void drawFieldLines(FieldDimensions &dimensions);
     void drawRobots();
     void drawRobotsVelocities();

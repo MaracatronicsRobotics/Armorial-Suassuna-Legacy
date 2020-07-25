@@ -227,22 +227,21 @@ bool Behaviour_Attacker::canTakeBall(){
     return !(!player()->canKickBall() || loc()->isInsideOurArea(loc()->ball()) || loc()->isInsideTheirArea(loc()->ball()) || loc()->isOutsideField(loc()->ball()));
 }
 
-quint8 Behaviour_Attacker::getBestReceiver(){
-    if(_receiversList.isEmpty()) return RECEIVER_INVALID_ID;
-    else{
-        float dist = 999.0f;
-        quint8 id = RECEIVER_INVALID_ID;
-        for(int x = 0; x < _receiversList.size(); x++){
-            if(PlayerBus::ourPlayerAvailable(_receiversList.at(x))){
-                float distReceiver = player()->distanceTo(PlayerBus::ourPlayer(_receiversList.at(x))->position());
-                if(distReceiver < dist){
-                    dist = distReceiver;
-                    id = _receiversList.at(x);
-                }
+quint8 Behaviour_Attacker::getBestReceiver(){   
+    float dist = 999.0f;
+    float largestAngle = 0.0f;
+    quint8 id = RECEIVER_INVALID_ID;
+    QList<quint8> list = _receiversList;
+    for(int x = 0; x < list.size(); x++){
+        if(PlayerBus::ourPlayerAvailable(list.at(x))){
+            float distReceiver = player()->distanceTo(PlayerBus::ourPlayer(list.at(x))->position());
+            if(distReceiver < dist){
+                dist = distReceiver;
+                id = list.at(x);
             }
         }
-        return id;
     }
+    return id;
 }
 
 quint8 Behaviour_Attacker::getTheirClosestPlayerToGoal(){
