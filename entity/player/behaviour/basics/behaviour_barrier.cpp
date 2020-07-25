@@ -80,7 +80,7 @@ void Behaviour_Barrier::run() {
 
     // Pos barrier
     Position goalProjection = WR::Utils::projectPointAtSegment(loc()->ourGoalRightMidPost(), loc()->ourGoalLeftMidPost(), markPosition);
-    Position desiredPosition = WR::Utils::threePoints(goalProjection, markPosition, _radius, 0.0f);
+    Position desiredPosition = WR::Utils::threePoints(loc()->ourGoal(), markPosition, _radius, 0.0f);
 
     // Position to look
     Position aimPosition = WR::Utils::threePoints(loc()->ourGoal(), markPosition, 1000.0f, 0.0); // high distance (always will look)
