@@ -44,6 +44,7 @@ void Role_Defender::configure(){
 void Role_Defender::run(){
     _bh_bar->setCanTakeout(_barrierCanTakeout);
 
+    float distance = distanceFromMidGoalShoot(_barrierSide);
     if(loc()->isInsideOurField(loc()->ball())){
         if(_barrierSide == 'r') _bh_bar->setDistanceFromGk(distance);
         else if(_barrierSide == 'l') _bh_bar->setDistanceFromGk(-distance);
