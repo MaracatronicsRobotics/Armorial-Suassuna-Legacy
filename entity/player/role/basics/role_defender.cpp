@@ -37,10 +37,13 @@ void Role_Defender::initializeBehaviours(){
 }
 
 void Role_Defender::configure(){
+    _barrierId = 0;
+    _barrierCanTakeout = false;
 }
 
 void Role_Defender::run(){
-    float distance = distanceFromMidGoalShoot(_barrierSide);
+    _bh_bar->setCanTakeout(_barrierCanTakeout);
+
     if(loc()->isInsideOurField(loc()->ball())){
         if(_barrierSide == 'r') _bh_bar->setDistanceFromGk(distance);
         else if(_barrierSide == 'l') _bh_bar->setDistanceFromGk(-distance);

@@ -33,6 +33,7 @@ SSLStrategy_Halt::SSLStrategy_Halt() {
 
 void SSLStrategy_Halt::configure(int numOurPlayers) {
     usesPlaybook(_pb_doNothing = new Playbook_DoNothing());
+    usesPlaybook(_pb_attack = new Playbook_Attack());
 }
 
 void SSLStrategy_Halt::run(int numOurPlayers) {
@@ -40,7 +41,11 @@ void SSLStrategy_Halt::run(int numOurPlayers) {
         std::cout << "oi bb" << std::endl;
         return;
     }
-    QList<quint8> allPlayers = dist()->getAllPlayers();
-    if(!allPlayers.isEmpty())
-        _pb_doNothing->addPlayers(allPlayers);
+    for(int x = 0; x < numOurPlayers; x++){
+        quint8 id = dist()->getPlayer();
+        if(id % 2 == 0)
+            _pb_doNothing->addPlayer(id);
+        else
+            _pb_attack->addPlayer(id);
+    }
 }

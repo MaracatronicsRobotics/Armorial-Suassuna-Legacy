@@ -52,6 +52,7 @@ public:
     virtual QString name() = 0;
 
     // Auxiliary methods
+    QList<quint8> getPlayers() { return _assignmentTable.keys(); }
     QList<Role*> getRoles() { return _assignmentTable.values(); }
     Colors::Color teamColor() { return _ourTeam->teamColor(); }
 protected:
@@ -70,6 +71,7 @@ protected:
     SSLReferee* ref() { return _ref; }
     Locations* loc() const;
     PlayersDistribution* dist() { return _dist; }
+    MRCTeam* team() { return _ourTeam; }
 private:
     // Implemented by children
     virtual void run(int numPlayers) = 0;

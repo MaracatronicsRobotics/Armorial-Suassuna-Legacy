@@ -24,6 +24,8 @@
 #include <entity/player/playerbus.h>
 #include <const/constants.h>
 
+#include <entity/coachview/soccerview/soccerview.h>
+
 #include <entity/contromodule/strategy/strategystate.h>
 #include <entity/contromodule/playbook/playbook.h>
 

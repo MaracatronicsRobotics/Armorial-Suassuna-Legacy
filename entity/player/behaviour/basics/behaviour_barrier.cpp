@@ -38,6 +38,8 @@ Behaviour_Barrier::Behaviour_Barrier() {
     _sk_gk = NULL;
     _sk_kick = NULL;
     _sk_push = NULL;
+
+    _canTakeout = false;
 }
 
 void Behaviour_Barrier::configure() {
@@ -131,7 +133,7 @@ void Behaviour_Barrier::run() {
     if(player()->distBall() > INTERCEPT_MINBALLDIST && (isBallComing(INTERCEPT_MINBALLVELOCITY, 1.0f) || isBallComingToGoal(INTERCEPT_MINBALLDIST))) {
         enableTransition(STATE_GK);
     } else {
-        if(player()->canKickBall() && player()->distBall() <= 0.4f && !loc()->isInsideOurArea(loc()->ball(), 1.05f) && WR::Utils::distance(player()->position(), loc()->ourGoal()) <= (_radius + 1.5f)){
+        if(player()->canKickBall() && player()->distBall() <= 0.4f && _canTakeout && !loc()->isInsideOurArea(loc()->ball(), 1.05f) && WR::Utils::distance(player()->position(), loc()->ourGoal()) <= (_radius + 1.5f)){
             if(!isBehindBall(loc()->theirGoal())){
                 enableTransition(STATE_PUSH);
             }
