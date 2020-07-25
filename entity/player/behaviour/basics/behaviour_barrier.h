@@ -36,6 +36,7 @@ private:
     float _distanceFromGK;
     float _radius;
     bool _markNearestPlayer;
+    bool _canTakeout;
     quint8 _markPlayerId;
 
     // Sk
@@ -66,6 +67,7 @@ public:
     float getRadius() { return _radius; }
     void setMarkPlayer(quint8 playerId) { _markNearestPlayer = true; _markPlayerId = playerId; }
     void setMarkBall() { _markNearestPlayer = false; }
+    void setCanTakeout(bool canTakeout) { _canTakeout = canTakeout; }
 };
 
 #endif // BEHAVIOUR_BARRIER_H

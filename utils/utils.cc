@@ -248,3 +248,100 @@ Position Utils::hasInterceptionSegments(const Position &s1, const Position &s2, 
 
 
 }
+
+std::pair<Position,Position> Utils::getQuadrantPositions(int quadrant, const FieldSide &side, const Position &ourGoal, const Position &ourFieldTopCorner) {
+    Position initialPos, finalPos;
+
+    // Calc some points
+    const float x = fabs(ourGoal.x());
+    const float y = fabs(ourFieldTopCorner.y());
+
+    const Position upL(true, -x, y, 0.0);
+    const Position up(true, 0.0, y, 0.0);
+    const Position upR(true, x, y, 0.0);
+    const Position botL(true, -x, -y, 0.0);
+    const Position bot(true, 0.0, -y, 0.0);
+    const Position botR(true, x, -y, 0.0);
+    const Position cen(true, 0.0, 0.0, 0.0);
+
+    enum{
+        NO_QUADRANT,
+        QUADRANT_UP,
+        QUADRANT_BOTMID,
+        QUADRANT_UPMID,
+        QUADRANT_BOT
+    };
+
+    // Set initial position
+    if(side.isRight()) {
+        if(quadrant == QUADRANT_UP) {
+            initialPos = bot;
+        }
+
+        if(quadrant == QUADRANT_BOTMID) {
+            initialPos = cen;
+        }
+
+        if(quadrant == QUADRANT_UPMID) {
+            initialPos = up;
+        }
+
+        if(quadrant == QUADRANT_UP) {
+            initialPos = upR;
+        }
+
+    } else {
+        if(quadrant == QUADRANT_UP) {
+            initialPos = up;
+        }
+
+        if(quadrant == QUADRANT_UPMID) {
+            initialPos = cen;
+        }
+
+        if(quadrant == QUADRANT_BOTMID) {
+            initialPos = bot;
+        }
+
+        if(quadrant == QUADRANT_BOT) {
+            initialPos = botL;
+        }
+    }
+
+    // Set final position
+    if(side.isRight()) {
+        if(quadrant == QUADRANT_UP) {
+            finalPos = up;
+        }
+
+        if(quadrant == QUADRANT_UPMID) {
+            finalPos = cen;
+        }
+
+        if(quadrant == QUADRANT_BOTMID) {
+            finalPos = bot;
+        }
+
+        if(quadrant == QUADRANT_BOT) {
+            finalPos = botR;
+        }
+    } else {
+        if(quadrant == QUADRANT_BOT) {
+            finalPos = bot;
+        }
+
+        if(quadrant == QUADRANT_BOTMID) {
+            finalPos = cen;
+        }
+
+        if(quadrant == QUADRANT_UPMID) {
+            finalPos = up;
+        }
+
+        if(quadrant == QUADRANT_UP) {
+            finalPos = upL;
+        }
+    }
+
+    return std::make_pair(initialPos, finalPos);
+}

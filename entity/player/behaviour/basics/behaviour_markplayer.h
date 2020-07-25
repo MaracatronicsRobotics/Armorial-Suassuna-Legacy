@@ -32,8 +32,8 @@ private:
 
     // Parameters
     bool _markBetweenBall;
-    int _targetID;
-    double _markDistance;
+    quint8 _targetID;
+    float _markDistance;
 
     // SKills
     Skill_GoToLookTo *_sk_goto;
@@ -42,8 +42,8 @@ public:
     QString name();
 
     void setMarkBetweenBall(bool markBetweenBall) { _markBetweenBall = markBetweenBall; }
-    void setTargetID(int targetID) { _targetID = targetID; }
-    void setMarkDistance(double markDistance) { _markDistance = markDistance; }
+    void setTargetID(quint8 targetID) { _targetID = targetID; }
+    void setMarkDistance(float markDistance) { _markDistance = markDistance; }
 };
 
 #endif // BEHAVIOUR_MARKPLAYER_H

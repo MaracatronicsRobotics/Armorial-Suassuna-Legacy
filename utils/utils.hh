@@ -68,6 +68,8 @@ namespace WR {
         static bool approximateToZero(float *value, float error = 1e-3);
 
         static Position getPlayerKickDevice(quint8 id);
+
+        static std::pair<Position, Position> getQuadrantPositions(int quadrant, const FieldSide &side, const Position &ourGoal, const Position &ourFieldTopCorner);
     };
 
 }

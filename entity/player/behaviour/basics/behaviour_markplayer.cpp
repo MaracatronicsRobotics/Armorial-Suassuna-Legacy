@@ -27,7 +27,7 @@ QString Behaviour_MarkPlayer::name() {
 
 Behaviour_MarkPlayer::Behaviour_MarkPlayer() {
     _markBetweenBall = true;
-    _targetID = -1;
+    _targetID = 200;
     _markDistance = 0.5;
 }
 
@@ -37,7 +37,7 @@ void Behaviour_MarkPlayer::configure() {
 
 void Behaviour_MarkPlayer::run() {
     /* avoid segfaults */
-    if(_targetID == -1){
+    if(_targetID == 200){
         printf("[BEHAVIOUR MARKPLAYER] Target not set in MarkPlayer (Player id: %u)\n", player()->playerId());
         return ;
     }

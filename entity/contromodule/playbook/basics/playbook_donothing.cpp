@@ -44,31 +44,10 @@ void Playbook_DoNothing::configure(int numPlayers) {
 
     _rl_def_midf = new Role_Defensive_Midfielder();
     usesRole(_rl_def_midf);
-
-    _rl_default = new Role_Default();
-    usesRole(_rl_default);
-
-    _rl_default2 = new Role_Default();
-    usesRole(_rl_default2);
-
-    _rl_default3 = new Role_Default();
-    usesRole(_rl_default3);
 }
 
 void Playbook_DoNothing::run(int numPlayers) {
-    quint8 playerId = 1;
-    dist()->removePlayer(playerId);
-    setPlayerRole(playerId, _rl_default);
-
-    playerId = 3;
-    dist()->removePlayer(playerId);
-    setPlayerRole(playerId, _rl_default2);
-
-    playerId = 5;
-    dist()->removePlayer(playerId);
-    setPlayerRole(playerId, _rl_default3);
-
-    playerId = dist()->getPlayer();
+    quint8 playerId = dist()->getPlayer();
     if(playerId != DIST_INVALID_ID){
         setPlayerRole(playerId, _rl_gk);
     }
@@ -78,12 +57,15 @@ void Playbook_DoNothing::run(int numPlayers) {
         setPlayerRole(playerId, _rl_def_midf);
     }
 */
-
+    QList<quint8> barriers;
     int placedBarriers = 0;
+    float minDist = 999.0f;
+    quint8 id = DIST_INVALID_ID;
     for(int i = 0; i < 3; i++){
         quint8 playerId = dist()->getPlayer();
         if(playerId != DIST_INVALID_ID){
             // place the first barrier in the "quadrant" of the ball
+            barriers.push_back(playerId);
             if(placedBarriers == 0){
                 if(loc()->ball().y() < 0.0f) _rl_def.at(i)->setBarrierSide('r');
                 else _rl_def.at(i)->setBarrierSide('r');
@@ -93,7 +75,20 @@ void Playbook_DoNothing::run(int numPlayers) {
                 else _rl_def.at(i)->setBarrierSide('l');
             }
             setPlayerRole(playerId, _rl_def.at(i));
-            //_rl_def.at(i)->setBarrierSide('c');
+            _rl_def.at(i)->setBarrierId(i);
+            if(PlayerBus::ourPlayerAvailable(playerId)){
+                if(PlayerBus::ourPlayer(playerId)->distBall() < minDist){
+                    minDist = PlayerBus::ourPlayer(playerId)->distBall();
+                    id = playerId;
+                }
+            }
         }
+    }
+
+    for(int x = 0; x < barriers.size(); x++){
+        if(id == barriers.at(x))
+            _rl_def.at(x)->setBarrierCanTakeout(true);
+        else
+            _rl_def.at(x)->setBarrierCanTakeout(false);
     }
 }
