@@ -30,8 +30,13 @@ class Playbook_Attack : public Playbook {
 private:
     // Roles
     Role_Striker *_rl_stk;
-    Role_Striker *_rl_stk2;
-    Role_Striker *_rl_stk3;
+    Role_SecondStriker *_rl_stk2;
+    Role_SecondStriker *_rl_stk3;
+
+    // control striker
+    bool _takeMainAttacker;
+    quint8 mainAttacker;
+    int lastNumPlayers;
 
     void configure(int numPlayers);
     void run(int numPlayers);

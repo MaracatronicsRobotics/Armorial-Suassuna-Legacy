@@ -48,6 +48,8 @@ private:
     // Receivers
     QList<quint8> _receiversList;
     quint8 getBestReceiver();
+    bool _alreadyShooted;
+    quint8 _bestRcv;
 
     // Utils functions
     bool canTakeBall();

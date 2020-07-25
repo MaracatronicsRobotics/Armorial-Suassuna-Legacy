@@ -56,6 +56,50 @@ void Behaviour_Receiver::configure() {
 };
 
 void Behaviour_Receiver::run() {
+    if(ref()->getGameInfo(player()->team()->teamColor())->kickoff()){
+        // kickoff
+        enableTransition(SK_GOTO);
+        if(ref()->getGameInfo(player()->team()->teamColor())->ourKickoff()){
+            if(_quadrant == QUADRANT_UP || _quadrant == QUADRANT_UPMID)
+                _skill_GoToLookTo->setDesiredPosition(Position(true, (loc()->ourSide().isRight()) ? 0.1f : -0.1f, 2.5f, 0.0f));
+            else
+                _skill_GoToLookTo->setDesiredPosition(Position(true, (loc()->ourSide().isRight()) ? 0.1f : -0.1f, -2.5f, 0.0f));
+        }
+        else{
+            if(_quadrant == QUADRANT_UP || _quadrant == QUADRANT_UPMID)
+                _skill_GoToLookTo->setDesiredPosition(Position(true, (loc()->ourSide().isRight()) ? 1.5f : -1.5f, 1.5f, 0.0f));
+            else
+                _skill_GoToLookTo->setDesiredPosition(Position(true, (loc()->ourSide().isRight()) ? 1.5f : -1.5f, -1.5f, 0.0f));
+        }
+        _skill_GoToLookTo->setAimPosition(loc()->theirGoal());
+
+        return ;
+    }
+    else if(!ref()->getGameInfo(player()->team()->teamColor())->gameOn()){
+        // stop
+        enableTransition(SK_GOTO);
+
+        if(PlayerBus::ourPlayerAvailable(_attackerId)){
+            float neededDistance = 0.5f;
+            Position desiredPosition;
+
+            if(_quadrant == QUADRANT_UP || _quadrant == QUADRANT_UPMID)
+                if(loc()->ourSide().isRight()) desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi + GEARSystem::Angle::pi / 16.0);
+                else desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi - GEARSystem::Angle::pi / 16.0);
+            else
+                if(loc()->ourSide().isRight()) desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi - GEARSystem::Angle::pi / 16.0);
+                else desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi + GEARSystem::Angle::pi / 16.0);
+
+            _skill_GoToLookTo->setDesiredPosition(desiredPosition);
+            _skill_GoToLookTo->setAvoidTeammates(false);
+            _skill_GoToLookTo->setAimPosition(loc()->theirGoal());
+        }
+        else{
+            std::cout << MRCConstants::red << "[ERROR]" << MRCConstants::reset << MRCConstants::defaultBold << " attackerId not set to receiver at stop." << std::endl << MRCConstants::reset;
+        }
+
+        return ;
+    }
     player()->dribble(true);
 
     if(isBallComing(0.2f, 1.0f)){

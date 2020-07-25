@@ -56,6 +56,8 @@ void Behaviour_Attacker::configure() {
 
     // Initial state
     _state = STATE_CANTKICK;
+
+    _alreadyShooted = true;
 }
 
 void Behaviour_Attacker::run() {
@@ -98,6 +100,9 @@ void Behaviour_Attacker::run() {
     }
     break;
     case STATE_PUSH:{
+        if(!player()->hasBallPossession() && loc()->ballVelocity().abs() >= 0.2f)
+            _alreadyShooted = true;
+
         if(ref()->getGameInfo(player()->team()->teamColor())->ourIndirectKick()){
             quint8 bestReceiver = getBestReceiver();
             if(bestReceiver != RECEIVER_INVALID_ID){
@@ -107,7 +112,7 @@ void Behaviour_Attacker::run() {
 
                 // Check if the path is obstructed
                 QList<quint8> shootList = {player()->playerId(), bestReceiver};
-                bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverKickDevice, shootList, MRCConstants::_robotRadius * 1.5, false);
+                bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverKickDevice, shootList, MRCConstants::_robotRadius * 3.0, false);
 
                 // Adjust kick power based on obstructed path or distance to receiver
                 if(isObstructed) _sk_kick->setPower(std::min(6.0, 0.75 * sqrt((player()->distanceTo(ourReceiverKickDevice) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
@@ -152,7 +157,7 @@ void Behaviour_Attacker::run() {
 
                     // Check if the path is obstructed
                     QList<quint8> shootList = {player()->playerId(), bestReceiver};
-                    bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverKickDevice, shootList, MRCConstants::_robotRadius * 1.5, false);
+                    bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverKickDevice, shootList, MRCConstants::_robotRadius * 3.0, false);
                     float power;
                     // Adjust kick power based on obstructed path or distance to receiver
                     if(isObstructed) power = std::min(6.0, (0.75 * sqrt((player()->distanceTo(ourReceiverKickDevice) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
@@ -227,21 +232,29 @@ bool Behaviour_Attacker::canTakeBall(){
     return !(!player()->canKickBall() || loc()->isInsideOurArea(loc()->ball()) || loc()->isInsideTheirArea(loc()->ball()) || loc()->isOutsideField(loc()->ball()));
 }
 
-quint8 Behaviour_Attacker::getBestReceiver(){   
-    float dist = 999.0f;
-    float largestAngle = 0.0f;
-    quint8 id = RECEIVER_INVALID_ID;
-    QList<quint8> list = _receiversList;
-    for(int x = 0; x < list.size(); x++){
-        if(PlayerBus::ourPlayerAvailable(list.at(x))){
-            float distReceiver = player()->distanceTo(PlayerBus::ourPlayer(list.at(x))->position());
-            if(distReceiver < dist){
-                dist = distReceiver;
-                id = list.at(x);
+quint8 Behaviour_Attacker::getBestReceiver(){
+    if(!_alreadyShooted){
+        return _bestRcv;
+    }
+    else{
+        float dist = 999.0f;
+        float largestAngle = 0.0f;
+        quint8 id = RECEIVER_INVALID_ID;
+        QList<quint8> list = _receiversList;
+        for(int x = 0; x < list.size(); x++){
+            if(list.at(x) == player()->playerId()) continue;
+            if(PlayerBus::ourPlayerAvailable(list.at(x))){
+                float distReceiver = player()->distanceTo(PlayerBus::ourPlayer(list.at(x))->position());
+                if(distReceiver < dist){
+                    dist = distReceiver;
+                    id = list.at(x);
+                }
             }
         }
+        _alreadyShooted = false;
+        _bestRcv = id;
+        return id;
     }
-    return id;
 }
 
 quint8 Behaviour_Attacker::getTheirClosestPlayerToGoal(){
