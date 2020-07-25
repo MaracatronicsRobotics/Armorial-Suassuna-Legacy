@@ -62,6 +62,7 @@ SOURCES += \
     entity/player/role/basics/role_defender.cpp \
     entity/player/role/basics/role_defensive_midfielder.cpp \
     entity/player/role/basics/role_goalkeeper.cpp \
+    entity/player/role/basics/role_secondstriker.cpp \
     entity/player/role/basics/role_striker.cpp \
     entity/player/skills/basics/skill_aroundtheball.cpp \
     entity/player/skills/basics/skill_dribble.cpp \
@@ -200,6 +201,7 @@ HEADERS += \
     entity/player/role/basics/role_defender.h \
     entity/player/role/basics/role_defensive_midfielder.h \
     entity/player/role/basics/role_goalkeeper.h \
+    entity/player/role/basics/role_secondstriker.h \
     entity/player/role/basics/role_striker.h \
     entity/player/skills/basics/skill_aroundtheball.h \
     entity/player/skills/basics/skill_dribble.h \

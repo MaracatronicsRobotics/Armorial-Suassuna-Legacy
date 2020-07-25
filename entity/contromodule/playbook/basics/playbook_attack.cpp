@@ -26,6 +26,7 @@ QString Playbook_Attack::name() {
 }
 
 Playbook_Attack::Playbook_Attack() {
+    _takeMainAttacker = false;
 }
 
 int Playbook_Attack::maxNumPlayer() {
@@ -34,8 +35,8 @@ int Playbook_Attack::maxNumPlayer() {
 
 void Playbook_Attack::configure(int numPlayers) {
     usesRole(_rl_stk = new Role_Striker());
-    usesRole(_rl_stk2 = new Role_Striker());
-    usesRole(_rl_stk3 = new Role_Striker());
+    usesRole(_rl_stk2 = new Role_SecondStriker());
+    usesRole(_rl_stk3 = new Role_SecondStriker());
 
     // Make connections
     connect(_rl_stk, SIGNAL(requestReceivers(quint8)), this, SLOT(requestReceivers(quint8)), Qt::DirectConnection);
@@ -68,9 +69,20 @@ void Playbook_Attack::configure(int numPlayers) {
 }
 
 void Playbook_Attack::run(int numPlayers) {
-    quint8 player = dist()->getPlayer();
-    if(player != DIST_INVALID_ID) setPlayerRole(player, _rl_stk);
+    if(!_takeMainAttacker || numPlayers != lastNumPlayers){
+        quint8 player = dist()->getKNN(1, loc()->ball()).first();
+        mainAttacker = player;
 
+        _takeMainAttacker = true;
+    }
+
+    lastNumPlayers = numPlayers;
+
+    quint8 player = mainAttacker;
+    if(player != DIST_INVALID_ID){
+        dist()->removePlayer(player);
+        setPlayerRole(player, _rl_stk);
+    }
     player = dist()->getPlayer();
     if(player != DIST_INVALID_ID) setPlayerRole(player, _rl_stk2);
 

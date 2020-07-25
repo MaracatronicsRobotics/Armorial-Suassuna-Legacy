@@ -19,15 +19,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#include "role_striker.h"
+#include "role_secondstriker.h"
 
-QString Role_Striker::name(){
-    return "Role_Striker";
+QString Role_SecondStriker::name(){
+    return "Role_SecondStriker";
 }
 
-Role_Striker::Role_Striker() {
+Role_SecondStriker::Role_SecondStriker() {
     _bh_atk = NULL;
-    _bh_atp = NULL;
     _bh_rcv = NULL;
     _bh_mkb = NULL;
     _bh_mkp = NULL;
@@ -35,19 +34,18 @@ Role_Striker::Role_Striker() {
     _isMarkNeeded = true;
 }
 
-void Role_Striker::initializeBehaviours(){
+void Role_SecondStriker::initializeBehaviours(){
     usesBehaviour(BEHAVIOUR_ATTACKER,   _bh_atk = new Behaviour_Attacker());
-    usesBehaviour(BEHAVIOUR_PENALTYATK, _bh_atp = new Behaviour_Penalty_CF());
     usesBehaviour(BEHAVIOUR_RECEIVER,   _bh_rcv = new Behaviour_Receiver());
     usesBehaviour(BEHAVIOUR_MARKBALL,   _bh_mkb = new Behaviour_MarkBall());
     usesBehaviour(BEHAVIOUR_MARKPLAYER, _bh_mkp = new Behaviour_MarkPlayer());
 }
 
-void Role_Striker::configure(){
+void Role_SecondStriker::configure(){
     _config = false;
 }
 
-void Role_Striker::run(){
+void Role_SecondStriker::run(){
     // Setting initial values for test
     if(player()->playerId() == 1)       _bh_rcv->setQuadrant(2);
     else if(player()->playerId() == 3)  _bh_rcv->setQuadrant(1);
@@ -62,13 +60,19 @@ void Role_Striker::run(){
     }
 
     SSLGameInfo *gameInfo = ref()->getGameInfo(player()->team()->teamColor());
-    if(gameInfo->directKick() || gameInfo->indirectKick() || gameInfo->kickoff() || !gameInfo->gameOn()){
-        // The striker is our main attacker, so he will make the kick (or be in the line between ball and our goal), or just follow ball
-        setBehaviour(BEHAVIOUR_ATTACKER);
+    if(gameInfo->directKick() || gameInfo->indirectKick()){
+        // The second striker needs to mark players when an kick will occur
+        setBehaviour(BEHAVIOUR_MARKPLAYER);
+    }
+    else if(gameInfo->kickoff() || !gameInfo->gameOn()){
+        // At stop or kickoff, the second striker needs to walk together with the main attacker
+        emit requestAttacker();
+        setBehaviour(BEHAVIOUR_RECEIVER);
     }
     else if(gameInfo->penaltyKick()){
         if(gameInfo->ourPenaltyKick())
-            setBehaviour(BEHAVIOUR_PENALTYATK);
+            // mark players at our penalty kick
+            setBehaviour(BEHAVIOUR_MARKPLAYER);
         else{
             // Check what to do here... (new behaviour for positioning?)
         }
@@ -104,7 +108,7 @@ void Role_Striker::run(){
 
 }
 
-bool Role_Striker::isBallComing(float minVelocity, float radius) {
+bool Role_SecondStriker::isBallComing(float minVelocity, float radius) {
     const Position posBall = loc()->ball();
     const Position posPlayer = player()->position();
 
@@ -123,17 +127,17 @@ bool Role_Striker::isBallComing(float minVelocity, float radius) {
     return (fabs(angDiff) < fabs(angError));
 }
 
-void Role_Striker::takeReceiver(quint8 receiverId){
+void Role_SecondStriker::takeReceiver(quint8 receiverId){
     if(_bh_atk == NULL) return ;
     _bh_atk->addReceiver(receiverId);
 }
 
-void Role_Striker::takeAttacker(quint8 attackerId){
+void Role_SecondStriker::takeAttacker(quint8 attackerId){
     if(_bh_rcv == NULL) return ;
     _attackerId = attackerId;
     _bh_rcv->setAttackerId(attackerId);
 }
 
-void Role_Striker::takeIsMarkNeeded(bool isMarkNeeded){
+void Role_SecondStriker::takeIsMarkNeeded(bool isMarkNeeded){
     _isMarkNeeded = isMarkNeeded;
 }
