@@ -326,7 +326,7 @@ void Player::setSpeed(float x, float y, float theta) {
 
     float currSpeedAbs = sqrt(pow(x, 2) + pow(y, 2));
     float incSpeedAbs = currSpeedAbs - _lastSpeedAbs;
-    float maxAcc = 1.0;
+    float maxAcc = 0.5;
 
     if(fabs(incSpeedAbs) > maxAcc && incSpeedAbs > 0){
         float newSpeed = _lastSpeedAbs + maxAcc;
@@ -342,7 +342,7 @@ void Player::setSpeed(float x, float y, float theta) {
     if(isnan(y)) y = 0.0;
 
     // Limit max speed
-    float maxSpeed = 2.5;
+    float maxSpeed = 3.0;
     Velocity robotVel = Velocity(true, x, y);
     if(robotVel.abs() >= maxSpeed){
         // Transform in unitary vector
