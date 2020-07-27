@@ -32,6 +32,7 @@ Role_SecondStriker::Role_SecondStriker() {
     _bh_mkp = NULL;
 
     _isMarkNeeded = true;
+    _markId = DIST_INVALID_ID;
 }
 
 void Role_SecondStriker::initializeBehaviours(){
