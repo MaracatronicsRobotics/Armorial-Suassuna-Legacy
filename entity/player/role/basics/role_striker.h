@@ -49,6 +49,7 @@ private:
     bool _config;
     bool _isMarkNeeded;
     quint8 _attackerId;
+    quint8 _markId;
 
     // Utils functions
     bool isBallComing(float minVelocity, float radius);
@@ -61,6 +62,9 @@ public:
     Role_Striker();
     void initializeBehaviours();
     QString name();
+
+    // Mark
+    void setMarkId(quint8 markId) { _markId = markId; }
 
 signals:
     void requestReceivers(quint8 playerId);

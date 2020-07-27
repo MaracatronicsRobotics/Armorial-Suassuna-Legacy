@@ -61,8 +61,14 @@ void Role_SecondStriker::run(){
 
     SSLGameInfo *gameInfo = ref()->getGameInfo(player()->team()->teamColor());
     if(gameInfo->directKick() || gameInfo->indirectKick()){
-        // The second striker needs to mark players when an kick will occur
-        setBehaviour(BEHAVIOUR_MARKPLAYER);
+        // The second striker needs to mark players or enable receiver when an kick will occur
+        if(_markId != DIST_INVALID_ID){
+            _bh_mkp->setTargetID(_markId);
+            setBehaviour(BEHAVIOUR_MARKPLAYER);
+        }
+        else{
+            setBehaviour(BEHAVIOUR_RECEIVER);
+        }
     }
     else if(gameInfo->kickoff() || !gameInfo->gameOn()){
         // At stop or kickoff, the second striker needs to walk together with the main attacker
@@ -86,9 +92,13 @@ void Role_SecondStriker::run(){
                 setBehaviour(BEHAVIOUR_MARKBALL);
             }
             else{
-                // get this targetid later
-                _bh_mkp->setTargetID(0);
-                setBehaviour(BEHAVIOUR_MARKPLAYER);
+                if(_markId != DIST_INVALID_ID){
+                    _bh_mkp->setTargetID(_markId);
+                    setBehaviour(BEHAVIOUR_MARKPLAYER);
+                }
+                else{
+                    setBehaviour(BEHAVIOUR_RECEIVER);
+                }
             }
         }
         else{
