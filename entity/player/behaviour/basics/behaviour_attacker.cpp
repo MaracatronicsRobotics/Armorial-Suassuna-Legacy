@@ -205,6 +205,9 @@ void Behaviour_Attacker::run() {
                     }
                 }
             }else{
+                // Debug to UI
+                if(CoachView::_isEnabled) CoachView::drawAttackerTriangle(player()->position(), loc()->theirGoalLeftPost(), loc()->theirGoalRightPost());
+                if(CoachView::_isEnabled) CoachView::drawAttackerLine(player()->position(), bestAim.second);
                 // If we have an sufficient opening to their goal, make an direct kick to it
                 if(ref()->getGameInfo(player()->team()->teamColor())->ourDirectKick() || ref()->getGameInfo(player()->team()->teamColor())->ourKickoff()){
                     _sk_kick->setAim(bestAim.second);
