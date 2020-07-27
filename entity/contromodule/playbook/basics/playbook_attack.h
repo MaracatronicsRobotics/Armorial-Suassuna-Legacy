@@ -44,6 +44,7 @@ private:
 
     // Utils
     bool isBallComing(Position playerPosition, float minVelocity, float radius);
+
 public:
     Playbook_Attack();
     QString name();

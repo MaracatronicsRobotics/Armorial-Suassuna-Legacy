@@ -76,6 +76,14 @@ CoachView::~CoachView(){
     delete _suassunaUI;
 }
 
+void CoachView::drawAttackerTriangle(Position a, Position b, Position c){
+    _suassunaUI->drawAttackerTriangle(a, b, c);
+}
+
+void CoachView::drawAttackerLine(Position a, Position b){
+    _suassunaUI->drawAttackerLine(a, b);
+}
+
 void CoachView::initialization(){
    std::cout << MRCConstants::defaultBold << "[COACHVIEW] " << MRCConstants::green << "Thread started.\n" << MRCConstants::reset;
 }
@@ -119,8 +127,6 @@ void CoachView::loop(){
         _timer.start();
     }
 }
-
-
 
 void CoachView::updateTree(StrategyState *strat){
     // Process coach strategy, playbooks, roles and players

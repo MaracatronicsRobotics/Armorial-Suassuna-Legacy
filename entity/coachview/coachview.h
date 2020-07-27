@@ -50,6 +50,10 @@ public:
     // GUI enabled status
     static bool _isEnabled;
 
+    // Attacker functions
+    static void drawAttackerTriangle(Position a, Position b, Position c);
+    static void drawAttackerLine(Position a, Position b);
+
 private:
     void initialization();
     void loop();

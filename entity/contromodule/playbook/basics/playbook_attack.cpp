@@ -83,6 +83,7 @@ void Playbook_Attack::run(int numPlayers) {
         dist()->removePlayer(player);
         setPlayerRole(player, _rl_stk);
     }
+
     player = dist()->getPlayer();
     if(player != DIST_INVALID_ID) setPlayerRole(player, _rl_stk2);
 
