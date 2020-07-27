@@ -42,6 +42,13 @@ private:
     void run(int numPlayers);
     int maxNumPlayer();
 
+    // Mark
+    quint8 _attackerId;
+    QMutex markMutex;
+    QList<quint8> markList;
+    void resetMarkList();
+    quint8 requestMarkPlayer(quint8 playerId);
+
     // Utils
     bool isBallComing(Position playerPosition, float minVelocity, float radius);
 

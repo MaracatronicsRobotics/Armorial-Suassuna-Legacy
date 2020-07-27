@@ -27,6 +27,7 @@ QString Playbook_Attack::name() {
 
 Playbook_Attack::Playbook_Attack() {
     _takeMainAttacker = false;
+    _attackerId == DIST_INVALID_ID;
 }
 
 int Playbook_Attack::maxNumPlayer() {
@@ -65,10 +66,11 @@ void Playbook_Attack::configure(int numPlayers) {
 
     connect(_rl_stk3, SIGNAL(requestIsMarkNeeded()), this, SLOT(requestIsMarkNeeded()), Qt::DirectConnection);
     connect(this, SIGNAL(sendIsMarkNeeded(bool)), _rl_stk3, SLOT(takeIsMarkNeeded(bool)), Qt::DirectConnection);
-
 }
 
 void Playbook_Attack::run(int numPlayers) {
+    resetMarkList();
+
     if(!_takeMainAttacker || numPlayers != lastNumPlayers){
         quint8 player = dist()->getKNN(1, loc()->ball()).first();
         mainAttacker = player;
@@ -80,15 +82,22 @@ void Playbook_Attack::run(int numPlayers) {
 
     quint8 player = mainAttacker;
     if(player != DIST_INVALID_ID){
+        if(player != _attackerId) _rl_stk->setMarkId(requestMarkPlayer(player));
         dist()->removePlayer(player);
         setPlayerRole(player, _rl_stk);
     }
 
     player = dist()->getPlayer();
-    if(player != DIST_INVALID_ID) setPlayerRole(player, _rl_stk2);
+    if(player != DIST_INVALID_ID){
+        if(player != _attackerId) _rl_stk2->setMarkId(requestMarkPlayer(player));
+        setPlayerRole(player, _rl_stk2);
+    }
 
     player = dist()->getPlayer();
-    if(player != DIST_INVALID_ID) setPlayerRole(player, _rl_stk3);
+    if(player != DIST_INVALID_ID){
+        if(player != _attackerId) _rl_stk3->setMarkId(requestMarkPlayer(player));
+        setPlayerRole(player, _rl_stk3);
+    }
 }
 
 void Playbook_Attack::requestReceivers(quint8 playerId){
@@ -107,7 +116,7 @@ void Playbook_Attack::requestReceivers(quint8 playerId){
 }
 
 void Playbook_Attack::requestAttacker(){
-    quint8 playerId = 200;
+    quint8 playerId = DIST_INVALID_ID;
     float maxDist = 999.0f;
     QList<quint8> playersList = getPlayers();
 
@@ -121,6 +130,7 @@ void Playbook_Attack::requestAttacker(){
         }
     }
 
+    _attackerId = playerId;
     emit sendAttacker(playerId);
 }
 
@@ -164,4 +174,73 @@ bool Playbook_Attack::isBallComing(Position playerPosition, float minVelocity, f
     float angError = atan2(radius, WR::Utils::distance(playerPosition, loc()->ball()));
 
     return (fabs(angDiff) < fabs(angError));
+}
+
+void Playbook_Attack::resetMarkList(){
+    markList.clear();
+
+    QList<Player*> list = loc()->getOpPlayers().values();
+    QList<Player*>::iterator it;
+
+    // Remove their defensive players
+    for(it = list.begin(); it != list.end(); it++){
+        if((*it)->distOurGoal() >= 2.0f){
+            markList.push_back((*it)->playerId());
+        }
+    }
+
+    // Remove their closest player to ball
+    float minDist = 999.0f;
+    int pos = DIST_INVALID_ID;
+
+    for(int x = 0; x < markList.size(); x++){
+        if(PlayerBus::theirPlayerAvailable(markList.at(x))){
+            float dist = PlayerBus::theirPlayer(markList.at(x))->distBall();
+            if(dist < minDist){
+                minDist = dist;
+                pos = x;
+            }
+        }
+    }
+
+    if(pos != DIST_INVALID_ID)
+        markList.removeAt(pos);
+
+    // Sort for priority (closest to our goal)
+    for(int x = 0; x < markList.size(); x++){
+        for(int y = 0; y < markList.size(); y++){
+            if(PlayerBus::theirPlayerAvailable(markList.at(y))){
+                if(PlayerBus::theirPlayerAvailable(markList.at(x))){
+                    if(PlayerBus::theirPlayer(markList.at(x))->distTheirGoal() > PlayerBus::theirPlayer(markList.at(y))->distTheirGoal()){
+                        swap(markList[x], markList[y]);
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+quint8 Playbook_Attack::requestMarkPlayer(quint8 playerId){
+    float minDist = 999.0f;
+    quint8 markId = DIST_INVALID_ID;
+    int pos = DIST_INVALID_ID;
+
+    for(int x = 0; x < markList.size(); x++){
+        if(PlayerBus::theirPlayerAvailable(markList.at(x))){
+            if(PlayerBus::ourPlayerAvailable(playerId)){
+                float distance = PlayerBus::ourPlayer(playerId)->distanceTo(PlayerBus::theirPlayer(markList.at(x))->position());
+                if(distance < minDist){
+                    minDist = distance;
+                    markId = markList.at(x);
+                    pos = x;
+                }
+            }
+        }
+    }
+
+    if(pos != DIST_INVALID_ID)
+        markList.removeAt(pos);
+
+    return markId;
 }
