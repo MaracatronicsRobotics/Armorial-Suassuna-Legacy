@@ -381,6 +381,8 @@ void GLSoccerView::paintEvent(QPaintEvent* event)
     glDisable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_MULTISAMPLE);
+    glEnable( GL_BLEND );
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
@@ -392,10 +394,34 @@ void GLSoccerView::paintEvent(QPaintEvent* event)
     drawRobotsNextPositions();
     drawBalls();
     drawBallsVelocities();
+    if(drawAttacker) drawAttackerDebug();
     //vectorTextTest();
     glPopMatrix();
     swapBuffers();
     graphicsMutex.unlock();
+}
+
+void GLSoccerView::addAttackerTriangle(std::pair<Position, std::pair<Position, Position>> triangle){
+    attackerMutex.lock();
+    _attackerTriangle = triangle;
+    attackerMutex.unlock();
+}
+
+void GLSoccerView::addAttackerLine(std::pair<Position, Position> line){
+    attackerMutex.lock();
+    _attackerLine = line;
+    attackerMutex.unlock();
+}
+
+void GLSoccerView::drawAttackerDebug(){
+    attackerMutex.lock();
+    if(!_attackerTriangle.first.isUnknown()){
+        drawTriangle(_attackerTriangle.first, _attackerTriangle.second.first, _attackerTriangle.second.second, RobotZ + 0.01);
+        drawVector(_attackerLine.first, _attackerLine.second, RobotZ + 0.02);
+    }
+    // reset after draw
+    _attackerTriangle.first.setUnknown();
+    attackerMutex.unlock();
 }
 
 void GLSoccerView::drawQuad(vector2d loc1, vector2d loc2, double z)
@@ -441,6 +467,15 @@ void GLSoccerView::drawTriangle(vector2d v1, vector2d v2, vector2d v3, double z)
     glVertex3d(v1.x, v1.y, z);
     glVertex3d(v2.x, v2.y, z);
     glVertex3d(v3.x, v3.y, z);
+    glEnd();
+}
+
+void GLSoccerView::drawTriangle(Position v1, Position v2, Position v3, double z) {
+    glBegin(GL_TRIANGLES);
+    glColor4f(ATTACKER_TRIANGLE_COLOR);
+    glVertex3d(v1.x() * 1000, v1.y() * 1000, z);
+    glVertex3d(v2.x() * 1000, v2.y() * 1000, z);
+    glVertex3d(v3.x() * 1000, v3.y() * 1000, z);
     glEnd();
 }
 
@@ -628,6 +663,31 @@ void GLSoccerView::drawBall(vector2d loc) {
 
 void GLSoccerView::drawVector(vector2d v1, vector2d v2, double z) {
     glColor3d(1.0, 0.0, 0.0);
+
+    const vector2d norm = (v2 - v1).norm();
+    const vector2d perp = (v2 - v1).norm().perp();
+
+    // Line
+    const double quad_half_thickness = 0.5 * 10;
+    const vector2d qv1 = v1 - quad_half_thickness * perp;
+    const vector2d qv2 = v1 + quad_half_thickness * perp;
+    const vector2d qv3 = v2 + quad_half_thickness * perp;
+    const vector2d qv4 = v2 - quad_half_thickness * perp;
+    drawQuad(qv1, qv2, qv3, qv4, z);
+
+    // Triangle
+    const double triangle_thickness = 50;
+    const vector2d tv1 = v2 + 2*triangle_thickness*norm;
+    const vector2d tv2 = v2 + triangle_thickness*perp;
+    const vector2d tv3 = v2 - triangle_thickness*perp;
+    drawTriangle(tv1, tv2, tv3, z);
+}
+
+void GLSoccerView::drawVector(Position pos1, Position pos2, double z) {
+    glColor4d(ATTACKER_LINE_COLOR);
+
+    vector2d v1(pos1.x() * 1000, pos1.y() * 1000);
+    vector2d v2(pos2.x() * 1000, pos2.y() * 1000);
 
     const vector2d norm = (v2 - v1).norm();
     const vector2d perp = (v2 - v1).norm().perp();
