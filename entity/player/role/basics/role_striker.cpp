@@ -33,6 +33,7 @@ Role_Striker::Role_Striker() {
     _bh_mkp = NULL;
 
     _isMarkNeeded = true;
+    _markId = DIST_INVALID_ID;
 }
 
 void Role_Striker::initializeBehaviours(){
@@ -82,9 +83,13 @@ void Role_Striker::run(){
                 setBehaviour(BEHAVIOUR_MARKBALL);
             }
             else{
-                // get this targetid later
-                _bh_mkp->setTargetID(0);
-                setBehaviour(BEHAVIOUR_MARKPLAYER);
+                if(_markId != DIST_INVALID_ID){
+                    _bh_mkp->setTargetID(_markId);
+                    setBehaviour(BEHAVIOUR_MARKPLAYER);
+                }
+                else{
+                    setBehaviour(BEHAVIOUR_RECEIVER);
+                }
             }
         }
         else{
