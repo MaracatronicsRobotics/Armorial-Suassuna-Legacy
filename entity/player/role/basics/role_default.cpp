@@ -26,20 +26,14 @@ QString Role_Default::name(){
 }
 
 Role_Default::Role_Default() {
+
 }
 
 void Role_Default::initializeBehaviours(){
     // Aqui são inseridos os behaviours possíveis de serem usados
     // na ordem: ID do behaviour, instanciação dele
 
-    usesBehaviour(BHV_DONOTHING, _bh_dn = new Behaviour_Attacker());
-    usesBehaviour(1, _bh_gk = new Behaviour_Goalkeeper());
-    usesBehaviour(2, _bh_bar = new Behaviour_Receiver());
-    usesBehaviour(3, _bh_dn2 = new Behaviour_Attacker());
-    usesBehaviour(4, _bh_dn3 = new Behaviour_DoNothing());
-    usesBehaviour(5, _bh_tst = new Behaviour_Test());
-    usesBehaviour(6, _bh_bar2 = new Behaviour_Receiver());
-
+    usesBehaviour(BHV_DONOTHING, _bh_doNothing = new Behaviour_DoNothing());
 }
 
 void Role_Default::configure(){
@@ -54,45 +48,5 @@ void Role_Default::run(){
      * set presentes neles)
     */
 
-    //_bh_dn->addReceiver(5);
-    /*if(player()->playerId() == 1){
-        //if(player()->distBall() <= 0.5f){
-            setBehaviour(BHV_DONOTHING);
-            _bh_dn->clearReceivers();
-            _bh_dn->addReceiver(3);
-            _bh_dn->addReceiver(5);*/
-        //}
-        /*else{
-            _bh_bar->setQuadrant(2);
-            _bh_bar->setAttackerId(5);
-            setBehaviour(2);
-        }*/
-    /*}
-    else if(player()->playerId() == 3){
-        if(player()->hasBallPossession()){
-            setBehaviour(BHV_DONOTHING);
-            _bh_dn->clearReceivers();
-            _bh_dn->addReceiver(1);
-            _bh_dn->addReceiver(5);
-        }
-        else{
-            _bh_bar->setQuadrant(1);
-            _bh_bar->setAttackerId(1);
-            setBehaviour(2);
-        }
-    }
-    else if(player()->playerId() == 5){
-        if(player()->hasBallPossession()){
-            setBehaviour(BHV_DONOTHING);
-            _bh_dn->clearReceivers();
-            _bh_dn->addReceiver(3);
-            _bh_dn->addReceiver(1);
-        }
-        else{
-            _bh_bar->setQuadrant(4);
-            _bh_bar->setAttackerId(1);
-            setBehaviour(2);
-        }
-    }*/
-    setBehaviour(4);
+    setBehaviour(BHV_DONOTHING);
 }

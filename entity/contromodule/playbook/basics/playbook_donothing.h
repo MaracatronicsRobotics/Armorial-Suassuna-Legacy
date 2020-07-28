@@ -31,6 +31,12 @@ private:
     Role_Goalkeeper *_rl_gk;
     QList<Role_Defender*> _rl_def;
     Role_Defensive_Midfielder *_rl_def_midf;
+    Role_Defensive_Midfielder *_rl_def_midf2;
+
+    // Mark
+    QList<quint8> markList;
+    void resetMarkList();
+    quint8 requestMarkPlayer(quint8 playerId);
 
     void configure(int numPlayers);
     void run(int numPlayers);

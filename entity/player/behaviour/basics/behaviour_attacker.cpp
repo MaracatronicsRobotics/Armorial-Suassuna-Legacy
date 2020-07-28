@@ -66,6 +66,12 @@ void Behaviour_Attacker::run() {
 
     switch(_state){
     case STATE_CANTKICK:{
+        // Check if can switch state
+        if(canTakeBall()){
+            _state = STATE_PUSH;
+            break;
+        }
+
         // Transition to goToLookTo
         enableTransition(SKT_POS);
         Position lookPosition, desiredPosition;
@@ -93,10 +99,6 @@ void Behaviour_Attacker::run() {
         _sk_goToLookTo->setAvoidBall(true);
         _sk_goToLookTo->setDesiredPosition(desiredPosition);
         _sk_goToLookTo->setAimPosition(lookPosition);
-
-        // Check if can switch state
-        if(canTakeBall())
-            _state = STATE_PUSH;
     }
     break;
     case STATE_PUSH:{
@@ -241,7 +243,6 @@ quint8 Behaviour_Attacker::getBestReceiver(){
     }
     else{
         float dist = 999.0f;
-        float largestAngle = 0.0f;
         quint8 id = RECEIVER_INVALID_ID;
         QList<quint8> list = _receiversList;
         for(int x = 0; x < list.size(); x++){
