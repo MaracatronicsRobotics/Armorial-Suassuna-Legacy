@@ -244,9 +244,9 @@ void Coach::run(){
     Strategy *strat = strategy();
 
     // run strategy
-    if(strat != NULL){
+    if(strat != NULL && getConstants()!=NULL){
         if(strat->isInitialized() == false){
-            strat->initialize(_ref, _ourTeam, _theirTeam, _utils, _mrcconstants);
+            strat->initialize(_ref, _ourTeam, _theirTeam, _utils, getConstants());
         }
         strat->runStrategy();
     }
@@ -278,3 +278,10 @@ Strategy* Coach::strategy(){
 
     return s;
 }
+
+MRCConstants *Coach::getConstants() {
+    if(_mrcconstants==NULL)
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting getConstants(), _mrcconstants not initialized!\n";
+    return _mrcconstants;
+}
+

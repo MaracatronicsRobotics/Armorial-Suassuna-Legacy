@@ -146,3 +146,10 @@ void NavigationAlgorithm::generatePath() {
     _distance += WR::Utils::distance(_path.last(), _goalPos);
     _path.append(_goalPos);
 }
+
+MRCConstants *NavigationAlgorithm::getConstants() {
+    if(_mrcconstants==NULL)
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting getConstants(), _mrcconstants not initialized!\n";
+    return _mrcconstants;
+}
+

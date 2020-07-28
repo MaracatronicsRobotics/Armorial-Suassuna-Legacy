@@ -46,6 +46,8 @@ protected:
     SSLGameInfo::RefProcessedState getGameState();
     virtual void setStrategyState(int gameState, StrategyState *strategyState);
     void runStrategy(int gameState, SSLGameInfo::RefProcessedState refState);
+    MRCConstants * getConstants();
+
 
 private:
     virtual QString state2str(int gameState) = 0;

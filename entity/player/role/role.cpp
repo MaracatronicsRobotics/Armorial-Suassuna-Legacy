@@ -63,10 +63,6 @@ void Role::initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc, SSLR
     _loc = loc;
     _ref = ref;
     _mrcconstants=mrcconstants;
-    if(_mrcconstants == NULL){
-        std::cout<<"NULOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO"<<std::endl;
-    }
-
     // Configure Role
     _configureEnabled = true;
     _bh_dn = new Behaviour_DoNothing();
@@ -85,7 +81,7 @@ void Role::setPlayer(Player *player, PlayerAccess *playerAccess){
 }
 
 void Role::runRole(){
-    if(_behaviourList.size() == 0){
+    if(_behaviourList.size() == 0 && getConstants()==NULL){
         std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << " has no behaviours set!\n";
         return ;
     }
@@ -177,3 +173,10 @@ PlayerAccess* Role::player(){
     }
     return _playerAccess;
 }
+
+MRCConstants *Role::getConstants() {
+    if(_mrcconstants==NULL)
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting getConstants(), _mrcconstants not initialized!\n";
+    return _mrcconstants;
+}
+

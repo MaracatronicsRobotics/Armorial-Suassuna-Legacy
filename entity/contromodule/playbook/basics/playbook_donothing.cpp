@@ -26,7 +26,6 @@ QString Playbook_DoNothing::name() {
 }
 
 Playbook_DoNothing::Playbook_DoNothing() {
-    _mrcconstants=getConstants();
 }
 
 int Playbook_DoNothing::maxNumPlayer() {
