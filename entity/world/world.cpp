@@ -43,7 +43,7 @@ World::World(Controller *ctr, Fields::Field *defaultField,MRCConstants *mrcconst
     _wmUpdater->setDefaultFieldGeometry(_wm);
 
     // Set self loop time
-    this->setLoopFrequency(_mrcconstants->getThreadFrequency());
+    this->setLoopFrequency(getConstants()->getThreadFrequency());
 
     // Initialize
     _ctrModule = NULL;
@@ -85,9 +85,9 @@ void World::initialization() {
         // Start entity thread
         for(QList<Entity*>::const_iterator ie=ents.constBegin(); ie!=ents.constEnd(); ie++) {
             if((*ie)->entityType() == EntityType::ENT_GUI)
-                (*ie)->setLoopFrequency(_mrcconstants->getGuiUpdateFrequency());
+                (*ie)->setLoopFrequency(getConstants()->getGuiUpdateFrequency());
              else
-                (*ie)->setLoopFrequency(_mrcconstants->getThreadFrequency());
+                (*ie)->setLoopFrequency(getConstants()->getThreadFrequency());
 
             (*ie)->start();
         }
@@ -234,4 +234,11 @@ void World::wmLockRead() {
 
 void World::wmUnlock() {
     _wmLock.unlock();
+}
+
+
+MRCConstants *World::getConstants() {
+    if(_mrcconstants==NULL)
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting getConstants(), _mrcconstants not initialized!\n";
+    return _mrcconstants;
 }

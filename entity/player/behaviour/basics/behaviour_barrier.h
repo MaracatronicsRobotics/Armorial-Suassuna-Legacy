@@ -59,7 +59,6 @@ private:
     bool isBallComingToGoal(float minSpeed, float postsFactor = 1.0);
     bool isBehindBall(Position posObjective);
     bool isBallComing(float minVelocity, float radius);
-    MRCConstants *_mrcconstants;
 
 public:
     Behaviour_Barrier();

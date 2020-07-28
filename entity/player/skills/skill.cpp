@@ -46,3 +46,9 @@ void Skill::runSkill(){
     // Skill implemented by child of this class
     run();
 }
+
+MRCConstants *Skill::getConstants() {
+    if(_mrcconstants==NULL)
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting getConstants(), _mrcconstants not initialized!\n";
+    return _mrcconstants;
+}

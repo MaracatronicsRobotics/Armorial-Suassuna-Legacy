@@ -113,5 +113,6 @@ private:
     QPixmap getPlaybookPixmap(QString playbook);
     QList<QPixmap> robotsPixmaps;
     MRCConstants *_mrcconstants;
+    MRCConstants *getConstants();
 };
 #endif // MAINWINDOW_H

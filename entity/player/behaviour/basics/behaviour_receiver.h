@@ -43,7 +43,7 @@ private:
     int _state;
     float _minRadius;
     float _maxRadius;
-    MRCConstants *_mrcconstants;
+
 
     // Transitions and states enums
     enum {
