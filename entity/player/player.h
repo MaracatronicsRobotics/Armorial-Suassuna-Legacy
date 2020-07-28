@@ -123,6 +123,7 @@ private:
     void initialization();
     void loop();
     void finalization();
+    MRCConstants *getConstants();
 
     // Player info
     quint8 _playerId;

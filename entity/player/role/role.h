@@ -54,7 +54,7 @@ public:
     QHash<int, Behaviour*> getBehaviours();
     virtual QString name() = 0;
     int getActualBehaviour();
-    MRCConstants *getConstants(){return _mrcconstants;}
+
 
     // PlayerAcess
     PlayerAccess* player();
@@ -74,6 +74,8 @@ protected:
     // Utils, loc and player access
     Locations* loc();
     SSLReferee* ref();
+    MRCConstants * getConstants();
+
 
 private:
     // Implemented by role children

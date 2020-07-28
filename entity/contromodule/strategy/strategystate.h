@@ -58,6 +58,8 @@ protected:
     SSLReferee* ref() { return _ref; }
     Locations* loc() const;
     PlayersDistribution* dist() { return _dist; }
+
+    MRCConstants *getConstants();
 private:
     // Implemented by children
     virtual void configure(int numOurPlayers) = 0;

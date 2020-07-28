@@ -71,9 +71,9 @@ SSLGameInfo::RefProcessedState Strategy::getGameState(){
 void Strategy::runStrategy(int gameState, SSLGameInfo::RefProcessedState refState) {
     // Get current StrategyState and run
     StrategyState *strategyState = getStrategyState(gameState);
-    if(strategyState!=NULL) {
+    if(strategyState!=NULL && getConstants()!=NULL) {
         if(strategyState->isInitialized()==false)
-            strategyState->initialize(_ourTeam, _theirTeam, _utils, _dist, &_kickerId, &_lastState, _ref, _mrcconstants);
+            strategyState->initialize(_ourTeam, _theirTeam, _utils, _dist, &_kickerId, &_lastState, _ref, getConstants());
 
         _lastStrategy = strategyState;
         strategyState->runStrategyState();
@@ -99,3 +99,10 @@ StrategyState* Strategy::getStrategyState(int gameState) {
     // Return StrategyState
     return _strategyStatesTable.value(gameState);
 }
+
+MRCConstants *Strategy::getConstants() {
+    if(_mrcconstants==NULL)
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting getConstants(), _mrcconstants not initialized!\n";
+    return _mrcconstants;
+}
+

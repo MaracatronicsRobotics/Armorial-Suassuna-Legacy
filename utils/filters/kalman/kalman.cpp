@@ -120,7 +120,7 @@ void KalmanFilter2D::iterate(const Position &pos) {
 }
 
 void KalmanFilter2D::predict() {
-
+    if(_mrcconstants == NULL) return;
     // Get iteration time
     _timer.stop();
     const float T = (1.0 / _mrcconstants->getThreadFrequency()) * 1E3; // ms;

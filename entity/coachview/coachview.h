@@ -79,6 +79,7 @@ private:
     Timer _timer;
 
     MRCConstants *_mrcconstants;
+    MRCConstants *getConstants();
 };
 
 #endif // COACHVIEW_H

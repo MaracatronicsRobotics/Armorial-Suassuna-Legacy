@@ -58,7 +58,7 @@ public:
 
 protected:
     Locations* loc() { return _loc; }
-    MRCConstants * getConstants(){return _mrcconstants;}
+    MRCConstants * getConstants();
 
     // Origin access
     Position originPos() const { return _originPos; }

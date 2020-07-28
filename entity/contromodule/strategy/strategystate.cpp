@@ -59,6 +59,7 @@ void StrategyState::initialize(MRCTeam *ourTeam, MRCTeam *theirTeam, CoachUtils 
 }
 
 void StrategyState::runStrategyState() {
+    if(getConstants()==NULL) return;
     // don't make changes when timeout or halt is enabled
     if(_ref->getGameInfo(_ourTeam->teamColor())->timeOut() || !_ref->getGameInfo(_ourTeam->teamColor())->canMove())
         return;
@@ -78,8 +79,8 @@ void StrategyState::runStrategyState() {
         Playbook *playbook = *it;
         // Initialize playbooks (initialized before run() because it modifies
         // players in playbook and already needs it with available players lists)
-        if(playbook->isInitialized()==false)
-            playbook->initialize(_ourTeam, _theirTeam, _utils, _kickerId, _lastState, _ref, _mrcconstants);
+        if(playbook->isInitialized()==false && getConstants()!=NULL)
+            playbook->initialize(_ourTeam, _theirTeam, _utils, _kickerId, _lastState, _ref, getConstants());
         // Clear old players added
         playbook->clearPlayers();
     }
@@ -168,4 +169,11 @@ quint8 StrategyState::ballPossession() const {
 
 Colors::Color StrategyState::teamColor(){
     return _ourTeam->teamColor();
+}
+
+
+MRCConstants *StrategyState::getConstants() {
+    if(_mrcconstants==NULL)
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting getConstants(), _mrcconstants not initialized!\n";
+    return _mrcconstants;
 }

@@ -17,6 +17,7 @@ private:
     void initialization();
     void loop();
     void finalization();
+    MRCConstants *getConstants();
 public:
     BallSensor(SSLReferee *ref, WorldMap *wm, MRCConstants *mrcconstants);
     QString name();

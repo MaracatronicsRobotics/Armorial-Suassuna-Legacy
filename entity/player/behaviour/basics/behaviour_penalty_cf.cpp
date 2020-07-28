@@ -27,7 +27,7 @@ QString Behaviour_Penalty_CF::name() {
 }
 
 Behaviour_Penalty_CF::Behaviour_Penalty_CF() {
-    _mrcconstants=getConstants();
+
     _skill_kick = NULL;
     _skill_goToLookTo = NULL;
 }
@@ -42,8 +42,8 @@ void Behaviour_Penalty_CF::configure() {
 }
 
 void Behaviour_Penalty_CF::run() {
-
-    _skill_kick->setPower(_mrcconstants->getMaxKickPower());
+    if(getConstants()==NULL)return;
+    _skill_kick->setPower(getConstants()->getMaxKickPower());
 
     /*const float minAngle = WR::Utils::getAngle(loc()->ball(), loc()->ourGoalRightPost());
     const float maxAngle = WR::Utils::getAngle(loc()->ball(), loc()->ourGoalLeftPost());

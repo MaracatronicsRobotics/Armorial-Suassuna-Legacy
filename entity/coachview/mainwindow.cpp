@@ -29,7 +29,7 @@
 #include <QStyleFactory>
 
 void MainWindow::resetRobots(){
-    for(quint8 x = 0; x < _mrcconstants->getQtPlayers(); x++){
+    for(quint8 x = 0; x < getConstants()->getQtPlayers() && getConstants() != NULL; x++){
         setPlayerBattery(x, 0);
         setPlayerKickCharge(x, 0);
         setPlayerRole(x, "None");
@@ -276,7 +276,7 @@ void MainWindow::setupTeams(MRCTeam *our, MRCTeam *their, QString opTeam){
         ui->team_y->setPixmap(QPixmap(":/textures/textures/ui/defaultteam.png"));
     }
 
-    for(int x = 0; x < _mrcconstants->getQtPlayers(); x++){
+    for(int x = 0; x < getConstants()->getQtPlayers(); x++){
         char str[50];
         if(_ourTeam->teamColor() == Colors::Color::YELLOW) sprintf(str, ":/textures/textures/robots/yellow/y%d.png", x);
         else sprintf(str, ":/textures/textures/robots/blue/b%d.png", x);
@@ -545,3 +545,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+MRCConstants *MainWindow::getConstants() {
+    if(_mrcconstants==NULL)
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "MainWindow" << ", requesting getConstants(), _mrcconstants not initialized!\n";
+    return _mrcconstants;
+}
