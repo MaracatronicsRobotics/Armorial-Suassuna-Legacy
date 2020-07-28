@@ -73,11 +73,14 @@ void Role_Defensive_Midfielder::run(){
     }
     else if(player()->team()->opTeam()->hasBallPossession() && loc()->isInsideOurField(loc()->ball())){
         quint8 playerId = getOurPlayerClosestToBall();
+        std::cout << "closest: " << int(playerId) << std::endl;
         if(playerId == DIST_INVALID_ID){
             setBehaviour(BEHAVIOUR_MARKBALL);
         }
         else{
             float ourPlayerMinDist = PlayerBus::ourPlayer(playerId)->distBall();
+            std::cout << "dist: " << ourPlayerMinDist << std::endl;
+            std::cout << "myDist: " << player()->distBall() << std::endl;
             // If we are more far to the enemy than our closest player
             if(ourPlayerMinDist <= player()->distBall()){
                 // setting radius
@@ -118,13 +121,14 @@ quint8 Role_Defensive_Midfielder::getOurPlayerClosestToBall(){
     for(quint8 id = 0; id < MRCConstants::_qtPlayers; id++){
         if(id == player()->playerId()) continue;
         if(PlayerBus::ourPlayerAvailable(id)){
-            double distToBall = PlayerBus::ourPlayer(id)->distBall();
-            if(closestDist <= distToBall){
+            float distToBall = PlayerBus::ourPlayer(id)->distBall();
+            if(distToBall <= closestDist){
                 closestDist = distToBall;
                 playerId = id;
             }
         }
     }
+
     return playerId;
 }
 
@@ -133,8 +137,8 @@ quint8 Role_Defensive_Midfielder::getTheirPlayerClosestToBall(){
     quint8 playerId   = DIST_INVALID_ID;
     for(quint8 id = 0; id < MRCConstants::_qtPlayers; id++){
         if(PlayerBus::theirPlayerAvailable(id)){
-            double distToBall = PlayerBus::theirPlayer(id)->distBall();
-            if(closestDist <= distToBall){
+            float distToBall = PlayerBus::theirPlayer(id)->distBall();
+            if(distToBall <= closestDist){
                 closestDist = distToBall;
                 playerId = id;
             }
