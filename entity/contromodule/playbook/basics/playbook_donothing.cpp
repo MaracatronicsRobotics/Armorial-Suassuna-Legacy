@@ -53,7 +53,7 @@ void Playbook_DoNothing::run(int numPlayers) {
     resetMarkList();
 
     // Taking the goalkeeper
-    quint8 playerId = dist()->getGK();
+    quint8 playerId = dist()->getPlayer();
     if(playerId != DIST_INVALID_ID){
         setPlayerRole(playerId, _rl_gk);
     }
