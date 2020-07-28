@@ -46,7 +46,7 @@ void Skill_InterceptBall::run() {
     const Position unitaryBallVelocity = Position(true, ballVelocity.x()/ballVelocity.abs(), ballVelocity.y()/ballVelocity.abs(), 0.0);
 
     // Check ball speed (maybe a error)
-    if(ballVelocity.abs() <= 0.1)
+    if(ballVelocity.abs() <= 0.1f)
         objectivePos = loc()->ball(); // manter posicao
     else{
         // Now ball velocity line (pos + uni_velocity vector)
@@ -70,25 +70,9 @@ void Skill_InterceptBall::run() {
     if(_interceptAdvance)
         objectivePos = WR::Utils::threePoints(objectivePos, loc()->ball(), 0.1f, 0.0);
 
-    double velocityNeeded = (ballVelocity.abs() * player()->distanceTo(objectivePos)) / (WR::Utils::distance(posBall, objectivePos));
+    float velocityNeeded = (ballVelocity.abs() * player()->distanceTo(objectivePos)) / (WR::Utils::distance(posBall, objectivePos));
 
     player()->goToLookTo(objectivePos, _posLook, true, true, false, false, false, _speedFactor * velocityNeeded, true);
     //player()->goTo(objectivePos, 0, true, _speedFactor * velocityNeeded);
     player()->dribble(true);
-}
-
-bool Skill_InterceptBall::isBehindBall(const Position &destination, float angularPrecision) {
-    Position posBall = loc()->ball();
-    Position posPlayer = player()->position();
-
-    // Translate the position of the player to the front
-    float xPlayer = posPlayer.x() + cos(player()->orientation().value())*MRCConstants::_robotRadius;
-    float yPlayer = posPlayer.y() + sin(player()->orientation().value())*MRCConstants::_robotRadius;
-    posPlayer.setPosition(xPlayer, yPlayer, posPlayer.z());
-
-    // Calc
-    float anglePlayer = WR::Utils::getAngle(posBall, posPlayer);
-    float angleDest = WR::Utils::getAngle(posBall, destination);
-    float diff = WR::Utils::angleDiff(anglePlayer, angleDest);
-    return (diff>angularPrecision);
 }
