@@ -72,6 +72,7 @@ protected:
     Locations* loc() const;
     PlayersDistribution* dist() { return _dist; }
     MRCTeam* team() { return _ourTeam; }
+    MRCConstants *getConstants();
 private:
     // Implemented by children
     virtual void run(int numPlayers) = 0;

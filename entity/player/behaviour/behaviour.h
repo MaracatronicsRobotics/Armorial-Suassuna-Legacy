@@ -74,13 +74,13 @@ private:
     // Player access
     Player *_player;
     PlayerAccess *_playerAccess;
+    MRCConstants *_mrcconstants;
 
     // Referee
     SSLReferee *_ref;
 
     // Game info
     Locations *_loc;
-    MRCConstants *_mrcconstants;
 
     // State machine encapsulation
     QHash<int,SkillTransition*> _transitionTable;

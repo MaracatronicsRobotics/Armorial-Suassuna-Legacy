@@ -42,7 +42,7 @@ public:
 protected:
     Player *player() { return _player; }
     Locations *loc() { return _loc; }
-    MRCConstants *getConstants(){return _mrcconstants;}
+    MRCConstants *getConstants();
 
 private:
     virtual void run() = 0;

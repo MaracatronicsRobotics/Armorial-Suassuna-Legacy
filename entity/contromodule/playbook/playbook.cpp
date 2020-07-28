@@ -211,3 +211,10 @@ int Playbook::numPlayers() {
 bool Playbook::canKickBall() const {
     return _ref->getGameInfo(_ourTeam->teamColor())->canKickBall();
 }
+
+MRCConstants *Playbook::getConstants() {
+    if(_mrcconstants==NULL)
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting getConstants(), _mrcconstants not initialized!\n";
+    return _mrcconstants;
+}
+

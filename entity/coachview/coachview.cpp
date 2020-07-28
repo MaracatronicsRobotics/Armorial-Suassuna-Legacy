@@ -64,11 +64,11 @@ CoachView::CoachView( MRCConstants *mrcconstants) : Entity(ENT_GUI)
     _timer.start();
 
     // half of the openGL application update
-    timeToUpdate = (1000.0 / _mrcconstants->getGuiUpdateFrequency()) / 2.0;
     
 
     // set as enabled
     _isEnabled = true;
+    timeToUpdate = (1000.0 / getConstants()->getGuiUpdateFrequency()) / 2.0;
 }
 
 CoachView::~CoachView(){
@@ -90,6 +90,7 @@ void CoachView::initialization(){
 }
 
 void CoachView::loop(){
+    if(getConstants()==NULL) return;
     // Update GUI
     _suassunaUI->updateGUI(_ourTeam, _theirTeam, _ourTeam->loc());
 
@@ -118,7 +119,7 @@ void CoachView::loop(){
 
         // process players avaliability
         QHash<quint8, Player*> ourPlayers = _ourTeam->avPlayers();
-        for(quint8 x = 0; x <_mrcconstants->getQtPlayers(); x++){
+        for(quint8 x = 0; x <getConstants()->getQtPlayers(); x++){
             bool status = PlayerBus::ourPlayerAvailable(x);
             _suassunaUI->setRobotVisionStatus(x, status);
             if(status) _suassunaUI->setPlayerRole(x, PlayerBus::ourPlayer(x)->roleName());
@@ -166,4 +167,11 @@ void CoachView::updateTree(StrategyState *strat){
 
 void CoachView::finalization(){
     std::cout << MRCConstants::defaultBold << "[COACHVIEW] " << MRCConstants::green << "Thread ended.\n" << MRCConstants::reset;
+}
+
+
+MRCConstants *CoachView::getConstants() {
+    if(_mrcconstants==NULL)
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting getConstants(), _mrcconstants not initialized!\n";
+    return _mrcconstants;
 }

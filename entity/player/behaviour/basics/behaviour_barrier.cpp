@@ -30,7 +30,7 @@ QString Behaviour_Barrier::name() {
 }
 
 Behaviour_Barrier::Behaviour_Barrier() {
-    _mrcconstants=getConstants();
+
     setMarkBall();
     setDistanceFromGk(0.0); // distance from our gk line to ball
     setRadius(1.4f); // radius from our goal center
@@ -131,7 +131,7 @@ void Behaviour_Barrier::run() {
     _sk_gk->setPositionToLook(loc()->theirGoal());
 
     _sk_kick->setAim(loc()->theirGoal());
-    _sk_kick->setPower(_mrcconstants->getMaxKickPower());
+    _sk_kick->setPower(getConstants()->getMaxKickPower());
     _sk_kick->setIsChip(true);
 
     _sk_push->setAim(loc()->theirGoal());

@@ -61,6 +61,7 @@ private:
     void setupTeams(quint8 opTeamId, Colors::Color opTeamColor, FieldSide opFieldSide);
     void setupOurPlayers();
     void setupOppPlayers(quint8 opTeamId);
+    MRCConstants *getConstants();
 
     // Server connection
     QString _serverAddress;

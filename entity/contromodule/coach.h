@@ -37,6 +37,9 @@ public:
     void setStrategy(Strategy *strat);
 
     StrategyState* getStrategyState();
+protected:
+    MRCConstants *getConstants();
+
 private:
     friend class CoachView;
     // run controller

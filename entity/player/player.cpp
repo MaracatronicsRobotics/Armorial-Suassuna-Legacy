@@ -38,8 +38,12 @@ Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Ro
     _ctr = ctr;
     _role = NULL;
     _defaultRole = defaultRole;
+
     _mrcconstants=mrcconstants;
-    _nav = new Navigation(this, navAlg, _mrcconstants);
+    if(_mrcconstants == NULL){
+        std::cout<<"NULOOOOOOOOOOOOOOOOOOOO"<<std::endl;
+    }
+    _nav = new Navigation(this, navAlg, getConstants());
 
     _playerAccessSelf = new PlayerAccess(true, this, team->loc());
     _playerAccessBus = new PlayerAccess(false, this, team->loc());
@@ -118,6 +122,7 @@ void Player::initialization(){
 }
 
 void Player::loop(){
+    if(getConstants()==NULL) return;
     if(position().isUnknown()){
         if(_idleCount < IDLE_COUNT){
             _idleCount++;
@@ -137,13 +142,13 @@ void Player::loop(){
         _mutexRole.lock();
         if(_role != NULL){
             if(_role->isInitialized() == false){
-                _role->initialize(_team, _team->opTeam(), _team->loc(), _ref, _mrcconstants);
+                _role->initialize(_team, _team->opTeam(), _team->loc(), _ref, getConstants());
             }
             _role->setPlayer(this, _playerAccessSelf);
             _role->runRole();
         }else if(_defaultRole != NULL){
             if(_defaultRole->isInitialized() == false){
-                _defaultRole->initialize(_team, _team->opTeam(), _team->loc(), _ref, _mrcconstants);
+                _defaultRole->initialize(_team, _team->opTeam(), _team->loc(), _ref, getConstants());
             }
             _defaultRole->setPlayer(this, _playerAccessSelf);
             _defaultRole->runRole();
@@ -278,22 +283,22 @@ Position Player::limitFieldDimensions(Position destination) {
     const Locations *loc = playerTeam()->loc();
 
     // X min
-    if(destination.x() < loc->fieldMinX()-_mrcconstants->getRobotRadius()) {
-        destination.setPosition(loc->fieldMinX()-_mrcconstants->getRobotRadius(), destination.y(), 0.0);
+    if(destination.x() < loc->fieldMinX()-getConstants()->getRobotRadius()) {
+        destination.setPosition(loc->fieldMinX()-getConstants()->getRobotRadius(), destination.y(), 0.0);
     }
     // X max
-    if(destination.x() > loc->fieldMaxX()+_mrcconstants->getRobotRadius()) {
-        destination.setPosition(loc->fieldMaxX()+_mrcconstants->getRobotRadius(), destination.y(), 0.0);
+    if(destination.x() > loc->fieldMaxX()+getConstants()->getRobotRadius()) {
+        destination.setPosition(loc->fieldMaxX()+getConstants()->getRobotRadius(), destination.y(), 0.0);
     }
 
     // Y min
-    if(destination.y() < loc->fieldMinY()-_mrcconstants->getRobotRadius()) {
-        destination.setPosition(destination.x(), loc->fieldMinY()-_mrcconstants->getRobotRadius(), 0.0);
+    if(destination.y() < loc->fieldMinY()-getConstants()->getRobotRadius()) {
+        destination.setPosition(destination.x(), loc->fieldMinY()-getConstants()->getRobotRadius(), 0.0);
     }
 
     // Y max
-    if(destination.y() > loc->fieldMaxY()+_mrcconstants->getRobotRadius()) {
-        destination.setPosition(destination.x(), loc->fieldMaxY()+_mrcconstants->getRobotRadius(), 0.0);
+    if(destination.y() > loc->fieldMaxY()+getConstants()->getRobotRadius()) {
+        destination.setPosition(destination.x(), loc->fieldMaxY()+getConstants()->getRobotRadius(), 0.0);
     }
 
     return destination;
@@ -580,4 +585,10 @@ void Player::dribble(bool isActive){
     if(_ctr != NULL){ // avoid set on enemy players
         _ctr->holdBall(_team->teamId(), playerId(), isActive);
     }
+}
+
+MRCConstants *Player::getConstants() {
+    if(_mrcconstants==NULL)
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << name().toStdString() << ", requesting getConstants(), _mrcconstants not initialized!\n";
+    return _mrcconstants;
 }
