@@ -27,7 +27,7 @@ QString Playbook_Attack::name() {
 
 Playbook_Attack::Playbook_Attack() {
     _takeMainAttacker = false;
-    _attackerId == DIST_INVALID_ID;
+    _attackerId = DIST_INVALID_ID;
 }
 
 int Playbook_Attack::maxNumPlayer() {
@@ -101,7 +101,6 @@ void Playbook_Attack::run(int numPlayers) {
 }
 
 void Playbook_Attack::requestReceivers(quint8 playerId){
-    QList<quint8> receiversList;
     QList<quint8> playersList = getPlayers();
 
     for(int x = 0; x < playersList.size(); x++){
@@ -208,7 +207,7 @@ void Playbook_Attack::resetMarkList(){
 
     // Sort for priority (closest to our goal)
     for(int x = 0; x < markList.size(); x++){
-        for(int y = 0; y < markList.size(); y++){
+        for(int y = x; y < markList.size(); y++){
             if(PlayerBus::theirPlayerAvailable(markList.at(y))){
                 if(PlayerBus::theirPlayerAvailable(markList.at(x))){
                     if(PlayerBus::theirPlayer(markList.at(x))->distTheirGoal() > PlayerBus::theirPlayer(markList.at(y))->distTheirGoal()){
@@ -226,7 +225,9 @@ quint8 Playbook_Attack::requestMarkPlayer(quint8 playerId){
     quint8 markId = DIST_INVALID_ID;
     int pos = DIST_INVALID_ID;
 
-    for(int x = 0; x < markList.size(); x++){
+    int qtMarkers = getPlayers().size() - 1;
+
+    for(int x = 0; x < qtMarkers; x++){
         if(PlayerBus::theirPlayerAvailable(markList.at(x))){
             if(PlayerBus::ourPlayerAvailable(playerId)){
                 float distance = PlayerBus::ourPlayer(playerId)->distanceTo(PlayerBus::theirPlayer(markList.at(x))->position());
