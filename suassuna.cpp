@@ -29,8 +29,8 @@
 #include <entity/player/navigation/navalgorithm.h>
 #include <entity/player/navigation/fana/fana.h>
 
-Suassuna::Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide, bool enableGui)
-    : _teamId(teamId), _teamColor(teamColor), _fieldSide(fieldSide), _enableGui(enableGui), _mrcconstants(mrcConstants){
+Suassuna::Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide, bool enableGui, MRCConstants *mrcconstants)
+    : _teamId(teamId), _teamColor(teamColor), _fieldSide(fieldSide), _enableGui(enableGui), _mrcconstants(mrcconstants){
     // Create controller
     _ctr = new Controller();
 

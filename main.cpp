@@ -141,7 +141,7 @@ int main(int argc, char *argv[]) {
     ExitHandler::setApplication(&app);
     ExitHandler::setup();
     // Create and start Suassuna
-    Suassuna suassuna(ourTeamId, ourTeamColor, ourFieldSide, enableGUI);
+    Suassuna suassuna(ourTeamId, ourTeamColor, ourFieldSide, enableGUI, mrcconstants);
     suassuna.start();
     // Block main thread
     bool retn = app.exec();
