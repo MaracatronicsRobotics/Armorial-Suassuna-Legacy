@@ -226,6 +226,7 @@ quint8 Playbook_Attack::requestMarkPlayer(quint8 playerId){
     int pos = DIST_INVALID_ID;
 
     int qtMarkers = getPlayers().size() - 1;
+    qtMarkers = std::min(qtMarkers, markList.size());
 
     for(int x = 0; x < qtMarkers; x++){
         if(PlayerBus::theirPlayerAvailable(markList.at(x))){

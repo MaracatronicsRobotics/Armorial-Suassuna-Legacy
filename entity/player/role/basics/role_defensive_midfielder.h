@@ -43,7 +43,8 @@ private:
     void run();
 
     // Parameters
-    int _barrierId;
+    quint8 _markId;
+    QMutex _markMutex;
     float _minDist;
 
     // Auxiliar functions
@@ -55,7 +56,8 @@ public:
     void initializeBehaviours();
     QString name();
 
-    void setBarrierId(int barrierId) { _barrierId = barrierId; }
+    void setMarkId(quint8 markId);
+    quint8 getMarkId();
     // minDist => minimum distance of an allie to the ball to be barrier again
     void setMinDist(float minDist) { _minDist = minDist; }
 };

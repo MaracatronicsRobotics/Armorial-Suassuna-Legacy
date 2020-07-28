@@ -49,6 +49,7 @@ void Role_Striker::configure(){
 }
 
 void Role_Striker::run(){
+    /*
     // Setting initial values for test
     if(player()->playerId() == 1)       _bh_rcv->setQuadrant(2);
     else if(player()->playerId() == 3)  _bh_rcv->setQuadrant(1);
@@ -106,7 +107,7 @@ void Role_Striker::run(){
             }
         }
     }
-
+    */
 }
 
 bool Role_Striker::isBallComing(float minVelocity, float radius) {
