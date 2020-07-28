@@ -46,7 +46,7 @@
 class Suassuna
 {
 public:
-    Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide, bool enableGui);
+    Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide, bool enableGui, MRCConstants *mrcconstants);
     ~Suassuna();
 
     // Start

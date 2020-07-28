@@ -157,7 +157,7 @@ Position Behaviour_Receiver::getReceiverBestPosition(int quadrant, quint8 attack
     float radius = minRadius + (float)(maxRadius-minRadius)/2.0;
 
     // Get free angles in goal
-    QList<FreeAngles::Interval> goalFreeAngles = getGoalFreeAngles(quadrant, radius+2*MRCConstants::_robotRadius);
+    QList<FreeAngles::Interval> goalFreeAngles = getGoalFreeAngles(quadrant, radius+2*getConstants()->getRobotRadius());
     float largestGoalAngle = 0;
 
     if(goalFreeAngles.empty()) { // Without free angles
