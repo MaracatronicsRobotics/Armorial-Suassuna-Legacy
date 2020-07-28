@@ -35,6 +35,7 @@ private:
     // Param
     float _distanceFromGK;
     float _radius;
+    float _interceptRadius;
     bool _markNearestPlayer;
     bool _canTakeout;
     quint8 _markPlayerId;
@@ -70,6 +71,7 @@ public:
     void setMarkPlayer(quint8 playerId) { _markNearestPlayer = true; _markPlayerId = playerId; }
     void setMarkBall() { _markNearestPlayer = false; }
     void setCanTakeout(bool canTakeout) { _canTakeout = canTakeout; }
+    void setInterceptRadius(float interceptRadius) { _interceptRadius = interceptRadius; }
 };
 
 #endif // BEHAVIOUR_BARRIER_H
