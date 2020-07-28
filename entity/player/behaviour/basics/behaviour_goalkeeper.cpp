@@ -90,7 +90,7 @@ void Behaviour_Goalkeeper::run() {
         enableTransition(STATE_GK); // defende!
     }else if(_takeoutEnabled){ // caso n esteja em posse, n esteja indo pro gol ou nenhum dos dois
         if(loc()->isInsideOurArea(loc()->ball(), _takeoutFactor)){ // ve se ta na nossa area com fator de takeout (uma area maiorzinha)
-            _skill_push->setKickPower(MRCConstants::_maxKickPower);
+            _skill_push->setKickPower(getConstants()->getMaxKickPower());
             _skill_push->setAim(loc()->theirGoal());
             _skill_push->shootWhenAligned(true);
             _skill_push->setIsParabolic(true);

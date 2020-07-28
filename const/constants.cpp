@@ -24,23 +24,6 @@
 
 
 
-//int MRCConstants::_threadFrequency           = 60; // frequencia das threads criadas
-//int MRCConstants::_guiUpdateFrequency        = 30;  // frequencia de update da GUI
-
-///* Fast Path Planning */
-//float MRCConstants::_FPPBallThreshHold       = 0.2f;
-//float MRCConstants::_FPPRobotThreshHold      = 0.09f;
-//float MRCConstants::_FPPBreakDistance        = 0.42f;
-//float MRCConstants::_FPPSmoothPathResolution = 0.3f;
-
-///* Soccer constants */
-//int MRCConstants::_qtPlayers                 = 12;
-//float MRCConstants::_maxKickPower            = 6.0;
-//float MRCConstants::_robotRadius             = 0.09f;
-//float MRCConstants::_ballRadius              = 0.025f;
-
-///* Ball Sensor constants */
-//float MRCConstants::_distToConsiderBallMovement;
 
 
 /* Colors */

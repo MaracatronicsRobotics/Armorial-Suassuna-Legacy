@@ -36,7 +36,7 @@ public:
 
     // Called one time before run is first called
     bool isInitialized() { return _initialized; }
-    void initialize(Locations *loc, SSLReferee *ref);
+    void initialize(Locations *loc, SSLReferee *ref, MRCConstants *mrcconstants);
     void setPlayer(Player *player, PlayerAccess *playerAccess);
 
     // Called in Player loop
@@ -53,6 +53,7 @@ protected:
     PlayerAccess* player();
     Locations *loc();
     SSLReferee *ref();
+    MRCConstants *getConstants();
 private:
     class SkillTransition {
     private:
