@@ -38,6 +38,7 @@ private:
     bool _markNearestPlayer;
     bool _canTakeout;
     quint8 _markPlayerId;
+    bool _avoidAllies;
 
     // Sk
     Skill_GoToLookTo *_sk_goto;
@@ -65,6 +66,7 @@ public:
     void setDistanceFromGk(float distanceFromGK) { _distanceFromGK = distanceFromGK; }
     void setRadius(float radius) { _radius = radius; }
     float getRadius() { return _radius; }
+    void setAvoidAllies(bool avoidAllies) { _avoidAllies = avoidAllies; }
     void setMarkPlayer(quint8 playerId) { _markNearestPlayer = true; _markPlayerId = playerId; }
     void setMarkBall() { _markNearestPlayer = false; }
     void setCanTakeout(bool canTakeout) { _canTakeout = canTakeout; }
