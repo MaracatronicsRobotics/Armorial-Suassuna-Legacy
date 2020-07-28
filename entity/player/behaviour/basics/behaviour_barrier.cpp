@@ -32,7 +32,7 @@ QString Behaviour_Barrier::name() {
 Behaviour_Barrier::Behaviour_Barrier() {
     setMarkBall();
     setDistanceFromGk(0.0); // distance from our gk line to ball
-    setRadius(1.4); // radius from our goal center
+    setRadius(1.4f); // radius from our goal center
 
     _sk_goto = NULL;
     _sk_gk = NULL;
@@ -72,10 +72,15 @@ void Behaviour_Barrier::configure() {
 void Behaviour_Barrier::run() {
     Position markPosition;
     if(_markNearestPlayer){
-        if(PlayerBus::theirPlayerAvailable(_markPlayerId))
-            markPosition = PlayerBus::theirPlayer(_markPlayerId)->position();
-        else
+        if(_markPlayerId != 200){
+            if(PlayerBus::theirPlayerAvailable(_markPlayerId))
+                markPosition = PlayerBus::theirPlayer(_markPlayerId)->position();
+            else
+                markPosition = loc()->ball();
+        }
+        else{
             markPosition = loc()->ball();
+        }
     }
     else
         markPosition = loc()->ball();
@@ -88,14 +93,14 @@ void Behaviour_Barrier::run() {
     Position aimPosition = WR::Utils::threePoints(loc()->ourGoal(), markPosition, 1000.0f, 0.0); // high distance (always will look)
 
     // Adjust _d
-    if(_distanceFromGK != 0.0){
+    if(_distanceFromGK != 0.0f){
         Position vector2Ball(true, loc()->ball().x() - desiredPosition.x(), loc()->ball().y() - desiredPosition.y(), 0.0);
-        double vectorMod = sqrt(pow(vector2Ball.x(), 2) + pow(vector2Ball.y(), 2));
+        float vectorMod = sqrt(powf(vector2Ball.x(), 2) + powf(vector2Ball.y(), 2));
         vector2Ball.setPosition(vector2Ball.x()/vectorMod, vector2Ball.y()/vectorMod, 0.0);
 
         float ang = acos(vector2Ball.x());
-        if(vector2Ball.y() < 0.0) ang = GEARSystem::Angle::twoPi - ang;
-        ang += GEARSystem::Angle::pi / 2.0;
+        if(vector2Ball.y() < 0.0f) ang = GEARSystem::Angle::twoPi - ang;
+        ang += GEARSystem::Angle::pi / 2.0f;
         WR::Utils::angleLimitZeroTwoPi(&ang);
 
         vector2Ball.setPosition(cos(ang) * _distanceFromGK, sin(ang) * _distanceFromGK, 0.0);

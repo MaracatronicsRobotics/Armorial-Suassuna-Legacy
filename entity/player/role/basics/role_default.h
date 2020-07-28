@@ -29,13 +29,7 @@ class Role_Default : public Role
 {
 private:
     // Behaviours
-    Behaviour_Attacker *_bh_dn;
-    Behaviour_Attacker *_bh_dn2;
-    Behaviour_Goalkeeper *_bh_gk;
-    Behaviour_Receiver *_bh_bar;
-    Behaviour_Receiver *_bh_bar2;
-    Behaviour_DoNothing *_bh_dn3;
-    Behaviour_Test *_bh_tst;
+    Behaviour_DoNothing *_bh_doNothing;
 
     // Behaviours ids!
     enum{

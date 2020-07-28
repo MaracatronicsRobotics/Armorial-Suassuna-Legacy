@@ -24,7 +24,6 @@
 
 #include <entity/player/behaviour/behaviour.h>
 #include <entity/player/skills/skills_include.h>
-#include <utils/freeangles/freeangles.h>
 
 class Behaviour_Test : public Behaviour {
 private:
@@ -32,10 +31,8 @@ private:
     void run();
     int _state;
 
-    Skill_Test *_skill_test;
+    Skill_DoNothing *_skill_doNothing;
 
-    // Test
-    std::pair<Position, double> getBestAimPosition();
 public:
     Behaviour_Test();
     QString name();
