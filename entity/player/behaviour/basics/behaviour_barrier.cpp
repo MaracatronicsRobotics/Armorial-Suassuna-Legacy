@@ -40,6 +40,7 @@ Behaviour_Barrier::Behaviour_Barrier() {
     _sk_push = NULL;
 
     _canTakeout = false;
+    _avoidAllies = false;
 }
 
 void Behaviour_Barrier::configure() {
@@ -119,7 +120,7 @@ void Behaviour_Barrier::run() {
     _sk_goto->setDesiredPosition(desiredPosition);
     _sk_goto->setAimPosition(aimPosition);
     _sk_goto->setAvoidBall(false);
-    _sk_goto->setAvoidTeammates(false);
+    _sk_goto->setAvoidTeammates(_avoidAllies);
     _sk_goto->setAvoidOpponents(false);
     _sk_goto->setAvoidOurGoalArea(true);
 
