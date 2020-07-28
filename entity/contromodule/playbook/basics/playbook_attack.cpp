@@ -70,7 +70,6 @@ void Playbook_Attack::configure(int numPlayers) {
 
 void Playbook_Attack::run(int numPlayers) {
     resetMarkList();
-
     if(!_takeMainAttacker || numPlayers != lastNumPlayers){
         quint8 player = dist()->getKNN(1, loc()->ball()).first();
         mainAttacker = player;
