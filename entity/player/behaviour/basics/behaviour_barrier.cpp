@@ -41,6 +41,7 @@ Behaviour_Barrier::Behaviour_Barrier() {
 
     _canTakeout = false;
     _avoidAllies = false;
+    _interceptRadius = 0.5f;
 }
 
 void Behaviour_Barrier::configure() {

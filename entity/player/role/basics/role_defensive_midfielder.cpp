@@ -41,6 +41,8 @@ void Role_Defensive_Midfielder::configure(){
     _minDist = 0.5;
 
     _bh_bar->setAvoidAllies(true);
+    _bh_bar->setCanTakeout(true);
+    _bh_bar->setInterceptRadius(0.3f);
 }
 
 void Role_Defensive_Midfielder::run(){
@@ -73,14 +75,11 @@ void Role_Defensive_Midfielder::run(){
     }
     else if(player()->team()->opTeam()->hasBallPossession() && loc()->isInsideOurField(loc()->ball())){
         quint8 playerId = getOurPlayerClosestToBall();
-        std::cout << "closest: " << int(playerId) << std::endl;
         if(playerId == DIST_INVALID_ID){
             setBehaviour(BEHAVIOUR_MARKBALL);
         }
         else{
             float ourPlayerMinDist = PlayerBus::ourPlayer(playerId)->distBall();
-            std::cout << "dist: " << ourPlayerMinDist << std::endl;
-            std::cout << "myDist: " << player()->distBall() << std::endl;
             // If we are more far to the enemy than our closest player
             if(ourPlayerMinDist <= player()->distBall()){
                 // setting radius

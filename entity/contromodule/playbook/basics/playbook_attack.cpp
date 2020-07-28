@@ -133,7 +133,7 @@ void Playbook_Attack::requestAttacker(){
 }
 
 void Playbook_Attack::requestIsMarkNeeded(){
-    if(team()->opTeam()->hasBallPossession()){
+    if(team()->opTeam()->hasBallPossession() || loc()->isInsideOurField(loc()->ball())){
         emit sendIsMarkNeeded(true);
     }
     else{
