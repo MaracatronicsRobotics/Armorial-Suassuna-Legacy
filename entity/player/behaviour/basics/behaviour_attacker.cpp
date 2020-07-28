@@ -33,7 +33,7 @@ QString Behaviour_Attacker::name() {
 Behaviour_Attacker::Behaviour_Attacker() {
     _sk_goToLookTo = NULL;
     _sk_push       = NULL;
-    _mrcconstants=getConstants();
+
 }
 
 void Behaviour_Attacker::configure() {
@@ -115,7 +115,7 @@ void Behaviour_Attacker::run() {
 
                 // Check if the path is obstructed
                 QList<quint8> shootList = {player()->playerId(), bestReceiver};
-                bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverKickDevice, shootList, MRCConstants::_robotRadius * 3.0, false);
+                bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverKickDevice, shootList, getConstants()->getRobotRadius() * 3.0, false);
 
                 // Adjust kick power based on obstructed path or distance to receiver
                 if(isObstructed) _sk_kick->setPower(std::min(6.0, 0.75 * sqrt((player()->distanceTo(ourReceiverKickDevice) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
@@ -131,13 +131,13 @@ void Behaviour_Attacker::run() {
                     // they don't have any players (?) shoot to their goal anyway
                     _sk_kick->setAim(loc()->theirGoal());
                     _sk_kick->setIsChip(false);
-                    _sk_kick->setPower(MRCConstants::_maxKickPower);
+                    _sk_kick->setPower(getConstants()->getMaxKickPower());
                 }
                 else{
                     // shoot to their goalie
                     _sk_kick->setAim(PlayerBus::theirPlayer(theirGoalie)->position());
                     _sk_kick->setIsChip(false);
-                    _sk_kick->setPower(MRCConstants::_maxKickPower);
+                    _sk_kick->setPower(getConstants()->getMaxKickPower());
                 }
             }
             enableTransition(SKT_KICK);
@@ -160,7 +160,7 @@ void Behaviour_Attacker::run() {
 
                     // Check if the path is obstructed
                     QList<quint8> shootList = {player()->playerId(), bestReceiver};
-                    bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverKickDevice, shootList, MRCConstants::_robotRadius * 3.0, false);
+                    bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverKickDevice, shootList, getConstants()->getRobotRadius() * 3.0, false);
                     float power;
                     // Adjust kick power based on obstructed path or distance to receiver
                     if(isObstructed) power = std::min(6.0, (0.75 * sqrt((player()->distanceTo(ourReceiverKickDevice) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
@@ -194,14 +194,14 @@ void Behaviour_Attacker::run() {
                     if(ref()->getGameInfo(player()->team()->teamColor())->ourDirectKick() || ref()->getGameInfo(player()->team()->teamColor())->ourKickoff()){
                         _sk_kick->setAim(aimPos);
                         _sk_kick->setIsChip(false);
-                        _sk_kick->setPower(MRCConstants::_maxKickPower);
+                        _sk_kick->setPower(getConstants()->getMaxKickPower());
 
                         enableTransition(SKT_KICK);
                     }
                     else{
                         _sk_push->setAim(aimPos);
                         _sk_push->setIsParabolic(false);
-                        _sk_push->setKickPower(MRCConstants::_maxKickPower);
+                        _sk_push->setKickPower(getConstants()->getMaxKickPower());
                         _sk_push->shootWhenAligned(true);
 
                         enableTransition(SKT_PUSH);
@@ -215,14 +215,14 @@ void Behaviour_Attacker::run() {
                 if(ref()->getGameInfo(player()->team()->teamColor())->ourDirectKick() || ref()->getGameInfo(player()->team()->teamColor())->ourKickoff()){
                     _sk_kick->setAim(bestAim.second);
                     _sk_kick->setIsChip(false);
-                    _sk_kick->setPower(MRCConstants::_maxKickPower);
+                    _sk_kick->setPower(getConstants()->getMaxKickPower());
 
                     enableTransition(SKT_KICK);
                 }
                 else{
                     _sk_push->setAim(bestAim.second);
                     _sk_push->setIsParabolic(false);
-                    _sk_push->setKickPower(MRCConstants::_maxKickPower);
+                    _sk_push->setKickPower(getConstants()->getMaxKickPower());
                     _sk_push->shootWhenAligned(true);
 
                     enableTransition(SKT_PUSH);

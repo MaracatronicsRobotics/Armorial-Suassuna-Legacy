@@ -93,7 +93,7 @@ void Role::runRole(){
     if(!_ref->getGameInfo(player()->team()->teamColor())->canMove()){
         // If is in halt
         if(_bh_dn->isInitialized() == false)
-            _bh_dn->initialize(_loc, _ref);
+            _bh_dn->initialize(_loc, _ref, getConstants());
 
         // Configure
         _bh_dn->setPlayer(_player, _playerAccess);
@@ -102,7 +102,7 @@ void Role::runRole(){
     else if(_ref->getGameInfo(player()->team()->teamColor())->timeOut()){
         // If is in timeout
         if(_bh_tm->isInitialized() == false)
-            _bh_tm->initialize(_loc, _ref);
+            _bh_tm->initialize(_loc, _ref, getConstants());
 
         // Configure
         _bh_tm->setPlayer(_player, _playerAccess);
@@ -118,7 +118,7 @@ void Role::runRole(){
 
         // Run Behaviour
         if(_behaviour->isInitialized() == false){
-            _behaviour->initialize(_loc, _ref);
+            _behaviour->initialize(_loc, _ref, getConstants());
         }
         _behaviour->setPlayer(_player, _playerAccess);
         _behaviour->runBehaviour();
