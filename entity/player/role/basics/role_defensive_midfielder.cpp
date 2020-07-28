@@ -39,6 +39,8 @@ void Role_Defensive_Midfielder::initializeBehaviours(){
 
 void Role_Defensive_Midfielder::configure(){
     _minDist = 0.5;
+
+    _bh_bar->setAvoidAllies(true);
 }
 
 void Role_Defensive_Midfielder::run(){
@@ -102,8 +104,8 @@ void Role_Defensive_Midfielder::run(){
             _bh_bar->setRadius(1.8f);
         }
         else{
-            // min radius: 1.8m       /     max radius: 3.1m      (from goal)
-            _bh_bar->setRadius(std::min(std::max(1.8f, 4.5f + eq), 3.1f));
+            if(markId != DIST_INVALID_ID && loc()->isInsideOurField(PlayerBus::theirPlayer(markId)->position())) _bh_bar->setRadius(1.8f);
+            else _bh_bar->setRadius(std::min(std::max(1.8f, 4.5f + eq), 3.1f));
         }
 
         setBehaviour(BEHAVIOUR_BARRIER);
