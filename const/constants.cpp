@@ -73,6 +73,9 @@ MRCConstants::MRCConstants(QString configFileName)
     _guiUpdateFrequency=doc_map["GuiUpdateFrequency"].toInt();
     std::cout<< MRCConstants::defaultBold << "GuiUpdateFrequency: "<< MRCConstants::green <<_guiUpdateFrequency<<std::endl<< MRCConstants::reset;
 
+    _goalieId=quint8(doc_map["GoalieID"].toInt());
+    std::cout<< MRCConstants::defaultBold << "GoalieID: "<< MRCConstants::green <<int(_goalieId)<<std::endl<< MRCConstants::reset;
+
     // Path to files
     _clustersPath=doc_map["ClusterAbsolutePath"].toString();
     std::cout<< MRCConstants::defaultBold << "ClusterAbsolutePath: "<< MRCConstants::green << _clustersPath.toStdString() << std::endl<< MRCConstants::reset;
@@ -115,7 +118,10 @@ int MRCConstants::getGuiUpdateFrequency() const
     return _guiUpdateFrequency;
 }
 
-
+quint8 MRCConstants::getGoalieId() const
+{
+    return _goalieId;
+}
 
 float MRCConstants::getDistToConsiderBallMovement() const
 {

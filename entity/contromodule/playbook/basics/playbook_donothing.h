@@ -39,12 +39,17 @@ private:
     void resetMarkList();
     quint8 requestMarkPlayer(quint8 playerId);
 
+    // Goalie
+    quint8 _goalieId;
+
     void configure(int numPlayers);
     void run(int numPlayers);
     int maxNumPlayer();
 public:
     Playbook_DoNothing();
     QString name();
+
+    void setGoalieId(quint8 goalieId) { _goalieId = goalieId; }
 };
 
 #endif // PLAYBOOK_DONOTHING_H

@@ -30,7 +30,7 @@
 class MRCTeam
 {
 public:
-    MRCTeam(quint8 teamId, WorldMap *wm);
+    MRCTeam(quint8 teamId, WorldMap *wm, MRCConstants *mrcConstants);
     virtual ~MRCTeam();
 
     // Constant infos access
@@ -64,6 +64,7 @@ public:
     WorldMap *wm() { return _wm; }
     Locations* loc() { return _loc; }
     Position ballPosition();
+    MRCConstants *getConstants();
 
 private:
     // Team id
@@ -90,6 +91,9 @@ private:
 
     // Worldmap
     WorldMap *_wm;
+
+    // Constants
+    MRCConstants *_mrcConstants;
 };
 
 #endif // MRCTEAM_H

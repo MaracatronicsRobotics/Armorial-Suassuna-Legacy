@@ -126,6 +126,7 @@ void Behaviour_Barrier::run() {
     _sk_goto->setAvoidOpponents(false);
     _sk_goto->setAvoidOurGoalArea(true);
 
+
     // settings of intercept
     _sk_gk->setInterceptAdvance(true);
     _sk_gk->setPositionToLook(loc()->theirGoal());
