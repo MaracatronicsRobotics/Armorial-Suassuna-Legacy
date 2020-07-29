@@ -108,31 +108,16 @@ QList<quint8> PlayersDistribution::getAllKNNandY(const Position &pos) {
 }
 
 quint8 PlayersDistribution::getGK() {
-    if(_players.empty())
-        return DIST_INVALID_ID;
-    quint8 gk;
-    // Select first GK
-    if(_gkId == DIST_INVALID_ID)
-        _gkId = selectGK();
-    // Check game state; dont not change GK in HALT/GAMEOFF
-    SSLGameInfo::RefProcessedState currState = _ref->getGameInfo(_team->teamColor())->processedState();
-    if(currState==SSLGameInfo::STATE_CANTMOVE || currState==SSLGameInfo::STATE_GAMEOFF) {
-        // If GK is on field, maintain
-        if(contains(_gkId))
-            gk = _gkId;
-        else { // else, select temporary GK
-            gk = selectGK();
-        }
-    } else {
-        // Check if GK is set; if not, set it
-        if(contains(_gkId)==false)
-            _gkId = selectGK();
-        // Keep same GK when game is running
-        gk = _gkId;
+    quint8 goalieId = _team->getConstants()->getGoalieId();
+
+    if(!contains(goalieId)){
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "PlayersDistribution" << ", requesting getGK(), but player " << int(goalieId) << " isnt in the field\n";
     }
-    // Returns GK
-    remove(gk);
-    return gk;
+    else{
+        remove(goalieId);
+    }
+
+    return goalieId;
 }
 
 quint8 PlayersDistribution::getRefGK() {
@@ -147,10 +132,7 @@ quint8 PlayersDistribution::getRefGK() {
 
 quint8 PlayersDistribution::selectGK() {
     Position posGoal = _team->loc()->ourGoal();
-    // Sort players list
-    sortByDistanceTo(posGoal);
-    // Return nearest
-    return _players.isEmpty()? DIST_INVALID_ID : _players.first().id;
+    return _players.isEmpty()? DIST_INVALID_ID : getKNN(1, posGoal).first();
 }
 
 quint8 PlayersDistribution::getKicker(const Position &posBall) {
@@ -213,7 +195,7 @@ void PlayersDistribution::removePlayer(quint8 id) {
 
 bool PlayersDistribution::contains(quint8 id) const {
     for(int i=0; i<_players.size(); i++) {
-        if(_players.at(i).id==id)
+        if(_players.at(i).id == id)
             return true;
     }
     return false;

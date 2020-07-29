@@ -158,8 +158,8 @@ bool Suassuna::connectToServer() {
 
 void Suassuna::setupTeams(quint8 opTeamId, Colors::Color opTeamColor, FieldSide opFieldSide) {
     // Create teams
-    _ourTeam = new MRCTeam(_teamId, _world->getWorldMap());
-    _theirTeam = new MRCTeam(opTeamId, _world->getWorldMap());
+    _ourTeam = new MRCTeam(_teamId, _world->getWorldMap(), getConstants());
+    _theirTeam = new MRCTeam(opTeamId, _world->getWorldMap(), getConstants());
     // Set opponent teams
     _ourTeam->setOpponentTeam(_theirTeam);
     _theirTeam->setOpponentTeam(_ourTeam);

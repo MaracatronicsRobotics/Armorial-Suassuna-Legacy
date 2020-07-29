@@ -176,7 +176,8 @@ void Behaviour_Attacker::run() {
                         enableTransition(SKT_KICK);
                     }else{
                         _sk_push->setIsParabolic(isObstructed);
-                        _sk_push->setAim(PlayerBus::ourPlayer(bestReceiver)->nextPosition());
+                        Position rcvPos = PlayerBus::ourPlayer(bestReceiver)->nextPosition().isUnknown() ? PlayerBus::ourPlayer(bestReceiver)->position() : PlayerBus::ourPlayer(bestReceiver)->nextPosition();
+                        _sk_push->setAim(rcvPos);
                         if(WR::Utils::distance(PlayerBus::ourPlayer(bestReceiver)->position(), PlayerBus::ourPlayer(bestReceiver)->nextPosition()) <= 0.7f){
                             _sk_push->setDestination(Position(false, 0.0, 0.0, 0.0));
                             _sk_push->setKickPower(power);

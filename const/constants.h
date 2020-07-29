@@ -48,9 +48,10 @@ private:
     float _ballRadius;
 
     /* Ball Sensor constants */
-   float _distToConsiderBallMovement;
+    float _distToConsiderBallMovement;
 
-
+    /* Goalie */
+    quint8 _goalieId;
 
     /*Files Path*/
     QString _clustersPath;
@@ -72,6 +73,7 @@ public:
     QString getClustersPath() const;
     int getThreadFrequency() const;
     int getGuiUpdateFrequency() const;
+    quint8 getGoalieId() const;
 
     /* Colors */
     static std::string red;

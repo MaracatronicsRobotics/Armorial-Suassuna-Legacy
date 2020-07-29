@@ -22,15 +22,22 @@
 #include "mrcteam.h"
 #include <entity/locations.h>
 
-MRCTeam::MRCTeam(quint8 teamId, WorldMap *wm){
+MRCTeam::MRCTeam(quint8 teamId, WorldMap *wm, MRCConstants *mrcConstants){
     _teamId = teamId;
     _wm = wm;
+    _mrcConstants = mrcConstants;
 
     _loc = new Locations(this);
 }
 
 MRCTeam::~MRCTeam(){
     delete _loc;
+}
+
+MRCConstants* MRCTeam::getConstants(){
+    if(_mrcConstants==NULL)
+        std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "MRCTeam" << ", requesting getConstants(), _mrcconstants not initialized!\n";
+    return _mrcConstants;
 }
 
 Colors::Color MRCTeam::teamColor() const{

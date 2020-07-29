@@ -42,11 +42,13 @@ Skill_Test::Skill_Test() {
     setIsParabolic(false);
     setMaxPushDistance(1.0);
     setKickPower(6.0);
+
 }
 
 void Skill_Test::run(){
-    if(_aim.isUnknown())
+    if(_aim.isUnknown()){
         std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << name().toStdString() << ": aim not set!\n";
+    }
 
     // Calc behind ball
     Position behindBall = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.2f, GEARSystem::Angle::pi);
