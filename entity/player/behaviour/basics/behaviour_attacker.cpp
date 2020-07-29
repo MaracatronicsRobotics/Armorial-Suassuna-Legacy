@@ -175,10 +175,23 @@ void Behaviour_Attacker::run() {
 
                         enableTransition(SKT_KICK);
                     }else{
-                        _sk_push->setAim(ourReceiverKickDevice);
                         _sk_push->setIsParabolic(isObstructed);
-                        _sk_push->setKickPower(power);
-                        _sk_push->shootWhenAligned(true);
+                        _sk_push->setAim(PlayerBus::ourPlayer(bestReceiver)->nextPosition());
+                        if(WR::Utils::distance(PlayerBus::ourPlayer(bestReceiver)->position(), PlayerBus::ourPlayer(bestReceiver)->nextPosition()) <= 0.7f){
+                            _sk_push->setDestination(Position(false, 0.0, 0.0, 0.0));
+                            _sk_push->setKickPower(power);
+                            _sk_push->shootWhenAligned(true);
+                        }
+                        else{
+                            _sk_push->setDestination(WR::Utils::threePoints(loc()->ball(), PlayerBus::ourPlayer(bestReceiver)->nextPosition(), 0.5f, 0.0));
+                            if(_sk_push->getPushedDistance() >= 0.8f * _sk_push->getMaxPushDistance()){
+                                _sk_push->setKickPower(1.0f);
+                                _sk_push->shootWhenAligned(true);
+                            }
+                            else{
+                                _sk_push->shootWhenAligned(false);
+                            }
+                        }
 
                         enableTransition(SKT_PUSH);
                     }
@@ -199,6 +212,7 @@ void Behaviour_Attacker::run() {
                         enableTransition(SKT_KICK);
                     }
                     else{
+                        _sk_push->setDestination(Position(false, 0.0, 0.0, 0.0));
                         _sk_push->setAim(aimPos);
                         _sk_push->setIsParabolic(false);
                         _sk_push->setKickPower(getConstants()->getMaxKickPower());
@@ -220,6 +234,7 @@ void Behaviour_Attacker::run() {
                     enableTransition(SKT_KICK);
                 }
                 else{
+                    _sk_push->setDestination(Position(false, 0.0, 0.0, 0.0));
                     _sk_push->setAim(bestAim.second);
                     _sk_push->setIsParabolic(false);
                     _sk_push->setKickPower(getConstants()->getMaxKickPower());

@@ -80,12 +80,20 @@ void Role_Striker::run(){
         emit requestAttacker();
         if(_isMarkNeeded){
             if(player()->playerId() == _attackerId){
-                setBehaviour(BEHAVIOUR_MARKBALL);
+                if(!player()->hasBallPossession())
+                    setBehaviour(BEHAVIOUR_MARKBALL);
+                else
+                    setBehaviour(BEHAVIOUR_ATTACKER);
             }
             else{
                 if(_markId != DIST_INVALID_ID){
-                    _bh_mkp->setTargetID(_markId);
-                    setBehaviour(BEHAVIOUR_MARKPLAYER);
+                    if(!player()->team()->hasBallPossession()){
+                        _bh_mkp->setTargetID(_markId);
+                        setBehaviour(BEHAVIOUR_MARKPLAYER);
+                    }
+                    else{
+                        setBehaviour(BEHAVIOUR_RECEIVER);
+                    }
                 }
                 else{
                     setBehaviour(BEHAVIOUR_RECEIVER);

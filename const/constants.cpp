@@ -56,7 +56,7 @@ MRCConstants::MRCConstants(QString configFileName)
     std::cout<< MRCConstants::defaultBold << "NumberOfPlayers: "<< MRCConstants::green <<_qtPlayers<<std::endl<< MRCConstants::reset;
 
     _maxKickPower = doc_map["MaxKickPower"].toFloat();
-    std::cout<< MRCConstants::defaultBold << "MaxKickPower: "<< MRCConstants::green <<doc_map["NumberOfPlayers"].toInt()<<std::endl<< MRCConstants::reset;
+    std::cout<< MRCConstants::defaultBold << "MaxKickPower: "<< MRCConstants::green <<doc_map["MaxKickPower"].toInt()<<std::endl<< MRCConstants::reset;
 
     _robotRadius = doc_map["RobotRadius"].toFloat();
     std::cout<< MRCConstants::defaultBold << "RobotRadius: "<< MRCConstants::green <<_robotRadius<<std::endl<< MRCConstants::reset;
