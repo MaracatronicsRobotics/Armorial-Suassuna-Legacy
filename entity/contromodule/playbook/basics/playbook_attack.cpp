@@ -133,25 +133,31 @@ void Playbook_Attack::requestAttacker(){
 }
 
 void Playbook_Attack::requestIsMarkNeeded(){
-    if(team()->opTeam()->hasBallPossession() || loc()->isInsideOurField(loc()->ball())){
-        emit sendIsMarkNeeded(true);
+    // Check if the ball is coming to our players
+    bool isNeeded = true;
+    QList<quint8> playersList = getPlayers();
+    for(int x = 0; x < playersList.size(); x++){
+        PlayerAccess *player;
+        if(!PlayerBus::ourPlayerAvailable(playersList.at(x))) continue;
+        else player = PlayerBus::ourPlayer(playersList.at(x));
+        if(isBallComing(player->position(), 0.2f, 1.0)){
+            isNeeded = false;
+            break;
+        }
+    }
+
+    if(!isNeeded){
+        // If ball is coming to our players
+        emit sendIsMarkNeeded(isNeeded);
     }
     else{
-        bool isNeeded = true;
-        QList<quint8> playersList = getPlayers();
-        for(int x = 0; x < playersList.size(); x++){
-            PlayerAccess *player;
-            if(!PlayerBus::ourPlayerAvailable(playersList.at(x))) continue;
-            else player = PlayerBus::ourPlayer(playersList.at(x));
-            if(isBallComing(player->position(), 0.2f, 1.0)){
-                isNeeded = false;
-                break;
-            }
+        // Check other conditions
+        if(loc()->isInsideOurField(loc()->ball()) || team()->opTeam()->hasBallPossession()){
+            emit sendIsMarkNeeded(isNeeded);
         }
-        if(isNeeded && !team()->opTeam()->hasBallPossession())
-            isNeeded = false;
-
-        emit sendIsMarkNeeded(isNeeded);
+        else{
+            emit sendIsMarkNeeded(!isNeeded);
+        }
     }
 }
 

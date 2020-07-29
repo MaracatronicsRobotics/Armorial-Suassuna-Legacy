@@ -318,8 +318,8 @@ std::pair<Angle,float> Player::getNavDirectionDistance(const Position &destinati
 
 void Player::idle(){
     // Set current position/orientation as desired
-    //_nextPosition = position();
-    //_nextOrientation = orientation();
+    _nextPosition = position();
+    _nextOrientation = orientation();
 
     // Set speed to 0
     setSpeed(0.0, 0.0, 0.0);
@@ -363,6 +363,9 @@ void Player::setSpeed(float x, float y, float theta) {
 }
 
 std::pair<float, float> Player::goTo(Position targetPosition, double offset, bool setHere, double minVel){
+    // Update next pos
+    _nextPosition = targetPosition;
+
     targetPosition = limitFieldDimensions(targetPosition);
     double robot_x, robot_y, robotAngle = orientation().value();
     robot_x = position().x();
@@ -496,6 +499,9 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
 }
 
 void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool avoidTeammates, bool avoidOpponents, bool avoidBall, bool avoidOurGoalArea, bool avoidTheirGoalArea, double minVel, bool isGk){
+    // Update next pos
+    _nextPosition = targetPosition;
+
     targetPosition = limitFieldDimensions(targetPosition);
     Angle anglePP;
     std::pair<double, double> help = rotateTo(targetPosition, 0.2, false);

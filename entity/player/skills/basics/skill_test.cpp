@@ -41,10 +41,10 @@ Skill_Test::Skill_Test() {
     shootWhenAligned(false);
     setIsParabolic(false);
     setMaxPushDistance(1.0);
+    setKickPower(6.0);
 }
 
 void Skill_Test::run(){
-    setKickPower(getConstants()->getMaxKickPower());
     if(_aim.isUnknown())
         std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << name().toStdString() << ": aim not set!\n";
 
