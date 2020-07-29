@@ -37,11 +37,11 @@ void SSLStrategy_Halt::configure(int numOurPlayers) {
 }
 
 void SSLStrategy_Halt::run(int numOurPlayers) {
-    if(_pb_doNothing == NULL){
-        std::cout << "oi bb" << std::endl;
-        return;
-    }
-    for(int x = 0; x < numOurPlayers; x++){
+    quint8 goalie = dist()->getGK();
+    _pb_doNothing->addPlayer(goalie);
+    _pb_doNothing->setGoalieId(goalie);
+
+    for(int x = 0; x < numOurPlayers - 1; x++){
         quint8 id = dist()->getPlayer();
         if(id % 2 == 0)
             _pb_doNothing->addPlayer(id);

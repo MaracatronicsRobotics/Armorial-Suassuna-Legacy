@@ -10,6 +10,7 @@
 
     "ThreadFrequency": 60,
     "GuiUpdateFrequency": 30,
+    "GoalieID": 0,
 
     
     "ClusterAbsolutePath":"/home/zsmn/Armorial-WS/Armorial-Suassuna/const/agressivity_clusters.json",

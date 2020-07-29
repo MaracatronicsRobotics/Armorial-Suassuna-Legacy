@@ -26,6 +26,7 @@ QString Playbook_DoNothing::name() {
 }
 
 Playbook_DoNothing::Playbook_DoNothing() {
+    _goalieId = DIST_INVALID_ID;
 }
 
 int Playbook_DoNothing::maxNumPlayer() {
@@ -53,9 +54,9 @@ void Playbook_DoNothing::run(int numPlayers) {
     resetMarkList();
 
     // Taking the goalkeeper
-    quint8 playerId = dist()->getPlayer();
-    if(playerId != DIST_INVALID_ID){
-        setPlayerRole(playerId, _rl_gk);
+    if(_goalieId != DIST_INVALID_ID){
+        dist()->removePlayer(_goalieId);
+        setPlayerRole(_goalieId, _rl_gk);
     }
 
     // Taking barriers (always 2)
@@ -99,7 +100,7 @@ void Playbook_DoNothing::run(int numPlayers) {
     }
 
     // Taking the Defensive Midfielder 1
-    playerId = dist()->getPlayer();
+    quint8 playerId = dist()->getPlayer();
     if(playerId != DIST_INVALID_ID){
         quint8 markId = requestMarkPlayer(playerId);
         _rl_def_midf->setMarkId(markId);
