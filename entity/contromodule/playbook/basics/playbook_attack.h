@@ -45,7 +45,10 @@ private:
     // Mark
     quint8 _attackerId;
     QMutex markMutex;
+    QList<int> leftQuadrantList;
+    QList<int> rightQuadrantList;
     QList<quint8> markList;
+    void resetQuadrantList();
     void resetMarkList();
     quint8 requestMarkPlayer(quint8 playerId);
 
@@ -60,11 +63,13 @@ signals:
     void sendReceiver(quint8 receiverId);
     void sendAttacker(quint8 attackerId);
     void sendIsMarkNeeded(bool isMarkNeeded);
+    void sendQuadrant(int quadrant);
 
 public slots:
     void requestReceivers(quint8 playerId);
     void requestAttacker();
     void requestIsMarkNeeded();
+    void requestQuadrant();
 };
 
 #endif // PLAYBOOK_ATTACK_H

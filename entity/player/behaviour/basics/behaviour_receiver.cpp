@@ -81,15 +81,14 @@ void Behaviour_Receiver::run() {
         enableTransition(SK_GOTO);
 
         if(PlayerBus::ourPlayerAvailable(_attackerId)){
-            float neededDistance = 0.5f;
             Position desiredPosition;
 
             if(_quadrant == QUADRANT_UP || _quadrant == QUADRANT_UPMID)
-                if(loc()->ourSide().isRight()) desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi + GEARSystem::Angle::pi / 16.0);
-                else desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi - GEARSystem::Angle::pi / 16.0);
+                if(loc()->ourSide().isRight()) desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi + GEARSystem::Angle::pi / 16.0f);
+                else desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi - GEARSystem::Angle::pi / 16.0f);
             else
-                if(loc()->ourSide().isRight()) desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi - GEARSystem::Angle::pi / 16.0);
-                else desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi + GEARSystem::Angle::pi / 16.0);
+                if(loc()->ourSide().isRight()) desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi - GEARSystem::Angle::pi / 16.0f);
+                else desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi + GEARSystem::Angle::pi / 16.0f);
 
             _skill_GoToLookTo->setDesiredPosition(desiredPosition);
             _skill_GoToLookTo->setAvoidTeammates(false);
@@ -119,7 +118,7 @@ void Behaviour_Receiver::run() {
             _skill_GoToLookTo->setAimPosition(loc()->ball());
         }
         else{
-            std::pair<Position,Position> positions = WR::Utils::getQuadrantPositions(_quadrant, loc()->theirSide(), loc()->theirGoal(), loc()->ourFieldTopCorner());
+            std::pair<Position,Position> positions = WR::Utils::getQuadrantPositions(_quadrant, loc()->ourSide(), loc()->ourGoal(), loc()->ourFieldTopCorner());
             Position _desiredPosition = getReceiverBestPosition(_quadrant, _attackerId, _minRadius, _maxRadius);
 
             _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
@@ -132,7 +131,7 @@ QList<FreeAngles::Interval> Behaviour_Receiver::getGoalFreeAngles(quint8 quadran
     const Position posGoal = loc()->theirGoal();
 
     // Calc pos angles
-    std::pair<Position,Position> positions = WR::Utils::getQuadrantPositions(quadrant, loc()->theirSide(), loc()->theirGoal(), loc()->ourFieldTopCorner());
+    std::pair<Position,Position> positions = WR::Utils::getQuadrantPositions(quadrant, loc()->ourSide(), loc()->ourGoal(), loc()->ourFieldTopCorner());
     Position initialPos = positions.first;
     Position finalPos = positions.second;
 
@@ -154,7 +153,7 @@ Position Behaviour_Receiver::getReceiverBestPosition(int quadrant, quint8 attack
     const float distAttacker = WR::Utils::distance(player()->position(), posAttacker);
 
     // Radius
-    float radius = minRadius + (float)(maxRadius-minRadius)/2.0;
+    float radius = minRadius + maxRadius-minRadius/2.0f;
 
     // Get free angles in goal
     QList<FreeAngles::Interval> goalFreeAngles = getGoalFreeAngles(quadrant, radius+2*getConstants()->getRobotRadius());
@@ -251,7 +250,7 @@ Position Behaviour_Receiver::getBestPositionWithoutAttacker(int quadrant){
     }
 
     const Position goalPosition = loc()->theirGoal(); // Fundo do gol (pra pegar o goleiro deles)
-    const std::pair<Position,Position> quadrantPosition = WR::Utils::getQuadrantPositions(quadrant, loc()->theirSide(), loc()->theirGoal(), loc()->ourFieldTopCorner());
+    const std::pair<Position,Position> quadrantPosition = WR::Utils::getQuadrantPositions(quadrant, loc()->ourSide(), loc()->ourGoal(), loc()->ourFieldTopCorner());
     float radius = 4.0; // pegar raio médio pra atuação
 
     //
@@ -264,8 +263,7 @@ Position Behaviour_Receiver::getBestPositionWithoutAttacker(int quadrant){
 
     // Pega a lista de obstaculos pra remover o proprio attacker
     QList<Obstacle> obstaclesList = FreeAngles::getObstacles(goalPosition, radius);
-    int size = obstaclesList.size();
-    for(int x = 0; x < size; x++){
+    for(int x = 0; x < obstaclesList.size(); x++){
         Obstacle obstAt = obstaclesList.at(x);
         if(obstAt.team() == player()->teamId() && (obstAt.id() == player()->playerId() || obstAt.id() == _attackerId)){
             obstaclesList.removeAt(x);
@@ -289,16 +287,16 @@ Position Behaviour_Receiver::getBestPositionWithoutAttacker(int quadrant){
             if(dif > largestAngle){
                 // salvo o maior intervalo (dif) e salvo o meio desse intervalo (final - dif/2)
                 largestAngle = dif;
-                largestMid = finalAngle - (dif / 2.0);
+                largestMid = finalAngle - (dif / 2.0f);
             }
         }
         largestGoalAngle = largestMid; // finalmente salvo o angulo (meio do maior intervalo)
     }
 
     Line goalLine = Line::getLine(goalPosition, largestGoalAngle);
-    double o_a, o_b;
+    float o_a, o_b;
 
-    if(goalLine.a() == 0.0) return Position(false, 0.0, 0.0, 0.0);
+    if(goalLine.a() == 0.0f) return Position(false, 0.0f, 0.0f, 0.0f);
     o_a = (-1)/goalLine.a();
     o_b = player()->position().y() - (o_a * player()->position().x());
 

@@ -71,6 +71,7 @@ namespace WR {
 
         static std::pair<Position, Position> getQuadrantPositions(int quadrant, const FieldSide &side, const Position &ourGoal, const Position &ourFieldTopCorner);
         static Position getPlayerKickDevice(quint8 id, float robotRadius = 0.09f);
+        static int getAttackerQuadrant(Position attackerPosition);
     };
 
 }
