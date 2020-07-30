@@ -247,11 +247,9 @@ Position Utils::hasInterceptionSegments(const Position &s1, const Position &s2, 
     }else{ //Os segmentos sao paralelos
         return Position(false, 0.0f,0.0f,0.0f);
     }
-
-
 }
 
-std::pair<Position,Position> Utils::getQuadrantPositions(int quadrant, const FieldSide &side, const Position &ourGoal, const Position &ourFieldTopCorner) {
+std::pair<Position,Position> Utils::getQuadrantPositions(int quadrant, const FieldSide &ourSide, const Position &ourGoal, const Position &ourFieldTopCorner) {
     Position initialPos, finalPos;
 
     // Calc some points
@@ -275,24 +273,7 @@ std::pair<Position,Position> Utils::getQuadrantPositions(int quadrant, const Fie
     };
 
     // Set initial position
-    if(side.isRight()) {
-        if(quadrant == QUADRANT_UP) {
-            initialPos = bot;
-        }
-
-        if(quadrant == QUADRANT_BOTMID) {
-            initialPos = cen;
-        }
-
-        if(quadrant == QUADRANT_UPMID) {
-            initialPos = up;
-        }
-
-        if(quadrant == QUADRANT_UP) {
-            initialPos = upR;
-        }
-
-    } else {
+    if(ourSide.isRight()) {
         if(quadrant == QUADRANT_UP) {
             initialPos = up;
         }
@@ -308,10 +289,43 @@ std::pair<Position,Position> Utils::getQuadrantPositions(int quadrant, const Fie
         if(quadrant == QUADRANT_BOT) {
             initialPos = botL;
         }
+
+    } else {
+        if(quadrant == QUADRANT_UP) {
+            initialPos = upR;
+        }
+
+        if(quadrant == QUADRANT_UPMID) {
+            initialPos = up;
+        }
+
+        if(quadrant == QUADRANT_BOTMID) {
+            initialPos = cen;
+        }
+
+        if(quadrant == QUADRANT_BOT) {
+            initialPos = bot;
+        }
     }
 
     // Set final position
-    if(side.isRight()) {
+    if(ourSide.isRight()) {
+        if(quadrant == QUADRANT_UP) {
+            finalPos = upL;
+        }
+
+        if(quadrant == QUADRANT_UPMID) {
+            finalPos = up;
+        }
+
+        if(quadrant == QUADRANT_BOTMID) {
+            finalPos = cen;
+        }
+
+        if(quadrant == QUADRANT_BOT) {
+            finalPos = bot;
+        }
+    } else {
         if(quadrant == QUADRANT_UP) {
             finalPos = up;
         }
@@ -327,23 +341,30 @@ std::pair<Position,Position> Utils::getQuadrantPositions(int quadrant, const Fie
         if(quadrant == QUADRANT_BOT) {
             finalPos = botR;
         }
-    } else {
-        if(quadrant == QUADRANT_BOT) {
-            finalPos = bot;
-        }
-
-        if(quadrant == QUADRANT_BOTMID) {
-            finalPos = cen;
-        }
-
-        if(quadrant == QUADRANT_UPMID) {
-            finalPos = up;
-        }
-
-        if(quadrant == QUADRANT_UP) {
-            finalPos = upL;
-        }
     }
 
     return std::make_pair(initialPos, finalPos);
+}
+
+int Utils::getAttackerQuadrant(Position attackerPosition) {
+    // Quadrantes relacionados ao campo da divisão B
+    if (_ourTeam->loc()->ourSide().isRight()) {
+        // QUADRANT_UP
+        if (attackerPosition.y() < 3.0f && attackerPosition.x() > -4.5f && attackerPosition.x() < 1.5f * attackerPosition.y() - 4.5f) return 1;
+        // QUADRANT_UPMID
+        if (attackerPosition.y() > 0.0f && attackerPosition.x() < 0.0f && attackerPosition.x() > 1.5f * attackerPosition.y() - 4.5f) return 2;
+        // QUADRANT_BOTMID
+        if (attackerPosition.y() < 0.0f && attackerPosition.x() < 0.0f && attackerPosition.x() > -1.5f * attackerPosition.y() - 4.5f) return 3;
+        // QUADRANT_BOT
+        if (attackerPosition.y() > -3.0f && attackerPosition.x() > -4.5f && attackerPosition.x() < -1.5f * attackerPosition.y() - 4.5f) return 4;
+    } else {
+        // QUADRANT_UP
+        if (attackerPosition.y() < 3.0f && attackerPosition.x() < 4.5f && attackerPosition.x() > -1.5f * attackerPosition.y() + 4.5f) return 1;
+        // QUADRANT_UPMID
+        if (attackerPosition.y() > 0.0f && attackerPosition.x() > 0.0f && attackerPosition.x() < -1.5f * attackerPosition.y() + 4.5f) return 2;
+        // QUADRANT_BOTMID
+        if (attackerPosition.y() < 0.0f && attackerPosition.x() > 0.0f && attackerPosition.x() < 1.5f * attackerPosition.y() + 4.5f) return 3;
+        // QUADRANT_BOT
+        if (attackerPosition.y() > -3.0f && attackerPosition.x() < 4.5f && attackerPosition.x() > 1.5f * attackerPosition.y() + 4.5f) return 4;
+    }
 }

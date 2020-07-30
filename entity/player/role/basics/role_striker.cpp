@@ -78,6 +78,7 @@ void Role_Striker::run(){
         // game on situation
         emit requestIsMarkNeeded();
         emit requestAttacker();
+        emit requestQuadrant();
         if(_isMarkNeeded){
             if(player()->playerId() == _attackerId){
                 if(!player()->hasBallPossession())
@@ -96,6 +97,7 @@ void Role_Striker::run(){
                     }
                 }
                 else{
+                    _bh_rcv->setQuadrant(_quadrant);
                     setBehaviour(BEHAVIOUR_RECEIVER);
                 }
             }
@@ -103,6 +105,7 @@ void Role_Striker::run(){
         else{
             if(player()->playerId() == _attackerId){
                 if(isBallComing(0.2f, 1.0f)){
+                    _bh_rcv->setQuadrant(_quadrant);
                     setBehaviour(BEHAVIOUR_RECEIVER);
                 }
                 else{
@@ -110,6 +113,7 @@ void Role_Striker::run(){
                 }
             }
             else{
+                _bh_rcv->setQuadrant(_quadrant);
                 setBehaviour(BEHAVIOUR_RECEIVER);
             }
         }
@@ -148,4 +152,8 @@ void Role_Striker::takeAttacker(quint8 attackerId){
 
 void Role_Striker::takeIsMarkNeeded(bool isMarkNeeded){
     _isMarkNeeded = isMarkNeeded;
+}
+
+void Role_Striker::takeQuadrant(int quadrant){
+    _quadrant = quadrant;
 }
