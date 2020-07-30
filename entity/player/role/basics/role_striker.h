@@ -50,6 +50,7 @@ private:
     bool _isMarkNeeded;
     quint8 _attackerId;
     quint8 _markId;
+    int _quadrant;
 
     // Utils functions
     bool isBallComing(float minVelocity, float radius);
@@ -70,11 +71,13 @@ signals:
     void requestReceivers(quint8 playerId);
     void requestAttacker();
     void requestIsMarkNeeded();
+    void requestQuadrant();
 
 public slots:
     void takeReceiver(quint8 receiverId);
     void takeAttacker(quint8 attackerId);
     void takeIsMarkNeeded(bool isMarkNeeded);
+    void takeQuadrant(int quadrant);
 };
 
 #endif // ROLE_CENTRE_FORWARD_H

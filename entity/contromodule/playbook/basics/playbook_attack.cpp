@@ -49,6 +49,9 @@ void Playbook_Attack::configure(int numPlayers) {
     connect(_rl_stk, SIGNAL(requestIsMarkNeeded()), this, SLOT(requestIsMarkNeeded()), Qt::DirectConnection);
     connect(this, SIGNAL(sendIsMarkNeeded(bool)), _rl_stk, SLOT(takeIsMarkNeeded(bool)), Qt::DirectConnection);
 
+    connect(_rl_stk, SIGNAL(requestQuadrant()), this, SLOT(requestQuadrant()), Qt::DirectConnection);
+    connect(this, SIGNAL(sendQuadrant(int)), _rl_stk, SLOT(takeQuadrant(int)), Qt::DirectConnection);
+
     connect(_rl_stk2, SIGNAL(requestReceivers(quint8)), this, SLOT(requestReceivers(quint8)), Qt::DirectConnection);
     connect(this, SIGNAL(sendReceiver(quint8)), _rl_stk2, SLOT(takeReceiver(quint8)), Qt::DirectConnection);
 
@@ -58,6 +61,9 @@ void Playbook_Attack::configure(int numPlayers) {
     connect(_rl_stk2, SIGNAL(requestIsMarkNeeded()), this, SLOT(requestIsMarkNeeded()), Qt::DirectConnection);
     connect(this, SIGNAL(sendIsMarkNeeded(bool)), _rl_stk2, SLOT(takeIsMarkNeeded(bool)), Qt::DirectConnection);
 
+    connect(_rl_stk2, SIGNAL(requestQuadrant()), this, SLOT(requestQuadrant()), Qt::DirectConnection);
+    connect(this, SIGNAL(sendQuadrant(int)), _rl_stk2, SLOT(takeQuadrant(int)), Qt::DirectConnection);
+
     connect(_rl_stk3, SIGNAL(requestReceivers(quint8)), this, SLOT(requestReceivers(quint8)), Qt::DirectConnection);
     connect(this, SIGNAL(sendReceiver(quint8)), _rl_stk3, SLOT(takeReceiver(quint8)), Qt::DirectConnection);
 
@@ -66,10 +72,15 @@ void Playbook_Attack::configure(int numPlayers) {
 
     connect(_rl_stk3, SIGNAL(requestIsMarkNeeded()), this, SLOT(requestIsMarkNeeded()), Qt::DirectConnection);
     connect(this, SIGNAL(sendIsMarkNeeded(bool)), _rl_stk3, SLOT(takeIsMarkNeeded(bool)), Qt::DirectConnection);
+
+    connect(_rl_stk3, SIGNAL(requestQuadrant()), this, SLOT(requestQuadrant()), Qt::DirectConnection);
+    connect(this, SIGNAL(sendQuadrant(int)), _rl_stk3, SLOT(takeQuadrant(int)), Qt::DirectConnection);
 }
 
 void Playbook_Attack::run(int numPlayers) {
+    resetQuadrantList();
     resetMarkList();
+
     if(!_takeMainAttacker || numPlayers != lastNumPlayers){
         quint8 player = dist()->getKNN(1, loc()->ball()).first();
         mainAttacker = player;
@@ -97,6 +108,21 @@ void Playbook_Attack::run(int numPlayers) {
         if(player != _attackerId) _rl_stk3->setMarkId(requestMarkPlayer(player));
         setPlayerRole(player, _rl_stk3);
     }
+}
+
+void Playbook_Attack::requestQuadrant() {
+    if (leftQuadrantList.size() > 0) {
+        int leftQuadrantTaker = abs(rand()) % leftQuadrantList.size();
+        int quadrant = leftQuadrantList[leftQuadrantTaker];
+        leftQuadrantList.removeAt(leftQuadrantTaker);
+        emit sendQuadrant(quadrant);
+    }
+    /*if (rightQuadrantList.size() > 0) {
+        int rightQuadrantTaker = abs(rand()) % rightQuadrantList.size();
+        int quadrant = rightQuadrantList[rightQuadrantTaker];
+        rightQuadrantList.removeAt(rightQuadrantTaker);
+        emit sendQuadrant(quadrant);
+    }*/
 }
 
 void Playbook_Attack::requestReceivers(quint8 playerId){
@@ -161,6 +187,33 @@ void Playbook_Attack::requestIsMarkNeeded(){
     }
 }
 
+quint8 Playbook_Attack::requestMarkPlayer(quint8 playerId){
+    float minDist = 999.0f;
+    quint8 markId = DIST_INVALID_ID;
+    int pos = DIST_INVALID_ID;
+
+    int qtMarkers = getPlayers().size() - 1;
+    qtMarkers = std::min(qtMarkers, markList.size());
+
+    for(int x = 0; x < qtMarkers; x++){
+        if(PlayerBus::theirPlayerAvailable(markList.at(x))){
+            if(PlayerBus::ourPlayerAvailable(playerId)){
+                float distance = PlayerBus::ourPlayer(playerId)->distanceTo(PlayerBus::theirPlayer(markList.at(x))->position());
+                if(distance < minDist){
+                    minDist = distance;
+                    markId = markList.at(x);
+                    pos = x;
+                }
+            }
+        }
+    }
+
+    if(pos != DIST_INVALID_ID)
+        markList.removeAt(pos);
+
+    return markId;
+}
+
 bool Playbook_Attack::isBallComing(Position playerPosition, float minVelocity, float radius) {
     const Position posBall = loc()->ball();
     const Position posPlayer = playerPosition;
@@ -178,6 +231,25 @@ bool Playbook_Attack::isBallComing(Position playerPosition, float minVelocity, f
     float angError = atan2(radius, WR::Utils::distance(playerPosition, loc()->ball()));
 
     return (fabs(angDiff) < fabs(angError));
+}
+
+void Playbook_Attack::resetQuadrantList() {
+    leftQuadrantList.clear();
+    rightQuadrantList.clear();
+
+    if (_attackerId == DIST_INVALID_ID) std::cout << "Attacker isn't setted";
+    else {
+        int attackerQuadrant = WR::Utils::getAttackerQuadrant(PlayerBus::ourPlayer(_attackerId)->position());
+        for (int i = 1; i <= 4; i++) {
+            int receiverQuadrant = i - attackerQuadrant;
+            if (receiverQuadrant < 0) leftQuadrantList.push_back(receiverQuadrant);
+            else if (receiverQuadrant > 0) rightQuadrantList.push_back(receiverQuadrant);
+        }
+    }
+
+    // Grants, at least, one quadrant available
+    if (leftQuadrantList.size() == 0) leftQuadrantList.push_back(1);
+    if (rightQuadrantList.size() == 0) rightQuadrantList.push_back(4);
 }
 
 void Playbook_Attack::resetMarkList(){
@@ -211,7 +283,7 @@ void Playbook_Attack::resetMarkList(){
         markList.removeAt(pos);
 
     // Sort for priority (closest to our goal)
-    for(int x = 0; x < markList.size(); x++){
+    for(int x = 0; x < markList.size() - 1; x++){
         for(int y = x; y < markList.size(); y++){
             if(PlayerBus::theirPlayerAvailable(markList.at(y))){
                 if(PlayerBus::theirPlayerAvailable(markList.at(x))){
@@ -222,32 +294,4 @@ void Playbook_Attack::resetMarkList(){
             }
         }
     }
-
-}
-
-quint8 Playbook_Attack::requestMarkPlayer(quint8 playerId){
-    float minDist = 999.0f;
-    quint8 markId = DIST_INVALID_ID;
-    int pos = DIST_INVALID_ID;
-
-    int qtMarkers = getPlayers().size() - 1;
-    qtMarkers = std::min(qtMarkers, markList.size());
-
-    for(int x = 0; x < qtMarkers; x++){
-        if(PlayerBus::theirPlayerAvailable(markList.at(x))){
-            if(PlayerBus::ourPlayerAvailable(playerId)){
-                float distance = PlayerBus::ourPlayer(playerId)->distanceTo(PlayerBus::theirPlayer(markList.at(x))->position());
-                if(distance < minDist){
-                    minDist = distance;
-                    markId = markList.at(x);
-                    pos = x;
-                }
-            }
-        }
-    }
-
-    if(pos != DIST_INVALID_ID)
-        markList.removeAt(pos);
-
-    return markId;
 }

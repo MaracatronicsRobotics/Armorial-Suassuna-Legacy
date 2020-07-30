@@ -39,7 +39,7 @@ private:
     // Parameters
     bool _followAttacker;
     int _quadrant;
-    int _attackerId;
+    quint8 _attackerId;
     int _state;
     float _minRadius;
     float _maxRadius;
