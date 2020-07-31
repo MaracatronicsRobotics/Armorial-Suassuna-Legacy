@@ -48,7 +48,7 @@ void Role_SecondStriker::configure(){
 
 void Role_SecondStriker::run(){
     // Setting initial values for test
-    if(player()->playerId() == 1)       _bh_rcv->setQuadrant(2);
+    if(player()->playerId() == 1)       _bh_rcv->setQuadrant(1);
     else if(player()->playerId() == 3)  _bh_rcv->setQuadrant(1);
     else                                _bh_rcv->setQuadrant(4);
 
