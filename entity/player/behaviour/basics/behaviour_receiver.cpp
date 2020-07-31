@@ -118,8 +118,7 @@ void Behaviour_Receiver::run() {
             _skill_GoToLookTo->setAimPosition(loc()->ball());
         }
         else{
-            std::pair<Position,Position> positions = WR::Utils::getQuadrantPositions(_quadrant, loc()->ourSide(), loc()->ourGoal(), loc()->ourFieldTopCorner());
-            Position _desiredPosition = getReceiverBestPosition(_quadrant, _attackerId, _minRadius, _maxRadius);
+            Position _desiredPosition = getReceiverPosition(_quadrant, _attackerId);
 
             _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
             _skill_GoToLookTo->setAimPosition(loc()->ball());
@@ -143,104 +142,15 @@ QList<FreeAngles::Interval> Behaviour_Receiver::getGoalFreeAngles(quint8 quadran
             obstacles.removeAt(i);
     }
 
+    float angInit = WR::Utils::getAngle(posGoal, initialPos);
+    float angEnd  = WR::Utils::getAngle(posGoal, finalPos);
+    if(angInit > angEnd) std::swap(initialPos, finalPos);
+
+    std::cout << "initQuadrantPos: " << initialPos.x() << " . " << initialPos.y() << std::endl;
+    std::cout << "finalQuadrantPos: " << finalPos.x() << " . " << finalPos.y() << std::endl;
+
     // Calc free angles
     return FreeAngles::getFreeAngles(posGoal, initialPos, finalPos, obstacles);
-}
-
-Position Behaviour_Receiver::getReceiverBestPosition(int quadrant, quint8 attackerId, float minRadius, float maxRadius){
-    const Position posTheirGoal = loc()->theirGoal();
-    const Position posAttacker = PlayerBus::ourPlayer(attackerId)->position();
-    const float distAttacker = WR::Utils::distance(player()->position(), posAttacker);
-
-    // Radius
-    float radius = minRadius + maxRadius-minRadius/2.0f;
-
-    // Get free angles in goal
-    QList<FreeAngles::Interval> goalFreeAngles = getGoalFreeAngles(quadrant, radius+2*getConstants()->getRobotRadius());
-    float largestGoalAngle = 0;
-
-    if(goalFreeAngles.empty()) { // Without free angles
-        return Position(false, 0.0, 0.0, 0.0);
-    } else {
-        float largestAngle=0, largestMid=0;
-        for(int i=0; i<goalFreeAngles.size(); i++) {
-            float angI = goalFreeAngles.at(i).angInitial();
-            float angF = goalFreeAngles.at(i).angFinal();
-            WR::Utils::angleLimitZeroTwoPi(&angI);
-            WR::Utils::angleLimitZeroTwoPi(&angF);
-            float dif = WR::Utils::angleDiff(angI, angF);
-            WR::Utils::angleLimitZeroTwoPi(&dif);
-
-            if(dif>largestAngle) {
-                largestAngle = dif;
-                largestMid = angF - dif/2;
-            }
-        }
-        largestGoalAngle = largestMid;
-    }
-
-    // Get position
-    float posAngle = GEARSystem::Angle::pi - largestGoalAngle;
-    float posX = radius*cos(posAngle);
-    float posY = radius*sin(posAngle);
-
-    Position goalLinePos(true, posTheirGoal.x()-posX, posY, 0.0);
-
-    const Position posMinRadius = WR::Utils::threePoints(posTheirGoal, goalLinePos, minRadius, 0.0);
-    const Position posMaxRadius = WR::Utils::threePoints(posTheirGoal, goalLinePos, maxRadius, 0.0);
-
-    // Get obstacles from attacker
-    QList<Obstacle> atkObstacles = FreeAngles::getObstacles(loc()->ball(), distAttacker);
-
-    for(int i=0; i<atkObstacles.size(); i++) {
-        Obstacle obst = atkObstacles.at(i);
-        if(obst.team()==player()->teamId() && obst.id()==player()->playerId()) {
-            atkObstacles.removeAt(i);
-            i--;
-        }
-    }
-
-    // Get free angles from attacker
-    Position initialPos, finalPos;
-    float posMinAngle = WR::Utils::getAngle(loc()->ball(), posMinRadius);
-    float posMaxAngle = WR::Utils::getAngle(loc()->ball(), posMaxRadius);
-
-    WR::Utils::angleLimitZeroTwoPi(&posMinAngle);
-    WR::Utils::angleLimitZeroTwoPi(&posMaxAngle);
-
-    if(posMaxAngle>posMinAngle) {
-        initialPos = posMinRadius;
-        finalPos = posMaxRadius;
-    } else {
-        initialPos = posMaxRadius;
-        finalPos = posMinRadius;
-    }
-
-    QList<FreeAngles::Interval> atkFreeAngles = FreeAngles::getFreeAngles(loc()->ball(), initialPos, finalPos, atkObstacles);
-    float largestAtkAngle=0;
-
-    if(atkFreeAngles.empty()) {
-        return goalLinePos;
-    } else {
-        float largestAngle=0, largestMid=0;
-        for(int i=0; i<atkFreeAngles.size(); i++) {
-            float angI = atkFreeAngles.at(i).angInitial();
-            float angF = atkFreeAngles.at(i).angFinal();
-            float dif = WR::Utils::angleDiff(angI, angF);
-
-            if(dif>largestAngle) {
-                largestAngle = dif;
-                largestMid = angF - dif/2;
-            }
-        }
-        largestAtkAngle = largestMid;
-    }
-
-    // Get intercept position
-    Line goalLine = Line::getLine(posTheirGoal, largestGoalAngle);
-    Line atkLine = Line::getLine(loc()->ball(), largestAtkAngle);
-
-    return goalLine.interceptionWith(atkLine);
 }
 
 Position Behaviour_Receiver::getBestPositionWithoutAttacker(int quadrant){
@@ -324,4 +234,104 @@ bool Behaviour_Receiver::isBallComing(float minVelocity, float radius) {
     float angError = atan2(radius, player()->distBall());
 
     return (fabs(angDiff) < fabs(angError));
+}
+
+Position Behaviour_Receiver::getReceiverPosition(int quadrant, quint8 attackerId){
+    // Taking the largest angle interval for their goal
+    QList<FreeAngles::Interval> goalInterval = getGoalFreeAngles(quadrant, 5.5f);
+
+    float goalLargestAngle = 0.0f;
+    float goalLargestMid = 0.0f;
+    if(goalInterval.empty()){
+        return Position(false, 0.0, 0.0, 0.0);
+    }
+    else{
+        for(int x = 0; x < goalInterval.size(); x++){
+            float angI = goalInterval.at(x).angInitial();
+            float angF = goalInterval.at(x).angFinal();
+
+            WR::Utils::angleLimitZeroTwoPi(&angI);
+            WR::Utils::angleLimitZeroTwoPi(&angF);
+
+            float dif  = angF - angI;
+
+            WR::Utils::angleLimitZeroTwoPi(&dif);
+
+            if(dif > goalLargestAngle){
+                goalLargestAngle = dif;
+                goalLargestMid = (angF + angI) / 2.0f;
+            }
+        }
+    }
+
+    // Taking goalLine
+    Line goalLine = Line::getLine(loc()->theirGoal(), goalLargestMid);
+
+    // Taking points for ball free angles
+    Position offGoalMinimumPosition = Position(true, loc()->theirGoal().x() + 1.5f * cos(goalLargestMid), loc()->theirGoal().y() + 1.5f * sin(goalLargestMid), 0.0);
+    Position offGoalMaximumPosition = Position(true, loc()->theirGoal().x() + 4.0f * cos(goalLargestMid), loc()->theirGoal().y() + 4.0f * sin(goalLargestMid), 0.0);
+
+    // Taking obstacles from the ball, removing the receiver and the attacker
+    QList<Obstacle> obstaclesFromBall = FreeAngles::getObstacles(loc()->ball());
+    for(int x = 0; x < obstaclesFromBall.size(); x++){
+        if(obstaclesFromBall[x].team() == player()->teamId() && (obstaclesFromBall[x].id() == player()->playerId() || obstaclesFromBall[x].id() == _attackerId)){
+            obstaclesFromBall.removeAt(x);
+            x--;
+        }
+    }
+
+    // Free angles from ball to off goal points
+    float ballLargestAngle = 0.0f;
+    float ballLargestMid   = 0.0f;
+    float largi = 0.0f;
+    float largf = 0.0f;
+
+    float angleMin = WR::Utils::getAngle(loc()->ball(), offGoalMinimumPosition);
+    float angleMax = WR::Utils::getAngle(loc()->ball(), offGoalMaximumPosition);
+
+    if(angleMin > angleMax) std::swap(offGoalMinimumPosition, offGoalMaximumPosition);
+
+    QList<FreeAngles::Interval> ballInterval = FreeAngles::getFreeAngles(loc()->ball(), offGoalMinimumPosition, offGoalMaximumPosition, obstaclesFromBall);
+    if(ballInterval.empty()){
+        return Position(false, 0.0, 0.0, 0.0);
+    }
+    else{
+        for(int x = 0; x < ballInterval.size(); x++){
+            float angI = ballInterval.at(x).angInitial();
+            float angF = ballInterval.at(x).angFinal();
+
+            WR::Utils::angleLimitZeroTwoPi(&angI);
+            WR::Utils::angleLimitZeroTwoPi(&angF);
+
+            float dif  = angF - angI;
+
+            WR::Utils::angleLimitZeroTwoPi(&dif);
+
+            if(dif > ballLargestAngle){
+                largi = angI;
+                largf = angF;
+                ballLargestAngle = dif;
+                ballLargestMid = (angF + angI) / 2.0f;
+            }
+        }
+    }
+
+    std::cout << "largest: " << ballLargestAngle << std::endl;
+    std::cout << "i: " << largi << std::endl;
+    std::cout << "f: " << largf << std::endl;
+
+    // Getting ball line to line segment taken from the goal line
+    Line ballLine = Line::getLine(loc()->ball(), ballLargestMid);
+
+    std::cout << "ballAngleMin: " << WR::Utils::getAngle(loc()->ball(), offGoalMinimumPosition) << std::endl;
+    std::cout << "ballAngleMax: " << WR::Utils::getAngle(loc()->ball(), offGoalMaximumPosition) << std::endl;
+    std::cout << "goalAngle: " << goalLargestAngle << std::endl;
+    std::cout << "ballAngle: " << ballLargestMid << std::endl;
+    std::cout << "ballPos  : " << loc()->ball().x() << " . " << loc()->ball().y() << std::endl;
+    std::cout << "goalLine : " << goalLine.a() << " . " << goalLine.b() << std::endl;
+    std::cout << "ballLine : " << ballLine.a() << " . " << ballLine.b() << std::endl;
+    std::cout << "minPos   : " << offGoalMinimumPosition.x() << " . " << offGoalMinimumPosition.y() << std::endl;
+    std::cout << "maxPos   : " << offGoalMaximumPosition.x() << " . " << offGoalMaximumPosition.y() << std::endl;
+
+    return goalLine.interceptionWith(ballLine);
 }

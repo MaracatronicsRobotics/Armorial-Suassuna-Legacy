@@ -65,10 +65,10 @@ private:
         QUADRANT_BOT
     };
     // Auxiliary functions
-    Position getReceiverBestPosition(int quadrant, quint8 attackerId, float minRadius, float maxRadius);
     Position getBestPositionWithoutAttacker(int quadrant);
     QList<FreeAngles::Interval> getGoalFreeAngles(quint8 quadrant, float radius);
     bool isBallComing(float minVelocity, float radius);
+    Position getReceiverPosition(int quadrant, quint8 attackerId);
 
 public:
     Behaviour_Receiver();
