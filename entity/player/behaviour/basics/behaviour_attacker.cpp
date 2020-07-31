@@ -259,22 +259,49 @@ quint8 Behaviour_Attacker::getBestReceiver(){
         return _bestRcv;
     }
     else{
-        float dist = 999.0f;
-        quint8 id = RECEIVER_INVALID_ID;
+        quint8 bestId = RECEIVER_INVALID_ID;
         QList<quint8> list = _receiversList;
+        float largestRecAngle;
         for(int x = 0; x < list.size(); x++){
             if(list.at(x) == player()->playerId()) continue;
             if(PlayerBus::ourPlayerAvailable(list.at(x))){
-                float distReceiver = player()->distanceTo(PlayerBus::ourPlayer(list.at(x))->position());
-                if(distReceiver < dist){
-                    dist = distReceiver;
-                    id = list.at(x);
+                QList<Obstacle> recObstacles = FreeAngles::getObstacles(loc()->theirGoal(), 4);
+                for(int i=0; i<recObstacles.size(); i++) {
+                    Obstacle obst = recObstacles.at(i);
+                    if(obst.team()==player()->teamId() && obst.id()==list.at(x)){
+                        recObstacles.removeAt(i--);
+                    }
+                }
+                Position post1 = loc()->theirGoalLeftPost();
+                Position post2 = loc()->theirGoalRightPost();
+                float angleToPost1 = WR::Utils::getAngle(PlayerBus::ourPlayer(list.at(x))->position(), post1);
+                float angleToPost2 = WR::Utils::getAngle(PlayerBus::ourPlayer(list.at(x))->position(), post2);
+
+                if(angleToPost1 > angleToPost2) std::swap(post1, post2);
+
+                QList<FreeAngles::Interval> recFreeAngles = FreeAngles::getFreeAngles(PlayerBus::ourPlayer(list.at(x))->position(), post1, post2, recObstacles);
+                float largestAngle = -1;
+                for(int i=0; i<recFreeAngles.size(); i++) {
+                    float angI = recFreeAngles.at(i).angInitial();
+                    float angF = recFreeAngles.at(i).angFinal();
+                    WR::Utils::angleLimitZeroTwoPi(&angI);
+                    WR::Utils::angleLimitZeroTwoPi(&angF);
+                    float dif = angF - angI;
+                    WR::Utils::angleLimitZeroTwoPi(&dif);
+
+                    if(dif>largestAngle) {
+                        largestAngle = dif;
+                    }
+                }             
+                if(largestAngle > largestRecAngle){
+                    largestRecAngle = largestAngle;
+                    bestId = list.at(x);
                 }
             }
         }
         _alreadyShooted = false;
-        _bestRcv = id;
-        return id;
+        _bestRcv = bestId;
+        return bestId;
     }
 }
 
