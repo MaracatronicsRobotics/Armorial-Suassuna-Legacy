@@ -32,13 +32,20 @@ private:
     void run();
     int _state;
 
-    // Param
-    float _distanceFromGK;
-    float _radius;
-    float _interceptRadius;
+    /// Parameters
+    // Mark player
     bool _markNearestPlayer;
-    bool _canTakeout;
     quint8 _markPlayerId;
+
+    // Distance from GK line
+    float _distanceFromGK;
+
+    // Radius from goal center
+    float _radius;
+
+    // Takeout params
+    float _interceptRadius;
+    bool _canTakeout;
     bool _avoidAllies;
 
     // Sk

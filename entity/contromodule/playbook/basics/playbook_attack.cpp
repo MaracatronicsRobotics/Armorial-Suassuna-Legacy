@@ -85,6 +85,7 @@ void Playbook_Attack::run(int numPlayers) {
         quint8 player = dist()->getKNN(1, loc()->ball()).first();
         mainAttacker = player;
 
+        _attackerId = player;
         _takeMainAttacker = true;
     }
 

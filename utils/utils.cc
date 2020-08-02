@@ -264,14 +264,6 @@ std::pair<Position,Position> Utils::getQuadrantPositions(int quadrant, const Fie
     const Position botR(true, x, -y, 0.0);
     const Position cen(true, 0.0, 0.0, 0.0);
 
-    enum{
-        NO_QUADRANT,
-        QUADRANT_UP,
-        QUADRANT_BOTMID,
-        QUADRANT_UPMID,
-        QUADRANT_BOT
-    };
-
     // Set initial position
     if(ourSide.isRight()) {
         if(quadrant == QUADRANT_UP) {
@@ -367,4 +359,23 @@ int Utils::getAttackerQuadrant(Position attackerPosition) {
         // QUADRANT_BOT
         if (attackerPosition.y() > -3.0f && attackerPosition.x() < 4.5f && attackerPosition.x() > 1.5f * attackerPosition.y() + 4.5f) return 4;
     }
+}
+
+Position Utils::getQuadrantBarycenter(int quadrant, const FieldSide &side, const Position &ourGoal, const Position &ourFieldTopCorner){
+    if(quadrant == NO_QUADRANT) return Position(false, 0.0, 0.0, 0.0);
+
+    std::pair<Position, Position> quadrantPositions = getQuadrantPositions(quadrant, side, ourGoal, ourFieldTopCorner);
+
+    float x, y;
+    // check if is the same side than our
+    if(side.isRight() == _ourTeam->fieldSide().isRight()){
+        x = (quadrantPositions.first.x() + quadrantPositions.second.x() + _ourTeam->loc()->theirGoal().x()) / 3.0f;
+        y = (quadrantPositions.first.y() + quadrantPositions.second.y() + _ourTeam->loc()->theirGoal().y()) / 3.0f;
+    }
+    else{
+        x = (quadrantPositions.first.x() + quadrantPositions.second.x() + _ourTeam->loc()->ourGoal().x()) / 3.0f;
+        y = (quadrantPositions.first.y() + quadrantPositions.second.y() + _ourTeam->loc()->ourGoal().y()) / 3.0f;
+    }
+
+    return Position(true, x, y, 0.0);
 }
