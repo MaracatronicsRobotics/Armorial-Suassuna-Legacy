@@ -50,9 +50,9 @@ void Role_Striker::configure(){
 
 void Role_Striker::run(){
     // Setting initial values for test
-    if(player()->playerId() == 1)       _bh_rcv->setQuadrant(2);
-    else if(player()->playerId() == 3)  _bh_rcv->setQuadrant(3);
-    else                                _bh_rcv->setQuadrant(4);
+    if(player()->playerId() == 1)       _quadrant = 4;
+    else if(player()->playerId() == 3)  _quadrant = 1;
+    else                                _quadrant = 4;
 
     // Taking the receivers that attacker can use (just do it 1 time)
     if(!_config){
@@ -78,7 +78,7 @@ void Role_Striker::run(){
         // game on situation
         emit requestIsMarkNeeded();
         emit requestAttacker();
-        emit requestQuadrant();
+        //emit requestQuadrant();
         if(_isMarkNeeded){
             if(player()->playerId() == _attackerId){
                 if(!player()->hasBallPossession())
