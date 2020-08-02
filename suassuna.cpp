@@ -39,7 +39,6 @@ Suassuna::Suassuna(quint8 teamId, Colors::Color teamColor, FieldSide fieldSide, 
         _ourGUI = new CoachView(_mrcconstants);
     }
     
-    
     // Default field setup
     _defaultField = new Fields::SSL2020();
 
