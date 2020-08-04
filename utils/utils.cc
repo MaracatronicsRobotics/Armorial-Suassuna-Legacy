@@ -249,12 +249,12 @@ Position Utils::hasInterceptionSegments(const Position &s1, const Position &s2, 
     }
 }
 
-std::pair<Position,Position> Utils::getQuadrantPositions(int quadrant, const FieldSide &ourSide, const Position &ourGoal, const Position &ourFieldTopCorner) {
+std::pair<Position,Position> Utils::getQuadrantPositions(int quadrant) {
     Position initialPos, finalPos;
 
     // Calc some points
-    const float x = fabs(ourGoal.x());
-    const float y = fabs(ourFieldTopCorner.y());
+    const float x = fabs(_ourTeam->loc()->ourGoal().x());
+    const float y = fabs(_ourTeam->loc()->ourFieldTopCorner().y());
 
     const Position upL(true, -x, y, 0.0);
     const Position up(true, 0.0, y, 0.0);
@@ -265,7 +265,7 @@ std::pair<Position,Position> Utils::getQuadrantPositions(int quadrant, const Fie
     const Position cen(true, 0.0, 0.0, 0.0);
 
     // Set initial position
-    if(ourSide.isRight()) {
+    if(_ourTeam->loc()->ourSide().isRight()) {
         if(quadrant == QUADRANT_UP) {
             initialPos = up;
         }
@@ -301,7 +301,7 @@ std::pair<Position,Position> Utils::getQuadrantPositions(int quadrant, const Fie
     }
 
     // Set final position
-    if(ourSide.isRight()) {
+    if(_ourTeam->loc()->ourSide().isRight()) {
         if(quadrant == QUADRANT_UP) {
             finalPos = upL;
         }
@@ -338,37 +338,49 @@ std::pair<Position,Position> Utils::getQuadrantPositions(int quadrant, const Fie
     return std::make_pair(initialPos, finalPos);
 }
 
-int Utils::getAttackerQuadrant(Position attackerPosition) {
+int Utils::getPlayerQuadrant(Position playerPosition) {
     // Quadrantes relacionados ao campo da divisão B
     if (_ourTeam->loc()->ourSide().isRight()) {
         // QUADRANT_UP
-        if (attackerPosition.y() < 3.0f && attackerPosition.x() > -4.5f && attackerPosition.x() < 1.5f * attackerPosition.y() - 4.5f) return 1;
+        if (playerPosition.y() < 3.0f && playerPosition.x() > -4.5f && playerPosition.x() < 1.5f * playerPosition.y() - 4.5f) return QUADRANT_UP;
         // QUADRANT_UPMID
-        if (attackerPosition.y() > 0.0f && attackerPosition.x() < 0.0f && attackerPosition.x() > 1.5f * attackerPosition.y() - 4.5f) return 2;
+        if (playerPosition.y() > 0.0f && playerPosition.x() < 0.0f && playerPosition.x() > 1.5f * playerPosition.y() - 4.5f) return QUADRANT_UPMID;
         // QUADRANT_BOTMID
-        if (attackerPosition.y() < 0.0f && attackerPosition.x() < 0.0f && attackerPosition.x() > -1.5f * attackerPosition.y() - 4.5f) return 3;
+        if (playerPosition.y() < 0.0f && playerPosition.x() < 0.0f && playerPosition.x() > -1.5f * playerPosition.y() - 4.5f) return QUADRANT_BOTMID;
         // QUADRANT_BOT
-        if (attackerPosition.y() > -3.0f && attackerPosition.x() > -4.5f && attackerPosition.x() < -1.5f * attackerPosition.y() - 4.5f) return 4;
+        if (playerPosition.y() > -3.0f && playerPosition.x() > -4.5f && playerPosition.x() < -1.5f * playerPosition.y() - 4.5f) return QUADRANT_BOT;
     } else {
         // QUADRANT_UP
-        if (attackerPosition.y() < 3.0f && attackerPosition.x() < 4.5f && attackerPosition.x() > -1.5f * attackerPosition.y() + 4.5f) return 1;
+        if (playerPosition.y() < 3.0f && playerPosition.x() < 4.5f && playerPosition.x() > -1.5f * playerPosition.y() + 4.5f) return QUADRANT_UP;
         // QUADRANT_UPMID
-        if (attackerPosition.y() > 0.0f && attackerPosition.x() > 0.0f && attackerPosition.x() < -1.5f * attackerPosition.y() + 4.5f) return 2;
+        if (playerPosition.y() > 0.0f && playerPosition.x() > 0.0f && playerPosition.x() < -1.5f * playerPosition.y() + 4.5f) return QUADRANT_UPMID;
         // QUADRANT_BOTMID
-        if (attackerPosition.y() < 0.0f && attackerPosition.x() > 0.0f && attackerPosition.x() < 1.5f * attackerPosition.y() + 4.5f) return 3;
+        if (playerPosition.y() < 0.0f && playerPosition.x() > 0.0f && playerPosition.x() < 1.5f * playerPosition.y() + 4.5f) return QUADRANT_BOTMID;
         // QUADRANT_BOT
-        if (attackerPosition.y() > -3.0f && attackerPosition.x() < 4.5f && attackerPosition.x() > 1.5f * attackerPosition.y() + 4.5f) return 4;
+        if (playerPosition.y() > -3.0f && playerPosition.x() < 4.5f && playerPosition.x() > 1.5f * playerPosition.y() + 4.5f) return QUADRANT_BOT;
     }
 }
 
-Position Utils::getQuadrantBarycenter(int quadrant, const FieldSide &side, const Position &ourGoal, const Position &ourFieldTopCorner){
+int Utils::getOpPlayersInQuadrant(int quadrant) {
+    int opPlayersInQuadrant = 0;
+    QList<Player*> enemyPlayers = _theirTeam->avPlayers().values();
+    QList<Player*>::iterator it;
+    for(it = enemyPlayers.begin(); it != enemyPlayers.end(); it++){
+        Position playerPosition = (*it)->position();
+        int opQuadrant = getPlayerQuadrant(playerPosition);
+        if (opQuadrant == quadrant) opPlayersInQuadrant++;
+    }
+    return opPlayersInQuadrant;
+}
+
+Position Utils::getQuadrantBarycenter(int quadrant){
     if(quadrant == NO_QUADRANT) return Position(false, 0.0, 0.0, 0.0);
 
-    std::pair<Position, Position> quadrantPositions = getQuadrantPositions(quadrant, side, ourGoal, ourFieldTopCorner);
+    std::pair<Position, Position> quadrantPositions = getQuadrantPositions(quadrant);
 
     float x, y;
-    // check if is the same side than our
-    if(side.isRight() == _ourTeam->fieldSide().isRight()){
+    // check if is the same side than ours
+    if(_ourTeam->fieldSide().isRight()){
         x = (quadrantPositions.first.x() + quadrantPositions.second.x() + _ourTeam->loc()->theirGoal().x()) / 3.0f;
         y = (quadrantPositions.first.y() + quadrantPositions.second.y() + _ourTeam->loc()->theirGoal().y()) / 3.0f;
     }
