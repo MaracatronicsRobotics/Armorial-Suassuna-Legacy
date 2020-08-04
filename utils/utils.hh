@@ -28,8 +28,8 @@
 enum{
     NO_QUADRANT,
     QUADRANT_UP,
-    QUADRANT_BOTMID,
     QUADRANT_UPMID,
+    QUADRANT_BOTMID,
     QUADRANT_BOT
 };
 
@@ -77,10 +77,11 @@ namespace WR {
         static bool approximateToZero(float *value, float error = 1e-3);
 
 
-        static std::pair<Position, Position> getQuadrantPositions(int quadrant, const FieldSide &side, const Position &ourGoal, const Position &ourFieldTopCorner);
+        static std::pair<Position, Position> getQuadrantPositions(int quadrant);
         static Position getPlayerKickDevice(quint8 id, float robotRadius = 0.09f);
-        static int getAttackerQuadrant(Position attackerPosition);
-        static Position getQuadrantBarycenter(int quadrant, const FieldSide &side, const Position &ourGoal, const Position &ourFieldTopCorner);
+        static int getPlayerQuadrant(Position playerPosition);
+        static int getOpPlayersInQuadrant(int quadrant);
+        static Position getQuadrantBarycenter(int quadrant);
     };
 
 }

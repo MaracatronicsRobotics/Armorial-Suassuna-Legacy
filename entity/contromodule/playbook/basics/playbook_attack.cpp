@@ -112,18 +112,98 @@ void Playbook_Attack::run(int numPlayers) {
 }
 
 void Playbook_Attack::requestQuadrant() {
+    // Essa função tem o objetivo de gerar um quadrante para o Receiver se posicionar
+    // Prioriza-se ter um recptor a esquerda primeiramente por simples escolha
     if (leftQuadrantList.size() > 0) {
-        int leftQuadrantTaker = abs(rand()) % leftQuadrantList.size();
-        int quadrant = leftQuadrantList[leftQuadrantTaker];
-        leftQuadrantList.removeAt(leftQuadrantTaker);
-        emit sendQuadrant(quadrant);
+        if (leftQuadrantList.size() == 1) {
+            emit sendQuadrant(leftQuadrantList[0]);
+            return;
+        }
+        // Caso haja mais de uma opção de quadrante à esquerda, devemos percorrer
+        //  a lista de opções optando pelo quadrante com menos adversários
+        int leftQuadrantChoice, opLeftPlayers = 10;
+        Position referenceCentroid(false, 0.0f, 0.0f, 0.0f);
+        for (int i = 0; i < leftQuadrantList.size(); i++) {
+            int opPlayersInQuadrant = WR::Utils::getOpPlayersInQuadrant(leftQuadrantList[i]);
+            if (opPlayersInQuadrant < opLeftPlayers) {
+                opPlayersInQuadrant = opLeftPlayers;
+                referenceCentroid = WR::Utils::getQuadrantBarycenter(leftQuadrantList[i]);
+                leftQuadrantChoice = leftQuadrantList[i];
+            }
+
+            // Caso existam quadrantes com a mesma quantidade de oponentes, observamos
+            // o centróide do quadrante e verificando qual deles tem mais opções de gol,
+            // isto é, qual dos quadrantes tem a soma de ângulos livres maior.
+            // (Talvez seja mais vantajoso não fazer nada e pegar qualquer um dos quadrantes?)
+            if (opPlayersInQuadrant == opLeftPlayers) {
+                Position centroid = WR::Utils::getQuadrantBarycenter(leftQuadrantList[i]);
+                QList<FreeAngles::Interval> centroidToGoal = FreeAngles::getFreeAngles(centroid, loc()->theirGoalRightPost(), loc()->theirGoalLeftPost());
+                QList<FreeAngles::Interval> referenceToGoal = FreeAngles::getFreeAngles(centroid, loc()->theirGoalRightPost(), loc()->theirGoalLeftPost());
+                QList<FreeAngles::Interval>::iterator it;
+
+                float centroidTotalAngles = 0.0f;
+                for(it = centroidToGoal.begin(); it !=centroidToGoal.end(); it++){
+                    float dif = WR::Utils::angleDiff(it->angInitial(), it->angFinal());
+                    centroidTotalAngles += dif;
+                }
+
+                float referenceTotalAngles = 0.0f;
+                for(it = referenceToGoal.begin(); it !=referenceToGoal.end(); it++){
+                    float dif = WR::Utils::angleDiff(it->angInitial(), it->angFinal());
+                    referenceTotalAngles += dif;
+                }
+                if (centroidTotalAngles > referenceTotalAngles) {
+                    referenceCentroid = centroid;
+                    leftQuadrantChoice = leftQuadrantList[i];
+                }
+            }
+
+        }
+        emit sendQuadrant(leftQuadrantChoice);
+        return;
     }
-    /*if (rightQuadrantList.size() > 0) {
-        int rightQuadrantTaker = abs(rand()) % rightQuadrantList.size();
-        int quadrant = rightQuadrantList[rightQuadrantTaker];
-        rightQuadrantList.removeAt(rightQuadrantTaker);
-        emit sendQuadrant(quadrant);
-    }*/
+
+    // Aqui temos a mesma situação acima, porém à direita do atacante
+    if (rightQuadrantList.size() > 0) {
+        if (rightQuadrantList.size() == 1) {
+            emit sendQuadrant(rightQuadrantList[0]);
+            return;
+        }
+        int rightQuadrantChoice, opRightPlayers = 10;
+        Position referenceCentroid(false, 0.0f, 0.0f, 0.0f);
+        for (int i = 0; i < rightQuadrantList.size(); i++) {
+            int opPlayersInQuadrant = WR::Utils::getOpPlayersInQuadrant(rightQuadrantList[i]);
+            if (opPlayersInQuadrant == opRightPlayers) {
+                Position centroid = WR::Utils::getQuadrantBarycenter(rightQuadrantList[i]);
+                QList<FreeAngles::Interval> centroidToGoal = FreeAngles::getFreeAngles(centroid, loc()->theirGoalRightPost(), loc()->theirGoalLeftPost());
+                QList<FreeAngles::Interval> referenceToGoal = FreeAngles::getFreeAngles(centroid, loc()->theirGoalRightPost(), loc()->theirGoalLeftPost());
+                QList<FreeAngles::Interval>::iterator it;
+
+                float centroidTotalAngles = 0.0f;
+                for(it = centroidToGoal.begin(); it !=centroidToGoal.end(); it++){
+                    float dif = WR::Utils::angleDiff(it->angInitial(), it->angFinal());
+                    centroidTotalAngles += dif;
+                }
+
+                float referenceTotalAngles = 0.0f;
+                for(it = referenceToGoal.begin(); it !=referenceToGoal.end(); it++){
+                    float dif = WR::Utils::angleDiff(it->angInitial(), it->angFinal());
+                    referenceTotalAngles += dif;
+                }
+                if (centroidTotalAngles > referenceTotalAngles) {
+                    referenceCentroid = centroid;
+                    rightQuadrantChoice = rightQuadrantList[i];
+                }
+            }
+            if (opPlayersInQuadrant < opRightPlayers) {
+                opPlayersInQuadrant = opRightPlayers;
+                referenceCentroid = WR::Utils::getQuadrantBarycenter(rightQuadrantList[i]);
+                rightQuadrantChoice = rightQuadrantList[i];
+            }
+        }
+        emit sendQuadrant(rightQuadrantChoice);
+        return;
+    }
 }
 
 void Playbook_Attack::requestReceivers(quint8 playerId){
@@ -240,7 +320,7 @@ void Playbook_Attack::resetQuadrantList() {
 
     if (_attackerId == DIST_INVALID_ID) std::cout << "Attacker isn't setted";
     else {
-        int attackerQuadrant = WR::Utils::getAttackerQuadrant(PlayerBus::ourPlayer(_attackerId)->position());
+        int attackerQuadrant = WR::Utils::getPlayerQuadrant(PlayerBus::ourPlayer(_attackerId)->position());
         for (int i = 1; i <= 4; i++) {
             int receiverQuadrant = i - attackerQuadrant;
             if (receiverQuadrant < 0) leftQuadrantList.push_back(receiverQuadrant);
