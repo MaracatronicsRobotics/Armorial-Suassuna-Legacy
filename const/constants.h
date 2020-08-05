@@ -57,6 +57,15 @@ private:
     QString _clustersPath;
     QString _MLPPath;
 
+    /* PID */
+    float _linearKp;
+    float _linearKi;
+    float _linearKd;
+
+    float _angularKp;
+    float _angularKi;
+    float _angularKd;
+
 public:
     MRCConstants(QString fileName);
 
@@ -74,6 +83,14 @@ public:
     int getThreadFrequency() const;
     int getGuiUpdateFrequency() const;
     quint8 getGoalieId() const;
+
+    float getLinearKp() const;
+    float getLinearKi() const;
+    float getLinearKd() const;
+
+    float getAngularKp() const;
+    float getAngularKi() const;
+    float getAngularKd() const;
 
     /* Colors */
     static std::string red;

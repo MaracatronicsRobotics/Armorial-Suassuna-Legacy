@@ -72,25 +72,19 @@ void PID::setPIDParameters(double kp, double kd, double ki, double max, double m
 }
 
 double PID::calculate(double desired, double actual){
-    if(fabs(desired) >= 10.0){
-        desired = 0.0;
-    }
     // get time interval
     _timer->stop();
 
-    _dt = _timer->timeusec();
-    _dt = _dt / 1000.0;
+    _dt = _timer->timesec();
 
     _timer->start();
 
-    if(_dt == 0.0) return 0.0; // if _dt == 0
+    if(_dt == 0.0){
+        throw std::runtime_error("_dt = 0");
+    }
 
     // error
     double error = desired - actual;
-
-    if(fabs(error) <= 0.1){
-        _integral = 0.0;
-    }
 
     // Proportional term
     double P = _kp * error;
@@ -101,11 +95,10 @@ double PID::calculate(double desired, double actual){
 
     // Derivative term
     double derivative = (error - _pre_error) / _dt;
-    if(isnan(derivative)) derivative = 0.0; // evitar 0.0/0.0
     double D = _kd * derivative;
 
     // Total PID
-    double result = P + I + D;
+    double result = P;
 
     // Restrict
     if(result > _max){
