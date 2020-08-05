@@ -96,6 +96,30 @@ MRCConstants::MRCConstants(QString configFileName)
 
     _FPPSmoothPathResolution=fpp_map["FPPSmoothPathResolution"].toFloat();
     std::cout<< MRCConstants::defaultBold << "FPPSmoothPathResolution: "<< MRCConstants::green << _FPPSmoothPathResolution << std::endl<< MRCConstants::reset;
+
+    // Pid constants
+    // Linear
+    QVariantMap linear_map = doc_map["LinearPID"].toMap();
+    _linearKp = linear_map["kp"].toFloat();
+    std::cout<< MRCConstants::defaultBold << "Linear Kp: "<< MRCConstants::green << _linearKp << std::endl<< MRCConstants::reset;
+
+    _linearKi = linear_map["ki"].toFloat();
+    std::cout<< MRCConstants::defaultBold << "Linear Ki: "<< MRCConstants::green << _linearKi << std::endl<< MRCConstants::reset;
+
+    _linearKd = linear_map["kd"].toFloat();
+    std::cout<< MRCConstants::defaultBold << "Linear Kd: "<< MRCConstants::green << _linearKd << std::endl<< MRCConstants::reset;
+
+    // Angular
+    QVariantMap angular_map = doc_map["AngularPID"].toMap();
+    _angularKp = angular_map["kp"].toFloat();
+    std::cout<< MRCConstants::defaultBold << "Angular Kp: "<< MRCConstants::green << _angularKp << std::endl<< MRCConstants::reset;
+
+    _angularKi = angular_map["ki"].toFloat();
+    std::cout<< MRCConstants::defaultBold << "Angular Ki: "<< MRCConstants::green << _angularKi << std::endl<< MRCConstants::reset;
+
+    _angularKd = angular_map["kd"].toFloat();
+    std::cout<< MRCConstants::defaultBold << "Angular Kd: "<< MRCConstants::green << _angularKd << std::endl<< MRCConstants::reset;
+
 }
 
 QString MRCConstants::getMLPPath() const
@@ -168,4 +192,32 @@ float MRCConstants::getFPPBallThreshHold() const
     return _FPPBallThreshHold;
 }
 
+float MRCConstants::getLinearKp() const
+{
+    return _linearKp;
+}
 
+float MRCConstants::getLinearKi() const
+{
+    return _linearKi;
+}
+
+float MRCConstants::getLinearKd() const
+{
+    return _linearKd;
+}
+
+float MRCConstants::getAngularKp() const
+{
+    return _angularKp;
+}
+
+float MRCConstants::getAngularKi() const
+{
+    return _angularKi;
+}
+
+float MRCConstants::getAngularKd() const
+{
+    return _angularKd;
+}
