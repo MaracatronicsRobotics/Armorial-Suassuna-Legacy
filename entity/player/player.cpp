@@ -86,7 +86,7 @@ Colors::Color Player::teamColor() const{
 void Player::reset(){
     // Errors
     _lError = 0.015;
-    _aError = Angle::toRadians(3.0);
+    _aError = Angle::toRadians(1.5);
 }
 
 /* player info methods */
@@ -420,6 +420,8 @@ double Player::getPlayerRotateAngleTo(const Position &pos){
 
     vectorRobot2BallX = vectorRobot2BallX / modVectorRobot2Ball;
 
+    if(isnan(vectorRobot2BallX)) return 0.0;
+
     double angleOrigin2ball;   //Ângulo que a bola faz com o eixo x em relação ao robô
     double angleRobot2Ball;    //Ângulo que a visão do robô faz com a posição da bola em relação ao robô
 
@@ -439,53 +441,9 @@ double Player::getPlayerRotateAngleTo(const Position &pos){
 
 std::pair<double, double> Player::rotateTo(Position targetPosition, double offset, bool setHere) {
     double angleRobotToObjective = getPlayerRotateAngleTo(targetPosition);
+    double speed;
 
-    double minValue = 5.0;
-    double maxValue = 6.0;
-    double speed = 0.0;
-
-    if(fabs(angleRobotToObjective) >= _aError){
-        if(fabs(angleRobotToObjective) < M_PI / 16.0){
-            if(angleRobotToObjective < 0.0)
-                speed = 0.5;
-            else
-                speed = -0.5;
-        }
-        else if(fabs(angleRobotToObjective) < M_PI / 12.0){
-            if(angleRobotToObjective < 0.0)
-                speed = 1.0;
-            else
-                speed = -1.0;
-        }
-        else if(fabs(angleRobotToObjective) < M_PI / 8.0){
-            if(angleRobotToObjective < 0.0)
-                speed = 2.0;
-            else
-                speed = -2.0;
-        }
-        else if(fabs(angleRobotToObjective) < M_PI / 4.0){
-            if(angleRobotToObjective < 0.0)
-                speed = 4.0;
-            else
-                speed = -4.0;
-        }
-        else if(fabs(angleRobotToObjective) < M_PI / 2.0){
-            if(angleRobotToObjective < 0.0){
-                speed = minValue;
-            }else{
-                speed = -minValue;
-            }
-        }
-        else{
-            if(angleRobotToObjective < 0.0){
-                speed = maxValue;
-            }else{
-                speed = -maxValue;
-            }
-        }
-    }else{
-        speed = 0;
-    }
+    speed = 5.0 * -angleRobotToObjective;
 
     if(isPidActivated()){
         double newSpeed = _vwPID->calculate(speed, angularSpeed().value());
@@ -557,6 +515,8 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool a
             setSpeed(vx, vy, rotateSpeed.second); // caso esteja de boa, gogo
         }
     }
+
+    setSpeed(vx, vy, rotateSpeed.second);
 }
 
 void Player::aroundTheBall(Position targetPosition, double offset, double offsetAngular){

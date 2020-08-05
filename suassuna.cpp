@@ -175,9 +175,9 @@ void Suassuna::setupOurPlayers() {
     QList<quint8> playerList = _world->getWorldMap()->players(_teamId);
     for(quint8 i=0; i<playerList.size() && i<getConstants()->getQtPlayers(); i++) {
         // Create Player
-        PID *vxPID = new PID(0.5, 0.0, 0.0, 2.5, -2.5);
-        PID *vyPID = new PID(0.5, 0.0, 0.0, 2.5, -2.5);
-        PID *vwPID = new PID(0.7, 0.0, 0.1, 6.0, -6.0);
+        PID *vxPID = new PID(getConstants()->getLinearKp(), getConstants()->getLinearKi(), getConstants()->getLinearKd(), 3.0, -3.0);
+        PID *vyPID = new PID(getConstants()->getLinearKp(), getConstants()->getLinearKi(), getConstants()->getLinearKd(), 3.0, -3.0);
+        PID *vwPID = new PID(getConstants()->getAngularKp(), getConstants()->getAngularKi(), getConstants()->getAngularKd(), 6.0, -6.0);
         NavigationAlgorithm *navAlg = new FANA();
         Player *player = new Player(_world, _ourTeam, _ctr, playerList.at(i), new Role_Default(), _ref, vxPID, vyPID, vwPID, navAlg, getConstants());
         // Enable
