@@ -25,7 +25,7 @@
 #include <utils/line/line.hh>
 
 #define DIST_TO_ATK 1.0f
-#define NO_ATTACKER -1
+#define NO_ATTACKER quint8(300)
 
 QString Behaviour_Receiver::name() {
     return "Behaviour_Receiver";
@@ -130,7 +130,7 @@ QList<FreeAngles::Interval> Behaviour_Receiver::getGoalFreeAngles(quint8 quadran
     const Position posGoal = loc()->theirGoal();
 
     // Calc pos angles
-    std::pair<Position,Position> positions = WR::Utils::getQuadrantPositions(quadrant, loc()->ourSide(), loc()->ourGoal(), loc()->ourFieldTopCorner());
+    std::pair<Position,Position> positions = WR::Utils::getQuadrantPositions(quadrant);
     Position initialPos = positions.first;
     Position finalPos = positions.second;
 
@@ -160,7 +160,7 @@ Position Behaviour_Receiver::getBestPositionWithoutAttacker(int quadrant){
     }
 
     const Position goalPosition = loc()->theirGoal(); // Fundo do gol (pra pegar o goleiro deles)
-    const std::pair<Position,Position> quadrantPosition = WR::Utils::getQuadrantPositions(quadrant, loc()->ourSide(), loc()->ourGoal(), loc()->ourFieldTopCorner());
+    const std::pair<Position,Position> quadrantPosition = WR::Utils::getQuadrantPositions(quadrant);
     float radius = 4.0; // pegar raio médio pra atuação
 
     //
