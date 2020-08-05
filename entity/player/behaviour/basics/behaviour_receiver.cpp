@@ -25,7 +25,7 @@
 #include <utils/line/line.hh>
 
 #define DIST_TO_ATK 1.0f
-#define NO_ATTACKER quint8(300)
+#define NO_ATTACKER 200
 
 QString Behaviour_Receiver::name() {
     return "Behaviour_Receiver";
@@ -76,7 +76,7 @@ void Behaviour_Receiver::run() {
 
         return ;
     }
-    else if(!ref()->getGameInfo(player()->team()->teamColor())->gameOn()){
+    else if(!ref()->getGameInfo(player()->team()->teamColor())->gameOn() && !ref()->getGameInfo(player()->team()->teamColor())->directKick() && !ref()->getGameInfo(player()->team()->teamColor())->indirectKick()){
         // stop
         enableTransition(SK_GOTO);
 
@@ -146,6 +146,7 @@ QList<FreeAngles::Interval> Behaviour_Receiver::getGoalFreeAngles(quint8 quadran
     float angEnd  = WR::Utils::getAngle(posGoal, finalPos);
     if(angInit > angEnd) std::swap(initialPos, finalPos);
 
+    std::cout << "quadrant: " << int(quadrant) << std::endl;
     std::cout << "initQuadrantPos: " << initialPos.x() << " . " << initialPos.y() << std::endl;
     std::cout << "finalQuadrantPos: " << finalPos.x() << " . " << finalPos.y() << std::endl;
 

@@ -50,7 +50,7 @@ void Role_Striker::configure(){
 
 void Role_Striker::run(){
     // Setting initial values for test
-    if(player()->playerId() == 1)       _quadrant = 4;
+    if(player()->playerId() == 1)       _quadrant = 2;
     else if(player()->playerId() == 3)  _quadrant = 1;
     else                                _quadrant = 4;
 
@@ -93,6 +93,7 @@ void Role_Striker::run(){
                         setBehaviour(BEHAVIOUR_MARKPLAYER);
                     }
                     else{
+                        _bh_rcv->setQuadrant(_quadrant);
                         setBehaviour(BEHAVIOUR_RECEIVER);
                     }
                 }

@@ -48,7 +48,7 @@ void Role_SecondStriker::configure(){
 
 void Role_SecondStriker::run(){
     // Setting initial values for test
-    if(player()->playerId() == 1)       _quadrant = 4;
+    if(player()->playerId() == 1)       _quadrant = 2;
     else if(player()->playerId() == 3)  _quadrant = 1;
     else                                _quadrant = 4;
 
@@ -63,17 +63,25 @@ void Role_SecondStriker::run(){
     SSLGameInfo *gameInfo = ref()->getGameInfo(player()->team()->teamColor());
     if(gameInfo->directKick() || gameInfo->indirectKick()){
         // The second striker needs to mark players or enable receiver when an kick will occur
-        if(_markId != DIST_INVALID_ID){
-            _bh_mkp->setTargetID(_markId);
-            setBehaviour(BEHAVIOUR_MARKPLAYER);
+        if(gameInfo->ourDirectKick() || gameInfo->ourIndirectKick()){
+            _bh_rcv->setQuadrant(_quadrant);
+            setBehaviour(BEHAVIOUR_RECEIVER);
         }
         else{
-            setBehaviour(BEHAVIOUR_RECEIVER);
+            if(_markId != DIST_INVALID_ID){
+                _bh_mkp->setTargetID(_markId);
+                setBehaviour(BEHAVIOUR_MARKPLAYER);
+            }
+            else{
+                _bh_rcv->setQuadrant(_quadrant);
+                setBehaviour(BEHAVIOUR_RECEIVER);
+            }
         }
     }
     else if(gameInfo->kickoff() || !gameInfo->gameOn()){
         // At stop or kickoff, the second striker needs to walk together with the main attacker
         emit requestAttacker();
+        _bh_rcv->setQuadrant(_quadrant);
         setBehaviour(BEHAVIOUR_RECEIVER);
     }
     else if(gameInfo->penaltyKick()){
@@ -103,6 +111,7 @@ void Role_SecondStriker::run(){
                         setBehaviour(BEHAVIOUR_MARKPLAYER);
                     }
                     else{
+                        _bh_rcv->setQuadrant(_quadrant);
                         setBehaviour(BEHAVIOUR_RECEIVER);
                     }
                 }
