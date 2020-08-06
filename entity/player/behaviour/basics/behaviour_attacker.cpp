@@ -186,7 +186,7 @@ void Behaviour_Attacker::run() {
                         else{
                             _sk_push->setDestination(WR::Utils::threePoints(loc()->ball(), PlayerBus::ourPlayer(bestReceiver)->nextPosition(), 0.5f, 0.0));
                             if(_sk_push->getPushedDistance() >= 0.8f * _sk_push->getMaxPushDistance()){
-                                _sk_push->setKickPower(1.0f);
+                                _sk_push->setKickPower(player()->velocity().abs());
                                 _sk_push->shootWhenAligned(true);
                             }
                             else{
