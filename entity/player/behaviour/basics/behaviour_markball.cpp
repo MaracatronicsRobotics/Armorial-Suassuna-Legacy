@@ -34,7 +34,7 @@ void Behaviour_MarkBall::configure() {
 };
 
 void Behaviour_MarkBall::run() {
-    if(loc()->isInsideTheirArea(loc()->ball(), 1.1f) || loc()->isInsideOurArea(loc()->ball(), 1.1f)) return;
+    if(loc()->isInsideTheirArea(loc()->ball(), 1.1f) || loc()->isInsideOurArea(loc()->ball(), 1.1f) || !loc()->isInsideField(loc()->ball())) return;
 
     if(player()->distBall() <= 0.2f){
         player()->kick(2.0f);
