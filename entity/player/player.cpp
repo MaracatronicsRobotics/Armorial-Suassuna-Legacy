@@ -475,10 +475,8 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool a
     double vy = _vyPID->calculate(a.second * sin(a.first.value()), velocity().y());
 */
 
-    if(a.second >= 2.0f)
-        a.second *= 3.0;
-    else
-        a.second *= 1.5;
+    if(a.second <= 1.5f)
+        a.second *= 2.0;
 
     double vx = a.second * cos(a.first.value());
     double vy = a.second * sin(a.first.value());
