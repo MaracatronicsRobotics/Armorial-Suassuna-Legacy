@@ -32,6 +32,18 @@ private:
     int _state;
     Skill_GoToLookTo *_sk_GoToLookTo;
 
+    // Utils
+    bool isBehindBall(Position posObjective);
+    bool isBallInFront();
+    bool isInFrontOfObjective();
+    Position _aimPosition;
+
+    // States
+    enum{
+        STATE_POS,
+        STATE_TAKE
+    };
+
 public:
     Behaviour_MarkBall();
     QString name();

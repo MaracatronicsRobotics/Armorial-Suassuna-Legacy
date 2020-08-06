@@ -21,8 +21,12 @@
 
 #include "behaviour_markball.h"
 
+#define BALLPREVISION_MINVELOCITY 0.02f
+#define BALLPREVISION_VELOCITY_FACTOR 3.0f
+#define BALLPREVISION_FACTOR_LIMIT 0.15f
+
 QString Behaviour_MarkBall::name() {
-    return "Behaviour_Marker";
+    return "Behaviour_MarkBall";
 }
 
 Behaviour_MarkBall::Behaviour_MarkBall() {
@@ -41,11 +45,99 @@ void Behaviour_MarkBall::run() {
         //player()->dribble(true);
     }
 
-    Position desired = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.15f, GEARSystem::Angle::pi);
-    _sk_GoToLookTo->setDesiredPosition(desired);
+    _aimPosition.setUnknown();
+
+    // Discover their player that have poss
+    for(quint8 x = 0; x < getConstants()->getQtPlayers(); x++){
+        if(PlayerBus::theirPlayerAvailable(x)){
+            if(PlayerBus::theirPlayer(x)->hasBallPossession()){
+                _aimPosition = PlayerBus::theirPlayer(x)->position();
+                break;
+            }
+        }
+    }
+
+    // If they don't have poss, aim position is now their goal
+    if(_aimPosition.isUnknown()) _aimPosition = loc()->theirGoal();
+
+    // Calc behind ball
+    Position behindBall = WR::Utils::threePoints(loc()->ball(), _aimPosition, 0.3f, GEARSystem::Angle::pi);
+
+    if(loc()->ballVelocity().abs() > BALLPREVISION_MINVELOCITY){
+        // Calc unitary vector of velocity
+        const Position velUni(true, loc()->ballVelocity().x()/loc()->ballVelocity().abs(), loc()->ballVelocity().y()/loc()->ballVelocity().abs(), 0.0);
+
+        // Calc velocity factor
+        float factor = BALLPREVISION_VELOCITY_FACTOR*loc()->ballVelocity().abs();
+        WR::Utils::limitValue(&factor, 0.0f, BALLPREVISION_FACTOR_LIMIT);
+
+        // Calc projected position
+        const Position delta(true, factor*velUni.x(), factor*velUni.y(), 0.0);
+        Position projectedPos(true, behindBall.x()+delta.x(), behindBall.y()+delta.y(), 0.0);
+
+        if(isBehindBall(projectedPos)){
+            behindBall = projectedPos;
+        }
+    }
+
+    // Local parameters
+    Position desiredPos;
+
+    switch (_state) {
+    case STATE_POS: {
+        desiredPos = behindBall;
+
+        if(player()->isNearbyPosition(behindBall, 0.1f))
+            _state = STATE_TAKE;
+
+        _sk_GoToLookTo->setAvoidOpponents(true);
+    }
+    break;
+    case STATE_TAKE: {
+        desiredPos = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.2f, GEARSystem::Angle::pi);
+
+        if(player()->distBall() > 0.35f){
+            _state = STATE_POS;
+        }
+
+        if(isBallInFront() == false){
+            _state = STATE_POS;
+        }
+
+        _sk_GoToLookTo->setAvoidOpponents(false);
+    }
+    break;
+    }
+
+    // Maintain kick to takeout ball from them
+    player()->kick(3.0f);
+
+    _sk_GoToLookTo->setDesiredPosition(desiredPos);
     _sk_GoToLookTo->setAvoidBall(false);
-    _sk_GoToLookTo->setAvoidOpponents(false);
     _sk_GoToLookTo->setAimPosition(loc()->ball());
 
 }
 
+bool Behaviour_MarkBall::isBehindBall(Position posObjective){
+    Position posBall = loc()->ball();
+    Position posPlayer = player()->position();
+    float anglePlayer = WR::Utils::getAngle(posBall, posPlayer);
+    float angleDest = WR::Utils::getAngle(posBall, posObjective);
+    float diff = WR::Utils::angleDiff(anglePlayer, angleDest);
+
+    return (diff>GEARSystem::Angle::pi/2.0f);
+}
+
+bool Behaviour_MarkBall::isBallInFront(){
+    Angle anglePlayerBall = player()->angleTo(loc()->ball());
+    float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
+
+    return (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
+}
+
+bool Behaviour_MarkBall::isInFrontOfObjective(){
+    Angle anglePlayerObj = player()->angleTo(_aimPosition);
+    float diff = WR::Utils::angleDiff(anglePlayerObj, player()->orientation());
+
+    return (diff <= GEARSystem::Angle::toRadians(3)); // aprox 3 graus
+}
