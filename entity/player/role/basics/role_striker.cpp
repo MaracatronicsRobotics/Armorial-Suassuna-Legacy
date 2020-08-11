@@ -105,7 +105,7 @@ void Role_Striker::run(){
         }
         else{
             if(player()->playerId() == _attackerId){
-                if(isBallComing(0.2f, 1.0f)){
+                if(isBallComing(0.2f, 1.0f) && !player()->team()->hasBallPossession()){
                     _bh_rcv->setQuadrant(_quadrant);
                     setBehaviour(BEHAVIOUR_RECEIVER);
                 }

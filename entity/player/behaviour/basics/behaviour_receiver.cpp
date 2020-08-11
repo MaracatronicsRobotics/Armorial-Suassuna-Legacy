@@ -57,9 +57,30 @@ void Behaviour_Receiver::configure() {
 };
 
 void Behaviour_Receiver::run() {
-    if(ref()->getGameInfo(player()->team()->teamColor())->kickoff()){
+    if(ref()->getGameInfo(player()->team()->teamColor())->penaltyKick()){
+        if(ref()->getGameInfo(player()->team()->teamColor())->ourPenaltyKick()){
+            Position desiredPosition;
+            if(_quadrant == QUADRANT_UP || _quadrant == QUADRANT_UPMID)
+                desiredPosition = Position(true, loc()->theirPenaltyMark().x(), loc()->theirPenaltyMark().y() - 1.0f, 0.0);
+            else
+                desiredPosition = Position(true, loc()->theirPenaltyMark().x(), loc()->theirPenaltyMark().y() + 1.0f, 0.0);
+
+            _skill_GoToLookTo->setDesiredPosition(desiredPosition);
+            _skill_GoToLookTo->setAimPosition(loc()->ball());
+        }
+        else{
+            Position desiredPosition;
+            if(_quadrant == QUADRANT_UP || _quadrant == QUADRANT_UPMID)
+                desiredPosition = Position(true, loc()->fieldCenter().x(), loc()->fieldCenter().y() - 1.0f, 0.0);
+            else
+                desiredPosition = Position(true, loc()->fieldCenter().x(), loc()->fieldCenter().y() + 1.0f, 0.0);
+
+            _skill_GoToLookTo->setDesiredPosition(desiredPosition);
+            _skill_GoToLookTo->setAimPosition(loc()->ball());
+        }
+    }
+    else if(ref()->getGameInfo(player()->team()->teamColor())->kickoff()){
         // kickoff
-        enableTransition(SK_GOTO);
         if(ref()->getGameInfo(player()->team()->teamColor())->ourKickoff()){
             if(_quadrant == QUADRANT_UP || _quadrant == QUADRANT_UPMID)
                 _skill_GoToLookTo->setDesiredPosition(Position(true, (loc()->ourSide().isRight()) ? 0.1f : -0.1f, 2.5f, 0.0f));
@@ -73,13 +94,11 @@ void Behaviour_Receiver::run() {
                 _skill_GoToLookTo->setDesiredPosition(Position(true, (loc()->ourSide().isRight()) ? 1.5f : -1.5f, -1.5f, 0.0f));
         }
         _skill_GoToLookTo->setAimPosition(loc()->theirGoal());
-
+        enableTransition(SK_GOTO);
         return ;
     }
     else if(!ref()->getGameInfo(player()->team()->teamColor())->gameOn() && !ref()->getGameInfo(player()->team()->teamColor())->directKick() && !ref()->getGameInfo(player()->team()->teamColor())->indirectKick()){
         // stop
-        enableTransition(SK_GOTO);
-
         if(PlayerBus::ourPlayerAvailable(_attackerId)){
             Position desiredPosition;
 
@@ -97,12 +116,12 @@ void Behaviour_Receiver::run() {
         else{
             std::cout << MRCConstants::red << "[ERROR]" << MRCConstants::reset << MRCConstants::defaultBold << " attackerId not set to receiver at stop." << std::endl << MRCConstants::reset;
         }
-
+        enableTransition(SK_GOTO);
         return ;
     }
-    player()->dribble(true);
+    player()->dribble(false);
 
-    if(isBallComing(0.2f, 1.0f)){
+    if(isBallComing(0.2f, 1.0f) && !player()->team()->hasBallPossession()){
         _skill_Receiver->setPositionToLook(loc()->ball());
         enableTransition(SK_RECV);
     }
