@@ -348,7 +348,15 @@ void Player::setSpeed(float x, float y, float theta) {
     if(isnan(y)) y = 0.0;
 
     // Limit max speed
-    float maxSpeed = 3.0;
+    float maxSpeed;
+    if(!_ref->getGameInfo(teamColor())->gameOn() || _ref->getGameInfo(teamColor())->timeOut() || _ref->getGameInfo(teamColor())->ballPlacement()){
+        // stop, timeout or placement
+        maxSpeed = 1.5;
+    }
+    else{
+        maxSpeed = 3.0;
+    }
+
     Velocity robotVel = Velocity(true, x, y);
     if(robotVel.abs() >= maxSpeed){
         // Transform in unitary vector
