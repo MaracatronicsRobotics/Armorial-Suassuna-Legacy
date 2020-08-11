@@ -39,6 +39,7 @@ private:
     float _pushedDistance;
     float _kickPower;
     bool _isParabolic;
+    bool _isPenalty;
 
     // State machine
     enum {
@@ -65,6 +66,8 @@ public:
     void setAim(const Position &aim) { _aim = aim; }
     float getMaxPushDistance() { return _maxPushDistance; }
     float getPushedDistance() { return _pushedDistance; }
+    // For penalty shoots
+    void setIsPenalty(bool isPenalty) { _isPenalty = isPenalty; }
 };
 
 #endif // SKILL_TEST_H

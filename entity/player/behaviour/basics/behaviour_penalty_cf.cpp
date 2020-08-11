@@ -30,11 +30,14 @@ Behaviour_Penalty_CF::Behaviour_Penalty_CF() {
 
     _skill_kick = NULL;
     _skill_goToLookTo = NULL;
+    firstChoose = false;
+
+    changeAimTimer.start();
 }
 
 void Behaviour_Penalty_CF::configure() {
     usesSkill(_skill_goToLookTo = new Skill_GoToLookTo());
-    usesSkill(_skill_kick = new Skill_Kick());
+    usesSkill(_skill_kick = new Skill_Test());
     setInitialSkill(_skill_goToLookTo);
 
     addTransition(STATE_KICK, _skill_goToLookTo, _skill_kick);
@@ -43,93 +46,135 @@ void Behaviour_Penalty_CF::configure() {
 
 void Behaviour_Penalty_CF::run() {
     if(getConstants()==NULL)return;
-    _skill_kick->setPower(getConstants()->getMaxKickPower());
 
-    /*const float minAngle = WR::Utils::getAngle(loc()->ball(), loc()->ourGoalRightPost());
-    const float maxAngle = WR::Utils::getAngle(loc()->ball(), loc()->ourGoalLeftPost());
+    if(!player()->canKickBall()){
+        Position desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.5f, GEARSystem::Angle::pi);
+        _skill_goToLookTo->setDesiredPosition(desiredPosition);
+        _skill_goToLookTo->setAvoidBall(true);
+        _skill_goToLookTo->setAimPosition(loc()->theirGoal());
+        _skill_goToLookTo->setAvoidOpponents(true);
+        _skill_goToLookTo->setAvoidTheirGoalArea(false);
+        _skill_goToLookTo->setAvoidOurGoalArea(true);
 
-    QList<FreeAngles::Interval> freeAngles = FreeAngles::getFreeAngles(player()->position(), minAngle, maxAngle, false);
-    QList<FreeAngles::Interval>::iterator it;
-
-    for(it = freeAngles.begin(); it != freeAngles.end(); it++){
-        if(it->obstructed()) continue;
-        float initAngle = it->angInitial();
-        float endAngle = it->angFinal();
-        WR::Utils::angleLimitZeroTwoPi(&initAngle);
-        WR::Utils::angleLimitZeroTwoPi(&endAngle);
-
-        float dif = endAngle - initAngle;
-        WR::Utils::angleLimitZeroTwoPi(&dif);
-        if(dif > largestAngle){
-            largestAngle = dif;
-            largestMid = endAngle - dif/2;
+        enableTransition(STATE_GOTO);
+    }else{
+        changeAimTimer.stop();
+        if(changeAimTimer.timesec() >= 1.0 || !firstChoose){
+            if(!firstChoose) firstChoose = true;
+            _kickPosition = getBestKickPosition().second;
+            changeAimTimer.start();
         }
-    }*/
 
-    //Position behindBall = WR::Utils::threePoints(loc()->ball(), _kickPosition, 0.2, GEARSystem::Angle::pi); // por trás da bola
-    Position Aim = getBestKickPosition();
+        _skill_kick->setIsPenalty(true);
+        _skill_kick->setAim(_kickPosition);
+        _skill_kick->shootWhenAligned(true);
+        _skill_kick->setKickPower(getConstants()->getMaxKickPower());
 
-    _skill_goToLookTo->setAimPosition(Aim);
-    _skill_kick->setAim(Aim);
-    _skill_goToLookTo->setDesiredPosition(loc()->ball());
-    loc()->theirGoalLeftPost().y();
-    if (player()->distBall() < 0.2f) {
-        enableTransition(STATE_KICK); //distBall deve ser trocado de acordo com o offset
+        enableTransition(STATE_KICK);
     }
-    else enableTransition(STATE_GOTO);
 }
 
-Position Behaviour_Penalty_CF::getBestKickPosition(){
-    const Position goalRightPost = loc()->ourGoalRightPost();
-    const Position goalLeftPost = loc()->ourGoalLeftPost();
-    const Position goalCenter = loc()->ourGoal();
+std::pair<float, Position> Behaviour_Penalty_CF::getBestKickPosition(){
+    // Margin to avoid select the post as aim (or outside it)
+    float postMargin = 0.05*loc()->fieldDefenseWidth()/2;
 
-    // calculating angles
-    const float minAngle = WR::Utils::getAngle(loc()->ball(), goalRightPost);
-    const float maxAngle = WR::Utils::getAngle(loc()->ball(), goalLeftPost);
+    // Adjust margin
+    if(loc()->theirSide().isRight()) {
+        postMargin = -postMargin;
+    }
 
-    // generating list of freeAngles to goal
-    QList<FreeAngles::Interval> freeAngles = FreeAngles::getFreeAngles(loc()->ball(), minAngle, maxAngle);
+    // shift the position of the post to the center of the goal
+    Position theirGoalRightPost = loc()->theirGoalRightPost();
+    theirGoalRightPost.setPosition(theirGoalRightPost.x(),
+                                   theirGoalRightPost.y() + postMargin,
+                                   theirGoalRightPost.z());
+    Position theirGoalLeftPost = loc()->theirGoalLeftPost();
+    theirGoalLeftPost.setPosition(theirGoalLeftPost.x(),
+                                  theirGoalLeftPost.y() - postMargin,
+                                  theirGoalLeftPost.z());
+    Position posTheirGoal = loc()->theirGoal();
 
-    float largestAngle, largestMid;
-    // get the largest interval
-    if(freeAngles.size() == 0){
-        return Position(false, 0.0, 0.0, 0.0); // debugar isso dps
-    }else{
-        QList<FreeAngles::Interval>::iterator it;
-        for(it = freeAngles.begin(); it != freeAngles.end(); it++){
-            if(it->obstructed()) continue;
-            float initAngle = it->angInitial();
-            float endAngle = it->angFinal();
-            WR::Utils::angleLimitZeroTwoPi(&initAngle);
-            WR::Utils::angleLimitZeroTwoPi(&endAngle);
+    // get obstacles
+    QList<Obstacle> obstacles = FreeAngles::getObstacles(loc()->ball());
 
-            float dif = endAngle - initAngle;
+    // Shift the obstacles
+    QList<Obstacle>::iterator obst;
+
+    // removing attacker from obstacles (avoid problems when he is rotating)
+    for(int x = 0; x < obstacles.size(); x++){
+        if(obstacles[x].id() == player()->playerId() && obstacles[x].team() == player()->teamId()){
+            obstacles.removeAt(x);
+            break;
+        }
+    }
+
+    for(obst = obstacles.begin(); obst != obstacles.end(); obst++) {
+        obst->radius() = 1.2 * getConstants()->getRobotRadius();
+        // access the robot=
+        PlayerAccess *robot = NULL;
+
+        if(player()->opTeamId() == obst->team()) {
+            robot = PlayerBus::theirPlayer(obst->id());
+        } else {
+            robot = PlayerBus::ourPlayer(obst->id());
+        }
+
+        Velocity robotVel;
+        if(robot != NULL) {
+            robotVel = robot->velocity();
+        }
+
+        if(robotVel.abs() > 2*0.015) {
+            float time = WR::Utils::distance(loc()->ball(), obst->position())/8.0f;
+            if(robotVel.abs()*time > 0.2f) {
+                time = 0.2f/robotVel.abs();
+            }
+            obst->position() = WR::Utils::vectorSum(obst->position(), robotVel, time);
+        }
+    }
+
+    // get free angle with the shifted obstacles
+    QList<FreeAngles::Interval> freeAngles = FreeAngles::getFreeAngles(loc()->ball(), theirGoalRightPost, theirGoalLeftPost, obstacles);
+
+    // Get the largest
+
+    float largestAngle=0, largestMid=0;
+
+    if(freeAngles.size()==0) { // Without free angles
+        return std::make_pair(0.0, Position(false, 0.0, 0.0, 0.0));
+    } else {
+        for(int i=0; i<freeAngles.size(); i++) {
+            float angI = freeAngles.at(i).angInitial();
+            float angF = freeAngles.at(i).angFinal();
+            WR::Utils::angleLimitZeroTwoPi(&angI);
+            WR::Utils::angleLimitZeroTwoPi(&angF);
+            float dif = angF - angI;
             WR::Utils::angleLimitZeroTwoPi(&dif);
-            if(dif > largestAngle){
+
+            if(dif>largestAngle) {
                 largestAngle = dif;
-                largestMid = endAngle - dif/2;
+                largestMid = angF - dif/2;
             }
         }
     }
 
-    // Triangularization
-    const float x = goalCenter.x() - loc()->ball().x();
-    const float tg = tan(largestMid);
-    const float y = tg * x;
+    // With free angles
+
+    // Triangle
+    float x = posTheirGoal.x() - loc()->ball().x();
+    float tg = tan(largestMid);
+    float y = tg*x;
 
     // Impact point
-    const float pos_y = loc()->ball().y() + y;
-    const Position impactPosition(true, goalCenter.x(), pos_y, 0.0);
+    float pos_y = loc()->ball().y() + y;
+    Position impactPos(true, posTheirGoal.x(), pos_y, 0.0);
 
-    // Check if impact position has space for ball radius
-    const float distImpactPos = WR::Utils::distance(loc()->ball(), impactPosition);
-    const float radiusAngle = largestAngle/2.0;
-    const float distR = radiusAngle * distImpactPos;
+    // Check if impact pos has enough space for the ball
+    bool obstructedWay = loc()->isVectorObstructed(loc()->ball(), impactPos, player()->playerId(), getConstants()->getBallRadius()*1.5, false);
 
-    if(distR < (1.5 * 0.025)){ // 1.5 * raioDaBola (ruido ft. tristeza)
-        return Position(false, 0.0, 0.0, 0.0); // bola n passa, debugar isso dps
+    if(obstructedWay) {
+        return std::make_pair(0.0, Position(false, 0.0, 0.0, 0.0));
     }
 
-    return impactPosition;
+    return std::make_pair(largestAngle, impactPos);
 }
