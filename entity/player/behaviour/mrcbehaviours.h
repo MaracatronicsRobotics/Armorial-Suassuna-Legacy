@@ -34,6 +34,7 @@
 #include <entity/player/behaviour/basics/behaviour_penalty_gk.h>
 #include <entity/player/behaviour/basics/behaviour_penalty_cf.h>
 #include <entity/player/behaviour/basics/behaviour_intercept.h>
+#include <entity/player/behaviour/basics/behaviour_ballplacement.h>
 
 // BHV Test
 #include <entity/player/behaviour/basics/behaviour_test.h>
