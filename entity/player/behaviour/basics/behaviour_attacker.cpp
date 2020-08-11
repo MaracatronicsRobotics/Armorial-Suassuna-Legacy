@@ -34,6 +34,9 @@ Behaviour_Attacker::Behaviour_Attacker() {
     _sk_goToLookTo = NULL;
     _sk_push       = NULL;
 
+    receiverDecisionTimer.start();
+    aimDecisionTimer.start();
+    shootPassDecisionTimer.start();
 }
 
 void Behaviour_Attacker::configure() {
@@ -57,8 +60,8 @@ void Behaviour_Attacker::configure() {
 
     // Initial state
     _state = STATE_CANTKICK;
-
-    _alreadyShooted = true;
+    firstAim = false;
+    canShoot = false;
 }
 
 void Behaviour_Attacker::run() {
@@ -103,26 +106,31 @@ void Behaviour_Attacker::run() {
     }
     break;
     case STATE_PUSH:{
-        if(!player()->hasBallPossession() && loc()->ballVelocity().abs() >= 0.2f)
-            _alreadyShooted = true;
-
         if(ref()->getGameInfo(player()->team()->teamColor())->ourIndirectKick()){
             quint8 bestReceiver = getBestReceiver();
             if(bestReceiver != RECEIVER_INVALID_ID){
                 // Aim to our best receiver
-                Position ourReceiverKickDevice = WR::Utils::getPlayerKickDevice(bestReceiver);
-                _sk_kick->setAim(ourReceiverKickDevice);
+                Position ourReceiverFuturePosition = PlayerBus::ourPlayer(bestReceiver)->nextPosition();
+                if(ourReceiverFuturePosition.isUnknown() || WR::Utils::distance(PlayerBus::ourPlayer(bestReceiver)->position(), ourReceiverFuturePosition) > 0.7f){
+                    _sk_goToLookTo->setDesiredPosition(WR::Utils::threePoints(loc()->ball(), PlayerBus::ourPlayer(bestReceiver)->nextPosition(), 0.3f, GEARSystem::Angle::pi));
+                    _sk_goToLookTo->setAimPosition(loc()->ball());
+                    _sk_goToLookTo->setAvoidBall(true);
+                    enableTransition(SKT_POS);
+                }else{
+                    _sk_kick->setAim(ourReceiverFuturePosition);
 
-                // Check if the path is obstructed
-                QList<quint8> shootList = {player()->playerId(), bestReceiver};
-                bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverKickDevice, shootList, getConstants()->getRobotRadius() * 3.0, false);
+                    // Check if the path is obstructed
+                    QList<quint8> shootList = {player()->playerId(), bestReceiver};
+                    bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverFuturePosition, shootList, getConstants()->getRobotRadius() * 3.0, false);
 
-                // Adjust kick power based on obstructed path or distance to receiver
-                if(isObstructed) _sk_kick->setPower(std::min(6.0, 0.75 * sqrt((player()->distanceTo(ourReceiverKickDevice) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
-                else             _sk_kick->setPower(std::min(6.0, std::max(3.0, 2.0 * player()->distanceTo(ourReceiverKickDevice))));
+                    // Adjust kick power based on obstructed path or distance to receiver
+                    if(isObstructed) _sk_kick->setPower(std::min(6.0, 0.75 * sqrt((player()->distanceTo(ourReceiverFuturePosition) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
+                    else             _sk_kick->setPower(std::min(6.0, std::max(3.0, 2.0 * player()->distanceTo(ourReceiverFuturePosition))));
 
-                // Set if is parabolic
-                _sk_kick->setIsChip(isObstructed);
+                    // Set if is parabolic
+                    _sk_kick->setIsChip(isObstructed);
+                    enableTransition(SKT_KICK);
+                }
             }
             else{
                 // If we don't have any receivers, shoot to their goalie
@@ -139,8 +147,8 @@ void Behaviour_Attacker::run() {
                     _sk_kick->setIsChip(false);
                     _sk_kick->setPower(getConstants()->getMaxKickPower());
                 }
+                enableTransition(SKT_KICK);
             }
-            enableTransition(SKT_KICK);
         }
         else{
             // This is the game_on / our kickoff / our direct kick situation
@@ -148,10 +156,22 @@ void Behaviour_Attacker::run() {
             // Otherwise, use pushBall skill
 
             // First get the best position to kick and the angle interval
-            std::pair<float, Position> bestAim = getBestAimPosition();
+            aimDecisionTimer.stop();
+            if(aimDecisionTimer.timesec() >= AIM_DECISION_TIME || !firstAim){
+                if(!firstAim) firstAim = true;
+                _aim = getBestAimPosition();
+                aimDecisionTimer.start();
+            }
 
             // If don't have any free angles, the path is obstructed or have an unsufficient opening for kick
-            if((bestAim.second.isUnknown() || bestAim.first <= GEARSystem::Angle::toRadians(6.0f))){
+            // Here you put the pass / shoot decision heuristic =)
+            shootPassDecisionTimer.stop();
+            if(shootPassDecisionTimer.timesec() >= SHOOT_PASS_DECISION_TIME){
+                canShoot = !(_aim.second.isUnknown() || _aim.first <= GEARSystem::Angle::toRadians(6.0f));
+                shootPassDecisionTimer.start();
+            }
+
+            if(!canShoot){
                 // Get the best receiver to make a pass
                 quint8 bestReceiver = getBestReceiver();
                 if(bestReceiver != RECEIVER_INVALID_ID){
@@ -202,8 +222,8 @@ void Behaviour_Attacker::run() {
 
                     // Check if the position to aim isn't unknown
                     Position aimPos;
-                    if(!bestAim.second.isUnknown()) aimPos = (bestAim.second);
-                    else                            aimPos = (loc()->theirGoal());
+                    if(!_aim.second.isUnknown()) aimPos = (_aim.second);
+                    else                         aimPos = (loc()->theirGoal());
 
                     if(ref()->getGameInfo(player()->team()->teamColor())->ourDirectKick() || ref()->getGameInfo(player()->team()->teamColor())->ourKickoff()){
                         _sk_kick->setAim(aimPos);
@@ -225,10 +245,10 @@ void Behaviour_Attacker::run() {
             }else{
                 // Debug to UI
                 if(CoachView::_isEnabled) CoachView::drawAttackerTriangle(player()->position(), loc()->theirGoalLeftPost(), loc()->theirGoalRightPost());
-                if(CoachView::_isEnabled) CoachView::drawAttackerLine(player()->position(), bestAim.second);
+                if(CoachView::_isEnabled) CoachView::drawAttackerLine(player()->position(), _aim.second);
                 // If we have an sufficient opening to their goal, make an direct kick to it
                 if(ref()->getGameInfo(player()->team()->teamColor())->ourDirectKick() || ref()->getGameInfo(player()->team()->teamColor())->ourKickoff()){
-                    _sk_kick->setAim(bestAim.second);
+                    _sk_kick->setAim(_aim.second);
                     _sk_kick->setIsChip(false);
                     _sk_kick->setPower(getConstants()->getMaxKickPower());
 
@@ -236,7 +256,7 @@ void Behaviour_Attacker::run() {
                 }
                 else{
                     _sk_push->setDestination(Position(false, 0.0, 0.0, 0.0));
-                    _sk_push->setAim(bestAim.second);
+                    _sk_push->setAim(_aim.second);
                     _sk_push->setIsParabolic(false);
                     _sk_push->setKickPower(getConstants()->getMaxKickPower());
                     _sk_push->shootWhenAligned(true);
@@ -255,7 +275,8 @@ bool Behaviour_Attacker::canTakeBall(){
 }
 
 quint8 Behaviour_Attacker::getBestReceiver(){
-    if(!_alreadyShooted){
+    receiverDecisionTimer.stop();
+    if(receiverDecisionTimer.timesec() < RECEIVER_DECISION_TIME){
         return _bestRcv;
     }
     else{
@@ -299,7 +320,7 @@ quint8 Behaviour_Attacker::getBestReceiver(){
                 }
             }
         }
-        _alreadyShooted = false;
+        receiverDecisionTimer.start();
         _bestRcv = bestId;
         return bestId;
     }

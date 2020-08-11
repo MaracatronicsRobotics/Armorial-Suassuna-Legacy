@@ -26,6 +26,10 @@
 #include <entity/player/skills/skills_include.h>
 #include <utils/mrctimer/mrctimer.h>
 
+#define RECEIVER_DECISION_TIME   1.5f // seconds
+#define AIM_DECISION_TIME        1.0f // seconds
+#define SHOOT_PASS_DECISION_TIME 1.0f // seconds
+
 class Behaviour_Attacker : public Behaviour {
 private:
     void configure();
@@ -55,6 +59,18 @@ private:
     bool canTakeBall();
     quint8 getTheirClosestPlayerToGoal();
     std::pair<float, Position> getBestAimPosition();
+
+    // Aim
+    std::pair<float, Position> _aim;
+    bool firstAim;
+
+    // Shoot / pass decision
+    bool canShoot;
+
+    // Decision timer
+    Timer receiverDecisionTimer;
+    Timer shootPassDecisionTimer;
+    Timer aimDecisionTimer;
 
 public:
     Behaviour_Attacker();

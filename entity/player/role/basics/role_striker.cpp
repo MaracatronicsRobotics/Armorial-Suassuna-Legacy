@@ -63,16 +63,16 @@ void Role_Striker::run(){
     }
 
     SSLGameInfo *gameInfo = ref()->getGameInfo(player()->team()->teamColor());
-    if(gameInfo->directKick() || gameInfo->indirectKick() || gameInfo->kickoff() || !gameInfo->gameOn()){
-        // The striker is our main attacker, so he will make the kick (or be in the line between ball and our goal), or just follow ball
-        setBehaviour(BEHAVIOUR_ATTACKER);
-    }
-    else if(gameInfo->penaltyKick()){
-        if(gameInfo->ourPenaltyKick())
+    if(gameInfo->penaltyKick()){
+        if(gameInfo->ourPenaltyKick()){
             setBehaviour(BEHAVIOUR_PENALTYATK);
-        else{
+        }else{
             // Check what to do here... (new behaviour for positioning?)
         }
+    }
+    else if(gameInfo->directKick() || gameInfo->indirectKick() || gameInfo->kickoff() || !gameInfo->gameOn()){
+        // The striker is our main attacker, so he will make the kick (or be in the line between ball and our goal), or just follow ball
+        setBehaviour(BEHAVIOUR_ATTACKER);
     }
     else{
         // game on situation

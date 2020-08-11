@@ -43,6 +43,8 @@ Skill_Test::Skill_Test() {
     setMaxPushDistance(1.0);
     setKickPower(6.0);
 
+    setIsPenalty(false);
+
 }
 
 void Skill_Test::run(){
@@ -51,7 +53,7 @@ void Skill_Test::run(){
     }
 
     // Calc behind ball
-    Position behindBall = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.2f, GEARSystem::Angle::pi);
+    Position behindBall = WR::Utils::threePoints(loc()->ball(), player()->position(), _isPenalty ? 0.0f : 0.2f, GEARSystem::Angle::pi);
 
     if(loc()->ballVelocity().abs() > BALLPREVISION_MINVELOCITY){
         // Calc unitary vector of velocity

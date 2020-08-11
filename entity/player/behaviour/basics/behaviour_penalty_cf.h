@@ -30,15 +30,17 @@ class Behaviour_Penalty_CF : public Behaviour {
 private:
     void configure();
     void run();
+
+    // Skills
     Skill_GoToLookTo *_skill_goToLookTo;
-    Skill_Kick *_skill_kick;
-    int _state;
+    Skill_Test *_skill_kick;
+
+    // Vars
     Position _kickPosition;
-    Position getBestKickPosition();
-
-
-    // Auxiliary
-    bool isGKRight();
+    std::pair<float, Position> getBestKickPosition();
+    int _state;
+    bool firstChoose;
+    Timer changeAimTimer;
 
     // Skill transitions
     enum{
@@ -50,4 +52,5 @@ public:
     Behaviour_Penalty_CF();
     QString name();
 };
+
 #endif // BEHAVIOUR_PENALTY_CF_H

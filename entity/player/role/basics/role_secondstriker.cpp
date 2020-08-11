@@ -61,7 +61,15 @@ void Role_SecondStriker::run(){
     }
 
     SSLGameInfo *gameInfo = ref()->getGameInfo(player()->team()->teamColor());
-    if(gameInfo->directKick() || gameInfo->indirectKick()){
+    if(gameInfo->penaltyKick()){
+        if(gameInfo->ourPenaltyKick())
+            // mark players at our penalty kick
+            setBehaviour(BEHAVIOUR_MARKPLAYER);
+        else{
+            // Check what to do here... (new behaviour for positioning?)
+        }
+    }
+    else if(gameInfo->directKick() || gameInfo->indirectKick()){
         // The second striker needs to mark players or enable receiver when an kick will occur
         if(gameInfo->ourDirectKick() || gameInfo->ourIndirectKick()){
             _bh_rcv->setQuadrant(_quadrant);
@@ -83,14 +91,6 @@ void Role_SecondStriker::run(){
         emit requestAttacker();
         _bh_rcv->setQuadrant(_quadrant);
         setBehaviour(BEHAVIOUR_RECEIVER);
-    }
-    else if(gameInfo->penaltyKick()){
-        if(gameInfo->ourPenaltyKick())
-            // mark players at our penalty kick
-            setBehaviour(BEHAVIOUR_MARKPLAYER);
-        else{
-            // Check what to do here... (new behaviour for positioning?)
-        }
     }
     else{
         // game on situation
