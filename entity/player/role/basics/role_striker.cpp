@@ -42,10 +42,12 @@ void Role_Striker::initializeBehaviours(){
     usesBehaviour(BEHAVIOUR_RECEIVER,   _bh_rcv = new Behaviour_Receiver());
     usesBehaviour(BEHAVIOUR_MARKBALL,   _bh_mkb = new Behaviour_MarkBall());
     usesBehaviour(BEHAVIOUR_MARKPLAYER, _bh_mkp = new Behaviour_MarkPlayer());
+    usesBehaviour(BEHAVIOUR_PLACEMENT,  _bh_plc = new Behaviour_BallPlacement());
 }
 
 void Role_Striker::configure(){
     _config = false;
+    setPlacement = false;
 }
 
 void Role_Striker::run(){
@@ -63,59 +65,71 @@ void Role_Striker::run(){
     }
 
     SSLGameInfo *gameInfo = ref()->getGameInfo(player()->team()->teamColor());
-    if(gameInfo->penaltyKick()){
-        if(gameInfo->ourPenaltyKick()){
-            setBehaviour(BEHAVIOUR_PENALTYATK);
-        }else{
-            // Check what to do here... (new behaviour for positioning?)
+    if(gameInfo->ourBallPlacement()){
+        Position desiredPos = Position(true, ref()->getGameInfo(player()->team()->teamColor())->desiredPosition().x() / 1000.0, ref()->getGameInfo(player()->team()->teamColor())->desiredPosition().y() /  1000.0, 0.0);
+        if(!setPlacement){
+            _bh_plc->setDesiredPosition(desiredPos);
+            setPlacement = true;
         }
-    }
-    else if(gameInfo->directKick() || gameInfo->indirectKick() || gameInfo->kickoff() || !gameInfo->gameOn()){
-        // The striker is our main attacker, so he will make the kick (or be in the line between ball and our goal), or just follow ball
-        setBehaviour(BEHAVIOUR_ATTACKER);
+        setBehaviour(BEHAVIOUR_PLACEMENT);
     }
     else{
-        // game on situation
-        emit requestIsMarkNeeded();
-        emit requestAttacker();
-        //emit requestQuadrant();
-        if(_isMarkNeeded){
-            if(player()->playerId() == _attackerId){
-                if(!player()->hasBallPossession())
-                    setBehaviour(BEHAVIOUR_MARKBALL);
-                else
-                    setBehaviour(BEHAVIOUR_ATTACKER);
+        // Reset placement and threat another ref messages
+        setPlacement = false;
+        if(gameInfo->penaltyKick()){
+            if(gameInfo->ourPenaltyKick()){
+                setBehaviour(BEHAVIOUR_PENALTYATK);
+            }else{
+                // Check what to do here... (new behaviour for positioning?)
             }
-            else{
-                if(_markId != DIST_INVALID_ID){
-                    if(!player()->team()->hasBallPossession()){
-                        _bh_mkp->setTargetID(_markId);
-                        setBehaviour(BEHAVIOUR_MARKPLAYER);
+        }
+        else if(gameInfo->directKick() || gameInfo->indirectKick() || gameInfo->kickoff() || !gameInfo->gameOn()){
+            // The striker is our main attacker, so he will make the kick (or be in the line between ball and our goal), or just follow ball
+            setBehaviour(BEHAVIOUR_ATTACKER);
+        }
+        else{
+            // game on situation
+            emit requestIsMarkNeeded();
+            emit requestAttacker();
+            //emit requestQuadrant();
+            if(_isMarkNeeded){
+                if(player()->playerId() == _attackerId){
+                    if(!player()->hasBallPossession())
+                        setBehaviour(BEHAVIOUR_MARKBALL);
+                    else
+                        setBehaviour(BEHAVIOUR_ATTACKER);
+                }
+                else{
+                    if(_markId != DIST_INVALID_ID){
+                        if(!player()->team()->hasBallPossession()){
+                            _bh_mkp->setTargetID(_markId);
+                            setBehaviour(BEHAVIOUR_MARKPLAYER);
+                        }
+                        else{
+                            _bh_rcv->setQuadrant(_quadrant);
+                            setBehaviour(BEHAVIOUR_RECEIVER);
+                        }
                     }
                     else{
                         _bh_rcv->setQuadrant(_quadrant);
                         setBehaviour(BEHAVIOUR_RECEIVER);
                     }
                 }
-                else{
-                    _bh_rcv->setQuadrant(_quadrant);
-                    setBehaviour(BEHAVIOUR_RECEIVER);
-                }
-            }
-        }
-        else{
-            if(player()->playerId() == _attackerId){
-                if(isBallComing(0.2f, 1.0f) && !player()->team()->hasBallPossession()){
-                    _bh_rcv->setQuadrant(_quadrant);
-                    setBehaviour(BEHAVIOUR_RECEIVER);
-                }
-                else{
-                    setBehaviour(BEHAVIOUR_ATTACKER);
-                }
             }
             else{
-                _bh_rcv->setQuadrant(_quadrant);
-                setBehaviour(BEHAVIOUR_RECEIVER);
+                if(player()->playerId() == _attackerId){
+                    if(isBallComing(0.2f, 1.0f) && !player()->team()->hasBallPossession()){
+                        _bh_rcv->setQuadrant(_quadrant);
+                        setBehaviour(BEHAVIOUR_RECEIVER);
+                    }
+                    else{
+                        setBehaviour(BEHAVIOUR_ATTACKER);
+                    }
+                }
+                else{
+                    _bh_rcv->setQuadrant(_quadrant);
+                    setBehaviour(BEHAVIOUR_RECEIVER);
+                }
             }
         }
     }

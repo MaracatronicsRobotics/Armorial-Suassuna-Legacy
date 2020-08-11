@@ -30,11 +30,12 @@ class Role_Striker : public Role
     Q_OBJECT
 private:
     // Behaviours
-    Behaviour_Attacker   *_bh_atk;
-    Behaviour_Penalty_CF *_bh_atp;
-    Behaviour_Receiver   *_bh_rcv;
-    Behaviour_MarkBall   *_bh_mkb;
-    Behaviour_MarkPlayer *_bh_mkp;
+    Behaviour_Attacker      *_bh_atk;
+    Behaviour_Penalty_CF    *_bh_atp;
+    Behaviour_Receiver      *_bh_rcv;
+    Behaviour_MarkBall      *_bh_mkb;
+    Behaviour_MarkPlayer    *_bh_mkp;
+    Behaviour_BallPlacement *_bh_plc;
 
     // Behaviours Enum
     enum{
@@ -42,7 +43,8 @@ private:
         BEHAVIOUR_PENALTYATK,
         BEHAVIOUR_RECEIVER,
         BEHAVIOUR_MARKBALL,
-        BEHAVIOUR_MARKPLAYER
+        BEHAVIOUR_MARKPLAYER,
+        BEHAVIOUR_PLACEMENT
     };
 
     // Parameters
@@ -51,6 +53,9 @@ private:
     quint8 _attackerId;
     quint8 _markId;
     int _quadrant;
+
+    // Placement
+    bool setPlacement;
 
     // Utils functions
     bool isBallComing(float minVelocity, float radius);

@@ -45,6 +45,7 @@ SOURCES += \
     entity/coachview/soccerview/util/field.cpp \
     entity/contromodule/playbook/basics/playbook_attack.cpp \
     entity/entity.cpp \
+    entity/player/behaviour/basics/behaviour_ballplacement.cpp \
     entity/player/behaviour/basics/behaviour_goalkeeper.cpp \
     entity/player/behaviour/basics/behaviour_intercept.cpp \
     entity/player/behaviour/basics/behaviour_markball.cpp \
@@ -185,6 +186,7 @@ HEADERS += \
     entity/coachview/soccerview/util/util.h \
     entity/contromodule/playbook/basics/playbook_attack.h \
     entity/entity.h \
+    entity/player/behaviour/basics/behaviour_ballplacement.h \
     entity/player/behaviour/basics/behaviour_intercept.h \
     entity/player/behaviour/basics/behaviour_test.h \
     entity/player/navigation/fana/fana.h \
