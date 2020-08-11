@@ -52,7 +52,7 @@ private:
     // Receivers
     QList<quint8> _receiversList;
     quint8 getBestReceiver();
-    bool _alreadyShooted;
+    bool firstChoose;
     quint8 _bestRcv;
 
     // Utils functions
