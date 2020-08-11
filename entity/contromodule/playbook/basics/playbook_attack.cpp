@@ -78,9 +78,6 @@ void Playbook_Attack::configure(int numPlayers) {
 }
 
 void Playbook_Attack::run(int numPlayers) {
-    resetQuadrantList();
-    resetMarkList();
-
     if(!_takeMainAttacker || numPlayers != lastNumPlayers){
         quint8 player = dist()->getKNN(1, loc()->ball()).first();
         mainAttacker = player;
@@ -90,6 +87,9 @@ void Playbook_Attack::run(int numPlayers) {
     }
 
     lastNumPlayers = numPlayers;
+
+    resetQuadrantList();
+    resetMarkList();
 
     quint8 player = mainAttacker;
     if(player != DIST_INVALID_ID){
@@ -241,29 +241,34 @@ void Playbook_Attack::requestAttacker(){
 
 void Playbook_Attack::requestIsMarkNeeded(){
     // Check if the ball is coming to our players
-    bool isNeeded = true;
-    QList<quint8> playersList = getPlayers();
-    for(int x = 0; x < playersList.size(); x++){
-        PlayerAccess *player;
-        if(!PlayerBus::ourPlayerAvailable(playersList.at(x))) continue;
-        else player = PlayerBus::ourPlayer(playersList.at(x));
-        if(isBallComing(player->position(), 0.2f, 1.0)){
-            isNeeded = false;
-            break;
-        }
-    }
-
-    if(!isNeeded){
-        // If ball is coming to our players
-        emit sendIsMarkNeeded(isNeeded);
+    if(team()->hasBallPossession()){
+        emit sendIsMarkNeeded(false);
     }
     else{
-        // Check other conditions
-        if(loc()->isInsideOurField(loc()->ball()) || team()->opTeam()->hasBallPossession()){
+        bool isNeeded = true;
+        QList<quint8> playersList = getPlayers();
+        for(int x = 0; x < playersList.size(); x++){
+            PlayerAccess *player;
+            if(!PlayerBus::ourPlayerAvailable(playersList.at(x))) continue;
+            else player = PlayerBus::ourPlayer(playersList.at(x));
+            if(isBallComing(player->position(), 0.2f, 1.0) && !team()->hasBallPossession()){
+                isNeeded = false;
+                break;
+            }
+        }
+
+        if(!isNeeded){
+            // If ball is coming to our players
             emit sendIsMarkNeeded(isNeeded);
         }
         else{
-            emit sendIsMarkNeeded(!isNeeded);
+            // Check other conditions
+            if(loc()->isInsideOurField(loc()->ball()) || team()->opTeam()->hasBallPossession()){
+                emit sendIsMarkNeeded(isNeeded);
+            }
+            else{
+                emit sendIsMarkNeeded(!isNeeded);
+            }
         }
     }
 }

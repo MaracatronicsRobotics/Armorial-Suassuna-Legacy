@@ -38,11 +38,15 @@ void SSLStrategy_Halt::configure(int numOurPlayers) {
 
 void SSLStrategy_Halt::run(int numOurPlayers) {
     quint8 goalie = dist()->getGK();
-    _pb_doNothing->addPlayer(goalie);
-    _pb_doNothing->setGoalieId(goalie);
+    if(PlayerBus::ourPlayerAvailable(goalie)){
+        _pb_doNothing->addPlayer(goalie);
+        _pb_doNothing->setGoalieId(goalie);
+    }
 
-    for(int x = 0; x < numOurPlayers - 1; x++){
-        quint8 id = dist()->getPlayer();
+    QList<quint8> players = dist()->getAllPlayers();
+
+    for(int x = 0; x < players.size(); x++){
+        quint8 id = players.at(x);
         if(id % 2 == 0)
             _pb_doNothing->addPlayer(id);
         else

@@ -60,8 +60,9 @@ void Behaviour_Attacker::configure() {
 
     // Initial state
     _state = STATE_CANTKICK;
-    firstAim = false;
-    canShoot = false;
+    firstAim   = false;
+    canShoot   = false;
+    firstChoose = false;
 }
 
 void Behaviour_Attacker::run() {
@@ -206,7 +207,7 @@ void Behaviour_Attacker::run() {
                         else{
                             _sk_push->setDestination(WR::Utils::threePoints(loc()->ball(), PlayerBus::ourPlayer(bestReceiver)->nextPosition(), 0.5f, 0.0));
                             if(_sk_push->getPushedDistance() >= 0.8f * _sk_push->getMaxPushDistance()){
-                                _sk_push->setKickPower(player()->velocity().abs());
+                                _sk_push->setKickPower(player()->velocity().abs() * 1.5);
                                 _sk_push->shootWhenAligned(true);
                             }
                             else{
@@ -276,10 +277,11 @@ bool Behaviour_Attacker::canTakeBall(){
 
 quint8 Behaviour_Attacker::getBestReceiver(){
     receiverDecisionTimer.stop();
-    if(receiverDecisionTimer.timesec() < RECEIVER_DECISION_TIME){
+    if(receiverDecisionTimer.timesec() < RECEIVER_DECISION_TIME && firstChoose){
         return _bestRcv;
     }
     else{
+        if(!firstChoose) firstChoose = true;
         quint8 bestId = RECEIVER_INVALID_ID;
         QList<quint8> list = _receiversList;
         float largestRecAngle;

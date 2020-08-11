@@ -73,6 +73,16 @@ void Behaviour_Barrier::configure() {
 };
 
 void Behaviour_Barrier::run() {
+    if(ref()->getGameInfo(player()->team()->teamColor())->penaltyKick()){
+        Position desiredPosition = Position(true, loc()->ourPenaltyMark().x() + (loc()->ourSide().isLeft() ? 1.0 : -1.0), _distanceFromGK <= 0.0 ? loc()->ourPenaltyMark().y() -1.0 : loc()->ourPenaltyMark().y() + 1.0, 0.0);
+
+        _sk_goto->setDesiredPosition(desiredPosition);
+        _sk_goto->setAimPosition(loc()->ball());
+        enableTransition(STATE_GOTO);
+
+        return ;
+    }
+
     Position markPosition;
     if(_markNearestPlayer){
         if(_markPlayerId != 200){
