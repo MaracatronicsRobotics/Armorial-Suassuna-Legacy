@@ -60,8 +60,14 @@ void Behaviour_MarkPlayer::run() {
         _aimPosition = WR::Utils::threePoints(loc()->ourGoal(), _targetPosition, _markDistance, GEARSystem::Angle::pi);
     }
 
+    if(WR::Utils::distance(_desiredPosition, loc()->ball()) <= 1.0f && (ref()->getGameInfo(player()->team()->teamColor())->freeKick())){
+        _desiredPosition = WR::Utils::threePoints(loc()->ball(), _desiredPosition, 1.0f, 0.0);
+    }
+
     _sk_goto->setDesiredPosition(_desiredPosition);
     _sk_goto->setAimPosition(_aimPosition);
+    _sk_goto->setAvoidTeammates(true);
+    _sk_goto->setAvoidBall(true);
 
     player()->dribble(true);
 
