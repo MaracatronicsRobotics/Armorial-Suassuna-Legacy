@@ -27,6 +27,7 @@
 #define ATTACKER_MINBALLDIST 0.4f
 #define GOALPOSTS_ERROR 0.1f
 #define INTERCEPT_MINBALLVELOCITY 0.2f
+#define RECEIVER_INVALID_ID 200
 
 QString Behaviour_Goalkeeper::name() {
     return "Behaviour_GoalKeeper";
@@ -61,6 +62,8 @@ void Behaviour_Goalkeeper::configure() {
     //
     addTransition(STATE_PUSH, _skill_Goalkeeper, _skill_push);
     addTransition(STATE_PUSH, _skill_goToLookTo, _skill_push);
+
+    _notAlreadyChosen = true;
 };
 
 void Behaviour_Goalkeeper::run() {
@@ -85,13 +88,20 @@ void Behaviour_Goalkeeper::run() {
     _skill_goToLookTo->setAvoidOurGoalArea(false);
     _skill_goToLookTo->setIsGk(true);
 
+    // kick parameters
+    if(!player()->hasBallPossession() && loc()->ballVelocity().abs() >= 0.2f)
+        _notAlreadyChosen = true;
+
     // machine if state begins for transitionsss
     if(isBallComingToGoal(INTERCEPT_MINBALLVELOCITY, 1.1f) && !player()->hasBallPossession()){ // bola nao ta em posse do goleiro e ta indo pro gol
         enableTransition(STATE_GK); // defende!
     }else if(_takeoutEnabled){ // caso n esteja em posse, n esteja indo pro gol ou nenhum dos dois
         if(loc()->isInsideOurArea(loc()->ball(), _takeoutFactor)){ // ve se ta na nossa area com fator de takeout (uma area maiorzinha)
+            quint8 bestAttacker = getBestAttacker();
             _skill_push->setKickPower(getConstants()->getMaxKickPower());
-            _skill_push->setAim(loc()->theirGoal());
+            _skill_push->setAim(PlayerBus::ourPlayer(bestAttacker)->position());
+            std::cout << "Best ID:" << int(bestAttacker) << endl;
+            std::cout << "Best Pos:" << PlayerBus::ourPlayer(bestAttacker)->position().x() << "." << PlayerBus::ourPlayer(bestAttacker)->position().y() << endl;
             _skill_push->shootWhenAligned(true);
             _skill_push->setIsParabolic(true);
             enableTransition(STATE_PUSH);
@@ -301,4 +311,40 @@ bool Behaviour_Goalkeeper::isBallAlignedToGoal(quint8 theirPlayerId) {
     float angDiffLeft = WR::Utils::angleDiff(angPlayerBall, angLeftPost);
 
     return (fabs(angDiffRight)<angDiffPosts && fabs(angDiffLeft)<angDiffPosts);
+}
+
+quint8 Behaviour_Goalkeeper::getBestAttacker(){
+    if(!_notAlreadyChosen){         // prevents the function from running after the best attacker has already been chosen
+        return _bestAtt;
+    }
+    else{
+        quint8 bestId = RECEIVER_INVALID_ID;
+        QList<Player*> attackers = loc()->getMRCPlayers().values();         // list of all allies
+        QList<Player*> opPlayers = loc()->getOpPlayers().values();          // list of all opponents
+        float menDist = 0;
+        for(int x = 0; x < attackers.size(); x++){
+            if(PlayerBus::ourPlayerAvailable(attackers.at(x)->playerId()) &&
+                    WR::Utils::distance(PlayerBus::ourPlayer(attackers.at(x)->playerId())->position(), loc()->ourGoal()) > 2 &&
+                    attackers.at(x)->playerId() != player()->playerId()){       // only considers allies that are 2 meters from our goal and isn't itself
+                Position recPos = PlayerBus::ourPlayer(attackers.at(x)->playerId())->position();
+                float menDistPlayer = 1000;
+                for(int y = 0; y < opPlayers.size(); y++){
+                    if(PlayerBus::theirPlayerAvailable(opPlayers.at(y)->playerId()) && opPlayers.at(y) != NULL){
+                        Position opPos = opPlayers.at(y)->position();
+                        float distPlayer = WR::Utils::distance(recPos, opPos);
+                        if(distPlayer < menDistPlayer){         // finds the distance of the closest opponent from the ally
+                            menDistPlayer = distPlayer;
+                        }
+                    }
+                }
+                if(menDistPlayer > menDist){                    // picks the ally with the biggest distance from it's closest opponent
+                    menDist = menDistPlayer;
+                    bestId = attackers.at(x)->playerId();
+                }
+            }
+        }
+        _notAlreadyChosen = false;
+        _bestAtt = bestId;
+        return bestId;
+    }
 }

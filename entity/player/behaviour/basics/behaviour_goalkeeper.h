@@ -49,6 +49,11 @@ private:
     Position ballProjection();
     bool isBallAlignedToGoal(quint8 theirPlayerId);
 
+    //Attacker
+    quint8 getBestAttacker();
+    bool _notAlreadyChosen;
+    quint8 _bestAtt;
+
     // Skill transitions
     enum{
         STATE_GOTO,

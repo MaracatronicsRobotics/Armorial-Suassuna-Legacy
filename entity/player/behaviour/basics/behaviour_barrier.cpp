@@ -217,30 +217,30 @@ bool Behaviour_Barrier::isBehindBall(Position posObjective){
 }
 
 quint8 Behaviour_Barrier::getBestAttacker(){
-    if(!_notAlreadyChosen){
+    if(!_notAlreadyChosen){         // prevents the function from running after the best attacker has already been chosen
         return _bestAtt;
     }
     else{
         quint8 bestId = RECEIVER_INVALID_ID;
-        QList<Player*> attackers = loc()->getMRCPlayers().values();
-        QList<Player*> opPlayers = loc()->getOpPlayers().values();        
+        QList<Player*> attackers = loc()->getMRCPlayers().values();         // list of all allies
+        QList<Player*> opPlayers = loc()->getOpPlayers().values();          // list of all opponents
         float menDist = 0;
         for(int x = 0; x < attackers.size(); x++){
             if(PlayerBus::ourPlayerAvailable(attackers.at(x)->playerId()) &&
                     WR::Utils::distance(PlayerBus::ourPlayer(attackers.at(x)->playerId())->position(), loc()->ourGoal()) > 2 &&
-                    attackers.at(x)->playerId() != player()->playerId()){
+                    attackers.at(x)->playerId() != player()->playerId()){       // only considers allies that are 2 meters from our goal and isn't itself
                 Position recPos = PlayerBus::ourPlayer(attackers.at(x)->playerId())->position();
                 float menDistPlayer = 1000;
                 for(int y = 0; y < opPlayers.size(); y++){
                     if(PlayerBus::theirPlayerAvailable(opPlayers.at(y)->playerId()) && opPlayers.at(y) != NULL){
                         Position opPos = opPlayers.at(y)->position();
                         float distPlayer = WR::Utils::distance(recPos, opPos);
-                        if(distPlayer < menDistPlayer){
+                        if(distPlayer < menDistPlayer){         // finds the distance of the closest opponent from the ally
                             menDistPlayer = distPlayer;
                         }
                     }
                 }
-                if(menDistPlayer > menDist){
+                if(menDistPlayer > menDist){                    // picks the ally with the biggest distance from it's closest opponent
                     menDist = menDistPlayer;
                     bestId = attackers.at(x)->playerId();
                 }
