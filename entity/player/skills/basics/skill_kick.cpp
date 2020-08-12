@@ -70,7 +70,7 @@ void Skill_Kick::run() {
     case STATE_POS: {
         desiredPos = behindBall;
 
-        if(player()->isNearbyPosition(behindBall, 0.1f))
+        if(player()->isNearbyPosition(behindBall, 0.045f))
             _state = STATE_KICK;
 
         // change this later (avoid areas)
@@ -78,18 +78,9 @@ void Skill_Kick::run() {
     }
         break;
     case STATE_KICK: {
-        if(player()->distBall() <= 0.12f && isBallInFront()){ // holding ball already
-            player()->rotateTo(_aimPosition, 0.01f, true);
-            break;
-        }
-
         desiredPos = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.2f, GEARSystem::Angle::pi);
 
         if(player()->distBall() > 0.35f){
-            _state = STATE_POS;
-        }
-
-        if(isBallInFront() == false){
             _state = STATE_POS;
         }
 

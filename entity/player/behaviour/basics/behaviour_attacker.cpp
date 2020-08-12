@@ -86,7 +86,7 @@ void Behaviour_Attacker::run() {
         }
         else{
             if(ref()->getGameInfo(player()->team()->teamColor())->theirDirectKick() || ref()->getGameInfo(player()->team()->teamColor())->theirIndirectKick()){
-                desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->ourGoal(), 0.6f, 0.0f);
+                desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->ourGoal(), 0.8f, 0.0f);
                 lookPosition = loc()->ball();
             }
             else{
@@ -111,22 +111,22 @@ void Behaviour_Attacker::run() {
             quint8 bestReceiver = getBestReceiver();
             if(bestReceiver != RECEIVER_INVALID_ID){
                 // Aim to our best receiver
-                Position ourReceiverFuturePosition = PlayerBus::ourPlayer(bestReceiver)->nextPosition();
-                if(ourReceiverFuturePosition.isUnknown() || WR::Utils::distance(PlayerBus::ourPlayer(bestReceiver)->position(), ourReceiverFuturePosition) > 0.7f){
+                Position ourReceiverPosition = PlayerBus::ourPlayer(bestReceiver)->position();
+                if(WR::Utils::distance(ourReceiverPosition, PlayerBus::ourPlayer(bestReceiver)->nextPosition()) > 0.7f){
                     _sk_goToLookTo->setDesiredPosition(WR::Utils::threePoints(loc()->ball(), PlayerBus::ourPlayer(bestReceiver)->nextPosition(), 0.3f, GEARSystem::Angle::pi));
                     _sk_goToLookTo->setAimPosition(loc()->ball());
                     _sk_goToLookTo->setAvoidBall(true);
                     enableTransition(SKT_POS);
                 }else{
-                    _sk_kick->setAim(ourReceiverFuturePosition);
+                    _sk_kick->setAim(ourReceiverPosition);
 
                     // Check if the path is obstructed
                     QList<quint8> shootList = {player()->playerId(), bestReceiver};
-                    bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverFuturePosition, shootList, getConstants()->getRobotRadius() * 3.0, false);
+                    bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverPosition, shootList, getConstants()->getRobotRadius() * 3.0, false);
 
                     // Adjust kick power based on obstructed path or distance to receiver
-                    if(isObstructed) _sk_kick->setPower(std::min(6.0, 0.75 * sqrt((player()->distanceTo(ourReceiverFuturePosition) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
-                    else             _sk_kick->setPower(std::min(6.0, std::max(3.0, 2.0 * player()->distanceTo(ourReceiverFuturePosition))));
+                    if(isObstructed) _sk_kick->setPower(std::min(6.0, 0.75 * sqrt((player()->distanceTo(ourReceiverPosition) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
+                    else             _sk_kick->setPower(std::min(6.0, std::max(3.0, 2.0 * player()->distanceTo(ourReceiverPosition))));
 
                     // Set if is parabolic
                     _sk_kick->setIsChip(isObstructed);
