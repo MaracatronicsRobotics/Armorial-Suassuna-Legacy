@@ -24,6 +24,7 @@
 #define INTERCEPT_MINBALLVELOCITY 0.2f
 #define INTERCEPT_MINBALLDIST 0.5f
 #define ERROR_GOAL_OFFSET 0.15f
+#define RECEIVER_INVALID_ID 200
 
 QString Behaviour_Barrier::name() {
     return "Behaviour_Barrier";
@@ -70,19 +71,11 @@ void Behaviour_Barrier::configure() {
     addTransition(STATE_PUSH, _sk_goto, _sk_push);
     addTransition(STATE_PUSH, _sk_gk, _sk_push);
     addTransition(STATE_PUSH, _sk_kick, _sk_push);
+
+    _notAlreadyChosen = true;
 };
 
 void Behaviour_Barrier::run() {
-    if(ref()->getGameInfo(player()->team()->teamColor())->penaltyKick()){
-        Position desiredPosition = Position(true, loc()->ourPenaltyMark().x() + (loc()->ourSide().isLeft() ? 1.0 : -1.0), _distanceFromGK <= 0.0 ? loc()->ourPenaltyMark().y() -1.0 : loc()->ourPenaltyMark().y() + 1.0, 0.0);
-
-        _sk_goto->setDesiredPosition(desiredPosition);
-        _sk_goto->setAimPosition(loc()->ball());
-        enableTransition(STATE_GOTO);
-
-        return ;
-    }
-
     Position markPosition;
     if(_markNearestPlayer){
         if(_markPlayerId != 200){
@@ -141,12 +134,12 @@ void Behaviour_Barrier::run() {
     _sk_gk->setInterceptAdvance(true);
     _sk_gk->setPositionToLook(loc()->theirGoal());
 
-    _sk_kick->setAim(loc()->theirGoal());
-    _sk_kick->setPower(getConstants()->getMaxKickPower());
-    _sk_kick->setIsChip(true);
-
     _sk_push->setAim(loc()->theirGoal());
     _sk_push->setDestination(desiredPosition);
+
+    // kick parameters
+    if(!player()->hasBallPossession() && loc()->ballVelocity().abs() >= 0.2f)
+        _notAlreadyChosen = true;
 
     // Transitions
     if(player()->distBall() > INTERCEPT_MINBALLDIST && (isBallComing(INTERCEPT_MINBALLVELOCITY, 1.0f) || isBallComingToGoal(INTERCEPT_MINBALLDIST))) {
@@ -157,13 +150,18 @@ void Behaviour_Barrier::run() {
                 enableTransition(STATE_PUSH);
             }
             else{
+                if(PlayerBus::ourPlayerAvailable(getBestAttacker())){
+                    Position ourAttackerKickDevice = WR::Utils::getPlayerKickDevice(getBestAttacker());
+                    _sk_kick->setAim(PlayerBus::ourPlayer(getBestAttacker())->position());
+                    _sk_kick->setPower(std::min(6.0, 0.75 * sqrt((player()->distanceTo(ourAttackerKickDevice) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
+                    _sk_kick->setIsChip(true);
+                }
                 enableTransition(STATE_KICK);
             }
         }else{
             enableTransition(STATE_GOTO);
         }
     }
-
 }
 
 bool Behaviour_Barrier::isBallComing(float minVelocity, float radius) {
@@ -216,4 +214,40 @@ bool Behaviour_Barrier::isBehindBall(Position posObjective){
     float diff = WR::Utils::angleDiff(anglePlayer, angleDest);
 
     return (diff>GEARSystem::Angle::pi/1.5f);
+}
+
+quint8 Behaviour_Barrier::getBestAttacker(){
+    if(!_notAlreadyChosen){
+        return _bestAtt;
+    }
+    else{
+        quint8 bestId = RECEIVER_INVALID_ID;
+        QList<Player*> attackers = loc()->getMRCPlayers().values();
+        QList<Player*> opPlayers = loc()->getOpPlayers().values();        
+        float menDist = 0;
+        for(int x = 0; x < attackers.size(); x++){
+            if(PlayerBus::ourPlayerAvailable(attackers.at(x)->playerId()) &&
+                    WR::Utils::distance(PlayerBus::ourPlayer(attackers.at(x)->playerId())->position(), loc()->ourGoal()) > 2 &&
+                    attackers.at(x)->playerId() != player()->playerId()){
+                Position recPos = PlayerBus::ourPlayer(attackers.at(x)->playerId())->position();
+                float menDistPlayer = 1000;
+                for(int y = 0; y < opPlayers.size(); y++){
+                    if(PlayerBus::theirPlayerAvailable(opPlayers.at(y)->playerId()) && opPlayers.at(y) != NULL){
+                        Position opPos = opPlayers.at(y)->position();
+                        float distPlayer = WR::Utils::distance(recPos, opPos);
+                        if(distPlayer < menDistPlayer){
+                            menDistPlayer = distPlayer;
+                        }
+                    }
+                }
+                if(menDistPlayer > menDist){
+                    menDist = menDistPlayer;
+                    bestId = attackers.at(x)->playerId();
+                }
+            }
+        }
+        _notAlreadyChosen = false;
+        _bestAtt = bestId;
+        return bestId;
+    }
 }

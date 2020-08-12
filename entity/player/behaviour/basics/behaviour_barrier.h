@@ -62,6 +62,11 @@ private:
         STATE_PUSH
     };
 
+    //Attacker
+    quint8 getBestAttacker();
+    bool _notAlreadyChosen;
+    quint8 _bestAtt;
+
     // Auxiliary
     bool isBallComingToGoal(float minSpeed, float postsFactor = 1.0);
     bool isBehindBall(Position posObjective);
