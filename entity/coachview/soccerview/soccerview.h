@@ -89,7 +89,7 @@ public:
     void setDrawBallVel(bool status)          { drawBallVel          = status; }
     void setDrawPlayerConfidency(bool status) { drawPlayerConfidency = status; }
     void setDrawPlayerPath(bool status)       { drawPlayerPath       = status; }
-    void setDrawAttackerDebug(bool status)    { drawAttacker         = status; }
+    void setDrawDebug(bool status)            { drawDebug            = status; }
 
 private:
     static constexpr double minZValue = -10;
@@ -108,13 +108,13 @@ private:
     QVector<QLinkedList<Position> > robotsPaths;
 
     // Attacker
-    std::pair<Position, std::pair<Position, Position>> _attackerTriangle;
-    std::pair<Position, Position> _attackerLine;
+    std::vector<std::pair<std::pair<Position, std::pair<Position, Position>>, RGBA>> _triangles;
+    std::vector<std::pair<std::pair<Position, Position>, RGBA>> _lines;
 
     vector2d ball;
     vector2d ballVelocity;
     QMutex graphicsMutex;
-    QMutex attackerMutex;
+    QReadWriteLock debugMutex;
     GLText glText;
 
     GLuint blueRobotShape;
@@ -139,7 +139,7 @@ private:
     bool drawBallVel;
     bool drawPlayerConfidency;
     bool drawPlayerPath;
-    bool drawAttacker;
+    bool drawDebug;
 
     double tLastRedraw;
 
@@ -151,7 +151,7 @@ private:
     void drawRobots();
     void drawRobotsVelocities();
     void drawRobotsNextPositions();
-    void drawAttackerDebug();
+    void drawDebugThings();
     void drawBalls();
     void drawBallsVelocities();
     void drawX(vector2d nextPos);
@@ -162,21 +162,21 @@ private:
     void drawArc(vector2d loc, double r1, double r2, double theta1, double theta2, double z=0.0, double dTheta = -1);
     void drawArc(double x, double y, double r1, double r2, double theta1, double theta2, double z=0.0, double dTheta = -1){drawArc(vector2d(x,y),r1,r2,theta1,theta2,z,dTheta);}
     void drawTriangle(vector2d v1, vector2d v2, vector2d v3, double z);
-    void drawTriangle(Position v1, Position v2, Position v3, double z);
+    void drawTriangle(Position v1, Position v2, Position v3, double z, RGBA color);
     void recomputeProjection();
     void drawRobot(vector2d loc, double theta, double conf, int robotID, int team, bool hasAngle);
     void drawRobot(int team, bool hasAngle, bool useDisplayLists);
     void drawBall(vector2d loc);
     void drawVector(vector2d v1, vector2d v2, double z);
-    void drawVector(Position pos1, Position pos2, double z);
+    void drawVector(Position pos1, Position pos2, double z, RGBA color);
     void vectorTextTest();
     void drawRobotTrajetory(const QLinkedList<Position> &path);
 
     void updateDefaultFieldDimensions();
 
     // Attacker
-    void addAttackerTriangle(std::pair<Position, std::pair<Position, Position>> triangle);
-    void addAttackerLine(std::pair<Position, Position> line);
+    void addTriangle(std::pair<Position, std::pair<Position, Position>> triangle, RGBA color);
+    void addLine(std::pair<Position, Position> line, RGBA color);
 
 protected:
     void paintEvent(QPaintEvent *event);

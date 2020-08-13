@@ -394,34 +394,46 @@ void GLSoccerView::paintEvent(QPaintEvent* event)
     drawRobotsNextPositions();
     drawBalls();
     drawBallsVelocities();
-    if(drawAttacker) drawAttackerDebug();
+    if(drawDebug) drawDebugThings();
     //vectorTextTest();
     glPopMatrix();
     swapBuffers();
     graphicsMutex.unlock();
 }
 
-void GLSoccerView::addAttackerTriangle(std::pair<Position, std::pair<Position, Position>> triangle){
-    attackerMutex.lock();
-    _attackerTriangle = triangle;
-    attackerMutex.unlock();
-}
-
-void GLSoccerView::addAttackerLine(std::pair<Position, Position> line){
-    attackerMutex.lock();
-    _attackerLine = line;
-    attackerMutex.unlock();
-}
-
-void GLSoccerView::drawAttackerDebug(){
-    attackerMutex.lock();
-    if(!_attackerTriangle.first.isUnknown()){
-        drawTriangle(_attackerTriangle.first, _attackerTriangle.second.first, _attackerTriangle.second.second, RobotZ + 0.01);
-        drawVector(_attackerLine.first, _attackerLine.second, RobotZ + 0.02);
+void GLSoccerView::addTriangle(std::pair<Position, std::pair<Position, Position>> triangle, RGBA color){
+    if(debugMutex.tryLockForWrite(2)){
+        _triangles.push_back(std::make_pair(triangle, color));
     }
-    // reset after draw
-    _attackerTriangle.first.setUnknown();
-    attackerMutex.unlock();
+    debugMutex.unlock();
+}
+
+void GLSoccerView::addLine(std::pair<Position, Position> line, RGBA color){
+    if(debugMutex.tryLockForWrite(2)){
+        _lines.push_back(std::make_pair(line, color));
+    }
+    debugMutex.unlock();
+}
+
+void GLSoccerView::drawDebugThings(){
+    if(debugMutex.tryLockForRead(2)){
+        // Draw triangles
+        int sz = _triangles.size();
+        for(int x = 0; x < sz; x++){
+            drawTriangle(_triangles.at(x).first.first, _triangles.at(x).first.second.first, _triangles.at(x).first.second.second, _triangles.at(x).second.z, _triangles.at(x).second);
+        }
+
+        // Draw lines
+        sz = _lines.size();
+        for(int x = 0; x < sz; x++){
+            drawVector(_lines.at(x).first.first, _lines.at(x).first.second, _lines.at(x).second.z, _lines.at(x).second);
+        }
+
+        // Clear
+        _triangles.clear();
+        _lines.clear();
+    }
+    debugMutex.unlock();
 }
 
 void GLSoccerView::drawQuad(vector2d loc1, vector2d loc2, double z)
@@ -470,9 +482,9 @@ void GLSoccerView::drawTriangle(vector2d v1, vector2d v2, vector2d v3, double z)
     glEnd();
 }
 
-void GLSoccerView::drawTriangle(Position v1, Position v2, Position v3, double z) {
+void GLSoccerView::drawTriangle(Position v1, Position v2, Position v3, double z, RGBA color) {
     glBegin(GL_TRIANGLES);
-    glColor4f(ATTACKER_TRIANGLE_COLOR);
+    glColor4f(color.r, color.g, color.b, color.a);
     glVertex3d(v1.x() * 1000, v1.y() * 1000, z);
     glVertex3d(v2.x() * 1000, v2.y() * 1000, z);
     glVertex3d(v3.x() * 1000, v3.y() * 1000, z);
@@ -683,8 +695,8 @@ void GLSoccerView::drawVector(vector2d v1, vector2d v2, double z) {
     drawTriangle(tv1, tv2, tv3, z);
 }
 
-void GLSoccerView::drawVector(Position pos1, Position pos2, double z) {
-    glColor4d(ATTACKER_LINE_COLOR);
+void GLSoccerView::drawVector(Position pos1, Position pos2, double z, RGBA color) {
+    glColor4d(color.r, color.g, color.b, color.a);
 
     vector2d v1(pos1.x() * 1000, pos1.y() * 1000);
     vector2d v2(pos2.x() * 1000, pos2.y() * 1000);

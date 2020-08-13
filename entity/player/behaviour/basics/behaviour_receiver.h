@@ -44,7 +44,6 @@ private:
     float _minRadius;
     float _maxRadius;
 
-
     // Transitions and states enums
     enum {
         STATE_POSITION,
@@ -76,7 +75,7 @@ public:
 
     // setters
     void setFollowAttacker(bool followAttacker) { _followAttacker = followAttacker; }
-    void setAttackerId (int attackerId) { _attackerId = attackerId; }
+    void setAttackerId (int attackerId) {_attackerId = attackerId; }
     void setQuadrant(int quadrant) { _quadrant = quadrant; }
     void setActionRadius(float minRadius, float maxRadius) { _minRadius = minRadius; _maxRadius = maxRadius;}
 

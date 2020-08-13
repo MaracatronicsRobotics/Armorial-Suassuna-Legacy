@@ -26,6 +26,20 @@
 
 #include <QtCore>
 
+struct RGBA{
+    float r;
+    float g;
+    float b;
+    float a;
+    float z;
+    RGBA(float red, float green, float blue, float alpha, float zToDraw){
+        r = red / 255.0;
+        g = green / 255.0;
+        b = blue / 255.0;
+        a = alpha;
+        z = zToDraw;
+    }
+};
 
 class MRCConstants
 {
@@ -69,6 +83,8 @@ private:
 public:
     MRCConstants(QString fileName);
 
+    /* GUI */
+    static float robotZ;
 
     float getDistToConsiderBallMovement() const;
     float getBallRadius() const;

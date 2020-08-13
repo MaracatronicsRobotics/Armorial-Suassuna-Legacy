@@ -77,12 +77,14 @@ CoachView::~CoachView(){
     delete _suassunaUI;
 }
 
-void CoachView::drawAttackerTriangle(Position a, Position b, Position c){
-    _suassunaUI->drawAttackerTriangle(a, b, c);
+void CoachView::drawTriangle(Position a, Position b, Position c, RGBA color){
+    if(_isEnabled)
+        _suassunaUI->drawTriangle(a, b, c, color);
 }
 
-void CoachView::drawAttackerLine(Position a, Position b){
-    _suassunaUI->drawAttackerLine(a, b);
+void CoachView::drawLine(Position a, Position b, RGBA color){
+    if(_isEnabled)
+        _suassunaUI->drawLine(a, b, color);
 }
 
 void CoachView::initialization(){

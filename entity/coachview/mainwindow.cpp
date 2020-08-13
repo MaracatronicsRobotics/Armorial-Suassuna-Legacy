@@ -55,7 +55,7 @@ void MainWindow::updateGUI(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc)
     ui->openGLWidget->setDrawEnemyVel(enableEnemyVelocityVector());
     ui->openGLWidget->setDrawPlayerConfidency(enablePlayerConfidency());
     ui->openGLWidget->setDrawPlayerPath(enablePlayerPath());
-    ui->openGLWidget->setDrawAttackerDebug(enableAttackerDebug());
+    ui->openGLWidget->setDrawDebug(enableDebug());
 }
 
 void MainWindow::setAgressivity(QString agressivity){
@@ -111,12 +111,12 @@ void MainWindow::addRoot(){
     root = item;
 }
 
-void MainWindow::drawAttackerTriangle(Position a, Position b, Position c){
-    ui->openGLWidget->addAttackerTriangle(std::make_pair(a, std::make_pair(b, c)));
+void MainWindow::drawTriangle(Position a, Position b, Position c, RGBA color){
+    ui->openGLWidget->addTriangle(std::make_pair(a, std::make_pair(b, c)), color);
 }
 
-void MainWindow::drawAttackerLine(Position a, Position b){
-    ui->openGLWidget->addAttackerLine(std::make_pair(a, b));
+void MainWindow::drawLine(Position a, Position b, RGBA color){
+    ui->openGLWidget->addLine(std::make_pair(a, b), color);
 }
 
 void MainWindow::resetTree(QString strat, QList<QString> playbookList, QMap<QString, QList<QString>> rolesList,
@@ -366,8 +366,8 @@ bool MainWindow::enablePlayerPath(){
     return (ui->playerpath->checkState() == Qt::CheckState::Checked) ? true : false;
 }
 
-bool MainWindow::enableAttackerDebug(){
-    return (ui->attackerdebug->checkState() == Qt::CheckState::Checked) ? true : false;
+bool MainWindow::enableDebug(){
+    return (ui->debug->checkState() == Qt::CheckState::Checked) ? true : false;
 }
 
 
