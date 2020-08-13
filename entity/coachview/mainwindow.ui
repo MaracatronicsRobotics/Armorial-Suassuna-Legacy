@@ -2127,7 +2127,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="page_tree">
      <attribute name="title">
@@ -2278,7 +2278,7 @@
        <string>Show allies path</string>
       </property>
      </widget>
-     <widget class="QCheckBox" name="attackerdebug">
+     <widget class="QCheckBox" name="debug">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -2293,7 +2293,7 @@
        </font>
       </property>
       <property name="text">
-       <string>Show attacker debug</string>
+       <string>Show debugs</string>
       </property>
      </widget>
     </widget>

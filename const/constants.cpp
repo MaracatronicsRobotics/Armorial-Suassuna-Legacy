@@ -36,7 +36,8 @@ std::string MRCConstants::cyan = "\033[1;36m";
 std::string MRCConstants::defaultBold = "\033[1m";
 std::string MRCConstants::reset = "\033[0m";
 
-
+/* GUI */
+float MRCConstants::robotZ = 2.0;
 
 
 

@@ -74,7 +74,7 @@ public:
     bool enableBallVelocityVector();
     bool enablePlayerConfidency();
     bool enablePlayerPath();
-    bool enableAttackerDebug();
+    bool enableDebug();
 
     // tree
     void addRoot();
@@ -85,8 +85,8 @@ public:
     void removeOld(QTreeWidgetItem *parent, QList<QString> stringList);
     QTreeWidgetItem* addChild(QTreeWidgetItem* parent, QString text);
 
-    void drawAttackerTriangle(Position a, Position b, Position c);
-    void drawAttackerLine(Position a, Position b);
+    void drawTriangle(Position a, Position b, Position c, RGBA color);
+    void drawLine(Position a, Position b, RGBA color);
 
 private:
     Ui::MainWindow *ui;
