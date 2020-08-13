@@ -155,20 +155,30 @@ QList<FreeAngles::Interval> Behaviour_Receiver::getGoalFreeAngles(quint8 quadran
 
     // Generates obstacle list, removing the calling player
     QList<Obstacle> obstacles = FreeAngles::getObstacles(posGoal, radius);
+    QList<Obstacle>::iterator it;
+
     for(int i=0; i<obstacles.size(); i++) {
         Obstacle obst = obstacles.at(i);
-        if(obst.team()==player()->teamId() && obst.id()==player()->playerId())
+        if(loc()->isInsideTheirArea(obst.position())){
             obstacles.removeAt(i);
+            i--;
+        }
+        if(obst.team()==player()->teamId() && (obst.id() == player()->playerId() || obst.id() == _attackerId)){
+            obstacles.removeAt(i);
+            i--;
+        }
     }
 
     float angInit = WR::Utils::getAngle(posGoal, initialPos);
     float angEnd  = WR::Utils::getAngle(posGoal, finalPos);
     if(angInit > angEnd) std::swap(initialPos, finalPos);
-/*
+
+    /*
     std::cout << "quadrant: " << int(quadrant) << std::endl;
     std::cout << "initQuadrantPos: " << initialPos.x() << " . " << initialPos.y() << std::endl;
     std::cout << "finalQuadrantPos: " << finalPos.x() << " . " << finalPos.y() << std::endl;
 */
+
     // Calc free angles
     return FreeAngles::getFreeAngles(posGoal, initialPos, finalPos, obstacles);
 }
@@ -197,7 +207,7 @@ Position Behaviour_Receiver::getBestPositionWithoutAttacker(int quadrant){
         Obstacle obstAt = obstaclesList.at(x);
         if(obstAt.team() == player()->teamId() && (obstAt.id() == player()->playerId() || obstAt.id() == _attackerId)){
             obstaclesList.removeAt(x);
-            break;
+            x--;
         }
     }
 
@@ -291,10 +301,14 @@ Position Behaviour_Receiver::getReceiverPosition(int quadrant, quint8 attackerId
     Position offGoalMinimumPosition = Position(true, loc()->theirGoal().x() + 1.5f * cos(goalLargestMid), loc()->theirGoal().y() + 1.5f * sin(goalLargestMid), 0.0);
     Position offGoalMaximumPosition = Position(true, loc()->theirGoal().x() + 4.0f * cos(goalLargestMid), loc()->theirGoal().y() + 4.0f * sin(goalLargestMid), 0.0);
 
+    // Debug to UI
+    CoachView::drawLine(offGoalMaximumPosition, offGoalMinimumPosition, RGBA(106, 90, 205, 1.0, MRCConstants::robotZ + 0.02));
+    CoachView::drawTriangle(loc()->ball(), offGoalMaximumPosition, offGoalMinimumPosition, RGBA(178, 34, 34, 0.4, MRCConstants::robotZ + 0.01));
+
     // Taking obstacles from the ball, removing the receiver and the attacker
     QList<Obstacle> obstaclesFromBall = FreeAngles::getObstacles(loc()->ball());
     for(int x = 0; x < obstaclesFromBall.size(); x++){
-        if(obstaclesFromBall[x].team() == player()->teamId() && (obstaclesFromBall[x].id() == player()->playerId() || obstaclesFromBall[x].id() == _attackerId)){
+        if(WR::Utils::distance(loc()->ball(), obstaclesFromBall[x].position()) <= 0.3f || (obstaclesFromBall[x].team() == player()->teamId() && (obstaclesFromBall[x].id() == player()->playerId() || obstaclesFromBall[x].id() == _attackerId))){
             obstaclesFromBall.removeAt(x);
             x--;
         }

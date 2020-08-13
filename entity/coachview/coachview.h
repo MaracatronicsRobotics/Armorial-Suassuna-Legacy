@@ -51,8 +51,8 @@ public:
     static bool _isEnabled;
 
     // Attacker functions
-    static void drawAttackerTriangle(Position a, Position b, Position c);
-    static void drawAttackerLine(Position a, Position b);
+    static void drawTriangle(Position a, Position b, Position c, RGBA color);
+    static void drawLine(Position a, Position b, RGBA color);
 
 private:
     void initialization();
