@@ -251,7 +251,7 @@ void Playbook_Attack::requestIsMarkNeeded(){
             PlayerAccess *player;
             if(!PlayerBus::ourPlayerAvailable(playersList.at(x))) continue;
             else player = PlayerBus::ourPlayer(playersList.at(x));
-            if(isBallComing(player->position(), 0.2f, 1.0) && !team()->hasBallPossession()){
+            if(isBallComing(player->position(), STRIKER_INTERCEPT_MINVEL, 1.0) && !team()->hasBallPossession()){
                 isNeeded = false;
                 break;
             }

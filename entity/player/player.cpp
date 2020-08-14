@@ -484,7 +484,8 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool a
     double vy = _vyPID->calculate(a.second * sin(a.first.value()), velocity().y());
 */
 
-    if(a.second <= 1.5f && !_ref->getGameInfo(teamColor())->ourBallPlacement())
+
+    if(a.second <= 1.5f && (!_ref->getGameInfo(teamColor())->ourBallPlacement() || !_ref->getGameInfo(teamColor())->ourFreeKick()))
         a.second *= 2.0;
 
     double vx = a.second * cos(a.first.value());
