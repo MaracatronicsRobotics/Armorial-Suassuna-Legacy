@@ -402,21 +402,21 @@ void GLSoccerView::paintEvent(QPaintEvent* event)
 }
 
 void GLSoccerView::addTriangle(std::pair<Position, std::pair<Position, Position>> triangle, RGBA color){
-    if(debugMutex.tryLockForWrite(2)){
+    if(debugMutex.tryLock()){
         _triangles.push_back(std::make_pair(triangle, color));
+        debugMutex.unlock();
     }
-    debugMutex.unlock();
 }
 
 void GLSoccerView::addLine(std::pair<Position, Position> line, RGBA color){
-    if(debugMutex.tryLockForWrite(2)){
+    if(debugMutex.tryLock()){
         _lines.push_back(std::make_pair(line, color));
+        debugMutex.unlock();
     }
-    debugMutex.unlock();
 }
 
 void GLSoccerView::drawDebugThings(){
-    if(debugMutex.tryLockForRead(2)){
+    if(debugMutex.tryLock()){
         // Draw triangles
         int sz = _triangles.size();
         for(int x = 0; x < sz; x++){
@@ -432,8 +432,9 @@ void GLSoccerView::drawDebugThings(){
         // Clear
         _triangles.clear();
         _lines.clear();
+
+        debugMutex.unlock();
     }
-    debugMutex.unlock();
 }
 
 void GLSoccerView::drawQuad(vector2d loc1, vector2d loc2, double z)
@@ -483,12 +484,14 @@ void GLSoccerView::drawTriangle(vector2d v1, vector2d v2, vector2d v3, double z)
 }
 
 void GLSoccerView::drawTriangle(Position v1, Position v2, Position v3, double z, RGBA color) {
-    glBegin(GL_TRIANGLES);
-    glColor4f(color.r, color.g, color.b, color.a);
-    glVertex3d(v1.x() * 1000, v1.y() * 1000, z);
-    glVertex3d(v2.x() * 1000, v2.y() * 1000, z);
-    glVertex3d(v3.x() * 1000, v3.y() * 1000, z);
-    glEnd();
+    if(!(v1.isUnknown() || v2.isUnknown() || v3.isUnknown())){
+        glBegin(GL_TRIANGLES);
+        glColor4f(color.r, color.g, color.b, color.a);
+        glVertex3d(v1.x() * 1000, v1.y() * 1000, z);
+        glVertex3d(v2.x() * 1000, v2.y() * 1000, z);
+        glVertex3d(v3.x() * 1000, v3.y() * 1000, z);
+        glEnd();
+    }
 }
 
 void GLSoccerView::drawRobot(int team, bool hasAngle, bool useDisplayLists)
@@ -696,28 +699,30 @@ void GLSoccerView::drawVector(vector2d v1, vector2d v2, double z) {
 }
 
 void GLSoccerView::drawVector(Position pos1, Position pos2, double z, RGBA color) {
-    glColor4d(color.r, color.g, color.b, color.a);
+    if(!(pos1.isUnknown() || pos2.isUnknown())){
+        glColor4d(color.r, color.g, color.b, color.a);
 
-    vector2d v1(pos1.x() * 1000, pos1.y() * 1000);
-    vector2d v2(pos2.x() * 1000, pos2.y() * 1000);
+        vector2d v1(pos1.x() * 1000, pos1.y() * 1000);
+        vector2d v2(pos2.x() * 1000, pos2.y() * 1000);
 
-    const vector2d norm = (v2 - v1).norm();
-    const vector2d perp = (v2 - v1).norm().perp();
+        const vector2d norm = (v2 - v1).norm();
+        const vector2d perp = (v2 - v1).norm().perp();
 
-    // Line
-    const double quad_half_thickness = 0.5 * 10;
-    const vector2d qv1 = v1 - quad_half_thickness * perp;
-    const vector2d qv2 = v1 + quad_half_thickness * perp;
-    const vector2d qv3 = v2 + quad_half_thickness * perp;
-    const vector2d qv4 = v2 - quad_half_thickness * perp;
-    drawQuad(qv1, qv2, qv3, qv4, z);
+        // Line
+        const double quad_half_thickness = 0.5 * 10;
+        const vector2d qv1 = v1 - quad_half_thickness * perp;
+        const vector2d qv2 = v1 + quad_half_thickness * perp;
+        const vector2d qv3 = v2 + quad_half_thickness * perp;
+        const vector2d qv4 = v2 - quad_half_thickness * perp;
+        drawQuad(qv1, qv2, qv3, qv4, z);
 
-    // Triangle
-    const double triangle_thickness = 50;
-    const vector2d tv1 = v2 + 2*triangle_thickness*norm;
-    const vector2d tv2 = v2 + triangle_thickness*perp;
-    const vector2d tv3 = v2 - triangle_thickness*perp;
-    drawTriangle(tv1, tv2, tv3, z);
+        // Triangle
+        const double triangle_thickness = 50;
+        const vector2d tv1 = v2 + 2*triangle_thickness*norm;
+        const vector2d tv2 = v2 + triangle_thickness*perp;
+        const vector2d tv3 = v2 - triangle_thickness*perp;
+        drawTriangle(tv1, tv2, tv3, z);
+    }
 }
 
 void GLSoccerView::drawBalls() {
@@ -854,7 +859,8 @@ void GLSoccerView::updateDetection(MRCTeam *ourTeam, MRCTeam *theirTeam) {
         robot.conf = 1.0;
         robots.append(robot);
 
-        robotsNextPositions.append(std::make_pair(robot.team, next));
+        if(drawDebug)
+            robotsNextPositions.append(std::make_pair(robot.team, next));
 
         if(drawAllieVel)
             velocity.set(player->velocity().x(), player->velocity().y());

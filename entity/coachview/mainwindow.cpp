@@ -112,11 +112,11 @@ void MainWindow::addRoot(){
 }
 
 void MainWindow::drawTriangle(Position a, Position b, Position c, RGBA color){
-    ui->openGLWidget->addTriangle(std::make_pair(a, std::make_pair(b, c)), color);
+    if(enableDebug()) ui->openGLWidget->addTriangle(std::make_pair(a, std::make_pair(b, c)), color);
 }
 
 void MainWindow::drawLine(Position a, Position b, RGBA color){
-    ui->openGLWidget->addLine(std::make_pair(a, b), color);
+    if(enableDebug()) ui->openGLWidget->addLine(std::make_pair(a, b), color);
 }
 
 void MainWindow::resetTree(QString strat, QList<QString> playbookList, QMap<QString, QList<QString>> rolesList,
