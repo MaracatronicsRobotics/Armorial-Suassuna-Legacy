@@ -32,6 +32,8 @@
 #include <entity/player/behaviour/mrcbehaviours.h>
 #include <QObject>
 
+#define STRIKER_INTERCEPT_MINVEL 0.5f
+
 class Role : public QObject {
         Q_OBJECT
 public:

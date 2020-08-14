@@ -139,6 +139,8 @@ void Behaviour_Receiver::run() {
         else{
             Position _desiredPosition = getReceiverPosition(_quadrant, _attackerId);
 
+            if(_desiredPosition.isUnknown() || loc()->isOutsideField(_desiredPosition)) _desiredPosition = WR::Utils::getQuadrantBarycenter(_quadrant);
+
             _skill_GoToLookTo->setDesiredPosition(_desiredPosition);
             _skill_GoToLookTo->setAimPosition(loc()->ball());
         }

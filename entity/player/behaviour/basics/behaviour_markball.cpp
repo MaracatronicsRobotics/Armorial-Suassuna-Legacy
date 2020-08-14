@@ -38,11 +38,12 @@ void Behaviour_MarkBall::configure() {
 };
 
 void Behaviour_MarkBall::run() {
-    if(loc()->isInsideTheirArea(loc()->ball(), 1.1f) || loc()->isInsideOurArea(loc()->ball(), 1.1f) || !loc()->isInsideField(loc()->ball())) return;
-
-    if(player()->distBall() <= 0.2f){
-        player()->kick(2.0f);
-        //player()->dribble(true);
+    if(loc()->isInsideTheirArea(loc()->ball(), 1.1f) || loc()->isInsideOurArea(loc()->ball(), 1.1f) || !loc()->isInsideField(loc()->ball())){
+        if(loc()->isInsideTheirArea(loc()->ball(), 1.1f)) _sk_GoToLookTo->setDesiredPosition(WR::Utils::threePoints(loc()->theirGoal(), loc()->ball(), 2.0f, 0.0));
+        else if(loc()->isInsideOurArea(loc()->ball(), 1.1f)) _sk_GoToLookTo->setDesiredPosition(WR::Utils::threePoints(loc()->ourGoal(), loc()->ball(), 2.0f, 0.0));
+        else _sk_GoToLookTo->setDesiredPosition(player()->position());
+        _sk_GoToLookTo->setAimPosition(loc()->ball());
+        return ;
     }
 
     _aimPosition.setUnknown();
