@@ -152,7 +152,11 @@ void Behaviour_Barrier::run() {
             else{
                 if(PlayerBus::ourPlayerAvailable(getBestAttacker())){
                     Position ourAttackerKickDevice = WR::Utils::getPlayerKickDevice(getBestAttacker());
-                    _sk_kick->setAim(PlayerBus::ourPlayer(getBestAttacker())->position());
+                    quint8 bestAttacker = getBestAttacker();
+                    if(bestAttacker != RECEIVER_INVALID_ID)
+                        _sk_kick->setAim(PlayerBus::ourPlayer(getBestAttacker())->position());
+                    else
+                        _sk_kick->setAim(loc()->theirGoal());
                     _sk_kick->setPower(std::min(6.0, 0.75 * sqrt((player()->distanceTo(ourAttackerKickDevice) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
                     _sk_kick->setIsChip(true);
                 }

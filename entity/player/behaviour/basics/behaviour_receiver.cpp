@@ -155,15 +155,10 @@ QList<FreeAngles::Interval> Behaviour_Receiver::getGoalFreeAngles(quint8 quadran
 
     // Generates obstacle list, removing the calling player
     QList<Obstacle> obstacles = FreeAngles::getObstacles(posGoal, radius);
-    QList<Obstacle>::iterator it;
 
     for(int i=0; i<obstacles.size(); i++) {
         Obstacle obst = obstacles.at(i);
-        if(loc()->isInsideTheirArea(obst.position())){
-            obstacles.removeAt(i);
-            i--;
-        }
-        if(obst.team()==player()->teamId() && (obst.id() == player()->playerId() || obst.id() == _attackerId)){
+        if(loc()->isInsideTheirArea(obst.position()) || (obst.team()==player()->teamId() && (obst.id() == player()->playerId() || obst.id() == _attackerId))){
             obstacles.removeAt(i);
             i--;
         }

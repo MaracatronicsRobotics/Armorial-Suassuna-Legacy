@@ -114,7 +114,7 @@ private:
     vector2d ball;
     vector2d ballVelocity;
     QMutex graphicsMutex;
-    QReadWriteLock debugMutex;
+    QMutex debugMutex;
     GLText glText;
 
     GLuint blueRobotShape;

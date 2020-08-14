@@ -107,7 +107,6 @@ private:
     QMap<QTreeWidgetItem*, QList<QTreeWidgetItem*>> roles;
     QList<QTreeWidgetItem*> robots;
 
-
     // aux functions
     QPixmap getRolePixmap(QString role);
     QPixmap getPlaybookPixmap(QString playbook);

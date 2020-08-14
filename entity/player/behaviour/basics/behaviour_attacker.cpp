@@ -246,7 +246,7 @@ void Behaviour_Attacker::run() {
             }else{
                 // Debug to UI
                 CoachView::drawTriangle(player()->position(), loc()->theirGoalLeftPost(), loc()->theirGoalRightPost(), RGBA(178, 34, 34, 0.4, MRCConstants::robotZ + 0.01));
-                CoachView::drawLine(player()->position(), _aim.second, RGBA(106, 90, 205, 1.0, MRCConstants::robotZ + 0.02));
+                CoachView::drawLine(player()->position(), _aim.second.isUnknown() ? loc()->theirGoal() : _aim.second, RGBA(106, 90, 205, 1.0, MRCConstants::robotZ + 0.02));
 
                 // If we have an sufficient opening to their goal, make an direct kick to it
                 if(ref()->getGameInfo(player()->team()->teamColor())->ourDirectKick() || ref()->getGameInfo(player()->team()->teamColor())->ourKickoff()){
