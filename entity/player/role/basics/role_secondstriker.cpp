@@ -123,12 +123,17 @@ void Role_SecondStriker::run(){
         }
         else{
             if(player()->playerId() == _attackerId){
-                if(isBallComing(0.2f, 1.0f) && !player()->team()->hasBallPossession()){
+                if(isBallComing(0.2f, 1.0f) && (!player()->team()->hasBallPossession() && !player()->team()->opTeam()->hasBallPossession())){
                     _bh_rcv->setQuadrant(_quadrant);
                     setBehaviour(BEHAVIOUR_RECEIVER);
                 }
                 else{
-                    setBehaviour(BEHAVIOUR_ATTACKER);
+                    if(player()->team()->hasBallPossession() && !player()->hasBallPossession()){
+                        _bh_rcv->setQuadrant(_quadrant);
+                        setBehaviour(BEHAVIOUR_RECEIVER);
+                    }
+                    else
+                        setBehaviour(BEHAVIOUR_ATTACKER);
                 }
             }
             else{

@@ -99,9 +99,10 @@ void Behaviour_Goalkeeper::run() {
         if(loc()->isInsideOurArea(loc()->ball(), _takeoutFactor)){ // ve se ta na nossa area com fator de takeout (uma area maiorzinha)
             quint8 bestAttacker = getBestAttacker();
             _skill_push->setKickPower(getConstants()->getMaxKickPower());
-            _skill_push->setAim(PlayerBus::ourPlayer(bestAttacker)->position());
-            std::cout << "Best ID:" << int(bestAttacker) << endl;
-            std::cout << "Best Pos:" << PlayerBus::ourPlayer(bestAttacker)->position().x() << "." << PlayerBus::ourPlayer(bestAttacker)->position().y() << endl;
+            if(bestAttacker != RECEIVER_INVALID_ID)
+                _skill_push->setAim(PlayerBus::ourPlayer(bestAttacker)->position());
+            else
+                _skill_push->setAim(loc()->theirGoal());
             _skill_push->shootWhenAligned(true);
             _skill_push->setIsParabolic(true);
             enableTransition(STATE_PUSH);
