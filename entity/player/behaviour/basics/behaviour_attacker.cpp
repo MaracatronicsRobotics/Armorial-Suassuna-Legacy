@@ -61,7 +61,7 @@ void Behaviour_Attacker::configure() {
     // Initial state
     _state = STATE_CANTKICK;
     firstAim   = false;
-    canShoot   = false;
+    canShoot   = true;
     firstChoose = false;
 }
 
@@ -197,7 +197,7 @@ void Behaviour_Attacker::run() {
                         enableTransition(SKT_KICK);
                     }else{
                         _sk_push->setIsParabolic(isObstructed);
-                        Position rcvPos = PlayerBus::ourPlayer(bestReceiver)->nextPosition().isUnknown() ? PlayerBus::ourPlayer(bestReceiver)->position() : PlayerBus::ourPlayer(bestReceiver)->nextPosition();
+                        Position rcvPos = WR::Utils::getPlayerKickDevice(bestReceiver);
                         _sk_push->setAim(rcvPos);
                         if(WR::Utils::distance(PlayerBus::ourPlayer(bestReceiver)->position(), PlayerBus::ourPlayer(bestReceiver)->nextPosition()) <= 0.7f){
                             _sk_push->setDestination(Position(false, 0.0, 0.0, 0.0));
