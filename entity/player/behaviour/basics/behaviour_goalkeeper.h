@@ -34,7 +34,6 @@ private:
     Skill_Test *_skill_push;
     double _offsetBall;
 
-
     // Parameters
     float _radius;
     bool _takeoutEnabled;

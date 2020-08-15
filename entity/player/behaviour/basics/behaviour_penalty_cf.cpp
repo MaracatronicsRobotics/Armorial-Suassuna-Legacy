@@ -72,7 +72,7 @@ void Behaviour_Penalty_CF::run() {
 
         if(loc()->isInsideTheirArea(loc()->ball(), 1.1f) || _skill_kick->getPushedDistance() >= 0.9 * _skill_kick->getMaxPushDistance()){
             // goal area penalty
-            // try to 'joke' the enemy goalkeepe
+            // try to 'joke' the enemy goalkeeper
             _skill_kick->setDestination(Position(false, 0.0, 0.0, 0.0));
             if(!joked){
                 _skill_kick->setAim(loc()->theirGoalLeftPost());
