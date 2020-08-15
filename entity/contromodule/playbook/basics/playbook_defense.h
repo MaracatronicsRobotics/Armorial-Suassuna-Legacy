@@ -19,13 +19,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef PLAYBOOK_DONOTHING_H
-#define PLAYBOOK_DONOTHING_H
+#ifndef PLAYBOOK_DEFENSE_H
+#define PLAYBOOK_DEFENSE_H
 
 #include <entity/contromodule/playbook/playbook.h>
 #include <entity/player/role/mrcroles.h>
 
-class Playbook_DoNothing : public Playbook {
+class Playbook_Defense : public Playbook {
 private:
     // Roles
     Role_Goalkeeper *_rl_gk;
@@ -46,10 +46,10 @@ private:
     void run(int numPlayers);
     int maxNumPlayer();
 public:
-    Playbook_DoNothing();
+    Playbook_Defense();
     QString name();
 
     void setGoalieId(quint8 goalieId) { _goalieId = goalieId; }
 };
 
-#endif // PLAYBOOK_DONOTHING_H
+#endif // PLAYBOOK_DEFENSE_H

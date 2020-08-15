@@ -61,7 +61,7 @@ void MainWindow::updateGUI(MRCTeam *ourTeam, MRCTeam *theirTeam, Locations *loc)
 void MainWindow::setAgressivity(QString agressivity){
     QPixmap pixmp;
 
-    if(agressivity.toLower() == ui->agressivity_txt->text().toLower()) return;
+    agressivity = agressivity.toLower();
 
     if(agressivity == "high_attack"){
         ui->agressivity_txt->setText("High_Attack");
@@ -84,6 +84,7 @@ void MainWindow::setAgressivity(QString agressivity){
         pixmp.load(":/textures/textures/ui/def.png");
     }
 
+    root->setIcon(0, pixmp);
     ui->agressivity_img->setPixmap(pixmp);
 }
 

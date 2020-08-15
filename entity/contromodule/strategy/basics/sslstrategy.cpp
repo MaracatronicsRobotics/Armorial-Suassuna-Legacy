@@ -29,63 +29,23 @@ SSLStrategy::~SSLStrategy() {
 
 }
 
-void SSLStrategy::setStrategyState(SSLGameState gameState, StrategyState *strategyState) {
+void SSLStrategy::setStrategyState(AgressivityLevel gameState, StrategyState *strategyState) {
     Strategy::setStrategyState(gameState, strategyState);
 }
 
-void SSLStrategy::runStrategy() {
-    SSLGameInfo::RefProcessedState refState = getGameState();
+void SSLStrategy::runStrategy(AgressivityLevel agressivity) {
+    SSLGameInfo::RefProcessedState gameState = getGameState();
 
-    // Convert SSLGameInfo state to SSLGameState
-    SSLGameState gameState = refState2SSLGameState(refState);
-    if(gameState==UNDEFINED)
-        return;
-
-    //Strategy::runStrategy(gameState, refState);
-    Strategy::runStrategy(HALT, SSLGameInfo::RefProcessedState::STATE_CANTMOVE);
-
+    Strategy::runStrategy(agressivity, gameState);
 }
 
-SSLStrategy::SSLGameState SSLStrategy::refState2SSLGameState(SSLGameInfo::RefProcessedState refState) const {
-    switch(refState) {
-        case SSLGameInfo::STATE_CANTMOVE:           return HALT;
-        case SSLGameInfo::STATE_GAMEON:             return GAMEON;
-        case SSLGameInfo::STATE_GAMEOFF:            return GAMEOFF;
-        case SSLGameInfo::STATE_OURDIRECTKICK:      return OURDIRECTKICK;
-        case SSLGameInfo::STATE_OURINDIRECTKICK:    return OURINDIRECTKICK;
-        case SSLGameInfo::STATE_OURKICKOFF:         return OURKICKOFF;
-        case SSLGameInfo::STATE_OURPENALTY:         return OURPENALTY;
-        case SSLGameInfo::STATE_THEIRDIRECTKICK:    return THEIRDIRECTKICK;
-        case SSLGameInfo::STATE_THEIRINDIRECTKICK:  return THEIRINDIRECTKICK;
-        case SSLGameInfo::STATE_THEIRKICKOFF:       return THEIRKICKOFF;
-        case SSLGameInfo::STATE_THEIRPENALTY:       return THEIRPENALTY;
-        case SSLGameInfo::STATE_TIMEOUT:            return TIMEOUT;
-        case SSLGameInfo::STATE_OURBALLPLACEMENT:   return OURPLACEMENT;
-        case SSLGameInfo::STATE_THEIRBALLPLACEMENT: return THEIRPLACEMENT;
-
-        case SSLGameInfo::STATE_UNDEFINED:
-        default:
-            std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "SSLStrategy: undefined state, should never reach here!\n";
-            return UNDEFINED;
-    }
-}
-
-QString SSLStrategy::state2str(int gameState) {
+QString SSLStrategy::state2str(AgressivityLevel gameState) {
     switch(gameState) {
-        case HALT:              return "HALT";
-        case GAMEON:            return "GAME ON";
-        case GAMEOFF:           return "GAME OFF";
-        case OURDIRECTKICK:     return "OUR DIRECT KICK";
-        case OURINDIRECTKICK:   return "OUR INDIRECT KICK";
-        case OURKICKOFF:        return "OUR KICKOFF";
-        case OURPENALTY:        return "OUR PENALTY";
-        case THEIRDIRECTKICK:   return "THEIR DIRECT KICK";
-        case THEIRINDIRECTKICK: return "THEIR INDIRECT KICK";
-        case THEIRKICKOFF:      return "THEIR KICKOFF";
-        case THEIRPENALTY:      return "THEIR PENALTY";
-        case OURPLACEMENT:      return "OUR PLACEMENT";
-        case THEIRPLACEMENT:    return "THEIR PLACEMENT";
-        case UNDEFINED:
+        case HIGH_DEFENSE:   return "HIGH_DEFENSE";
+        case MEDIUM_DEFENSE: return "MEDIUM_DEFENSE";
+        case EQUILIBRATED:   return "EQUILIBRATED";
+        case MEDIUM_ATTACK:  return "MEDIUM_ATTACK";
+        case HIGH_ATTACK:    return "HIGH_ATTACK";
         default:
             return "UNDEFINED";
     }
