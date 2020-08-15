@@ -50,5 +50,7 @@
         <file>textures/ui/referee.png</file>
         <file>textures/ui/field.png</file>
         <file>textures/ui/vision.png</file>
+        <file>textures/ui/strategy.png</file>
+        <file>textures/ui/mid.png</file>
     </qresource>
 </RCC>
