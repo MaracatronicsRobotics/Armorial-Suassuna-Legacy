@@ -32,6 +32,10 @@ PlayerAccess::~PlayerAccess() {
 
 }
 
+float PlayerAccess::aError() const{
+    return _player->aError();
+}
+
 void PlayerAccess::kick(float power) {
     if(_self==false)
         return;
