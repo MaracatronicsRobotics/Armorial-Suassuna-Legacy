@@ -35,6 +35,8 @@ public:
     // Kick and Dribble
     void kick(float power = 6.0);
     void dribble(double enabled);
+    // Error
+    float aError() const;
     // General player info
     quint8 playerId() const;
     quint8 teamId() const;

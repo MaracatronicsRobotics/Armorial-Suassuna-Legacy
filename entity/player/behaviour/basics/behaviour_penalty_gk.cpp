@@ -26,7 +26,7 @@
 
 #define ATTACKER_MINBALLDIST 0.4f
 #define GOALPOSTS_ERROR 0.1f
-#define INTERCEPT_MINBALLVELOCITY 0.2f
+#define INTERCEPT_MINBALLVELOCITY 0.1f
 
 QString Behaviour_Penalty_GK::name() {
     return "Behaviour_GoalKeeper";
@@ -76,7 +76,7 @@ void Behaviour_Penalty_GK::run() {
 
     _skill_Goalkeeper->setInterceptAdvance(false);
     _skill_Goalkeeper->setPositionToLook(loc()->ball());
-    _skill_Goalkeeper->setSpeedFactor(3.0);
+    _skill_Goalkeeper->setSpeedFactor(4.0);
 
     // Ver com geogebra e led dps a mira
     _skill_kick->setAim(loc()->theirGoal());
@@ -175,7 +175,7 @@ Position Behaviour_Penalty_GK::getAttackerInterceptPosition() {
 
 Position Behaviour_Penalty_GK::calcAttackerBallImpact() {
     QHash<quint8, Player*>::iterator it;
-    QHash<quint8, Player*> avPlayers = loc()->getMRCPlayers();      // ALTERA AQUI ZILDAO
+    QHash<quint8, Player*> avPlayers = loc()->getOpPlayers();      // ALTERA AQUI ZILDAO
     int poss = -1;
 
     for(it=avPlayers.begin(); it!=avPlayers.end(); it++){
@@ -189,14 +189,14 @@ Position Behaviour_Penalty_GK::calcAttackerBallImpact() {
         return Position(false, 0.0, 0.0, 0.0);
 
     // check if ball is in front of player (avoid y errors)
-    Position playerPos = PlayerBus::ourPlayer(quint8(poss))->position(); // ALTERA AQUI ZILDAO
-    Angle anglePlayerBall = PlayerBus::ourPlayer(quint8(poss))->angleTo(loc()->ball()); // ALTERA AQUI ZILDAO
-    float diff = WR::Utils::angleDiff(anglePlayerBall, PlayerBus::ourPlayer(quint8(poss))->orientation()); // ALTERA AQUI ZILDAO
+    Position playerPos = PlayerBus::theirPlayer(quint8(poss))->position(); // ALTERA AQUI ZILDAO
+    Angle anglePlayerBall = PlayerBus::theirPlayer(quint8(poss))->angleTo(loc()->ball()); // ALTERA AQUI ZILDAO
+    float diff = WR::Utils::angleDiff(anglePlayerBall, PlayerBus::theirPlayer(quint8(poss))->orientation()); // ALTERA AQUI ZILDAO
     bool ans = (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
     if(!ans) return Position(false, 0.0, 0.0, 0.0);
 
     /* calculando posicao de impacto no y */
-    Angle angleAtk = PlayerBus::ourPlayer(quint8(poss))->orientation(); // ALTERA AQUI ZILDAO
+    Angle angleAtk = PlayerBus::theirPlayer(quint8(poss))->orientation(); // ALTERA AQUI ZILDAO
     float angleValue = angleAtk.value();
 
     if(loc()->ourSide().isLeft()){ // ajustando pra o lado esquerdo

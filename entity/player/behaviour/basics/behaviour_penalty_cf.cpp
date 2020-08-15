@@ -31,6 +31,7 @@ Behaviour_Penalty_CF::Behaviour_Penalty_CF() {
     _skill_kick = NULL;
     _skill_goToLookTo = NULL;
     firstChoose = false;
+    joked = false;
 
     changeAimTimer.start();
 }
@@ -48,6 +49,7 @@ void Behaviour_Penalty_CF::run() {
     if(getConstants()==NULL)return;
 
     if(!player()->canKickBall()){
+        joked = false;
         Position desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.5f, GEARSystem::Angle::pi);
         _skill_goToLookTo->setDesiredPosition(desiredPosition);
         _skill_goToLookTo->setAvoidBall(true);
@@ -59,16 +61,36 @@ void Behaviour_Penalty_CF::run() {
         enableTransition(STATE_GOTO);
     }else{
         changeAimTimer.stop();
-        if(changeAimTimer.timesec() >= 1.0 || !firstChoose){
+        if(changeAimTimer.timesec() >= 0.25 || !firstChoose){
             if(!firstChoose) firstChoose = true;
             _kickPosition = getBestKickPosition().second;
             changeAimTimer.start();
         }
 
         _skill_kick->setIsPenalty(true);
-        _skill_kick->setAim(_kickPosition);
-        _skill_kick->shootWhenAligned(true);
         _skill_kick->setKickPower(getConstants()->getMaxKickPower());
+
+        if(loc()->isInsideTheirArea(loc()->ball(), 1.1f) || _skill_kick->getPushedDistance() >= 0.9 * _skill_kick->getMaxPushDistance()){
+            // goal area penalty
+            // try to 'joke' the enemy goalkeepe
+            _skill_kick->setDestination(Position(false, 0.0, 0.0, 0.0));
+            if(!joked){
+                _skill_kick->setAim(loc()->theirGoalLeftPost());
+                _skill_kick->shootWhenAligned(false);
+
+                if(player()->getPlayerRotateAngleTo(loc()->theirGoalLeftPost()) < player()->aError()) joked = true;
+            }
+            else{
+                _skill_kick->setAim(_kickPosition);
+                _skill_kick->shootWhenAligned(true);
+            }
+        }
+        else{
+            // mid field area penalty
+            _skill_kick->setAim(loc()->theirGoal());
+            _skill_kick->setDestination(loc()->theirGoal());
+            _skill_kick->shootWhenAligned(false);
+        }
 
         enableTransition(STATE_KICK);
     }
