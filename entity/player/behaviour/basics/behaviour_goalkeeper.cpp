@@ -146,7 +146,7 @@ Position Behaviour_Goalkeeper::getAttackerInterceptPosition() {
         return interceptPosition;
 
     // Calc ball impact based on attacker ori and check if its going to the goal
-    Position posImpact = ballProjection();
+    Position posImpact = calcAttackerBallImpact();
     if(posImpact.isUnknown())
         return interceptPosition;
 
@@ -201,7 +201,7 @@ Position Behaviour_Goalkeeper::ballProjection(){
 
 Position Behaviour_Goalkeeper::calcAttackerBallImpact() {
     QHash<quint8, Player*>::iterator it;
-    QHash<quint8, Player*> avPlayers = loc()->getMRCPlayers();      // ALTERA AQUI ZILDAO
+    QHash<quint8, Player*> avPlayers = loc()->getOpPlayers();      // ALTERA AQUI ZILDAO
     int poss = -1;
 
     for(it=avPlayers.begin(); it!=avPlayers.end(); it++){
@@ -215,14 +215,14 @@ Position Behaviour_Goalkeeper::calcAttackerBallImpact() {
         return Position(false, 0.0, 0.0, 0.0);
 
     // check if ball is in front of player (avoid y errors)
-    Position playerPos = PlayerBus::ourPlayer(quint8(poss))->position(); // ALTERA AQUI ZILDAO
-    Angle anglePlayerBall = PlayerBus::ourPlayer(quint8(poss))->angleTo(loc()->ball()); // ALTERA AQUI ZILDAO
-    float diff = WR::Utils::angleDiff(anglePlayerBall, PlayerBus::ourPlayer(quint8(poss))->orientation()); // ALTERA AQUI ZILDAO
+    Position playerPos = PlayerBus::theirPlayer(quint8(poss))->position(); // ALTERA AQUI ZILDAO
+    Angle anglePlayerBall = PlayerBus::theirPlayer(quint8(poss))->angleTo(loc()->ball()); // ALTERA AQUI ZILDAO
+    float diff = WR::Utils::angleDiff(anglePlayerBall, PlayerBus::theirPlayer(quint8(poss))->orientation()); // ALTERA AQUI ZILDAO
     bool ans = (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
     if(!ans) return Position(false, 0.0, 0.0, 0.0);
 
     /* calculando posicao de impacto no y */
-    Angle angleAtk = PlayerBus::ourPlayer(quint8(poss))->orientation(); // ALTERA AQUI ZILDAO
+    Angle angleAtk = PlayerBus::theirPlayer(quint8(poss))->orientation(); // ALTERA AQUI ZILDAO
     float angleValue = angleAtk.value();
 
     if(loc()->ourSide().isLeft()){ // ajustando pra o lado esquerdo

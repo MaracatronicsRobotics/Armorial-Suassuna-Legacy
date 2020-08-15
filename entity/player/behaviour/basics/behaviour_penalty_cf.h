@@ -40,6 +40,7 @@ private:
     std::pair<float, Position> getBestKickPosition();
     int _state;
     bool firstChoose;
+    bool joked;
     Timer changeAimTimer;
 
     // Skill transitions
