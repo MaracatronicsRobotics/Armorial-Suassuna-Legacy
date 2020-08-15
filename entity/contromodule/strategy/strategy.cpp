@@ -68,7 +68,7 @@ SSLGameInfo::RefProcessedState Strategy::getGameState(){
     return _ref->getGameInfo(_ourTeam->teamColor())->processedState();
 }
 
-void Strategy::runStrategy(int gameState, SSLGameInfo::RefProcessedState refState) {
+void Strategy::runStrategy(AgressivityLevel gameState, SSLGameInfo::RefProcessedState refState) {
     // Get current StrategyState and run
     StrategyState *strategyState = getStrategyState(gameState);
     if(strategyState!=NULL && getConstants()!=NULL) {
@@ -80,7 +80,7 @@ void Strategy::runStrategy(int gameState, SSLGameInfo::RefProcessedState refStat
     }
 }
 
-void Strategy::setStrategyState(int gameState, StrategyState *strategyState) {
+void Strategy::setStrategyState(AgressivityLevel gameState, StrategyState *strategyState) {
     // Check pointer
     if(strategyState==NULL)
         return;
@@ -90,7 +90,7 @@ void Strategy::setStrategyState(int gameState, StrategyState *strategyState) {
     _strategyStatesTable.insert(gameState, strategyState);
 }
 
-StrategyState* Strategy::getStrategyState(int gameState) {
+StrategyState* Strategy::getStrategyState(AgressivityLevel gameState) {
     // Check if child strategy set that game state
     if(_strategyStatesTable.contains(gameState)==false) {
         std::cout << MRCConstants::red << "[ERROR] " << MRCConstants::reset << "Strategy '" << name().toStdString() << "' has not set state " << state2str(gameState).toStdString() << ".\n";

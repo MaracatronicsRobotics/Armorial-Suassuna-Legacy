@@ -120,6 +120,8 @@ void Behaviour_Barrier::run() {
     _sk_goto->setAvoidOpponents(false);
     _sk_goto->setAvoidOurGoalArea(true);
 
+    // dribble disable
+    player()->dribble(false);
 
     // settings of intercept
     _sk_gk->setInterceptAdvance(true);

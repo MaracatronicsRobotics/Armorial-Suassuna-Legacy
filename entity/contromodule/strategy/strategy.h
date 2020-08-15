@@ -26,6 +26,14 @@
 #include <entity/referee/SSLReferee/sslgameinfo.h>
 #include <const/constants.h>
 
+typedef enum {
+    HIGH_DEFENSE,
+    MEDIUM_DEFENSE,
+    EQUILIBRATED,
+    MEDIUM_ATTACK,
+    HIGH_ATTACK
+} AgressivityLevel;
+
 class Strategy
 {
 public:
@@ -36,7 +44,7 @@ public:
     void initialize(SSLReferee *ref, MRCTeam *ourTeam, MRCTeam *theirTeam, CoachUtils *utils, MRCConstants *mrcconstants);
 
     // Coach loop
-    virtual void runStrategy() = 0;
+    virtual void runStrategy(AgressivityLevel agressivity) = 0;
     virtual QString name() = 0;
 
     // Auxiliary methods
@@ -44,14 +52,14 @@ public:
 
 protected:
     SSLGameInfo::RefProcessedState getGameState();
-    virtual void setStrategyState(int gameState, StrategyState *strategyState);
-    void runStrategy(int gameState, SSLGameInfo::RefProcessedState refState);
+    virtual void setStrategyState(AgressivityLevel gameState, StrategyState *strategyState);
+    void runStrategy(AgressivityLevel gameState, SSLGameInfo::RefProcessedState refState);
     MRCConstants * getConstants();
 
 
 private:
-    virtual QString state2str(int gameState) = 0;
-    StrategyState* getStrategyState (int gameState);
+    virtual QString state2str(AgressivityLevel gameState) = 0;
+    StrategyState* getStrategyState (AgressivityLevel gameState);
 
     // Children strategies
     virtual void configure() = 0;
