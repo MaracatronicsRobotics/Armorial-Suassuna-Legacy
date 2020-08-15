@@ -95,7 +95,7 @@ void Behaviour_Goalkeeper::run() {
     // machine if state begins for transitionsss
     if(!player()->team()->hasBallPossession() && isBallComingToGoal(INTERCEPT_MINBALLVELOCITY, 1.1f) && !player()->hasBallPossession()){ // bola nao ta em posse do goleiro e ta indo pro gol
         enableTransition(STATE_GK); // defende!
-    }else if(_takeoutEnabled){ // caso n esteja em posse, n esteja indo pro gol ou nenhum dos dois
+    }else if(_takeoutEnabled && player()->canKickBall()){ // caso n esteja em posse, n esteja indo pro gol ou nenhum dos dois
         if(loc()->isInsideOurArea(loc()->ball(), _takeoutFactor)){ // ve se ta na nossa area com fator de takeout (uma area maiorzinha)
             quint8 bestAttacker = getBestAttacker();
             if(bestAttacker != RECEIVER_INVALID_ID){
