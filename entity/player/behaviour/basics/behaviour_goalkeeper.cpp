@@ -98,12 +98,18 @@ void Behaviour_Goalkeeper::run() {
     }else if(_takeoutEnabled){ // caso n esteja em posse, n esteja indo pro gol ou nenhum dos dois
         if(loc()->isInsideOurArea(loc()->ball(), _takeoutFactor)){ // ve se ta na nossa area com fator de takeout (uma area maiorzinha)
             quint8 bestAttacker = getBestAttacker();
-            _skill_push->setKickPower(getConstants()->getMaxKickPower());
-            if(bestAttacker != RECEIVER_INVALID_ID)
-                _skill_push->setAim(PlayerBus::ourPlayer(bestAttacker)->position());
-            else
+            if(bestAttacker != RECEIVER_INVALID_ID){
+                Position bestAttackerPos = PlayerBus::ourPlayer(bestAttacker)->position();
+                QList<quint8> shootList = {player()->playerId(), bestAttacker};
+                _skill_push->setAim(bestAttackerPos);
+                _skill_push->setKickPower(std::min(6.0, 0.75 * sqrt((player()->distanceTo(bestAttackerPos) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
+                _skill_push->shootWhenAligned(true);
+            }
+            else{
                 _skill_push->setAim(loc()->theirGoal());
-            _skill_push->shootWhenAligned(true);
+                _skill_push->setKickPower(getConstants()->getMaxKickPower());
+                _skill_push->shootWhenAligned(true);
+            }
             _skill_push->setIsParabolic(true);
             enableTransition(STATE_PUSH);
         }
