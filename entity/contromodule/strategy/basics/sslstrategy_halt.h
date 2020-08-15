@@ -29,7 +29,7 @@ class SSLStrategy_Halt : public StrategyState {
 private:
     // Playbooks
     Playbook_Attack *_pb_attack;
-    Playbook_DoNothing *_pb_doNothing;
+    Playbook_Defense *_pb_defense;
     void configure(int numOurPlayers);
     void run(int numOurPlayers);
 public:

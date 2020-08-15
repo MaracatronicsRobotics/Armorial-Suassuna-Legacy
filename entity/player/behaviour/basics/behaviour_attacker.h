@@ -26,9 +26,9 @@
 #include <entity/player/skills/skills_include.h>
 #include <utils/mrctimer/mrctimer.h>
 
-#define RECEIVER_DECISION_TIME   1.5f // seconds
-#define AIM_DECISION_TIME        1.0f // seconds
-#define SHOOT_PASS_DECISION_TIME 1.0f // seconds
+#define RECEIVER_DECISION_TIME   2.0f // seconds
+#define AIM_DECISION_TIME        0.2f // seconds
+#define SHOOT_PASS_DECISION_TIME 0.5f // seconds
 
 class Behaviour_Attacker : public Behaviour {
 private:

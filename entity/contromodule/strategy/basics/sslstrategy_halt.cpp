@@ -28,19 +28,20 @@ QString SSLStrategy_Halt::name() {
 }
 
 SSLStrategy_Halt::SSLStrategy_Halt() {
-    _pb_doNothing = NULL;
+    _pb_attack = NULL;
+    _pb_defense = NULL;
 }
 
 void SSLStrategy_Halt::configure(int numOurPlayers) {
-    usesPlaybook(_pb_doNothing = new Playbook_DoNothing());
+    usesPlaybook(_pb_defense = new Playbook_Defense());
     usesPlaybook(_pb_attack = new Playbook_Attack());
 }
 
 void SSLStrategy_Halt::run(int numOurPlayers) {
     quint8 goalie = dist()->getGK();
     if(PlayerBus::ourPlayerAvailable(goalie)){
-        _pb_doNothing->addPlayer(goalie);
-        _pb_doNothing->setGoalieId(goalie);
+        _pb_defense->addPlayer(goalie);
+        _pb_defense->setGoalieId(goalie);
     }
 
     QList<quint8> players = dist()->getAllPlayers();
@@ -48,7 +49,7 @@ void SSLStrategy_Halt::run(int numOurPlayers) {
     for(int x = 0; x < players.size(); x++){
         quint8 id = players.at(x);
         if(id % 2 == 0)
-            _pb_doNothing->addPlayer(id);
+            _pb_defense->addPlayer(id);
         else
             _pb_attack->addPlayer(id);
     }

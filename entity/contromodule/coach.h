@@ -25,6 +25,7 @@
 #include <entity/contromodule/basecoach.h>
 #include <entity/contromodule/controlmodule.h>
 #include <entity/coachview/coachview.h>
+#include <entity/contromodule/strategy/strategy.h>
 
 class Coach : public ControlModule
 {
@@ -65,6 +66,7 @@ private:
     std::string calculateAgressivity(std::vector<double> &gaussians);
     std::vector<double> getEnemyGaussiansInAreas();
     std::string _lastAgressivity;
+    AgressivityLevel agressivityToEnum(std::string agressivity);
 
     std::vector<double> proportionsOld;
 };

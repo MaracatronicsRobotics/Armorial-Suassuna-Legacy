@@ -19,21 +19,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#include "playbook_donothing.h"
+#include "playbook_defense.h"
 
-QString Playbook_DoNothing::name() {
-    return "Playbook_DoNothing";
+QString Playbook_Defense::name() {
+    return "Playbook_Defense";
 }
 
-Playbook_DoNothing::Playbook_DoNothing() {
+Playbook_Defense::Playbook_Defense() {
     _goalieId = DIST_INVALID_ID;
 }
 
-int Playbook_DoNothing::maxNumPlayer() {
+int Playbook_Defense::maxNumPlayer() {
     return getConstants()->getQtPlayers();
 }
 
-void Playbook_DoNothing::configure(int numPlayers) {
+void Playbook_Defense::configure(int numPlayers) {
     _rl_gk = new Role_Goalkeeper();
     usesRole(_rl_gk);
 
@@ -50,7 +50,7 @@ void Playbook_DoNothing::configure(int numPlayers) {
     usesRole(_rl_def_midf2);
 }
 
-void Playbook_DoNothing::run(int numPlayers) {
+void Playbook_Defense::run(int numPlayers) {
     resetMarkList();
 
     // Taking the goalkeeper
@@ -117,7 +117,7 @@ void Playbook_DoNothing::run(int numPlayers) {
 
 }
 
-void Playbook_DoNothing::resetMarkList(){
+void Playbook_Defense::resetMarkList(){
     markList.clear();
 
     QList<Player*> list = loc()->getOpPlayers().values();
@@ -161,7 +161,7 @@ void Playbook_DoNothing::resetMarkList(){
     }
 }
 
-quint8 Playbook_DoNothing::requestMarkPlayer(quint8 playerId){
+quint8 Playbook_Defense::requestMarkPlayer(quint8 playerId){
     float minDist = 999.0f;
     quint8 markId = DIST_INVALID_ID;
     int pos = DIST_INVALID_ID;

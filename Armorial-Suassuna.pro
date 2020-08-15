@@ -44,6 +44,7 @@ SOURCES += \
     entity/coachview/soccerview/soccerview.cpp \
     entity/coachview/soccerview/util/field.cpp \
     entity/contromodule/playbook/basics/playbook_attack.cpp \
+    entity/contromodule/playbook/basics/playbook_defense.cpp \
     entity/entity.cpp \
     entity/player/behaviour/basics/behaviour_ballplacement.cpp \
     entity/player/behaviour/basics/behaviour_goalkeeper.cpp \
@@ -147,7 +148,6 @@ SOURCES += \
     entity/contromodule/strategy/basics/sslstrategy.cpp \
     entity/contromodule/controlmodule.cpp \
     entity/contromodule/strategy/basics/sslstrategy_halt.cpp \
-    entity/contromodule/playbook/basics/playbook_donothing.cpp \
     entity/player/behaviour/basics/behaviour_followball.cpp \
     entity/player/behaviour/basics/behaviour_timeout.cpp \
     entity/player/control/pid.cpp \
@@ -185,6 +185,7 @@ HEADERS += \
     entity/coachview/soccerview/util/timer.h \
     entity/coachview/soccerview/util/util.h \
     entity/contromodule/playbook/basics/playbook_attack.h \
+    entity/contromodule/playbook/basics/playbook_defense.h \
     entity/entity.h \
     entity/player/behaviour/basics/behaviour_ballplacement.h \
     entity/player/behaviour/basics/behaviour_intercept.h \
@@ -293,7 +294,6 @@ HEADERS += \
     entity/contromodule/strategy/basics/sslstrategy.h \
     entity/contromodule/controlmodule.h \
     entity/contromodule/strategy/basics/sslstrategy_halt.h \
-    entity/contromodule/playbook/basics/playbook_donothing.h \
     entity/contromodule/playbook/mrcplaybook.h \
     entity/player/behaviour/basics/behaviour_followball.h \
     entity/player/behaviour/basics/behaviour_timeout.h \

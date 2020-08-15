@@ -248,9 +248,11 @@ void Behaviour_Attacker::run() {
                 CoachView::drawTriangle(player()->position(), loc()->theirGoalLeftPost(), loc()->theirGoalRightPost(), RGBA(178, 34, 34, 0.4, MRCConstants::robotZ + 0.01));
                 CoachView::drawLine(player()->position(), _aim.second.isUnknown() ? loc()->theirGoal() : _aim.second, RGBA(106, 90, 205, 1.0, MRCConstants::robotZ + 0.02));
 
+                Position aim = (_aim.second.isUnknown()) ? loc()->theirGoal() : _aim.second;
+
                 // If we have an sufficient opening to their goal, make an direct kick to it
                 if(ref()->getGameInfo(player()->team()->teamColor())->ourDirectKick() || ref()->getGameInfo(player()->team()->teamColor())->ourKickoff()){
-                    _sk_kick->setAim(_aim.second);
+                    _sk_kick->setAim(aim);
                     _sk_kick->setIsChip(false);
                     _sk_kick->setPower(getConstants()->getMaxKickPower());
 
@@ -258,7 +260,7 @@ void Behaviour_Attacker::run() {
                 }
                 else{
                     _sk_push->setDestination(Position(false, 0.0, 0.0, 0.0));
-                    _sk_push->setAim(_aim.second);
+                    _sk_push->setAim(aim);
                     _sk_push->setIsParabolic(false);
                     _sk_push->setKickPower(getConstants()->getMaxKickPower());
                     _sk_push->shootWhenAligned(true);

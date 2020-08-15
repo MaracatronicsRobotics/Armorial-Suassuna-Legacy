@@ -23,7 +23,6 @@
 
 #include <entity/contromodule/mrcteam.h>
 #include <entity/player/playerbus.h>
-#include <entity/contromodule/strategy/strategy.h>
 #include <entity/contromodule/coachutils.h>
 
 #include <entity/coachview/mainwindow.h>
@@ -231,14 +230,9 @@ void Coach::run(){
         std::cout << MRCConstants::defaultBold << "[COACH] " << MRCConstants::red << "No players available!" << MRCConstants::reset << std::endl;
         return ;
     }
-/*
-    std::vector<double> gaussians = getEnemyGaussiansInAreas();
-    std::string agressivity = calculateAgressivity(gaussians);
 
-    if(agressivity != _lastAgressivity){
-        _lastAgressivity = agressivity;
-    }
-*/
+    std::vector<double> gaussians = getEnemyGaussiansInAreas();
+    _lastAgressivity = calculateAgressivity(gaussians);
 
     // get strategy
     Strategy *strat = strategy();
@@ -248,9 +242,18 @@ void Coach::run(){
         if(strat->isInitialized() == false){
             strat->initialize(_ref, _ourTeam, _theirTeam, _utils, getConstants());
         }
-        strat->runStrategy();
+        strat->runStrategy(agressivityToEnum(_lastAgressivity));
     }
+}
 
+AgressivityLevel Coach::agressivityToEnum(std::string agressivity){
+
+    if(agressivity == "High_Attack")         return AgressivityLevel::HIGH_ATTACK;
+    else if(agressivity == "Medium_Attack")  return AgressivityLevel::MEDIUM_ATTACK;
+    else if(agressivity == "Equilibrated")   return AgressivityLevel::EQUILIBRATED;
+    else if(agressivity == "Medium_Defense") return AgressivityLevel::MEDIUM_DEFENSE;
+    else if(agressivity == "High_Defense")   return AgressivityLevel::HIGH_DEFENSE;
+    else                                     return AgressivityLevel::EQUILIBRATED;
 }
 
 QString Coach::getAgressivity(){
