@@ -39,7 +39,6 @@ Behaviour_Barrier::Behaviour_Barrier() {
     _sk_goto = NULL;
     _sk_gk = NULL;
     _sk_kick = NULL;
-    _sk_push = NULL;
 
     _canTakeout = false;
     _avoidAllies = false;
@@ -49,8 +48,7 @@ Behaviour_Barrier::Behaviour_Barrier() {
 void Behaviour_Barrier::configure() {
     usesSkill(_sk_goto = new Skill_GoToLookTo());
     usesSkill(_sk_gk = new Skill_InterceptBall());
-    usesSkill(_sk_kick = new Skill_Kick());
-    usesSkill(_sk_push = new Skill_PushBall2());
+    usesSkill(_sk_kick = new Skill_Test());
 
     // Setting initial skill
     setInitialSkill(_sk_goto);
@@ -58,19 +56,12 @@ void Behaviour_Barrier::configure() {
     // Transitions
     addTransition(STATE_GOTO, _sk_kick, _sk_goto);
     addTransition(STATE_GOTO, _sk_gk, _sk_goto);
-    addTransition(STATE_GOTO, _sk_push, _sk_goto);
 
     addTransition(STATE_GK, _sk_goto, _sk_gk);
     addTransition(STATE_GK, _sk_kick, _sk_gk);
-    addTransition(STATE_GK, _sk_push, _sk_gk);
 
     addTransition(STATE_KICK, _sk_goto, _sk_kick);
     addTransition(STATE_KICK, _sk_gk, _sk_kick);
-    addTransition(STATE_KICK, _sk_push, _sk_kick);
-
-    addTransition(STATE_PUSH, _sk_goto, _sk_push);
-    addTransition(STATE_PUSH, _sk_gk, _sk_push);
-    addTransition(STATE_PUSH, _sk_kick, _sk_push);
 
     _notAlreadyChosen = true;
 };
@@ -134,9 +125,6 @@ void Behaviour_Barrier::run() {
     _sk_gk->setInterceptAdvance(true);
     _sk_gk->setPositionToLook(loc()->theirGoal());
 
-    _sk_push->setAim(loc()->theirGoal());
-    _sk_push->setDestination(desiredPosition);
-
     // kick parameters
     if(!player()->hasBallPossession() && loc()->ballVelocity().abs() >= 0.2f)
         _notAlreadyChosen = true;
@@ -146,22 +134,21 @@ void Behaviour_Barrier::run() {
         enableTransition(STATE_GK);
     } else {
         if(player()->canKickBall() && player()->distBall() <= 0.4f && _canTakeout && !loc()->isInsideOurArea(loc()->ball(), 1.05f) && WR::Utils::distance(player()->position(), loc()->ourGoal()) <= (_radius + 1.5f)){
-            if(!isBehindBall(loc()->theirGoal())){
-                enableTransition(STATE_PUSH);
+            quint8 bestAttacker = getBestAttacker();
+            if(bestAttacker != RECEIVER_INVALID_ID){
+                Position bestAttackerPos = PlayerBus::ourPlayer(bestAttacker)->position();
+                QList<quint8> shootList = {player()->playerId(), bestAttacker};
+                _sk_kick->setAim(bestAttackerPos);
+                _sk_kick->setKickPower(std::min(6.0, 0.75 * sqrt((player()->distanceTo(bestAttackerPos) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
+                _sk_kick->shootWhenAligned(true);
             }
             else{
-                if(PlayerBus::ourPlayerAvailable(getBestAttacker())){
-                    Position ourAttackerKickDevice = WR::Utils::getPlayerKickDevice(getBestAttacker());
-                    quint8 bestAttacker = getBestAttacker();
-                    if(bestAttacker != RECEIVER_INVALID_ID)
-                        _sk_kick->setAim(PlayerBus::ourPlayer(getBestAttacker())->position());
-                    else
-                        _sk_kick->setAim(loc()->theirGoal());
-                    _sk_kick->setPower(std::min(6.0, 0.75 * sqrt((player()->distanceTo(ourAttackerKickDevice) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
-                    _sk_kick->setIsChip(true);
-                }
-                enableTransition(STATE_KICK);
+                _sk_kick->setAim(loc()->theirGoal());
+                _sk_kick->setKickPower(getConstants()->getMaxKickPower());
+                _sk_kick->shootWhenAligned(true);
             }
+            _sk_kick->setIsParabolic(true);
+            enableTransition(STATE_KICK);
         }else{
             enableTransition(STATE_GOTO);
         }
