@@ -84,7 +84,6 @@ void MainWindow::setAgressivity(QString agressivity){
         pixmp.load(":/textures/textures/ui/def.png");
     }
 
-    root->setIcon(0, pixmp);
     ui->agressivity_img->setPixmap(pixmp);
 }
 
@@ -110,6 +109,7 @@ void MainWindow::addRoot(){
     item->setText(0, "Strategy");
 
     root = item;
+    root->setIcon(0, QPixmap(":/textures/textures/ui/strategy.png"));
 }
 
 void MainWindow::drawTriangle(Position a, Position b, Position c, RGBA color){
@@ -234,14 +234,16 @@ QPixmap MainWindow::getPlaybookPixmap(QString playbook){
 QPixmap MainWindow::getRolePixmap(QString role){
     QPixmap pixmp;
 
-    if(role.toLower() == "role_default"){ // teste
+    if(role.toLower() == "role_goalkeeper"){ // teste
         pixmp.load(":/textures/textures/ui/gk.png");
-    }else if(role.toLower() == "role_barrier"){
+    }else if(role.toLower() == "role_defender"){
         pixmp.load(":/textures/textures/ui/bar.png");
-    }else if(role.toLower() == "role_attacker"){
+    }else if(role.toLower() == "role_striker"){
         pixmp.load(":/textures/textures/ui/atk.png");
-    }else if(role.toLower() == "role_support"){
+    }else if(role.toLower() == "role_secondstriker"){
         pixmp.load(":/textures/textures/ui/sup.png");
+    }else if(role.toLower() == "role_defensive_midfielder"){
+        pixmp.load(":/textures/textures/ui/mid.png");
     }else{
         pixmp.load(":/textures/textures/ui/none.png");
     }
@@ -382,7 +384,7 @@ MainWindow::MainWindow(QWidget *parent, MRCConstants *mrcconstants)
     root = NULL;
     treeWidget = new QTreeWidget(ui->page_tree);
     treeWidget->setObjectName(QStringLiteral("treeWidget"));
-    treeWidget->setGeometry(QRect(10, 10, 601, 192));
+    treeWidget->setGeometry(QRect(0, 0, 621, 211));
     treeWidget->setColumnCount(1);
     QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
     ___qtreewidgetitem->setText(0, QApplication::translate("MainWindow", "Coach Tree", Q_NULLPTR));
