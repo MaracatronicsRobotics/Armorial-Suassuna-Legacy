@@ -61,23 +61,30 @@ void Behaviour_Receiver::run() {
         if(ref()->getGameInfo(player()->team()->teamColor())->ourPenaltyKick()){
             Position desiredPosition;
             if(_quadrant == QUADRANT_UP || _quadrant == QUADRANT_UPMID)
-                desiredPosition = Position(true, loc()->theirPenaltyMark().x(), loc()->theirPenaltyMark().y() - 1.0f, 0.0);
+                desiredPosition = Position(true, loc()->theirGoal().x() + (loc()->theirSide().isLeft() ? 2.0 : -2.0), loc()->theirGoal().y() - 1.6f, 0.0);
             else
-                desiredPosition = Position(true, loc()->theirPenaltyMark().x(), loc()->theirPenaltyMark().y() + 1.0f, 0.0);
+                desiredPosition = Position(true, loc()->theirGoal().x() + (loc()->theirSide().isLeft() ? 2.0 : -2.0), loc()->theirGoal().y() + 1.6f, 0.0);
 
             _skill_GoToLookTo->setDesiredPosition(desiredPosition);
             _skill_GoToLookTo->setAimPosition(loc()->ball());
+            _skill_GoToLookTo->setAvoidOpponents(true);
+            _skill_GoToLookTo->setAvoidBall(true);
+            _skill_GoToLookTo->setAvoidTeammates(true);
         }
         else{
             Position desiredPosition;
             if(_quadrant == QUADRANT_UP || _quadrant == QUADRANT_UPMID)
-                desiredPosition = Position(true, loc()->fieldCenter().x(), loc()->fieldCenter().y() - 1.0f, 0.0);
+                desiredPosition = Position(true, loc()->ourGoal().x() + (loc()->ourSide().isLeft() ? 1.6 : -1.6), loc()->ourGoal().y() - 1.6f, 0.0);
             else
-                desiredPosition = Position(true, loc()->fieldCenter().x(), loc()->fieldCenter().y() + 1.0f, 0.0);
+                desiredPosition = Position(true, loc()->ourGoal().x() + (loc()->ourSide().isLeft() ? 1.6 : -1.6), loc()->ourGoal().y() + 1.6f, 0.0);
 
             _skill_GoToLookTo->setDesiredPosition(desiredPosition);
             _skill_GoToLookTo->setAimPosition(loc()->ball());
+            _skill_GoToLookTo->setAvoidOpponents(true);
+            _skill_GoToLookTo->setAvoidBall(true);
+            _skill_GoToLookTo->setAvoidTeammates(true);
         }
+        return ;
     }
     else if(ref()->getGameInfo(player()->team()->teamColor())->kickoff()){
         // kickoff
