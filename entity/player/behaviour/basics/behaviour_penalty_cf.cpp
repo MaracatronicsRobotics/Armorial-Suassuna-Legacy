@@ -48,6 +48,18 @@ void Behaviour_Penalty_CF::configure() {
 void Behaviour_Penalty_CF::run() {
     if(getConstants()==NULL)return;
 
+    if(ref()->getGameInfo(player()->team()->teamColor())->theirPenaltyKick()){
+        Position desiredPosition = Position(true, loc()->fieldCenter().x() + (loc()->ourSide().isLeft() ? 0.5 : -0.5), loc()->fieldCenter().y(), 0.0);
+        _skill_goToLookTo->setAvoidBall(true);
+        _skill_goToLookTo->setAvoidOpponents(true);
+        _skill_goToLookTo->setAvoidTeammates(true);
+        _skill_goToLookTo->setDesiredPosition(desiredPosition);
+        _skill_goToLookTo->setAimPosition(loc()->ball());
+
+        enableTransition(STATE_GOTO);
+        return;
+    }
+
     if(!player()->canKickBall()){
         joked = false;
         Position desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.5f, GEARSystem::Angle::pi);

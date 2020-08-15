@@ -77,11 +77,7 @@ void Role_Striker::run(){
         // Reset placement and threat another ref messages
         setPlacement = false;
         if(gameInfo->penaltyKick()){
-            if(gameInfo->ourPenaltyKick()){
-                setBehaviour(BEHAVIOUR_PENALTYATK);
-            }else{
-                // Check what to do here... (new behaviour for positioning?)
-            }
+            setBehaviour(BEHAVIOUR_PENALTYATK);
         }
         else if(gameInfo->directKick() || gameInfo->indirectKick() || gameInfo->kickoff() || !gameInfo->gameOn()){
             // The striker is our main attacker, so he will make the kick (or be in the line between ball and our goal), or just follow ball
