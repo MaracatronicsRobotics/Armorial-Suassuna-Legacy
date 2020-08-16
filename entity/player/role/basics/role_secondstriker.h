@@ -65,18 +65,17 @@ public:
 
     // Mark
     void setMarkId(quint8 markId) { _markId = markId; }
+    void setQuadrant(int quadrant) { _quadrant = quadrant; }
 
 signals:
     void requestReceivers(quint8 playerId);
     void requestAttacker();
     void requestIsMarkNeeded();
-    void requestQuadrant();
 
 public slots:
     void takeReceiver(quint8 receiverId);
     void takeAttacker(quint8 attackerId);
     void takeIsMarkNeeded(bool isMarkNeeded);
-    void takeQuadrant(int quadrant);
 };
 
 #endif // ROLE_SECONDSTRIKER_H

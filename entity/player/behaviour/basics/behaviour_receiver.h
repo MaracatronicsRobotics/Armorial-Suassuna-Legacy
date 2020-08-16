@@ -55,14 +55,6 @@ private:
         SK_GOTO,
         SK_RECV
     };
-
-    enum{
-        NO_QUADRANT,
-        QUADRANT_UP,
-        QUADRANT_BOTMID,
-        QUADRANT_UPMID,
-        QUADRANT_BOT
-    };
     // Auxiliary functions
     Position getBestPositionWithoutAttacker(int quadrant);
     QList<FreeAngles::Interval> getGoalFreeAngles(quint8 quadrant, float radius);

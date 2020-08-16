@@ -25,6 +25,8 @@
 #include <entity/contromodule/playbook/playbook.h>
 #include <entity/player/role/mrcroles.h>
 
+#define NUM_QUADRANTS 4
+
 class Playbook_Attack : public Playbook {
     Q_OBJECT
 private:
@@ -44,13 +46,14 @@ private:
 
     // Mark
     quint8 _attackerId;
-    QMutex markMutex;
-    QList<int> leftQuadrantList;
-    QList<int> rightQuadrantList;
     QList<quint8> markList;
-    void resetQuadrantList();
     void resetMarkList();
     quint8 requestMarkPlayer(quint8 playerId);
+
+    // Quadrants
+    bool quadrants[NUM_QUADRANTS];
+    void resetQuadrantList();
+    int requestQuadrant(quint8 playerId);
 
     // Utils
     bool isBallComing(Position playerPosition, float minVelocity, float radius);
@@ -63,13 +66,12 @@ signals:
     void sendReceiver(quint8 receiverId);
     void sendAttacker(quint8 attackerId);
     void sendIsMarkNeeded(bool isMarkNeeded);
-    void sendQuadrant(int quadrant);
 
 public slots:
     void requestReceivers(quint8 playerId);
     void requestAttacker();
     void requestIsMarkNeeded();
-    void requestQuadrant();
+
 };
 
 #endif // PLAYBOOK_ATTACK_H

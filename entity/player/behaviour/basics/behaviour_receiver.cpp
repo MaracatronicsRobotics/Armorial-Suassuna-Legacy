@@ -61,9 +61,9 @@ void Behaviour_Receiver::run() {
         if(ref()->getGameInfo(player()->team()->teamColor())->ourPenaltyKick()){
             Position desiredPosition;
             if(_quadrant == QUADRANT_UP || _quadrant == QUADRANT_UPMID)
-                desiredPosition = Position(true, loc()->theirGoal().x() + (loc()->theirSide().isLeft() ? 2.0 : -2.0), loc()->theirGoal().y() - 1.6f, 0.0);
+                desiredPosition = Position(true, loc()->theirGoal().x() + (loc()->ourSide().isRight() ? 2.0 : -2.0), loc()->theirGoal().y() + 1.6f, 0.0);
             else
-                desiredPosition = Position(true, loc()->theirGoal().x() + (loc()->theirSide().isLeft() ? 2.0 : -2.0), loc()->theirGoal().y() + 1.6f, 0.0);
+                desiredPosition = Position(true, loc()->theirGoal().x() + (loc()->ourSide().isRight() ? 2.0 : -2.0), loc()->theirGoal().y() - 1.6f, 0.0);
 
             _skill_GoToLookTo->setDesiredPosition(desiredPosition);
             _skill_GoToLookTo->setAimPosition(loc()->ball());
@@ -74,9 +74,9 @@ void Behaviour_Receiver::run() {
         else{
             Position desiredPosition;
             if(_quadrant == QUADRANT_UP || _quadrant == QUADRANT_UPMID)
-                desiredPosition = Position(true, loc()->ourGoal().x() + (loc()->ourSide().isLeft() ? 1.6 : -1.6), loc()->ourGoal().y() - 1.6f, 0.0);
+                desiredPosition = Position(true, loc()->ourGoal().x() + (loc()->ourSide().isRight() ? -2.0 : 2.0), loc()->ourGoal().y() + 1.6f, 0.0);
             else
-                desiredPosition = Position(true, loc()->ourGoal().x() + (loc()->ourSide().isLeft() ? 1.6 : -1.6), loc()->ourGoal().y() + 1.6f, 0.0);
+                desiredPosition = Position(true, loc()->ourGoal().x() + (loc()->ourSide().isRight() ? -2.0 : 2.0), loc()->ourGoal().y() - 1.6f, 0.0);
 
             _skill_GoToLookTo->setDesiredPosition(desiredPosition);
             _skill_GoToLookTo->setAimPosition(loc()->ball());

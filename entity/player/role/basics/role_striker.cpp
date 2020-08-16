@@ -51,11 +51,6 @@ void Role_Striker::configure(){
 }
 
 void Role_Striker::run(){
-    // Setting initial values for test
-    if(player()->playerId() == 1)       _quadrant = 2;
-    else if(player()->playerId() == 3)  _quadrant = 1;
-    else                                _quadrant = 4;
-
     // Taking the receivers that attacker can use (just do it 1 time)
     if(!_config){
         _bh_atk->clearReceivers();
@@ -168,8 +163,4 @@ void Role_Striker::takeAttacker(quint8 attackerId){
 
 void Role_Striker::takeIsMarkNeeded(bool isMarkNeeded){
     _isMarkNeeded = isMarkNeeded;
-}
-
-void Role_Striker::takeQuadrant(int quadrant){
-    _quadrant = quadrant;
 }
