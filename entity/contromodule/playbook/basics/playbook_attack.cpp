@@ -112,25 +112,85 @@ void Playbook_Attack::run(int numPlayers) {
 }
 
 int Playbook_Attack::requestQuadrant(quint8 playerId) {
+    // If in direct / indirect / stop / penalty / kickoff, set our receivers to up and bot (walk together with attacker)
+    SSLGameInfo *gameInfo = ref()->getGameInfo(team()->teamColor());
+    if(gameInfo->freeKick() || gameInfo->kickoff() || gameInfo->penaltyKick() || !gameInfo->gameOn()){
+        if(!leftTaked){
+            leftTaked = true;
+            return QUADRANT_UP;
+        }
+        else if(!rightTaked){
+            rightTaked = true;
+            return QUADRANT_BOT;
+        }
+    }
+
     // Check for potential quadrants to our player
+    int qtAtQuadrants[4] = {0};
+    QList<Player*> opPlayers = loc()->getOpPlayers().values();
+
+    for(int x = 0; x < opPlayers.size(); x++){
+        if(opPlayers.at(x) != NULL){
+            // we don't count enemy gk
+            if(!loc()->isInsideTheirArea(opPlayers.at(x)->position())){
+                int quadrant = WR::Utils::getPlayerQuadrant(opPlayers.at(x)->position());
+                if(quadrant != NO_QUADRANT){
+                    qtAtQuadrants[quadrant-1]++;
+                }
+            }
+        }
+    }
+/*
     float closestDist = 999.0f;
+    float largestDist = 0.0f;
+    int lessQtAtQuadrant = 999;
     int bestQuadrant = NO_QUADRANT;
     for(int x = 0; x < NUM_QUADRANTS; x++){
         if(quadrants[x] == true) continue;
         else{
             Position barycenter = WR::Utils::getQuadrantBarycenter(x+1);
+            float distToBarycenter = WR::Utils::distance(loc()->ball(), barycenter);
+            if(qtAtQuadrants[x] <= lessQtAtQuadrant){
+                if(qtAtQuadrants[x] == lessQtAtQuadrant){
+                    if(distToBarycenter > largestDist){
+                        if(PlayerBus::ourPlayerAvailable(playerId)){
+                            float distPlayerBarycenter = PlayerBus::ourPlayer(playerId)->distanceTo(barycenter);
+                            if(distPlayerBarycenter < closestDist){
+                                closestDist = distPlayerBarycenter;
+                                largestDist = distToBarycenter;
+                                bestQuadrant = x+1;
+                            }
+                        }
+                    }
+                }
+                else{
+                    bestQuadrant = x + 1;
+                    largestDist = distToBarycenter;
+                }
+                lessQtAtQuadrant = qtAtQuadrants[x];
+            }
+        }
+    }
+*/
+
+    float closestDist = 999.0f;
+    int bestQuadrant = NO_QUADRANT;
+    for(int x = 0; x < NUM_QUADRANTS; x++){
+        if(quadrants[x] == true) continue;
+        else{
             if(PlayerBus::ourPlayerAvailable(playerId)){
-                float distToBarycenter = PlayerBus::ourPlayer(playerId)->distanceTo(barycenter);
-                if(distToBarycenter < closestDist){
-                    closestDist = distToBarycenter;
-                    bestQuadrant = x+1;
+                Position barycenter = WR::Utils::getQuadrantBarycenter(x+1);
+                float distPlayerToBarycenter = PlayerBus::ourPlayer(playerId)->distanceTo(barycenter);
+                if(distPlayerToBarycenter < closestDist){
+                    closestDist = distPlayerToBarycenter;
+                    bestQuadrant = x + 1;
                 }
             }
         }
     }
 
     if(bestQuadrant != NO_QUADRANT){
-        CoachView::drawLine(PlayerBus::ourPlayer(playerId)->position(), WR::Utils::getQuadrantBarycenter(bestQuadrant), RGBA(0.0, 255, 0.0, 1.0, MRCConstants::robotZ + 0.03));
+        //CoachView::drawLine(PlayerBus::ourPlayer(playerId)->position(), WR::Utils::getQuadrantBarycenter(bestQuadrant), RGBA(0.0, 255, 0.0, 1.0, MRCConstants::robotZ + 0.03));
         quadrants[bestQuadrant - 1] = true;
     }
     return bestQuadrant;
@@ -269,6 +329,9 @@ void Playbook_Attack::resetQuadrantList() {
     if(atkQuadrant != NO_QUADRANT){
         quadrants[atkQuadrant-1] = true;
     }
+
+    leftTaked  = false;
+    rightTaked = false;
 }
 
 void Playbook_Attack::resetMarkList(){
