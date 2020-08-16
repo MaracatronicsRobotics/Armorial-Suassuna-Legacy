@@ -41,8 +41,10 @@ float MRCConstants::robotZ = 2.0;
 
 
 
-MRCConstants::MRCConstants(QString configFileName)
+MRCConstants::MRCConstants(QString configFileName, bool playingAgainstWarthog)
 {
+    this->playingAgainstWarthog = playingAgainstWarthog;
+
     file.setFileName(configFileName);
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     val = file.readAll();
@@ -221,4 +223,8 @@ float MRCConstants::getAngularKi() const
 float MRCConstants::getAngularKd() const
 {
     return _angularKd;
+}
+
+bool MRCConstants::isPlayingAgainstWarthog() const{
+    return playingAgainstWarthog;
 }
