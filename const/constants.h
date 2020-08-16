@@ -80,8 +80,11 @@ private:
     float _angularKi;
     float _angularKd;
 
+    /* Playing against warthog */
+    bool playingAgainstWarthog;
+
 public:
-    MRCConstants(QString fileName);
+    MRCConstants(QString fileName, bool playingAgainstWarthog = false);
 
     /* GUI */
     static float robotZ;
@@ -118,7 +121,8 @@ public:
     static std::string defaultBold;
     static std::string reset;
 
-
+    /* Playing against warthog */
+    bool isPlayingAgainstWarthog() const;
 
     QString getMLPPath() const;
 };

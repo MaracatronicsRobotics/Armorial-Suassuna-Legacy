@@ -366,8 +366,11 @@ void Player::setSpeed(float x, float y, float theta) {
     }
 
     if(_ctr != NULL){ // avoid set on enemy players
-        //_ctr->setSpeed((int)_team->teamId(), (int)playerId(), -robotVel.y(), robotVel.x(), theta);
-        _ctr->setSpeed((int)_team->teamId(), (int)playerId(), robotVel.x(), robotVel.y(), theta);
+        if(getConstants()->isPlayingAgainstWarthog()){
+            _ctr->setSpeed((int)_team->teamId(), (int)playerId(), -robotVel.y(), robotVel.x(), theta);
+        }
+        else
+            _ctr->setSpeed((int)_team->teamId(), (int)playerId(), robotVel.x(), robotVel.y(), theta);
     }
 }
 
