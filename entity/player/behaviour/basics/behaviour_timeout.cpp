@@ -66,21 +66,11 @@ void Behaviour_TimeOut::reset(){
 }
 
 void Behaviour_TimeOut::getPlayerTimeOutId(){
-    Position initialPos = loc()->ourGoalLeftPost();
-    initialPos = Position(true, initialPos.x() + (loc()->ourSide().isLeft() ? 1.1f : -1.1f), initialPos.y() + (loc()->ourSide().isLeft() ? -0.5f : 0.5f), initialPos.z());
+    Position initialPos = loc()->ourGoal();
+    initialPos = Position(true, initialPos.x() + (loc()->ourSide().isLeft() ? 1.1f : -1.1f), initialPos.y() + 1.0f, initialPos.z());
 
     // Get the player number in the array of available players
     int decision = player()->playerId();
-    /*
-    int decision = 0;
-    QList<Player *> players = loc()->getMRCPlayers().values();
-    for(int x = 0; x < players.size(); x++){
-        if(players.at(x)->playerId() == player()->playerId()){
-            decision = x;
-            break;
-        }
-    }
-    */
 
     // Adjust position
     initialPos = Position(true, initialPos.x(), initialPos.y() - (decision * 0.39f), initialPos.z());
