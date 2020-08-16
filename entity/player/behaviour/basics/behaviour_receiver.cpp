@@ -57,6 +57,9 @@ void Behaviour_Receiver::configure() {
 };
 
 void Behaviour_Receiver::run() {
+    if(_quadrant == QUADRANT_UP || _quadrant == QUADRANT_BOT) setActionRadius(1.5, 2.5);
+    else                                                      setActionRadius(1.5, 3.5);
+
     if(ref()->getGameInfo(player()->team()->teamColor())->penaltyKick()){
         if(ref()->getGameInfo(player()->team()->teamColor())->ourPenaltyKick()){
             Position desiredPosition;
@@ -127,6 +130,12 @@ void Behaviour_Receiver::run() {
         return ;
     }
     player()->dribble(false);
+
+    _skill_GoToLookTo->setAvoidBall(true);
+    _skill_GoToLookTo->setAvoidOpponents(true);
+    _skill_GoToLookTo->setAvoidTeammates(true);
+    _skill_GoToLookTo->setAvoidOurGoalArea(true);
+    _skill_GoToLookTo->setAvoidTheirGoalArea(true);
 
     if(isBallComing(0.2f, 1.0f) && !player()->team()->hasBallPossession()){
         _skill_Receiver->setPositionToLook(loc()->ball());
@@ -302,8 +311,8 @@ Position Behaviour_Receiver::getReceiverPosition(int quadrant, quint8 attackerId
     Line goalLine = Line::getLine(loc()->theirGoal(), goalLargestMid);
 
     // Taking points for ball free angles
-    Position offGoalMinimumPosition = Position(true, loc()->theirGoal().x() + 1.5f * cos(goalLargestMid), loc()->theirGoal().y() + 1.5f * sin(goalLargestMid), 0.0);
-    Position offGoalMaximumPosition = Position(true, loc()->theirGoal().x() + 4.0f * cos(goalLargestMid), loc()->theirGoal().y() + 4.0f * sin(goalLargestMid), 0.0);
+    Position offGoalMinimumPosition = Position(true, loc()->theirGoal().x() + _minRadius * cos(goalLargestMid), loc()->theirGoal().y() + _minRadius * sin(goalLargestMid), 0.0);
+    Position offGoalMaximumPosition = Position(true, loc()->theirGoal().x() + _maxRadius * cos(goalLargestMid), loc()->theirGoal().y() + _maxRadius * sin(goalLargestMid), 0.0);
 
     // Debug to UI
     CoachView::drawLine(offGoalMaximumPosition, offGoalMinimumPosition, RGBA(106, 90, 205, 1.0, MRCConstants::robotZ + 0.02));

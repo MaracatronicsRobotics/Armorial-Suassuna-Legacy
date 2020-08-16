@@ -70,7 +70,7 @@ void Behaviour_Goalkeeper::run() {
 
     _skill_Goalkeeper->setInterceptAdvance(false);
     _skill_Goalkeeper->setPositionToLook(loc()->ball());
-    _skill_Goalkeeper->setSpeedFactor(1.3f);
+    _skill_Goalkeeper->setSpeedFactor(1.15f);
 
     // goToLookTo (posicionamento do goleiro
     Position desiredPosition = getAttackerInterceptPosition();
@@ -93,7 +93,7 @@ void Behaviour_Goalkeeper::run() {
         _notAlreadyChosen = true;
 
     // machine if state begins for transitionsss
-    if(!player()->team()->hasBallPossession() && isBallComingToGoal(INTERCEPT_MINBALLVELOCITY, 1.1f) && !player()->hasBallPossession()){ // bola nao ta em posse do goleiro e ta indo pro gol
+    if(isBallComingToGoal(INTERCEPT_MINBALLVELOCITY, 1.1f) && !player()->hasBallPossession()){ // bola nao ta em posse do goleiro e ta indo pro gol
         enableTransition(STATE_GK); // defende!
     }else if(_takeoutEnabled && player()->canKickBall()){ // caso n esteja em posse, n esteja indo pro gol ou nenhum dos dois
         if(loc()->isInsideOurArea(loc()->ball(), _takeoutFactor)){ // ve se ta na nossa area com fator de takeout (uma area maiorzinha)

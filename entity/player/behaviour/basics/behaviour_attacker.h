@@ -53,6 +53,7 @@ private:
     QList<quint8> _receiversList;
     quint8 getBestReceiver();
     bool firstChoose;
+    QMutex receiversListMutex;
     quint8 _bestRcv;
 
     // Utils functions
@@ -82,8 +83,8 @@ public:
     Skill_Kick *_sk_kick;
 
     // Receivers add
-    void addReceiver(quint8 id) { _receiversList.push_back(id); }
-    void clearReceivers()       { _receiversList.clear(); }
+    void addReceiver(quint8 id);
+    void clearReceivers();
 };
 
 #endif // BEHAVIOUR_ATTACKER_H
