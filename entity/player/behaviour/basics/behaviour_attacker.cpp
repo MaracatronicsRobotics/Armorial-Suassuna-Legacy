@@ -62,7 +62,6 @@ void Behaviour_Attacker::configure() {
     _state = STATE_CANTKICK;
     firstAim   = false;
     canShoot   = true;
-    firstChoose = false;
 }
 
 void Behaviour_Attacker::run() {
@@ -281,13 +280,10 @@ bool Behaviour_Attacker::canTakeBall(){
 
 quint8 Behaviour_Attacker::getBestReceiver(){
     receiverDecisionTimer.stop();
-    if(receiverDecisionTimer.timesec() < RECEIVER_DECISION_TIME && firstChoose){
-        return _bestRcv;
-    }
-    else{
+
+    if(receiverDecisionTimer.timesec() >= RECEIVER_DECISION_TIME || _bestRcv == RECEIVER_INVALID_ID){
         receiversListMutex.lock();
 
-        if(!firstChoose) firstChoose = true;
         quint8 bestId = RECEIVER_INVALID_ID;
         QList<quint8> list = _receiversList;
         float largestRecAngle;
@@ -321,7 +317,7 @@ quint8 Behaviour_Attacker::getBestReceiver(){
                     if(dif>largestAngle) {
                         largestAngle = dif;
                     }
-                }             
+                }
                 if(largestAngle > largestRecAngle){
                     largestRecAngle = largestAngle;
                     bestId = list.at(x);
@@ -332,9 +328,9 @@ quint8 Behaviour_Attacker::getBestReceiver(){
         _bestRcv = bestId;
 
         receiversListMutex.unlock();
-
-        return bestId;
     }
+
+    return _bestRcv;
 }
 
 quint8 Behaviour_Attacker::getTheirClosestPlayerToGoal(){

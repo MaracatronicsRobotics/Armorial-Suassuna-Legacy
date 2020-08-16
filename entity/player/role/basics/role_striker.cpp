@@ -54,7 +54,7 @@ void Role_Striker::configure(){
 void Role_Striker::run(){
     // Taking the receivers that attacker can use
     updateReceiversTimer.stop();
-    if(!_config || updateReceiversTimer.timesec() >= 10.0){ // do it at first time and every 10 seconds
+    if(!_config || updateReceiversTimer.timesec() >= 1.0){ // do it at first time and every second
         _bh_atk->clearReceivers();
         emit requestReceivers(player()->playerId());
 
