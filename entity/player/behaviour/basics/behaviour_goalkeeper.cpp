@@ -104,11 +104,13 @@ void Behaviour_Goalkeeper::run() {
                 _skill_push->setAim(bestAttackerPos);
                 _skill_push->setKickPower(std::min(6.0, 0.75 * sqrt((player()->distanceTo(bestAttackerPos) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
                 _skill_push->shootWhenAligned(true);
+                _skill_push->setIsPenalty(true);
             }
             else{
                 _skill_push->setAim(loc()->theirGoal());
                 _skill_push->setKickPower(getConstants()->getMaxKickPower());
                 _skill_push->shootWhenAligned(true);
+                _skill_push->setIsPenalty(true);
             }
             _skill_push->setIsParabolic(true);
             enableTransition(STATE_PUSH);

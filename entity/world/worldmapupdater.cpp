@@ -84,7 +84,11 @@ void WorldMapUpdater::updateBall(WorldMap *wm) {
         return;
 
     // Ball position (with unknown position check)
-    const Position ctrBall = _ctr->ballPosition(0);
+    float x = _ctr->ballPosition(0).x();
+    float y = _ctr->ballPosition(0).y();
+    x = WR::Utils::approximateToZero(&x, 0.0001) ? 0.0 : x;
+    y = WR::Utils::approximateToZero(&y, 0.0001) ? 0.0 : y;
+    const Position ctrBall = Position(true, x, y, 0.0);
     Position posBall = ctrBall;
     if(posBall.isUnknown()) {
         if(_lastBallPosition.isUnknown())
@@ -107,7 +111,17 @@ void WorldMapUpdater::updateTeam(WorldMap *wm, quint8 teamId) {
     for(it=ctrPlayers.constBegin(); it!=ctrPlayers.end(); it++) {
         const quint8 player = *it;
         // Pos, ori and vel
-        wm->setPlayerPosition(teamId, player, _ctr->playerPosition(teamId, player));
+        Position playerPosition;
+        if(_ctr->playerPosition(teamId, player).isUnknown()) playerPosition = Position(false, 0.0, 0.0, 0.0);
+        else{
+            float x = _ctr->playerPosition(teamId, player).x();
+            float y = _ctr->playerPosition(teamId, player).y();
+            x = WR::Utils::approximateToZero(&x, 0.0001) ? 0.0 : x;
+            y = WR::Utils::approximateToZero(&y, 0.0001) ? 0.0 : y;
+
+            playerPosition = Position(true, x, y, 0.0);
+        }
+        wm->setPlayerPosition(teamId, player, playerPosition);
         wm->setPlayerOrientation(teamId, player, _ctr->playerOrientation(teamId, player));
         wm->setPlayerVelocity(teamId, player, _ctr->playerVelocity(teamId, player));
         wm->setPlayerAngularSpeed(teamId, player, _ctr->playerAngularSpeed(teamId, player));

@@ -186,7 +186,7 @@ float Locations::distBallTheirLeftMidPost() const {
     return WR::Utils::distance(theirGoalLeftMidPost(), ball());
 }
 bool Locations::isInsideOurField(const Position &pos) {
-    return ((ourSide().isRight() && pos.x()>=0.01f) || (ourSide().isLeft() && pos.x() < 0.01f));
+    return ((ourSide().isRight() && pos.x()>=0.0f) || (ourSide().isLeft() && pos.x() <= 0.0f));
 }
 bool Locations::isInsideTheirField(const Position &pos) {
     return (isInsideOurField(pos)==false);
