@@ -51,9 +51,14 @@ void Behaviour_Receiver::configure() {
 
     _state = STATE_POSITION;
 
-    // Initial config
+    // Initial config for intercept
     _skill_Receiver->setUseKickDevice(false);
     _skill_Receiver->setInterceptAdvance(false);
+
+    // Intiial config for goto
+    _skill_GoToLookTo->setAvoidOurGoalArea(true);
+    _skill_GoToLookTo->setAvoidTheirGoalArea(true);
+    _skill_GoToLookTo->setAvoidBall(true);
 };
 
 void Behaviour_Receiver::run() {
@@ -71,7 +76,6 @@ void Behaviour_Receiver::run() {
             _skill_GoToLookTo->setDesiredPosition(desiredPosition);
             _skill_GoToLookTo->setAimPosition(loc()->ball());
             _skill_GoToLookTo->setAvoidOpponents(true);
-            _skill_GoToLookTo->setAvoidBall(true);
             _skill_GoToLookTo->setAvoidTeammates(true);
         }
         else{
@@ -84,7 +88,6 @@ void Behaviour_Receiver::run() {
             _skill_GoToLookTo->setDesiredPosition(desiredPosition);
             _skill_GoToLookTo->setAimPosition(loc()->ball());
             _skill_GoToLookTo->setAvoidOpponents(true);
-            _skill_GoToLookTo->setAvoidBall(true);
             _skill_GoToLookTo->setAvoidTeammates(true);
         }
         return ;
@@ -119,9 +122,10 @@ void Behaviour_Receiver::run() {
                 if(loc()->ourSide().isRight()) desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi - GEARSystem::Angle::pi / 16.0f);
                 else desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi + GEARSystem::Angle::pi / 16.0f);
 
-            _skill_GoToLookTo->setDesiredPosition(desiredPosition);
             _skill_GoToLookTo->setAvoidTeammates(false);
+            _skill_GoToLookTo->setDesiredPosition(desiredPosition);
             _skill_GoToLookTo->setAimPosition(loc()->theirGoal());
+
         }
         else{
             std::cout << MRCConstants::red << "[ERROR]" << MRCConstants::reset << MRCConstants::defaultBold << " attackerId not set to receiver at stop." << std::endl << MRCConstants::reset;
@@ -129,13 +133,11 @@ void Behaviour_Receiver::run() {
         enableTransition(SK_GOTO);
         return ;
     }
+
     player()->dribble(false);
 
-    _skill_GoToLookTo->setAvoidBall(true);
     _skill_GoToLookTo->setAvoidOpponents(true);
     _skill_GoToLookTo->setAvoidTeammates(true);
-    _skill_GoToLookTo->setAvoidOurGoalArea(true);
-    _skill_GoToLookTo->setAvoidTheirGoalArea(true);
 
     if(isBallComing(0.2f, 1.0f) && !player()->team()->hasBallPossession()){
         _skill_Receiver->setPositionToLook(loc()->ball());
