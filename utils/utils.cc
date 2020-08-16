@@ -359,6 +359,8 @@ int Utils::getPlayerQuadrant(Position playerPosition) {
         // QUADRANT_BOT
         if (playerPosition.y() > -3.0f && playerPosition.x() < 4.5f && playerPosition.x() > 1.5f * playerPosition.y() + 4.5f) return QUADRANT_BOT;
     }
+
+    return NO_QUADRANT;
 }
 
 int Utils::getOpPlayersInQuadrant(int quadrant) {

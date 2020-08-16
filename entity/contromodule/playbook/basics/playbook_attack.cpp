@@ -49,9 +49,6 @@ void Playbook_Attack::configure(int numPlayers) {
     connect(_rl_stk, SIGNAL(requestIsMarkNeeded()), this, SLOT(requestIsMarkNeeded()), Qt::DirectConnection);
     connect(this, SIGNAL(sendIsMarkNeeded(bool)), _rl_stk, SLOT(takeIsMarkNeeded(bool)), Qt::DirectConnection);
 
-    connect(_rl_stk, SIGNAL(requestQuadrant()), this, SLOT(requestQuadrant()), Qt::DirectConnection);
-    connect(this, SIGNAL(sendQuadrant(int)), _rl_stk, SLOT(takeQuadrant(int)), Qt::DirectConnection);
-
     connect(_rl_stk2, SIGNAL(requestReceivers(quint8)), this, SLOT(requestReceivers(quint8)), Qt::DirectConnection);
     connect(this, SIGNAL(sendReceiver(quint8)), _rl_stk2, SLOT(takeReceiver(quint8)), Qt::DirectConnection);
 
@@ -61,9 +58,6 @@ void Playbook_Attack::configure(int numPlayers) {
     connect(_rl_stk2, SIGNAL(requestIsMarkNeeded()), this, SLOT(requestIsMarkNeeded()), Qt::DirectConnection);
     connect(this, SIGNAL(sendIsMarkNeeded(bool)), _rl_stk2, SLOT(takeIsMarkNeeded(bool)), Qt::DirectConnection);
 
-    connect(_rl_stk2, SIGNAL(requestQuadrant()), this, SLOT(requestQuadrant()), Qt::DirectConnection);
-    connect(this, SIGNAL(sendQuadrant(int)), _rl_stk2, SLOT(takeQuadrant(int)), Qt::DirectConnection);
-
     connect(_rl_stk3, SIGNAL(requestReceivers(quint8)), this, SLOT(requestReceivers(quint8)), Qt::DirectConnection);
     connect(this, SIGNAL(sendReceiver(quint8)), _rl_stk3, SLOT(takeReceiver(quint8)), Qt::DirectConnection);
 
@@ -72,9 +66,6 @@ void Playbook_Attack::configure(int numPlayers) {
 
     connect(_rl_stk3, SIGNAL(requestIsMarkNeeded()), this, SLOT(requestIsMarkNeeded()), Qt::DirectConnection);
     connect(this, SIGNAL(sendIsMarkNeeded(bool)), _rl_stk3, SLOT(takeIsMarkNeeded(bool)), Qt::DirectConnection);
-
-    connect(_rl_stk3, SIGNAL(requestQuadrant()), this, SLOT(requestQuadrant()), Qt::DirectConnection);
-    connect(this, SIGNAL(sendQuadrant(int)), _rl_stk3, SLOT(takeQuadrant(int)), Qt::DirectConnection);
 }
 
 void Playbook_Attack::run(int numPlayers) {
@@ -93,117 +84,56 @@ void Playbook_Attack::run(int numPlayers) {
 
     quint8 player = mainAttacker;
     if(player != DIST_INVALID_ID){
-        if(player != _attackerId) _rl_stk->setMarkId(requestMarkPlayer(player));
+        if(player != _attackerId){
+            _rl_stk->setQuadrant(requestQuadrant(player));
+            _rl_stk->setMarkId(requestMarkPlayer(player));
+        }
         dist()->removePlayer(player);
         setPlayerRole(player, _rl_stk);
     }
 
     player = dist()->getPlayer();
     if(player != DIST_INVALID_ID){
-        if(player != _attackerId) _rl_stk2->setMarkId(requestMarkPlayer(player));
+        if(player != _attackerId){
+            _rl_stk2->setQuadrant(requestQuadrant(player));
+            _rl_stk2->setMarkId(requestMarkPlayer(player));
+        }
         setPlayerRole(player, _rl_stk2);
     }
 
     player = dist()->getPlayer();
     if(player != DIST_INVALID_ID){
-        if(player != _attackerId) _rl_stk3->setMarkId(requestMarkPlayer(player));
+        if(player != _attackerId){
+            _rl_stk3->setQuadrant(requestQuadrant(player));
+            _rl_stk3->setMarkId(requestMarkPlayer(player));
+        }
         setPlayerRole(player, _rl_stk3);
     }
 }
 
-void Playbook_Attack::requestQuadrant() {
-    // Essa função tem o objetivo de gerar um quadrante para o Receiver se posicionar
-    // Prioriza-se ter um recptor a esquerda primeiramente por simples escolha
-    if (leftQuadrantList.size() > 0) {
-        if (leftQuadrantList.size() == 1) {
-            emit sendQuadrant(leftQuadrantList[0]);
-            return;
-        }
-        // Caso haja mais de uma opção de quadrante à esquerda, devemos percorrer
-        //  a lista de opções optando pelo quadrante com menos adversários
-        int leftQuadrantChoice, opLeftPlayers = 10;
-        Position referenceCentroid(false, 0.0f, 0.0f, 0.0f);
-        for (int i = 0; i < leftQuadrantList.size(); i++) {
-            int opPlayersInQuadrant = WR::Utils::getOpPlayersInQuadrant(leftQuadrantList[i]);
-            if (opPlayersInQuadrant < opLeftPlayers) {
-                opPlayersInQuadrant = opLeftPlayers;
-                referenceCentroid = WR::Utils::getQuadrantBarycenter(leftQuadrantList[i]);
-                leftQuadrantChoice = leftQuadrantList[i];
-            }
-
-            // Caso existam quadrantes com a mesma quantidade de oponentes, observamos
-            // o centróide do quadrante e verificando qual deles tem mais opções de gol,
-            // isto é, qual dos quadrantes tem a soma de ângulos livres maior.
-            // (Talvez seja mais vantajoso não fazer nada e pegar qualquer um dos quadrantes?)
-            if (opPlayersInQuadrant == opLeftPlayers) {
-                Position centroid = WR::Utils::getQuadrantBarycenter(leftQuadrantList[i]);
-                QList<FreeAngles::Interval> centroidToGoal = FreeAngles::getFreeAngles(centroid, loc()->theirGoalRightPost(), loc()->theirGoalLeftPost());
-                QList<FreeAngles::Interval> referenceToGoal = FreeAngles::getFreeAngles(centroid, loc()->theirGoalRightPost(), loc()->theirGoalLeftPost());
-                QList<FreeAngles::Interval>::iterator it;
-
-                float centroidTotalAngles = 0.0f;
-                for(it = centroidToGoal.begin(); it !=centroidToGoal.end(); it++){
-                    float dif = WR::Utils::angleDiff(it->angInitial(), it->angFinal());
-                    centroidTotalAngles += dif;
-                }
-
-                float referenceTotalAngles = 0.0f;
-                for(it = referenceToGoal.begin(); it !=referenceToGoal.end(); it++){
-                    float dif = WR::Utils::angleDiff(it->angInitial(), it->angFinal());
-                    referenceTotalAngles += dif;
-                }
-                if (centroidTotalAngles > referenceTotalAngles) {
-                    referenceCentroid = centroid;
-                    leftQuadrantChoice = leftQuadrantList[i];
+int Playbook_Attack::requestQuadrant(quint8 playerId) {
+    // Check for potential quadrants to our player
+    float closestDist = 999.0f;
+    int bestQuadrant = NO_QUADRANT;
+    for(int x = 0; x < NUM_QUADRANTS; x++){
+        if(quadrants[x] == true) continue;
+        else{
+            Position barycenter = WR::Utils::getQuadrantBarycenter(x+1);
+            if(PlayerBus::ourPlayerAvailable(playerId)){
+                float distToBarycenter = PlayerBus::ourPlayer(playerId)->distanceTo(barycenter);
+                if(distToBarycenter < closestDist){
+                    closestDist = distToBarycenter;
+                    bestQuadrant = x+1;
                 }
             }
-
         }
-        emit sendQuadrant(leftQuadrantChoice);
-        return;
     }
 
-    // Aqui temos a mesma situação acima, porém à direita do atacante
-    if (rightQuadrantList.size() > 0) {
-        if (rightQuadrantList.size() == 1) {
-            emit sendQuadrant(rightQuadrantList[0]);
-            return;
-        }
-        int rightQuadrantChoice, opRightPlayers = 10;
-        Position referenceCentroid(false, 0.0f, 0.0f, 0.0f);
-        for (int i = 0; i < rightQuadrantList.size(); i++) {
-            int opPlayersInQuadrant = WR::Utils::getOpPlayersInQuadrant(rightQuadrantList[i]);
-            if (opPlayersInQuadrant == opRightPlayers) {
-                Position centroid = WR::Utils::getQuadrantBarycenter(rightQuadrantList[i]);
-                QList<FreeAngles::Interval> centroidToGoal = FreeAngles::getFreeAngles(centroid, loc()->theirGoalRightPost(), loc()->theirGoalLeftPost());
-                QList<FreeAngles::Interval> referenceToGoal = FreeAngles::getFreeAngles(centroid, loc()->theirGoalRightPost(), loc()->theirGoalLeftPost());
-                QList<FreeAngles::Interval>::iterator it;
-
-                float centroidTotalAngles = 0.0f;
-                for(it = centroidToGoal.begin(); it !=centroidToGoal.end(); it++){
-                    float dif = WR::Utils::angleDiff(it->angInitial(), it->angFinal());
-                    centroidTotalAngles += dif;
-                }
-
-                float referenceTotalAngles = 0.0f;
-                for(it = referenceToGoal.begin(); it !=referenceToGoal.end(); it++){
-                    float dif = WR::Utils::angleDiff(it->angInitial(), it->angFinal());
-                    referenceTotalAngles += dif;
-                }
-                if (centroidTotalAngles > referenceTotalAngles) {
-                    referenceCentroid = centroid;
-                    rightQuadrantChoice = rightQuadrantList[i];
-                }
-            }
-            if (opPlayersInQuadrant < opRightPlayers) {
-                opPlayersInQuadrant = opRightPlayers;
-                referenceCentroid = WR::Utils::getQuadrantBarycenter(rightQuadrantList[i]);
-                rightQuadrantChoice = rightQuadrantList[i];
-            }
-        }
-        emit sendQuadrant(rightQuadrantChoice);
-        return;
+    if(bestQuadrant != NO_QUADRANT){
+        CoachView::drawLine(PlayerBus::ourPlayer(playerId)->position(), WR::Utils::getQuadrantBarycenter(bestQuadrant), RGBA(0.0, 255, 0.0, 1.0, MRCConstants::robotZ + 0.03));
+        quadrants[bestQuadrant - 1] = true;
     }
+    return bestQuadrant;
 }
 
 void Playbook_Attack::requestReceivers(quint8 playerId){
@@ -224,6 +154,15 @@ void Playbook_Attack::requestAttacker(){
     quint8 playerId = DIST_INVALID_ID;
     float maxDist = 999.0f;
     QList<quint8> playersList = getPlayers();
+
+    if(playersList.size() >= 1){
+        if(PlayerBus::ourPlayerAvailable(playersList.at(0))){
+            if(ref()->getGameInfo(team()->teamColor())->freeKick() || ref()->getGameInfo(team()->teamColor())->kickoff()){
+                emit sendAttacker(mainAttacker);
+                return ;
+            }
+        }
+    }
 
     for(int x = 0; x < playersList.size(); x++){
         PlayerAccess *player;
@@ -320,22 +259,16 @@ bool Playbook_Attack::isBallComing(Position playerPosition, float minVelocity, f
 }
 
 void Playbook_Attack::resetQuadrantList() {
-    leftQuadrantList.clear();
-    rightQuadrantList.clear();
-
-    if (_attackerId == DIST_INVALID_ID) std::cout << "Attacker isn't setted";
-    else {
-        int attackerQuadrant = WR::Utils::getPlayerQuadrant(PlayerBus::ourPlayer(_attackerId)->position());
-        for (int i = 1; i <= 4; i++) {
-            int receiverQuadrant = i - attackerQuadrant;
-            if (receiverQuadrant < 0) leftQuadrantList.push_back(receiverQuadrant);
-            else if (receiverQuadrant > 0) rightQuadrantList.push_back(receiverQuadrant);
-        }
+    // mark all as free
+    for(int x = 0; x < NUM_QUADRANTS; x++){
+        quadrants[x] = false;
     }
 
-    // Grants, at least, one quadrant available
-    if (leftQuadrantList.size() == 0) leftQuadrantList.push_back(1);
-    if (rightQuadrantList.size() == 0) rightQuadrantList.push_back(4);
+    // mark ball quadrant as used
+    int atkQuadrant = WR::Utils::getPlayerQuadrant(loc()->ball());
+    if(atkQuadrant != NO_QUADRANT){
+        quadrants[atkQuadrant-1] = true;
+    }
 }
 
 void Playbook_Attack::resetMarkList(){

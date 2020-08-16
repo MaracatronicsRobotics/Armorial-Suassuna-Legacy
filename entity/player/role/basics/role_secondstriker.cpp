@@ -47,11 +47,6 @@ void Role_SecondStriker::configure(){
 }
 
 void Role_SecondStriker::run(){
-    // Setting initial values for test
-    if(player()->playerId() == 1)       _quadrant = 2;
-    else if(player()->playerId() == 3)  _quadrant = 1;
-    else                                _quadrant = 4;
-
     // Taking the receivers that attacker can use (just do it 1 time)
     if(!_config){
         _bh_atk->clearReceivers();
@@ -92,7 +87,6 @@ void Role_SecondStriker::run(){
         // game on situation
         emit requestIsMarkNeeded();
         emit requestAttacker();
-        //emit requestQuadrant();
         if(_isMarkNeeded){
             if(player()->playerId() == _attackerId){
                 if(!player()->hasBallPossession())
@@ -173,8 +167,4 @@ void Role_SecondStriker::takeAttacker(quint8 attackerId){
 
 void Role_SecondStriker::takeIsMarkNeeded(bool isMarkNeeded){
     _isMarkNeeded = isMarkNeeded;
-}
-
-void Role_SecondStriker::takeQuadrant(int quadrant){
-    _quadrant = quadrant;
 }
