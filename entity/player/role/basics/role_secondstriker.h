@@ -44,6 +44,9 @@ private:
         BEHAVIOUR_MARKPLAYER
     };
 
+    // Timer
+    Timer updateReceiversTimer;
+
     // Parameters
     bool _config;
     bool _isMarkNeeded;

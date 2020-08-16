@@ -54,6 +54,8 @@ private:
     bool quadrants[NUM_QUADRANTS];
     void resetQuadrantList();
     int requestQuadrant(quint8 playerId);
+    bool leftTaked;
+    bool rightTaked;
 
     // Utils
     bool isBallComing(Position playerPosition, float minVelocity, float radius);

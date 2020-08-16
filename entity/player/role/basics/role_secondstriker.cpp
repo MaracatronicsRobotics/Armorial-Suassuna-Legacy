@@ -32,6 +32,7 @@ Role_SecondStriker::Role_SecondStriker() {
     _bh_mkp = NULL;
 
     _isMarkNeeded = true;
+    updateReceiversTimer.start();
     _markId = DIST_INVALID_ID;
 }
 
@@ -47,12 +48,14 @@ void Role_SecondStriker::configure(){
 }
 
 void Role_SecondStriker::run(){
-    // Taking the receivers that attacker can use (just do it 1 time)
-    if(!_config){
+    // Taking the receivers that attacker can use
+    updateReceiversTimer.stop();
+    if(!_config || updateReceiversTimer.timesec() >= 10.0){ // do it at first time and every 10 seconds
         _bh_atk->clearReceivers();
         emit requestReceivers(player()->playerId());
 
         _config = true;
+        updateReceiversTimer.start();
     }
 
     SSLGameInfo *gameInfo = ref()->getGameInfo(player()->team()->teamColor());

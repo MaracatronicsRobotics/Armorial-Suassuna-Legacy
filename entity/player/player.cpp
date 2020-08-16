@@ -526,6 +526,7 @@ void Player::aroundTheBall(Position targetPosition, double offset, double offset
 
 void Player::kick(float power, bool isChipKick){
     if(_ctr != NULL){ // avoid set on enemy players
+        dribble(false);
         if(!isChipKick){
             _ctr->kickOnTouch(_team->teamId(), playerId(), true, power);
         }

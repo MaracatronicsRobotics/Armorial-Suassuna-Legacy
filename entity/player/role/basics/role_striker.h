@@ -47,6 +47,9 @@ private:
         BEHAVIOUR_PLACEMENT
     };
 
+    // Timer
+    Timer updateReceiversTimer;
+
     // Parameters
     bool _config;
     bool _isMarkNeeded;

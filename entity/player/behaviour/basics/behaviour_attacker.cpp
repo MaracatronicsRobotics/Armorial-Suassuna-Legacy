@@ -161,14 +161,15 @@ void Behaviour_Attacker::run() {
             if(aimDecisionTimer.timesec() >= AIM_DECISION_TIME || !firstAim){
                 if(!firstAim) firstAim = true;
                 _aim = getBestAimPosition();
+                _aim.first = _aim.first / WR::Utils::angleDiff(WR::Utils::getAngle(loc()->ball(), loc()->theirGoalLeftPost()), WR::Utils::getAngle(loc()->ball(), loc()->theirGoalRightPost()));
                 aimDecisionTimer.start();
             }
 
             // If don't have any free angles, the path is obstructed or have an unsufficient opening for kick
             // Here you put the pass / shoot decision heuristic =)
             shootPassDecisionTimer.stop();
-            if(shootPassDecisionTimer.timesec() >= SHOOT_PASS_DECISION_TIME){
-                canShoot = !(_aim.second.isUnknown() || _aim.first <= GEARSystem::Angle::toRadians(6.0f));
+            if(shootPassDecisionTimer.timesec() >= (SHOOT_PASS_DECISION_TIME * (ref()->getGameInfo(player()->team()->teamColor())->freeKick() ? 4.0 : 1.0))){
+                canShoot = !(_aim.second.isUnknown() || _aim.first < 0.5);
                 shootPassDecisionTimer.start();
             }
 
@@ -284,6 +285,8 @@ quint8 Behaviour_Attacker::getBestReceiver(){
         return _bestRcv;
     }
     else{
+        receiversListMutex.lock();
+
         if(!firstChoose) firstChoose = true;
         quint8 bestId = RECEIVER_INVALID_ID;
         QList<quint8> list = _receiversList;
@@ -327,6 +330,9 @@ quint8 Behaviour_Attacker::getBestReceiver(){
         }
         receiverDecisionTimer.start();
         _bestRcv = bestId;
+
+        receiversListMutex.unlock();
+
         return bestId;
     }
 }
@@ -452,4 +458,16 @@ std::pair<float, Position> Behaviour_Attacker::getBestAimPosition(){
     }
 
     return std::make_pair(largestAngle, impactPos);
+}
+
+void Behaviour_Attacker::clearReceivers(){
+    receiversListMutex.lock();
+    _receiversList.clear();
+    receiversListMutex.unlock();
+}
+
+void Behaviour_Attacker::addReceiver(quint8 id){
+    receiversListMutex.lock();
+    _receiversList.push_back(id);
+    receiversListMutex.unlock();
 }
