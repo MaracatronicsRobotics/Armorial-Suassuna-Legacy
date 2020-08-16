@@ -77,13 +77,23 @@ bool validateEnableGUI(const QString &input, bool *valid) {
     }
 }
 
+bool validatePlayingAgainstWarthog(const QString &input, bool *valid) {
+    *valid = true;
+    if(input.toLower()=="true")
+        return true;
+    else if(input.toLower()=="false")
+        return false;
+    else {
+        *valid = false;
+        return true; // return default
+    }
+}
+
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
     app.setApplicationName("Armorial Suassuna");
     app.setApplicationVersion("1.0.0");
-    MRCConstants *mrcconstants = new MRCConstants("../const/config.json");
     
-
     // Duplicated instance checking
     InstanceChecker::waitIfDuplicated(app.applicationName());
 
@@ -95,6 +105,7 @@ int main(int argc, char *argv[]) {
     parser.addPositionalArgument("teamColor", "Sets the team color ('yellow' or 'blue', default='yellow').");
     parser.addPositionalArgument("fieldSide", "Sets the field side ('right' or 'left', default='right').");
     parser.addPositionalArgument("enableGUI", "Enable or disable the GUI ('true' or 'false', default='true').");
+    parser.addPositionalArgument("playingAgainstWarthog", "Set playing against warthog ('true' or 'false', default='false'.");
     parser.process(app);
     QStringList args = parser.positionalArguments();
 
@@ -103,6 +114,7 @@ int main(int argc, char *argv[]) {
     Colors::Color ourTeamColor = Colors::YELLOW;
     FieldSide ourFieldSide = Sides::RIGHT;
     bool enableGUI = true;
+    bool playingAgainstWarthog = false;
 
     // Check arguments
     // Category
@@ -136,10 +148,22 @@ int main(int argc, char *argv[]) {
             return EXIT_FAILURE;
         }
     }
+    // Playing against Warthog
+    if(args.size() >= 4) {
+        bool valid;
+        playingAgainstWarthog = validatePlayingAgainstWarthog(args.at(3), &valid);
+        if(valid==false) {
+            std::cout << ">> Armorial Suassuna: Invalid playing against warthog argument '" << args.at(3).toStdString() << "'.\n>> Please check help below.\n\n";
+            parser.showHelp();
+            return EXIT_FAILURE;
+        }
+    }
 
     // Setup ExitHandler
     ExitHandler::setApplication(&app);
     ExitHandler::setup();
+    // Setup constants
+    MRCConstants *mrcconstants = new MRCConstants("../const/config.json", playingAgainstWarthog);
     // Create and start Suassuna
     Suassuna suassuna(ourTeamId, ourTeamColor, ourFieldSide, enableGUI, mrcconstants);
     suassuna.start();
