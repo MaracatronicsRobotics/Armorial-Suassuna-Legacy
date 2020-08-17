@@ -109,9 +109,9 @@ int main(int argc, char *argv[]) {
     parser.process(app);
     QStringList args = parser.positionalArguments();
 
-    // Suassuna parameters (with default values)
-    quint8 ourTeamId = 0;
+    // Suassuna parameters (with default values)    
     Colors::Color ourTeamColor = Colors::YELLOW;
+    quint8 ourTeamId = Colors::YELLOW ? 0 : 1;
     FieldSide ourFieldSide = Sides::RIGHT;
     bool enableGUI = true;
     bool playingAgainstWarthog = false;
