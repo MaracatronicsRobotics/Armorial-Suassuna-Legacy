@@ -38,6 +38,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     const/constants.cpp \
+    const/mlp.cpp \
     entity/ballprediction/ballprediction.cpp \
     entity/ballsensor/ballsensor.cpp \
     entity/coachview/soccerview/gltext.cpp \
@@ -110,6 +111,7 @@ SOURCES += \
     utils/basics/competition.cc \
     utils/basics/quadrant.cc \
     utils/basics/side.cc \
+    utils/basics/triangle.cpp \
     utils/basics/wall.cc \
     utils/fields/field_ssl2014.cc \
     utils/fields/field_ssl2015.cc \
@@ -173,6 +175,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     const/constants.h \
+    const/mlp.h \
     entity/ballprediction/ballprediction.h \
     entity/ballsensor/ballsensor.h \
     entity/baseentity.h \
@@ -251,6 +254,7 @@ HEADERS += \
     utils/basics/point2d.h \
     utils/basics/quadrant.hh \
     utils/basics/side.hh \
+    utils/basics/triangle.h \
     utils/basics/wall.hh \
     utils/fields/field_ssl2014.hh \
     utils/fields/field_ssl2015.hh \
