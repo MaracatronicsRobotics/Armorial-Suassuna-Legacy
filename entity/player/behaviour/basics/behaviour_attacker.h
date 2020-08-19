@@ -26,9 +26,20 @@
 #include <entity/player/skills/skills_include.h>
 #include <utils/mrctimer/mrctimer.h>
 
-#define RECEIVER_DECISION_TIME   2.0f // seconds
+#include <utils/basics/circle.h>
+#include <utils/basics/triangle.h>
+#include <const/mlp.h>
+
+#define RECEIVER_DECISION_TIME   0.2f // seconds
 #define AIM_DECISION_TIME        0.2f // seconds
 #define SHOOT_PASS_DECISION_TIME 0.5f // seconds
+
+typedef struct{
+    bool valid;
+    quint8 id;
+    Position position;
+    float distToKicker;
+} playerInfo;
 
 class Behaviour_Attacker : public Behaviour {
 private:
@@ -51,14 +62,51 @@ private:
 
     // Receivers
     QList<quint8> _receiversList;
-    quint8 getBestReceiver();
+    std::pair<float, quint8> getBestReceiver();
     QMutex receiversListMutex;
     quint8 _bestRcv;
+    float _rcvScore;
 
     // Utils functions
     bool canTakeBall();
     quint8 getTheirClosestPlayerToGoal();
     std::pair<float, Position> getBestAimPosition();
+    std::pair<float, Position> getBestAssumedPosition(quint8 _id);
+    float MLP_result();
+
+    //MLP AuxFunctions
+    playerInfo calc(playerInfo jogador);
+    playerInfo OppGoalie(playerInfo kicker);
+    playerInfo AllyGoalie(playerInfo kicker);
+    void Ally(playerInfo kicker, playerInfo allyGoalie, playerInfo ally[]);
+    void Opp(playerInfo kicker, playerInfo oppGoalie, playerInfo opp[]);
+    bool isObst(playerInfo kicker, playerInfo player);
+
+    double getFutureKickChance(quint8 _id);
+    float getPlayerPassingChance(quint8 _id);
+    float getFinalPassingChance(quint8 _id);
+    double getsizebar(Point2d recpos, Point2d directbarra);
+    std::pair<Point2d, Point2d> calc_freeangles_points(quint8 bestReceiver);
+
+    float _distScore;
+    float _angleScore;
+
+    float _mlpResult;
+
+    double _firstSide;
+    double _secondSide;
+    double _oppositeSide;
+    double _cosAngle;
+    float _angle;
+    float _recDist;
+    std::pair<Point2d, Point2d> PFA;
+    float _angleDisp;
+    float _angleTotal;
+    float _receiverDistScore;
+    float _receiverAngleScore;
+
+    Position _receiverAngleUp;
+    Position _receiverAngleDown;
 
     // Aim
     std::pair<float, Position> _aim;
