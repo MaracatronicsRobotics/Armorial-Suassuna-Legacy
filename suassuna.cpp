@@ -113,6 +113,9 @@ bool Suassuna::start() {
     // Initialize utils
     WR::Utils::initialize(_ourTeam, _theirTeam);
 
+    // Initialize MLP
+    MLP::loadParameters();
+
     // Start world
     _world->start();
 
