@@ -19,13 +19,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef MRCPLAYBOOK_H
-#define MRCPLAYBOOK_H
+#include "playbook_test.h"
 
-#include <entity/contromodule/playbook/basics/playbook_defense.h>
-#include <entity/contromodule/playbook/basics/playbook_attack.h>
+QString Playbook_Test::name() {
+    return "Playbook_Test";
+}
 
-// Test
-#include <entity/contromodule/playbook/basics/playbook_test.h>
+Playbook_Test::Playbook_Test() {
 
-#endif // MRCPLAYBOOK_H
+}
+
+int Playbook_Test::maxNumPlayer() {
+    return getConstants()->getQtPlayers();
+}
+
+void Playbook_Test::configure(int numPlayers) {
+    rl_test = new Role_Test();
+
+    usesRole(rl_test);
+}
+
+void Playbook_Test::run(int numPlayers) {
+    // Taking the test player
+    quint8 playerId = dist()->getPlayer();
+    if(playerId != DIST_INVALID_ID){
+        setPlayerRole(playerId, rl_test);
+    }
+
+}

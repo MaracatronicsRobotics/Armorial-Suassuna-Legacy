@@ -32,4 +32,7 @@
 #include <entity/player/role/basics/role_striker.h>
 #include <entity/player/role/basics/role_secondstriker.h>
 
+// Test
+#include <entity/player/role/basics/role_test.h>
+
 #endif // MRCROLES_H

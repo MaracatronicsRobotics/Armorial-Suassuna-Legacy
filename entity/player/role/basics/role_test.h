@@ -19,13 +19,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef MRCPLAYBOOK_H
-#define MRCPLAYBOOK_H
+#ifndef ROLE_TEST_H
+#define ROLE_TEST_H
 
-#include <entity/contromodule/playbook/basics/playbook_defense.h>
-#include <entity/contromodule/playbook/basics/playbook_attack.h>
+#include <entity/player/behaviour/mrcbehaviours.h>
+#include <entity/player/role/role.h>
 
-// Test
-#include <entity/contromodule/playbook/basics/playbook_test.h>
+class Role_Test : public Role
+{
+private:
+    // Behaviours
+    Behaviour_Test *_bh_test;
 
-#endif // MRCPLAYBOOK_H
+    // Behaviours ids!
+    enum{
+        BHV_TEST
+    };
+
+    // Inherited functions
+    void configure();
+    void run();
+
+    // Mutex
+    QMutex _mutex;
+
+public:
+    Role_Test();
+    void initializeBehaviours();
+    QString name();
+};
+
+#endif // ROLE_TEST_H

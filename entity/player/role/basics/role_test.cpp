@@ -19,13 +19,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef MRCPLAYBOOK_H
-#define MRCPLAYBOOK_H
+#include "role_test.h"
 
-#include <entity/contromodule/playbook/basics/playbook_defense.h>
-#include <entity/contromodule/playbook/basics/playbook_attack.h>
+QString Role_Test::name(){
+    return "Role_Test";
+}
 
-// Test
-#include <entity/contromodule/playbook/basics/playbook_test.h>
+Role_Test::Role_Test() {
 
-#endif // MRCPLAYBOOK_H
+}
+
+void Role_Test::initializeBehaviours(){
+    // Aqui são inseridos os behaviours possíveis de serem usados
+    // na ordem: ID do behaviour, instanciação dele
+
+    usesBehaviour(BHV_TEST, _bh_test = new Behaviour_Test());
+}
+
+void Role_Test::configure(){
+    // Aqui são setados parametros que devem ser configurados
+}
+
+void Role_Test::run(){
+    /*
+     * Aqui devem ocorrer os sets de parametros de acordo com o behaviour
+     * que estiver sendo executado, de preferencia declare todos os parametros
+     * na classe da role, sete-os aqui e envie para o behaviour (usando as funções
+     * set presentes neles)
+    */
+
+    setBehaviour(BHV_TEST);
+}

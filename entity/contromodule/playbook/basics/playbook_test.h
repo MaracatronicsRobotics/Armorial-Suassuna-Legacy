@@ -19,13 +19,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef MRCPLAYBOOK_H
-#define MRCPLAYBOOK_H
+#ifndef PLAYBOOK_TEST_H
+#define PLAYBOOK_TEST_H
 
-#include <entity/contromodule/playbook/basics/playbook_defense.h>
-#include <entity/contromodule/playbook/basics/playbook_attack.h>
+#include <entity/contromodule/playbook/playbook.h>
+#include <entity/player/role/mrcroles.h>
 
-// Test
-#include <entity/contromodule/playbook/basics/playbook_test.h>
+class Playbook_Test : public Playbook {
+private:
+    // Roles
+    Role_Test *rl_test;
 
-#endif // MRCPLAYBOOK_H
+    void configure(int numPlayers);
+    void run(int numPlayers);
+    int maxNumPlayer();
+public:
+    Playbook_Test();
+    QString name();
+};
+
+#endif // PLAYBOOK_TEST_H
