@@ -19,13 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef MRCPLAYBOOK_H
-#define MRCPLAYBOOK_H
+#include "sslstrategy_test.h"
+#include <entity/contromodule/strategy/strategystate.h>
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 
-#include <entity/contromodule/playbook/basics/playbook_defense.h>
-#include <entity/contromodule/playbook/basics/playbook_attack.h>
+QString SSLStrategy_Test::name() {
+    return "SSLStrategy_Test";
+}
 
-// Test
-#include <entity/contromodule/playbook/basics/playbook_test.h>
+SSLStrategy_Test::SSLStrategy_Test() {
+    _pb_test = NULL;
+}
 
-#endif // MRCPLAYBOOK_H
+void SSLStrategy_Test::configure(int numOurPlayers) {
+    usesPlaybook(_pb_test = new Playbook_Test());
+}
+
+void SSLStrategy_Test::run(int numOurPlayers) {
+    _pb_test->addPlayers(dist()->getAllPlayers());
+}

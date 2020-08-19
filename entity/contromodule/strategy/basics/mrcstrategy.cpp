@@ -36,4 +36,5 @@ void MRCStrategy::configure() {
     setStrategyState(EQUILIBRATED, new SSLStrategy_Halt());
     setStrategyState(MEDIUM_ATTACK, new SSLStrategy_Halt());
     setStrategyState(HIGH_ATTACK, new SSLStrategy_Halt());
+    setStrategyState(AgressivityLevel(10), new SSLStrategy_Test());
 }

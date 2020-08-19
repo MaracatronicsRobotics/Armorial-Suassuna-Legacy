@@ -46,6 +46,8 @@ SOURCES += \
     entity/coachview/soccerview/util/field.cpp \
     entity/contromodule/playbook/basics/playbook_attack.cpp \
     entity/contromodule/playbook/basics/playbook_defense.cpp \
+    entity/contromodule/playbook/basics/playbook_test.cpp \
+    entity/contromodule/strategy/basics/sslstrategy_test.cpp \
     entity/entity.cpp \
     entity/player/behaviour/basics/behaviour_ballplacement.cpp \
     entity/player/behaviour/basics/behaviour_goalkeeper.cpp \
@@ -68,6 +70,7 @@ SOURCES += \
     entity/player/role/basics/role_goalkeeper.cpp \
     entity/player/role/basics/role_secondstriker.cpp \
     entity/player/role/basics/role_striker.cpp \
+    entity/player/role/basics/role_test.cpp \
     entity/player/skills/basics/skill_aroundtheball.cpp \
     entity/player/skills/basics/skill_dribble.cpp \
     entity/player/skills/basics/skill_goto.cpp \
@@ -189,6 +192,8 @@ HEADERS += \
     entity/coachview/soccerview/util/util.h \
     entity/contromodule/playbook/basics/playbook_attack.h \
     entity/contromodule/playbook/basics/playbook_defense.h \
+    entity/contromodule/playbook/basics/playbook_test.h \
+    entity/contromodule/strategy/basics/sslstrategy_test.h \
     entity/entity.h \
     entity/player/behaviour/basics/behaviour_ballplacement.h \
     entity/player/behaviour/basics/behaviour_intercept.h \
@@ -210,6 +215,7 @@ HEADERS += \
     entity/player/role/basics/role_goalkeeper.h \
     entity/player/role/basics/role_secondstriker.h \
     entity/player/role/basics/role_striker.h \
+    entity/player/role/basics/role_test.h \
     entity/player/skills/basics/skill_aroundtheball.h \
     entity/player/skills/basics/skill_dribble.h \
     entity/player/skills/basics/skill_goto.h \

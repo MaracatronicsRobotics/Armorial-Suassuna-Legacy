@@ -19,13 +19,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef MRCPLAYBOOK_H
-#define MRCPLAYBOOK_H
+#ifndef SSLSTRATEGY_TEST_H
+#define SSLSTRATEGY_TEST_H
 
-#include <entity/contromodule/playbook/basics/playbook_defense.h>
-#include <entity/contromodule/playbook/basics/playbook_attack.h>
+#include <entity/contromodule/strategy/strategystate.h>
+#include <entity/contromodule/playbook/mrcplaybook.h>
 
-// Test
-#include <entity/contromodule/playbook/basics/playbook_test.h>
+class SSLStrategy_Test : public StrategyState {
+private:
+    // Playbooks
+    Playbook_Test *_pb_test;
+    void configure(int numOurPlayers);
+    void run(int numOurPlayers);
+public:
+    SSLStrategy_Test();
+    QString name();
+};
 
-#endif // MRCPLAYBOOK_H
+
+#endif // SSLSTRATEGY_TEST_H

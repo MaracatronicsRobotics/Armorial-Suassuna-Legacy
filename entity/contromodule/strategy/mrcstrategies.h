@@ -24,4 +24,7 @@
 
 #include "basics/sslstrategy_halt.h"
 
+// Test
+#include <entity/contromodule/strategy/basics/sslstrategy_test.h>
+
 #endif // MRCSTRATEGIES_H
