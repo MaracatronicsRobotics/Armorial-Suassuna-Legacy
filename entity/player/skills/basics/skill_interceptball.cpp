@@ -72,6 +72,11 @@ void Skill_InterceptBall::run() {
     if(_interceptAdvance)
         objectivePos = WR::Utils::threePoints(objectivePos, loc()->ball(), getConstants()->getBallRadius(), 0.0);
 
+    // Avoid player to enter in goal areas
+    if((player()->playerId() != getConstants()->getGoalieId()) && (loc()->isInsideOurArea(objectivePos) || loc()->isInsideTheirArea(objectivePos))){
+        objectivePos = player()->position();
+    }
+
     float velocityNeeded = (ballVelocity.abs() * player()->distanceTo(objectivePos)) / (WR::Utils::distance(posBall, objectivePos));
 
     player()->goToLookTo(objectivePos, _posLook, true, true, false, false, false, _speedFactor * velocityNeeded, true);
