@@ -34,6 +34,7 @@ private:
     Skill_RotateTo *_skill_rotateTo;
     Skill_GoTo *_skill_goTo;
     Skill_GoToLookTo *_skill_goToLookTo;
+    Skill_Kick *_skill_kick;
 
 public:
     Behaviour_Test();
