@@ -31,7 +31,9 @@ private:
     void run();
     int _state;
 
-    Skill_DoNothing *_skill_doNothing;
+    Skill_RotateTo *_skill_rotateTo;
+    Skill_GoTo *_skill_goTo;
+    Skill_GoToLookTo *_skill_goToLookTo;
 
 public:
     Behaviour_Test();
