@@ -98,7 +98,7 @@ double PID::calculate(double desired, double actual){
     double D = _kd * derivative;
 
     // Total PID
-    double result = P;
+    double result = P + I + D;
 
     // Restrict
     if(result > _max){
