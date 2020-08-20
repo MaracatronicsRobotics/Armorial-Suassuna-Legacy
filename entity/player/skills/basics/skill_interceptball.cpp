@@ -70,7 +70,7 @@ void Skill_InterceptBall::run() {
     CoachView::drawLine(loc()->ball(), objectivePos, RGBA(255, 0.0, 0.0, 1.0, MRCConstants::robotZ + 0.03));
 
     if(_interceptAdvance)
-        objectivePos = WR::Utils::threePoints(objectivePos, loc()->ball(), 0.1f, 0.0);
+        objectivePos = WR::Utils::threePoints(objectivePos, loc()->ball(), getConstants()->getBallRadius(), 0.0);
 
     float velocityNeeded = (ballVelocity.abs() * player()->distanceTo(objectivePos)) / (WR::Utils::distance(posBall, objectivePos));
 
