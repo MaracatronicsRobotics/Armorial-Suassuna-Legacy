@@ -36,8 +36,8 @@ void SSLStrategy::setStrategyState(AgressivityLevel gameState, StrategyState *st
 void SSLStrategy::runStrategy(AgressivityLevel agressivity) {
     SSLGameInfo::RefProcessedState gameState = getGameState();
 
-    //Strategy::runStrategy(agressivity, gameState);
-    Strategy::runStrategy(AgressivityLevel(10), gameState);
+    Strategy::runStrategy(agressivity, gameState);
+    //Strategy::runStrategy(AgressivityLevel(10), gameState);
 }
 
 QString SSLStrategy::state2str(AgressivityLevel gameState) {
