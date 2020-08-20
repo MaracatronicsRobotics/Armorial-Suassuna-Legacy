@@ -53,7 +53,7 @@ void Behaviour_Receiver::configure() {
 
     // Initial config for intercept
     _skill_Receiver->setUseKickDevice(false);
-    _skill_Receiver->setInterceptAdvance(false);
+    _skill_Receiver->setInterceptAdvance(true);
 
     // Intiial config for goto
     _skill_GoToLookTo->setAvoidOurGoalArea(true);

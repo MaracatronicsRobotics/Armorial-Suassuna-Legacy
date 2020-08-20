@@ -378,7 +378,10 @@ std::pair<float, float> Player::goTo(Position targetPosition, double offset, boo
     // Update next pos
     _nextPosition = targetPosition;
 
+    // Limiting fieldDimensions
     targetPosition = limitFieldDimensions(targetPosition);
+
+    // Taking orientation from path planning
     Angle anglePP;
     std::pair<double, double> help = rotateTo(targetPosition, 0.2, false);
     if(targetPosition.isUnknown())
@@ -387,17 +390,21 @@ std::pair<float, float> Player::goTo(Position targetPosition, double offset, boo
         anglePP = Angle(true, help.first);
 
     std::pair<Angle, float> a = getNavDirectionDistance(targetPosition, anglePP, false, false, false, false, false);
+    Velocity robotVel;
 
-    Velocity robotVel = Velocity(true, a.second * cos(a.first.value()), a.second * sin(a.first.value()));
-
-    float newVX, newVY;
+    // Setting speed based if pid is activated or not
     if(isPidActivated()){
+        float newVX, newVY;
         newVX = _vxPID->calculate(targetPosition.x(), position().x());
         newVY = _vyPID->calculate(targetPosition.y(), position().y());
         float mod = sqrt(pow(newVX, 2) + pow(newVY, 2));
         robotVel.setVelocity(mod * cos(a.first.value()), mod * sin(a.first.value()));
     }
+    else{
+        robotVel.setVelocity(a.second * cos(a.first.value()), a.second * sin(a.first.value()));
+    }
 
+    // Adjusting to minVel if lower
     if(robotVel.abs() <= minVel){
         // Transform in unitary vector
         robotVel.setVelocity(robotVel.x() / robotVel.abs(), robotVel.y() / robotVel.abs());
@@ -449,8 +456,16 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
     speed = angleRobotToObjective;
 
     if(isPidActivated()){
-        double newSpeed = _vwPID->calculate(angleTo(targetPosition).value(), orientation().value());
-        if(fabs(angleRobotToObjective) <= aError())
+        float angleToTarget;
+        float ori = orientation().value();
+
+        if(ori > M_PI) ori -= 2.0 * M_PI;
+        if(ori < -M_PI) ori += 2.0 * M_PI;
+
+        angleToTarget = ori + angleRobotToObjective;
+
+        double newSpeed = _vwPID->calculate(angleToTarget, ori);
+        if(fabs(angleRobotToObjective) < aError())
             newSpeed = 0.0;
 
         if(setHere) setSpeed(0.0, 0.0, newSpeed);
@@ -465,8 +480,11 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
 void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool avoidTeammates, bool avoidOpponents, bool avoidBall, bool avoidOurGoalArea, bool avoidTheirGoalArea, double minVel, bool isGk){
     // Update next pos
     _nextPosition = targetPosition;
-/*
+
+    // Limiting fieldDimensions
     targetPosition = limitFieldDimensions(targetPosition);
+
+    // Taking orientation from path planning
     Angle anglePP;
     std::pair<double, double> help = rotateTo(targetPosition, 0.2, false);
     if(targetPosition.isUnknown())
@@ -474,51 +492,26 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool a
     else
         anglePP = Angle(true, help.first);
 
-    std::pair<double, double> rotateSpeed = rotateTo(lookToPosition, 0.2, false);
     std::pair<Angle, float> a = getNavDirectionDistance(targetPosition, anglePP, avoidTeammates, avoidOpponents, avoidBall, avoidOurGoalArea, avoidTheirGoalArea);
+    Velocity robotVel;
 
-    double vx, vy;
-
+    // Setting speed based if pid is activated or not
     if(isPidActivated()){
-        double vxPid = _vxPID->calculate(targetPosition.x(), targetPosition.y());
-        double vyPid = _vyPID->calculate(targetPosition.y(), targetPosition.x());
-        vx = vxPid * cos(a.first.value());
-        vy = vyPid * sin(a.first.value());
+        float newVX, newVY;
+        newVX = _vxPID->calculate(targetPosition.x(), position().x());
+        newVY = _vyPID->calculate(targetPosition.y(), position().y());
+        float mod = sqrt(pow(newVX, 2) + pow(newVY, 2));
+        robotVel.setVelocity(mod * cos(a.first.value()), mod * sin(a.first.value()));
     }
     else{
-        vx = a.second * cos(a.first.value());
-        vy = a.second * sin(a.first.value());
+        robotVel.setVelocity(a.second * cos(a.first.value()), a.second * sin(a.first.value()));
     }
 
-    if(a.second <= 1.5f && (!_ref->getGameInfo(teamColor())->ourBallPlacement() || !_ref->getGameInfo(teamColor())->ourFreeKick()))
-        a.second *= 2.0;
-
-    double dist = WR::Utils::distance(position(), targetPosition);
-
-    Velocity robotVel = Velocity(true, vx, vy);
-    if(minVel != 0.0 && robotVel.abs() <= minVel){
-        // Transform in unitary vector
-        robotVel.setVelocity(robotVel.x() / robotVel.abs(), robotVel.y() / robotVel.abs());
-        // Multiply by minVel
-        robotVel.setVelocity(robotVel.x() * minVel, robotVel.y() * minVel);
-    }
-
-    vx = robotVel.x();
-    vy = robotVel.y();
-
-    if(isGk){
-        setSpeed(vx, vy, rotateSpeed.second);
-        return;
-    }
-
-    if(dist > 0.5f && dist <= 1.0f)     rotateSpeed.second *= 0.8f;
-    else if(dist > 1.0f && dist < 2.0f) rotateSpeed.second *= 0.6f;
-    else if(dist >= 2.0f)               rotateSpeed.second *= 0.4f;
-*/
-    std::pair<float, float> vel = goTo(targetPosition, 0, false, minVel);
+    // Taking angleSpeed from rotateTo
     float angleSpeed = rotateTo(lookToPosition, 0, false).second;
 
-    setSpeed(vel.first, vel.second, angleSpeed);
+    // Setting speed
+    setSpeed(robotVel.x(), robotVel.y(), angleSpeed);
 }
 
 void Player::aroundTheBall(Position targetPosition, double offset, double offsetAngular){
