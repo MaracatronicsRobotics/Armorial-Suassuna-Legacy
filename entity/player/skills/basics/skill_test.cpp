@@ -22,7 +22,7 @@
 #include "skill_test.h"
 #include <entity/player/skills/skills_include.h>
 
-#define BALL_MINDIST 0.115f
+#define BALL_MINDIST 0.12f
 
 #define BALLPREVISION_MINVELOCITY 0.02f
 #define BALLPREVISION_VELOCITY_FACTOR 3.0f
@@ -98,7 +98,7 @@ void Skill_Test::run(){
 
             _pushedDistance += WR::Utils::distance(_lastPos, _currPos);
 
-            if(_pushedDistance >= _maxPushDistance)
+            if(_pushedDistance >= 0.8 * _maxPushDistance)
                 _destination.setUnknown();
             else
                 player()->goToLookTo(_destination, _aim, true, true, false, false, false);
@@ -106,9 +106,8 @@ void Skill_Test::run(){
 
         if(_shootWhenAligned){
             double angleToObjective = fabs(player()->getPlayerRotateAngleTo(_aim));
-            if(angleToObjective <= player()->aError()){
-                //std::cout << MRCConstants::red << "angleToObjective: " << MRCConstants::reset << angleToObjective << std::endl;
-                //std::cout << MRCConstants::cyan << "shooted" << MRCConstants::reset << std::endl;
+            if(angleToObjective < 1.5 * player()->aError()){
+                player()->dribble(false);
                 player()->kick(_kickPower, _isParabolic);
             }
         }

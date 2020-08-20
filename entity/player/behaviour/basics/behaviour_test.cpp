@@ -32,11 +32,15 @@ void Behaviour_Test::configure() {
     usesSkill(_skill_rotateTo = new Skill_RotateTo());
     usesSkill(_skill_goTo = new Skill_GoTo());
     usesSkill(_skill_goToLookTo = new Skill_GoToLookTo());
+    usesSkill(_skill_kick = new Skill_Kick());
 
-    setInitialSkill(_skill_goToLookTo);
+    setInitialSkill(_skill_kick);
 };
 
 void Behaviour_Test::run() {
     _skill_goToLookTo->setDesiredPosition(loc()->ball());
     _skill_goToLookTo->setAimPosition(loc()->ball());
+
+    _skill_kick->setPower(getConstants()->getMaxKickPower());
+    _skill_kick->setAim(loc()->theirGoal());
 }
