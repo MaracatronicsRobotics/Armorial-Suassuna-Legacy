@@ -507,6 +507,14 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool a
         robotVel.setVelocity(a.second * cos(a.first.value()), a.second * sin(a.first.value()));
     }
 
+    // Adjusting to minVel if lower
+    if(robotVel.abs() <= minVel){
+        // Transform in unitary vector
+        robotVel.setVelocity(robotVel.x() / robotVel.abs(), robotVel.y() / robotVel.abs());
+        // Multiply by minVel
+        robotVel.setVelocity(robotVel.x() * minVel, robotVel.y() * minVel);
+    }
+
     // Taking angleSpeed from rotateTo
     float angleSpeed = rotateTo(lookToPosition, 0, false).second;
 
