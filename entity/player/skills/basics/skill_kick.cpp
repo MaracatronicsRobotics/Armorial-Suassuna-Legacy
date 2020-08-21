@@ -22,9 +22,9 @@
 #include "skill_kick.h"
 #include <entity/player/skills/skills_include.h>
 
-#define BALLPREVISION_MINVELOCITY 0.02f
-#define BALLPREVISION_VELOCITY_FACTOR 3.0f
-#define BALLPREVISION_FACTOR_LIMIT 0.15f
+#define DIST_BEHINDBALL 0.16f
+#define MINDISTBALL_AVOIDROBOTS 0.4f
+#define SWITCHSTATE_MINDISTBALL 0.35f
 
 QString Skill_Kick::name() {
     return "Skill_Kick";
@@ -43,56 +43,60 @@ void Skill_Kick::run() {
     if(_aimPosition.isUnknown())
         return;
 
-    // Calc behind ball
-    Position behindBall = WR::Utils::threePoints(loc()->ball(), _aimPosition, 0.3f, GEARSystem::Angle::pi);
-
-    if(loc()->ballVelocity().abs() > BALLPREVISION_MINVELOCITY){
-        // Calc unitary vector of velocity
-        const Position velUni(true, loc()->ballVelocity().x()/loc()->ballVelocity().abs(), loc()->ballVelocity().y()/loc()->ballVelocity().abs(), 0.0);
-
-        // Calc velocity factor
-        float factor = BALLPREVISION_VELOCITY_FACTOR*loc()->ballVelocity().abs();
-        WR::Utils::limitValue(&factor, 0.0f, BALLPREVISION_FACTOR_LIMIT);
-
-        // Calc projected position
-        const Position delta(true, factor*velUni.x(), factor*velUni.y(), 0.0);
-        Position projectedPos(true, behindBall.x()+delta.x(), behindBall.y()+delta.y(), 0.0);
-
-        if(isBehindBall(projectedPos)){
-            behindBall = projectedPos;
-        }
-    }
-
     // Local parameters
     Position desiredPos;
+    bool avoidBall = false, avoidOpp = false, avoidTeam = false;
 
-    switch (_state) {
-    case STATE_POS: {
-        desiredPos = behindBall;
+    const Position behindBall = WR::Utils::threePoints(loc()->ball(), _aimPosition, DIST_BEHINDBALL, GEARSystem::Angle::pi);
 
-        if(player()->isNearbyPosition(behindBall, 0.045f))
-            _state = STATE_KICK;
+    switch(_state) {
+        default:
+        case STATE_POS: {
 
-        // change this later (avoid areas)
-        player()->goToLookTo(desiredPos, _aimPosition, true, true, true, false, false);
+            // Desired position
+            desiredPos = behindBall;
+
+            // PID hacking
+            desiredPos = WR::Utils::threePoints(desiredPos, player()->position(), 0.03f, GEARSystem::Angle::pi);
+
+            // Avoids
+            avoidBall = isBehindBall(desiredPos);
+            if(player()->distBall() > MINDISTBALL_AVOIDROBOTS) {
+                avoidTeam = true;
+                avoidOpp = true;
+            } else {
+                avoidTeam = false;
+                avoidOpp = false;
+            }
+
+            // Switch state condition: is at behindBall
+            if(player()->isNearbyPosition(behindBall, 1.5*player()->lError()))
+                _state = STATE_KICK;
+
+        } break;
+        case STATE_KICK: {
+            desiredPos = loc()->ball();
+            avoidBall = false;
+            avoidTeam = false;
+            avoidOpp = false;
+
+            // Switch state condition: distance to ball
+            if(player()->distBall() > SWITCHSTATE_MINDISTBALL)
+                _state = STATE_POS;
+
+            // Switch state condition: looking to ball
+            if(isBallInFront() == false)
+                _state = STATE_POS;
+        } break;
     }
-        break;
-    case STATE_KICK: {
-        desiredPos = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.2f, GEARSystem::Angle::pi);
 
-        if(player()->distBall() > 0.35f){
-            _state = STATE_POS;
-        }
+    // goToLookTo
+    Position lookPosition = WR::Utils::threePoints(_aimPosition, loc()->ball(), 999.0f, GEARSystem::Angle::pi);
+    player()->goToLookTo(desiredPos, lookPosition, avoidTeam, avoidOpp, avoidBall, false, false);
 
-        // change this later (avoid areas)
-        player()->goToLookTo(desiredPos, _aimPosition, true, true, false, false, false);
-    }
-        break;
-    }
-
-    if(player()->isLookingTo(_aimPosition)){
+    // Enable kick
+    if(player()->isLookingTo(_aimPosition))
         player()->kick(_power, _isChip);
-    }
 }
 
 bool Skill_Kick::isBehindBall(Position posObjective){
