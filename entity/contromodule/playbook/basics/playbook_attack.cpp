@@ -27,6 +27,8 @@ QString Playbook_Attack::name() {
 
 Playbook_Attack::Playbook_Attack() {
     _takeMainAttacker = false;
+    _rcvsNeedUpdate = false;
+    _updatedBots = 0;
     _attackerId = DIST_INVALID_ID;
 }
 
@@ -66,6 +68,8 @@ void Playbook_Attack::run(int numPlayers) {
 
         _attackerId = player;
         _takeMainAttacker = true;
+        _rcvsNeedUpdate = true;
+        _updatedBots = 0;
     }
 
     lastNumPlayers = numPlayers;
@@ -76,36 +80,56 @@ void Playbook_Attack::run(int numPlayers) {
 
     quint8 player = mainAttacker;
     if(player != DIST_INVALID_ID){
-        if(player != _attackerId){
-            _rl_stk->setQuadrant(requestQuadrant(player));
-            _rl_stk->setMarkId(requestMarkPlayer(player));
+        if(_rl_stk->isInitialized()){
+            if(player != _attackerId){
+                _rl_stk->setQuadrant(requestQuadrant(player));
+                _rl_stk->setMarkId(requestMarkPlayer(player));
+            }
+            if(_rcvsNeedUpdate){
+                _rl_stk->clearReceivers();
+                _rl_stk->addReceivers(requestReceivers(player));
+                _updatedBots++;
+            }
         }
         dist()->removePlayer(player);
-        _rl_stk->clearReceivers();
-        _rl_stk->addReceivers(requestReceivers(player));
         setPlayerRole(player, _rl_stk);
     }
 
     player = dist()->getPlayer();
     if(player != DIST_INVALID_ID){
-        if(player != _attackerId){
-            _rl_stk2->setQuadrant(requestQuadrant(player));
-            _rl_stk2->setMarkId(requestMarkPlayer(player));
+        if(_rl_stk2->isInitialized()){
+            if(player != _attackerId){
+                _rl_stk2->setQuadrant(requestQuadrant(player));
+                _rl_stk2->setMarkId(requestMarkPlayer(player));
+            }
+            if(_rcvsNeedUpdate){
+                _rl_stk2->clearReceivers();
+                _rl_stk2->addReceivers(requestReceivers(player));
+                _updatedBots++;
+            }
         }
-        _rl_stk2->clearReceivers();
-        _rl_stk2->addReceivers(requestReceivers(player));
         setPlayerRole(player, _rl_stk2);
     }
 
     player = dist()->getPlayer();
     if(player != DIST_INVALID_ID){
-        if(player != _attackerId){
-            _rl_stk3->setQuadrant(requestQuadrant(player));
-            _rl_stk3->setMarkId(requestMarkPlayer(player));
+        if(_rl_stk3->isInitialized()){
+            if(player != _attackerId){
+                _rl_stk3->setQuadrant(requestQuadrant(player));
+                _rl_stk3->setMarkId(requestMarkPlayer(player));
+            }
+            if(_rcvsNeedUpdate){
+                _rl_stk3->clearReceivers();
+                _rl_stk3->addReceivers(requestReceivers(player));
+                _updatedBots++;
+            }
         }
-        _rl_stk3->clearReceivers();
-        _rl_stk3->addReceivers(requestReceivers(player));
         setPlayerRole(player, _rl_stk3);
+    }
+
+    if(_updatedBots == numPlayers){
+        _rcvsNeedUpdate = false;
+        _updatedBots = 0;
     }
 }
 

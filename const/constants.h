@@ -60,6 +60,8 @@ private:
     float _maxKickPower;
     float _robotRadius;
     float _ballRadius;
+    float _robotMaxLinearSpeed;
+    float _robotMaxAngularSpeed;
 
     /* Ball Sensor constants */
     float _distToConsiderBallMovement;
@@ -92,6 +94,8 @@ public:
     float getDistToConsiderBallMovement() const;
     float getBallRadius() const;
     float getRobotRadius() const;
+    float getRobotMaxLinearSpeed() const;
+    float getRobotMaxAngularSpeed() const;
     float getMaxKickPower() const;
     int getQtPlayers() const;
     float getFPPSmoothPathResolution() const;

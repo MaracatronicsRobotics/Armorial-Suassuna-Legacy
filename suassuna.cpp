@@ -178,9 +178,9 @@ void Suassuna::setupOurPlayers() {
     QList<quint8> playerList = _world->getWorldMap()->players(_teamId);
     for(quint8 i=0; i<playerList.size() && i<getConstants()->getQtPlayers(); i++) {
         // Create Player
-        PID *vxPID = new PID(getConstants()->getLinearKp(), getConstants()->getLinearKi(), getConstants()->getLinearKd(), 3.0, -3.0);
-        PID *vyPID = new PID(getConstants()->getLinearKp(), getConstants()->getLinearKi(), getConstants()->getLinearKd(), 3.0, -3.0);
-        PID *vwPID = new PID(getConstants()->getAngularKp(), getConstants()->getAngularKi(), getConstants()->getAngularKd(), 6.0, -6.0);
+        PID *vxPID = new PID(getConstants()->getLinearKp(), getConstants()->getLinearKi(), getConstants()->getLinearKd(), getConstants()->getRobotMaxLinearSpeed(), -getConstants()->getRobotMaxLinearSpeed());
+        PID *vyPID = new PID(getConstants()->getLinearKp(), getConstants()->getLinearKi(), getConstants()->getLinearKd(), getConstants()->getRobotMaxLinearSpeed(), -getConstants()->getRobotMaxLinearSpeed());
+        PID *vwPID = new PID(getConstants()->getAngularKp(), getConstants()->getAngularKi(), getConstants()->getAngularKd(), getConstants()->getRobotMaxAngularSpeed(), -getConstants()->getRobotMaxAngularSpeed());
         NavigationAlgorithm *navAlg = new FANA();
         Player *player = new Player(_world, _ourTeam, _ctr, playerList.at(i), new Role_Default(), _ref, vxPID, vyPID, vwPID, navAlg, getConstants());
         // Enable

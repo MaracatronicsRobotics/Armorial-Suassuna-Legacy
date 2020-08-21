@@ -354,7 +354,7 @@ void Player::setSpeed(float x, float y, float theta) {
         maxSpeed = 1.5;
     }
     else{
-        maxSpeed = 3.0;
+        maxSpeed = getConstants()->getRobotMaxLinearSpeed();
     }
 
     Velocity robotVel = Velocity(true, x, y);
@@ -517,6 +517,9 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool a
 
     // Taking angleSpeed from rotateTo
     float angleSpeed = rotateTo(lookToPosition, 0, false).second;
+
+    if(distanceTo(targetPosition) >= 1.5f)
+        angleSpeed *= 0.5;
 
     // Setting speed
     setSpeed(robotVel.x(), robotVel.y(), angleSpeed);

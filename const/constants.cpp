@@ -67,6 +67,12 @@ MRCConstants::MRCConstants(QString configFileName, bool playingAgainstWarthog)
     _ballRadius = doc_map["BallRadius"].toFloat();
     std::cout<< MRCConstants::defaultBold << "BallRadius: "<< MRCConstants::green <<_ballRadius<<std::endl<< MRCConstants::reset;
 
+    _robotMaxLinearSpeed = doc_map["RobotMaxLinearSpeed"].toFloat();
+    std::cout<< MRCConstants::defaultBold << "RobotMaxLinearSpeed: "<< MRCConstants::green << _robotMaxLinearSpeed << std::endl << MRCConstants::reset;
+
+    _robotMaxAngularSpeed = doc_map["RobotMaxAngularSpeed"].toFloat();
+    std::cout<< MRCConstants::defaultBold << "RobotMaxAngularSpeed: "<< MRCConstants::green << _robotMaxAngularSpeed << std::endl << MRCConstants::reset;
+
     _distToConsiderBallMovement=doc_map["DistToConsiderBallMovement"].toFloat();
     std::cout<< MRCConstants::defaultBold << "DistToConsiderBallMovement: "<< MRCConstants::green <<_distToConsiderBallMovement<<std::endl<< MRCConstants::reset;
 
@@ -227,4 +233,12 @@ float MRCConstants::getAngularKd() const
 
 bool MRCConstants::isPlayingAgainstWarthog() const{
     return playingAgainstWarthog;
+}
+
+float MRCConstants::getRobotMaxLinearSpeed() const{
+    return _robotMaxLinearSpeed;
+}
+
+float MRCConstants::getRobotMaxAngularSpeed() const{
+    return _robotMaxAngularSpeed;
 }

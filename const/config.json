@@ -8,6 +8,9 @@
     "BallRadius": 0.025,
     "DistToConsiderBallMovement": 0.2,
 
+    "RobotMaxLinearSpeed": 3.0,
+    "RobotMaxAngularSpeed": 12.5,
+
     "ThreadFrequency": 60,
     "GuiUpdateFrequency": 30,
     "GoalieID": 0,
@@ -24,7 +27,7 @@
     },
 
     "AngularPID": {
-        "kp": 6.0,
+        "kp": 5.0,
         "ki": 0.0,
         "kd": 0.0
     },
