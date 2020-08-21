@@ -217,8 +217,8 @@ void Behaviour_Attacker::run() {
                     bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverKickDevice, shootList, getConstants()->getRobotRadius() * 3.0, false);
                     float power;
                     // Adjust kick power based on obstructed path or distance to receiver
-                    if(isObstructed) _sk_kick->setPower(std::min(getConstants()->getMaxKickPower(), 0.75f * sqrt((player()->distanceTo(ourReceiverKickDevice) * 9.8f) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
-                    else             _sk_kick->setPower(std::min(getConstants()->getMaxKickPower(), std::max(getConstants()->getMaxKickPower()/2.0f, 2.0f * player()->distanceTo(ourReceiverKickDevice))));
+                    if(isObstructed) power = std::min(getConstants()->getMaxKickPower(), 0.75f * sqrt((player()->distanceTo(ourReceiverKickDevice) * 9.8f) / sin(2 * GEARSystem::Angle::toRadians(65.0))));
+                    else             power = std::min(getConstants()->getMaxKickPower(), std::max(getConstants()->getMaxKickPower()/2.0f, 2.0f * player()->distanceTo(ourReceiverKickDevice)));
 
                     // Set if is parabolic and make it shoot when sufficiently aligned to the receiver
                     if(ref()->getGameInfo(player()->team()->teamColor())->ourDirectKick() || ref()->getGameInfo(player()->team()->teamColor())->ourKickoff()){
