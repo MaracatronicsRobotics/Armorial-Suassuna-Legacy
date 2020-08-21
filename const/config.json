@@ -6,7 +6,7 @@
     "MaxKickPower": 6.5,
     "RobotRadius": 0.09,
     "BallRadius": 0.025,
-    "DistToConsiderBallMovement": 0.12,
+    "DistToConsiderBallMovement": 0.2,
 
     "ThreadFrequency": 60,
     "GuiUpdateFrequency": 30,

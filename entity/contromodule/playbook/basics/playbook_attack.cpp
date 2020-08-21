@@ -40,26 +40,17 @@ void Playbook_Attack::configure(int numPlayers) {
     usesRole(_rl_stk3 = new Role_SecondStriker());
 
     // Make connections
-    connect(_rl_stk, SIGNAL(requestReceivers(quint8)), this, SLOT(requestReceivers(quint8)), Qt::DirectConnection);
-    connect(this, SIGNAL(sendReceiver(quint8)), _rl_stk, SLOT(takeReceiver(quint8)), Qt::DirectConnection);
-
     connect(_rl_stk, SIGNAL(requestAttacker()), this, SLOT(requestAttacker()), Qt::DirectConnection);
     connect(this, SIGNAL(sendAttacker(quint8)), _rl_stk, SLOT(takeAttacker(quint8)), Qt::DirectConnection);
 
     connect(_rl_stk, SIGNAL(requestIsMarkNeeded()), this, SLOT(requestIsMarkNeeded()), Qt::DirectConnection);
     connect(this, SIGNAL(sendIsMarkNeeded(bool)), _rl_stk, SLOT(takeIsMarkNeeded(bool)), Qt::DirectConnection);
 
-    connect(_rl_stk2, SIGNAL(requestReceivers(quint8)), this, SLOT(requestReceivers(quint8)), Qt::DirectConnection);
-    connect(this, SIGNAL(sendReceiver(quint8)), _rl_stk2, SLOT(takeReceiver(quint8)), Qt::DirectConnection);
-
     connect(_rl_stk2, SIGNAL(requestAttacker()), this, SLOT(requestAttacker()), Qt::DirectConnection);
     connect(this, SIGNAL(sendAttacker(quint8)), _rl_stk2, SLOT(takeAttacker(quint8)), Qt::DirectConnection);
 
     connect(_rl_stk2, SIGNAL(requestIsMarkNeeded()), this, SLOT(requestIsMarkNeeded()), Qt::DirectConnection);
     connect(this, SIGNAL(sendIsMarkNeeded(bool)), _rl_stk2, SLOT(takeIsMarkNeeded(bool)), Qt::DirectConnection);
-
-    connect(_rl_stk3, SIGNAL(requestReceivers(quint8)), this, SLOT(requestReceivers(quint8)), Qt::DirectConnection);
-    connect(this, SIGNAL(sendReceiver(quint8)), _rl_stk3, SLOT(takeReceiver(quint8)), Qt::DirectConnection);
 
     connect(_rl_stk3, SIGNAL(requestAttacker()), this, SLOT(requestAttacker()), Qt::DirectConnection);
     connect(this, SIGNAL(sendAttacker(quint8)), _rl_stk3, SLOT(takeAttacker(quint8)), Qt::DirectConnection);
@@ -79,6 +70,7 @@ void Playbook_Attack::run(int numPlayers) {
 
     lastNumPlayers = numPlayers;
 
+    // Reseting quadrant and mark list
     resetQuadrantList();
     resetMarkList();
 
@@ -89,6 +81,8 @@ void Playbook_Attack::run(int numPlayers) {
             _rl_stk->setMarkId(requestMarkPlayer(player));
         }
         dist()->removePlayer(player);
+        _rl_stk->clearReceivers();
+        _rl_stk->addReceivers(requestReceivers(player));
         setPlayerRole(player, _rl_stk);
     }
 
@@ -98,6 +92,8 @@ void Playbook_Attack::run(int numPlayers) {
             _rl_stk2->setQuadrant(requestQuadrant(player));
             _rl_stk2->setMarkId(requestMarkPlayer(player));
         }
+        _rl_stk2->clearReceivers();
+        _rl_stk2->addReceivers(requestReceivers(player));
         setPlayerRole(player, _rl_stk2);
     }
 
@@ -107,6 +103,8 @@ void Playbook_Attack::run(int numPlayers) {
             _rl_stk3->setQuadrant(requestQuadrant(player));
             _rl_stk3->setMarkId(requestMarkPlayer(player));
         }
+        _rl_stk3->clearReceivers();
+        _rl_stk3->addReceivers(requestReceivers(player));
         setPlayerRole(player, _rl_stk3);
     }
 }
@@ -196,8 +194,9 @@ int Playbook_Attack::requestQuadrant(quint8 playerId) {
     return bestQuadrant;
 }
 
-void Playbook_Attack::requestReceivers(quint8 playerId){
+QList<quint8> Playbook_Attack::requestReceivers(quint8 playerId){
     QList<quint8> playersList = getPlayers();
+    QList<quint8> receiversList;
 
     for(int x = 0; x < playersList.size(); x++){
         quint8 playerIdList = playersList.at(x);
@@ -205,9 +204,11 @@ void Playbook_Attack::requestReceivers(quint8 playerId){
             continue;
         }
         else{
-            emit sendReceiver(playerIdList);
+            receiversList.push_back(playerIdList);
         }
-     }
+    }
+
+    return receiversList;
 }
 
 void Playbook_Attack::requestAttacker(){

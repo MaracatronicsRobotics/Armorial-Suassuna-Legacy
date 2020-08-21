@@ -59,18 +59,17 @@ private:
 
     // Utils
     bool isBallComing(Position playerPosition, float minVelocity, float radius);
+    QList<quint8> requestReceivers(quint8 playerId);
 
 public:
     Playbook_Attack();
     QString name();
 
 signals:
-    void sendReceiver(quint8 receiverId);
     void sendAttacker(quint8 attackerId);
     void sendIsMarkNeeded(bool isMarkNeeded);
 
 public slots:
-    void requestReceivers(quint8 playerId);
     void requestAttacker();
     void requestIsMarkNeeded();
 
