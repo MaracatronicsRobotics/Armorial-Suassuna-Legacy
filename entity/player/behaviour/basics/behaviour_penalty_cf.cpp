@@ -28,7 +28,7 @@ QString Behaviour_Penalty_CF::name() {
 
 Behaviour_Penalty_CF::Behaviour_Penalty_CF() {
 
-    _skill_kick = NULL;
+    _skill_push = NULL;
     _skill_goToLookTo = NULL;
     firstChoose = false;
     joked = false;
@@ -38,11 +38,11 @@ Behaviour_Penalty_CF::Behaviour_Penalty_CF() {
 
 void Behaviour_Penalty_CF::configure() {
     usesSkill(_skill_goToLookTo = new Skill_GoToLookTo());
-    usesSkill(_skill_kick = new Skill_Test());
+    usesSkill(_skill_push = new Skill_PushBall());
     setInitialSkill(_skill_goToLookTo);
 
-    addTransition(STATE_KICK, _skill_goToLookTo, _skill_kick);
-    addTransition(STATE_GOTO, _skill_kick, _skill_goToLookTo);
+    addTransition(STATE_PUSH, _skill_goToLookTo, _skill_push);
+    addTransition(STATE_GOTO, _skill_push, _skill_goToLookTo);
 }
 
 void Behaviour_Penalty_CF::run() {
@@ -79,32 +79,32 @@ void Behaviour_Penalty_CF::run() {
             changeAimTimer.start();
         }
 
-        _skill_kick->setIsPenalty(true);
-        _skill_kick->setKickPower(getConstants()->getMaxKickPower());
+        _skill_push->setIsPenalty(true);
+        _skill_push->setKickPower(getConstants()->getMaxKickPower());
 
-        if(loc()->isInsideTheirArea(loc()->ball(), 1.1f) || _skill_kick->getPushedDistance() >= 0.9 * _skill_kick->getMaxPushDistance()){
+        if(loc()->isInsideTheirArea(loc()->ball(), 1.1f) || _skill_push->getPushedDistance() >= 0.9 * _skill_push->getMaxPushDistance()){
             // goal area penalty
             // try to 'joke' the enemy goalkeeper
-            _skill_kick->setDestination(Position(false, 0.0, 0.0, 0.0));
+            _skill_push->setDestination(Position(false, 0.0, 0.0, 0.0));
             if(!joked){
-                _skill_kick->setAim(loc()->theirGoalLeftPost());
-                _skill_kick->shootWhenAligned(false);
+                _skill_push->setAim(loc()->theirGoalLeftPost());
+                _skill_push->shootWhenAligned(false);
 
                 if(player()->getPlayerRotateAngleTo(loc()->theirGoalLeftPost()) < player()->aError()) joked = true;
             }
             else{
-                _skill_kick->setAim(_kickPosition);
-                _skill_kick->shootWhenAligned(true);
+                _skill_push->setAim(_kickPosition);
+                _skill_push->shootWhenAligned(true);
             }
         }
         else{
             // mid field area penalty
-            _skill_kick->setAim(loc()->theirGoal());
-            _skill_kick->setDestination(loc()->theirGoal());
-            _skill_kick->shootWhenAligned(false);
+            _skill_push->setAim(loc()->theirGoal());
+            _skill_push->setDestination(loc()->theirGoal());
+            _skill_push->shootWhenAligned(false);
         }
 
-        enableTransition(STATE_KICK);
+        enableTransition(STATE_PUSH);
     }
 }
 

@@ -38,7 +38,7 @@ Behaviour_Barrier::Behaviour_Barrier() {
 
     _sk_goto = NULL;
     _sk_gk = NULL;
-    _sk_kick = NULL;
+    _sk_push = NULL;
 
     _canTakeout = false;
     _avoidAllies = false;
@@ -48,20 +48,20 @@ Behaviour_Barrier::Behaviour_Barrier() {
 void Behaviour_Barrier::configure() {
     usesSkill(_sk_goto = new Skill_GoToLookTo());
     usesSkill(_sk_gk = new Skill_InterceptBall());
-    usesSkill(_sk_kick = new Skill_Test());
+    usesSkill(_sk_push = new Skill_PushBall());
 
     // Setting initial skill
     setInitialSkill(_sk_goto);
 
     // Transitions
-    addTransition(STATE_GOTO, _sk_kick, _sk_goto);
+    addTransition(STATE_GOTO, _sk_push, _sk_goto);
     addTransition(STATE_GOTO, _sk_gk, _sk_goto);
 
     addTransition(STATE_GK, _sk_goto, _sk_gk);
-    addTransition(STATE_GK, _sk_kick, _sk_gk);
+    addTransition(STATE_GK, _sk_push, _sk_gk);
 
-    addTransition(STATE_KICK, _sk_goto, _sk_kick);
-    addTransition(STATE_KICK, _sk_gk, _sk_kick);
+    addTransition(STATE_PUSH, _sk_goto, _sk_push);
+    addTransition(STATE_PUSH, _sk_gk, _sk_push);
 
     _notAlreadyChosen = true;
 };
@@ -150,17 +150,17 @@ void Behaviour_Barrier::run() {
             if(bestAttacker != RECEIVER_INVALID_ID){
                 Position bestAttackerPos = PlayerBus::ourPlayer(bestAttacker)->position();
                 QList<quint8> shootList = {player()->playerId(), bestAttacker};
-                _sk_kick->setAim(bestAttackerPos);
-                _sk_kick->setKickPower(std::min(getConstants()->getMaxKickPower(), 0.75f * sqrt((player()->distanceTo(bestAttackerPos) * 9.8f) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
-                _sk_kick->shootWhenAligned(true);
+                _sk_push->setAim(bestAttackerPos);
+                _sk_push->setKickPower(std::min(getConstants()->getMaxKickPower(), 0.75f * sqrt((player()->distanceTo(bestAttackerPos) * 9.8f) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
+                _sk_push->shootWhenAligned(true);
             }
             else{
-                _sk_kick->setAim(loc()->theirGoal());
-                _sk_kick->setKickPower(getConstants()->getMaxKickPower());
-                _sk_kick->shootWhenAligned(true);
+                _sk_push->setAim(loc()->theirGoal());
+                _sk_push->setKickPower(getConstants()->getMaxKickPower());
+                _sk_push->shootWhenAligned(true);
             }
-            _sk_kick->setIsParabolic(true);
-            enableTransition(STATE_KICK);
+            _sk_push->setIsParabolic(true);
+            enableTransition(STATE_PUSH);
         }else{
             enableTransition(STATE_GOTO);
         }

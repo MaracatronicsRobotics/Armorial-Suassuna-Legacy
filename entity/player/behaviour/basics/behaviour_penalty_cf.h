@@ -33,7 +33,7 @@ private:
 
     // Skills
     Skill_GoToLookTo *_skill_goToLookTo;
-    Skill_Test *_skill_kick;
+    Skill_PushBall *_skill_push;
 
     // Vars
     Position _kickPosition;
@@ -46,7 +46,7 @@ private:
     // Skill transitions
     enum{
         STATE_GOTO,
-        STATE_KICK
+        STATE_PUSH
     };
 
 public:

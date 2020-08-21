@@ -349,7 +349,7 @@ void Player::setSpeed(float x, float y, float theta) {
 
     // Limit max speed
     float maxSpeed;
-    if(!_ref->getGameInfo(teamColor())->gameOn() || _ref->getGameInfo(teamColor())->timeOut() || _ref->getGameInfo(teamColor())->ballPlacement()){
+    if((!_ref->getGameInfo(teamColor())->gameOn() && !_ref->getGameInfo(teamColor())->freeKick()) || _ref->getGameInfo(teamColor())->timeOut() || _ref->getGameInfo(teamColor())->ballPlacement()){
         // stop, timeout or placement
         maxSpeed = 1.5;
     }
@@ -374,7 +374,7 @@ void Player::setSpeed(float x, float y, float theta) {
     }
 }
 
-std::pair<float, float> Player::goTo(Position targetPosition, double offset, bool setHere, double minVel){
+std::pair<float, float> Player::goTo(Position targetPosition, bool setHere, double minVel){
     // Update next pos
     _nextPosition = targetPosition;
 
@@ -383,7 +383,7 @@ std::pair<float, float> Player::goTo(Position targetPosition, double offset, boo
 
     // Taking orientation from path planning
     Angle anglePP;
-    std::pair<double, double> help = rotateTo(targetPosition, 0.2, false);
+    std::pair<double, double> help = rotateTo(targetPosition, false);
     if(targetPosition.isUnknown())
         anglePP = Angle(false, 0.0);
     else
@@ -449,7 +449,7 @@ double Player::getPlayerRotateAngleTo(const Position &pos){
     return angleRobot2Ball;
 }
 
-std::pair<double, double> Player::rotateTo(Position targetPosition, double offset, bool setHere) {
+std::pair<double, double> Player::rotateTo(Position targetPosition, bool setHere) {
     double angleRobotToObjective = getPlayerRotateAngleTo(targetPosition);
     double speed;
 
@@ -477,7 +477,7 @@ std::pair<double, double> Player::rotateTo(Position targetPosition, double offse
     }
 }
 
-void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool avoidTeammates, bool avoidOpponents, bool avoidBall, bool avoidOurGoalArea, bool avoidTheirGoalArea, double minVel, bool isGk){
+void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool avoidTeammates, bool avoidOpponents, bool avoidBall, bool avoidOurGoalArea, bool avoidTheirGoalArea, double minVel){
     // Update next pos
     _nextPosition = targetPosition;
 
@@ -486,7 +486,7 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool a
 
     // Taking orientation from path planning
     Angle anglePP;
-    std::pair<double, double> help = rotateTo(targetPosition, 0.2, false);
+    std::pair<double, double> help = rotateTo(targetPosition, false);
     if(targetPosition.isUnknown())
         anglePP = Angle(false, 0.0);
     else
@@ -516,7 +516,7 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool a
     }
 
     // Taking angleSpeed from rotateTo
-    float angleSpeed = rotateTo(lookToPosition, 0, false).second;
+    float angleSpeed = rotateTo(lookToPosition, false).second;
 
     if(distanceTo(targetPosition) >= 1.5f)
         angleSpeed *= 0.5;
@@ -525,13 +525,13 @@ void Player::goToLookTo(Position targetPosition, Position lookToPosition, bool a
     setSpeed(robotVel.x(), robotVel.y(), angleSpeed);
 }
 
-void Player::aroundTheBall(Position targetPosition, double offset, double offsetAngular){
+void Player::aroundTheBall(Position targetPosition){
     double robot_x, robot_y;
     robot_x = position().x();
     robot_y = position().y();
     // Configura o robô para ir até a bola e girar em torno dela
-    goTo(targetPosition, offset, true);
-    rotateTo(targetPosition, offsetAngular, true);
+    goTo(targetPosition, true);
+    rotateTo(targetPosition, true);
 }
 
 void Player::kick(float power, bool isChipKick){

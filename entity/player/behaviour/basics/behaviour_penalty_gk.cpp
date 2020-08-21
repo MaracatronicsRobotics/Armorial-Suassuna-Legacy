@@ -48,7 +48,7 @@ void Behaviour_Penalty_GK::configure() {
     usesSkill(_skill_Goalkeeper = new Skill_InterceptBall());
     usesSkill(_skill_goToLookTo = new Skill_GoToLookTo());
     usesSkill(_skill_kick = new Skill_Kick());
-    usesSkill(_skill_push = new Skill_PushBall2());
+    usesSkill(_skill_push = new Skill_PushBall());
 
     // goto
     setInitialSkill(_skill_Goalkeeper);
@@ -97,7 +97,7 @@ void Behaviour_Penalty_GK::run() {
     _skill_goToLookTo->setAimPosition(loc()->ball());
     _skill_goToLookTo->setAvoidBall(false);
     _skill_goToLookTo->setAvoidOurGoalArea(false);
-    _skill_goToLookTo->setIsGk(true);
+    _skill_goToLookTo->setMinVelocity(0.15f);
 
     // machine if state begins for transitionsss
     if(isBallComingToGoal(INTERCEPT_MINBALLVELOCITY, 1.1f)){ // bola nao ta em posse do goleiro e ta indo pro gol

@@ -42,7 +42,7 @@ Behaviour_Attacker::Behaviour_Attacker() {
 void Behaviour_Attacker::configure() {
     // Skills
     usesSkill(_sk_goToLookTo = new Skill_GoToLookTo());
-    usesSkill(_sk_push       = new Skill_Test());
+    usesSkill(_sk_push       = new Skill_PushBall());
     usesSkill(_sk_kick       = new Skill_Kick());
 
     // Transitions

@@ -34,7 +34,7 @@ private:
     bool _avoidBall;
     bool _avoidOurGoalArea;
     bool _avoidTheirGoalArea;
-    bool _isGk;
+    float _minVelocity;
 
 public:
     Skill_GoToLookTo();
@@ -47,7 +47,7 @@ public:
     void setAvoidBall(bool cond) { _avoidBall = cond; }
     void setAvoidOurGoalArea(bool cond) { _avoidOurGoalArea = cond; }
     void setAvoidTheirGoalArea(bool cond) { _avoidTheirGoalArea = cond; }
-    void setIsGk(bool cond)     { _isGk = cond; }
+    void setMinVelocity(float minVelocity) { _minVelocity = minVelocity; }
 };
 
 #endif // SKILL_GOTOLOOKTO_H

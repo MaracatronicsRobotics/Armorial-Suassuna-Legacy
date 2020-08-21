@@ -31,7 +31,7 @@ private:
     void run();
     int _state;
 
-    Skill_Test *_skill_doNothing;
+    Skill_PushBall *_skill_push;
     Skill_GoToLookTo *_skill_goToLookTo;
 
     enum{
