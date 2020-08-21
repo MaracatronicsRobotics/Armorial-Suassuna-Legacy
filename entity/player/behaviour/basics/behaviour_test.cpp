@@ -34,13 +34,21 @@ void Behaviour_Test::configure() {
     usesSkill(_skill_goToLookTo = new Skill_GoToLookTo());
     usesSkill(_skill_kick = new Skill_Kick());
 
-    setInitialSkill(_skill_kick);
+    setInitialSkill(_skill_goToLookTo);
 };
 
 void Behaviour_Test::run() {
+    // gtlt
     _skill_goToLookTo->setDesiredPosition(loc()->ball());
     _skill_goToLookTo->setAimPosition(loc()->ball());
 
+    // kick
     _skill_kick->setPower(getConstants()->getMaxKickPower());
     _skill_kick->setAim(loc()->theirGoal());
+
+    // goto
+    _skill_goTo->setDesiredPosition(loc()->ball());
+
+    // rotate
+    _skill_rotateTo->setDesiredPosition(loc()->ball());
 }

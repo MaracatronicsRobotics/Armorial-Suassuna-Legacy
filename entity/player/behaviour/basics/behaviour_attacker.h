@@ -30,9 +30,10 @@
 #include <utils/basics/triangle.h>
 #include <const/mlp.h>
 
-#define RECEIVER_DECISION_TIME   0.2f // seconds
-#define AIM_DECISION_TIME        0.2f // seconds
-#define SHOOT_PASS_DECISION_TIME 0.5f // seconds
+#define RECEIVER_DECISION_TIME_AT_FOUL 3.0f //seconds
+#define RECEIVER_DECISION_TIME         0.2f // seconds
+#define AIM_DECISION_TIME              0.2f // seconds
+#define SHOOT_PASS_DECISION_TIME       0.5f // seconds
 
 typedef struct{
     bool valid;

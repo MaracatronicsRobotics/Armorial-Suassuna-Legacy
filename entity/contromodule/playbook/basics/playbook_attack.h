@@ -44,6 +44,10 @@ private:
     void run(int numPlayers);
     int maxNumPlayer();
 
+    // control rcv list
+    bool _rcvsNeedUpdate;
+    int _updatedBots;
+
     // Mark
     quint8 _attackerId;
     QList<quint8> markList;

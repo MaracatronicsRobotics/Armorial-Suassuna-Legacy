@@ -314,7 +314,13 @@ bool Behaviour_Attacker::canTakeBall(){
 std::pair<float, quint8> Behaviour_Attacker::getBestReceiver(){
     receiverDecisionTimer.stop();
 
-    if(receiverDecisionTimer.timesec() >= RECEIVER_DECISION_TIME || _bestRcv == RECEIVER_INVALID_ID){
+    float receiverTime = RECEIVER_DECISION_TIME;
+
+    // If free kick (direct, indirect) or kickoff, needs to wait more to change the choose.
+    if(ref()->getGameInfo(player()->team()->teamColor())->freeKick() || ref()->getGameInfo(player()->team()->teamColor())->kickoff())
+        receiverTime = RECEIVER_DECISION_TIME_AT_FOUL;
+
+    if(receiverDecisionTimer.timesec() >= receiverTime || _bestRcv == RECEIVER_INVALID_ID){
         receiversListMutex.lock();
         /*
         quint8 bestId = RECEIVER_INVALID_ID;
