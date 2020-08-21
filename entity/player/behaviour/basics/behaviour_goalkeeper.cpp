@@ -102,7 +102,7 @@ void Behaviour_Goalkeeper::run() {
                 Position bestAttackerPos = PlayerBus::ourPlayer(bestAttacker)->position();
                 QList<quint8> shootList = {player()->playerId(), bestAttacker};
                 _skill_push->setAim(bestAttackerPos);
-                _skill_push->setKickPower(std::min(6.0, 0.75 * sqrt((player()->distanceTo(bestAttackerPos) * 9.8) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
+                _skill_push->setKickPower(std::min(getConstants()->getMaxKickPower(), 0.75f * sqrt((player()->distanceTo(bestAttackerPos) * 9.8f) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
                 _skill_push->shootWhenAligned(true);
                 _skill_push->setIsPenalty(true);
             }
