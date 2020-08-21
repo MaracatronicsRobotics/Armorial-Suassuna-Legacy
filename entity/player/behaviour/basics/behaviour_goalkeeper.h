@@ -31,7 +31,7 @@ private:
     void run();
     Skill_InterceptBall *_skill_Goalkeeper;
     Skill_GoToLookTo *_skill_goToLookTo;
-    Skill_Test *_skill_push;
+    Skill_PushBall *_skill_push;
     double _offsetBall;
 
     // Parameters

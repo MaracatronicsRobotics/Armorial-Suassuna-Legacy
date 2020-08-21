@@ -22,6 +22,8 @@
 #include "skill_pushball.h"
 #include <entity/player/skills/skills_include.h>
 
+#define BALL_MINDIST 0.12f
+
 #define BALLPREVISION_MINVELOCITY 0.02f
 #define BALLPREVISION_VELOCITY_FACTOR 3.0f
 #define BALLPREVISION_FACTOR_LIMIT 0.15f
@@ -32,19 +34,26 @@ QString Skill_PushBall::name() {
 
 Skill_PushBall::Skill_PushBall() {
     _destination.setUnknown();
-    setMaxPushDistance(0.8f);
-    _state = STATE_POS;
     _currPos.setUnknown();
     _lastPos.setUnknown();
-    _distPushed = 0.0f;
+    _state = STATE_POS;
+
+    shootWhenAligned(false);
+    setIsParabolic(false);
+    setMaxPushDistance(1.0);
+    setKickPower(6.0);
+
+    setIsPenalty(false);
+
 }
 
 void Skill_PushBall::run(){
-    if(_destination.isUnknown())
-        std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << name().toStdString() << ": destination not set!\n";
+    if(_aim.isUnknown()){
+        std::cout << MRCConstants::yellow << "[WARNING] " << MRCConstants::reset << name().toStdString() << ": aim not set!\n";
+    }
 
     // Calc behind ball
-    Position behindBall = WR::Utils::threePoints(loc()->ball(), _destination, 0.2f, GEARSystem::Angle::pi);
+    Position behindBall = WR::Utils::threePoints(loc()->ball(), player()->position(), _isPenalty ? 0.0f : 0.1f, GEARSystem::Angle::pi);
 
     if(loc()->ballVelocity().abs() > BALLPREVISION_MINVELOCITY){
         // Calc unitary vector of velocity
@@ -63,51 +72,58 @@ void Skill_PushBall::run(){
         }
     }
 
-    // Local parameters
-    Position desiredPos;
+    player()->dribble(true);
 
-    switch (_state) {
-    case STATE_POS: {
-        player()->dribble(false);
+    switch(_state){
+    case STATE_POS:{
         _currPos.setUnknown();
-        _distPushed = 0.0;
-        desiredPos = behindBall;
+        _pushedDistance = 0.0;
 
-        if(player()->isNearbyPosition(behindBall, 0.03f))
+        if(player()->distBall() < BALL_MINDIST && isBallInFront())
             _state = STATE_PUSH;
+        else
+            player()->goToLookTo(behindBall, loc()->ball(), true, true, false, false, false);
     }
-        break;
-    case STATE_PUSH: {
-        player()->dribble(true);
-        desiredPos = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.3f, GEARSystem::Angle::pi);
-
-        if(_currPos.isUnknown()){
-            _distPushed = 0.0;
+    break;
+    case STATE_PUSH:{
+        if(_destination.isUnknown())
+            player()->rotateTo(_aim);
+        else{
+            if(_currPos.isUnknown()){
+                _currPos = loc()->ball();
+                _pushedDistance = 0.0;
+            }
+            _lastPos = _currPos;
             _currPos = loc()->ball();
+
+            _pushedDistance += WR::Utils::distance(_lastPos, _currPos);
+
+            if(_pushedDistance >= 0.8 * _maxPushDistance)
+                _destination.setUnknown();
+            else
+                player()->goToLookTo(_destination, _aim, true, true, false, false, false);
         }
 
-        _lastPos = _currPos;
-        _currPos = loc()->ball();
-        _distPushed += WR::Utils::distance(_lastPos, _currPos);
+        if(_shootWhenAligned){
+            double angleToObjective = fabs(player()->getPlayerRotateAngleTo(_aim));
+            if(angleToObjective < 1.5 * player()->aError()){
+                player()->dribble(false);
+                player()->kick(_kickPower, _isParabolic);
+            }
+        }
 
-        if(player()->distBall() > 0.35f){
+        if(player()->distBall() > (BALL_MINDIST + 0.04f) || !isBallInFront())
             _state = STATE_POS;
-        }
-
-        if(isBallInFront() == false){
-            _state = STATE_POS;
-        }
-
-        if(_distPushed >= _maxPushDistance){
-            player()->idle();
-        }
     }
-        break;
+    break;
     }
+}
 
-    // goToLookTo
-    Position lookPos = WR::Utils::threePoints(_destination, loc()->ball(), 1000.0f, GEARSystem::Angle::pi);
-    player()->goToLookTo(desiredPos, lookPos, true, true, false, true, true);
+bool Skill_PushBall::isBallInFront(){
+    Angle anglePlayerBall = player()->angleTo(loc()->ball());
+    float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
+
+    return (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
 }
 
 bool Skill_PushBall::isBehindBall(Position posObjective){
@@ -118,11 +134,4 @@ bool Skill_PushBall::isBehindBall(Position posObjective){
     float diff = WR::Utils::angleDiff(anglePlayer, angleDest);
 
     return (diff>GEARSystem::Angle::pi/2.0f);
-}
-
-bool Skill_PushBall::isBallInFront(){
-    Angle anglePlayerBall = player()->angleTo(loc()->ball());
-    float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
-
-    return (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
 }

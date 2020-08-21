@@ -31,5 +31,5 @@ Skill_GoTo::Skill_GoTo() {
 }
 
 void Skill_GoTo::run() {
-    player()->goTo(_desiredPosition, 0, true);
+    player()->goTo(_desiredPosition, true);
 }

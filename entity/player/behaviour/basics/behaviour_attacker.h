@@ -127,7 +127,7 @@ public:
 
     // Skills
     Skill_GoToLookTo *_sk_goToLookTo;
-    Skill_Test *_sk_push;
+    Skill_PushBall *_sk_push;
     Skill_Kick *_sk_kick;
 
     // Receivers add

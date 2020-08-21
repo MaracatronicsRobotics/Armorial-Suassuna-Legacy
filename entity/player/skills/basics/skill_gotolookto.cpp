@@ -34,9 +34,9 @@ Skill_GoToLookTo::Skill_GoToLookTo() {
     _avoidBall = true;
     _avoidOurGoalArea = true;
     _avoidTheirGoalArea = true;
-    _isGk = false;
+    _minVelocity = 0.0;
 }
 
 void Skill_GoToLookTo::run() {
-    player()->goToLookTo(_desiredPosition, _aimPosition, _avoidTeammates, _avoidOpponents, _avoidBall, _avoidOurGoalArea, _avoidTheirGoalArea, (_isGk) ? 0.1 : 0.0, _isGk);
+    player()->goToLookTo(_desiredPosition, _aimPosition, _avoidTeammates, _avoidOpponents, _avoidBall, _avoidOurGoalArea, _avoidTheirGoalArea, _minVelocity);
 }

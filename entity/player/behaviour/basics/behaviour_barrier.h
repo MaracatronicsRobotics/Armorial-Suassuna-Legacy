@@ -51,13 +51,12 @@ private:
     // Sk
     Skill_GoToLookTo *_sk_goto;
     Skill_InterceptBall *_sk_gk;
-    Skill_Test *_sk_kick;
+    Skill_PushBall *_sk_push;
 
     // Transitions
     enum{
         STATE_GOTO,
         STATE_GK,
-        STATE_KICK,
         STATE_PUSH
     };
 

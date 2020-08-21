@@ -48,7 +48,7 @@ Behaviour_Goalkeeper::Behaviour_Goalkeeper() {
 void Behaviour_Goalkeeper::configure() {
     usesSkill(_skill_Goalkeeper = new Skill_InterceptBall());
     usesSkill(_skill_goToLookTo = new Skill_GoToLookTo());
-    usesSkill(_skill_push = new Skill_Test());
+    usesSkill(_skill_push = new Skill_PushBall());
 
     // goto
     setInitialSkill(_skill_Goalkeeper);
@@ -86,7 +86,7 @@ void Behaviour_Goalkeeper::run() {
     _skill_goToLookTo->setAimPosition(loc()->ball());
     _skill_goToLookTo->setAvoidBall(false);
     _skill_goToLookTo->setAvoidOurGoalArea(false);
-    _skill_goToLookTo->setIsGk(true);
+    _skill_goToLookTo->setMinVelocity(0.15f);
 
     // kick parameters
     if(!player()->hasBallPossession() && loc()->ballVelocity().abs() >= 0.2f)

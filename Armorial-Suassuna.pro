@@ -64,7 +64,6 @@ SOURCES += \
     entity/player/navigation/rrt/rrtobstacle.cpp \
     entity/player/navigation/rrt/rrttree.cpp \
     entity/player/navigation/rrt/rrtvertex.cpp \
-    entity/player/role/basics/role_barrier.cpp \
     entity/player/role/basics/role_defender.cpp \
     entity/player/role/basics/role_defensive_midfielder.cpp \
     entity/player/role/basics/role_goalkeeper.cpp \
@@ -77,7 +76,6 @@ SOURCES += \
     entity/player/skills/basics/skill_gotolookto.cpp \
     entity/player/skills/basics/skill_interceptball.cpp \
     entity/player/skills/basics/skill_placement.cpp \
-    entity/player/skills/basics/skill_pushball2.cpp \
     entity/player/skills/basics/skill_rotateto.cpp \
     entity/player/skills/basics/skill_test.cpp \
     entity/referee/mrcreferee.cpp \
@@ -209,7 +207,6 @@ HEADERS += \
     entity/player/navigation/rrt/rrtobstacle.h \
     entity/player/navigation/rrt/rrttree.h \
     entity/player/navigation/rrt/rrtvertex.h \
-    entity/player/role/basics/role_barrier.h \
     entity/player/role/basics/role_defender.h \
     entity/player/role/basics/role_defensive_midfielder.h \
     entity/player/role/basics/role_goalkeeper.h \
@@ -222,7 +219,6 @@ HEADERS += \
     entity/player/skills/basics/skill_gotolookto.h \
     entity/player/skills/basics/skill_interceptball.h \
     entity/player/skills/basics/skill_placement.h \
-    entity/player/skills/basics/skill_pushball2.h \
     entity/player/skills/basics/skill_rotateto.h \
     entity/player/skills/basics/skill_test.h \
     entity/referee/mrcreferee.h \

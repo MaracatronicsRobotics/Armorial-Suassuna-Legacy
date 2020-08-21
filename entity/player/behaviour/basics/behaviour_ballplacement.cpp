@@ -30,13 +30,13 @@ Behaviour_BallPlacement::Behaviour_BallPlacement() {
 }
 
 void Behaviour_BallPlacement::configure() {
-    usesSkill(_skill_doNothing = new Skill_Test());
+    usesSkill(_skill_push = new Skill_PushBall());
     usesSkill(_skill_goToLookTo = new Skill_GoToLookTo());
 
-    addTransition(STATE_GOTO, _skill_doNothing, _skill_goToLookTo);
-    addTransition(STATE_PUSH, _skill_goToLookTo, _skill_doNothing);
+    addTransition(STATE_GOTO, _skill_push, _skill_goToLookTo);
+    addTransition(STATE_PUSH, _skill_goToLookTo, _skill_push);
 
-    setInitialSkill(_skill_doNothing);
+    setInitialSkill(_skill_push);
 };
 
 void Behaviour_BallPlacement::run() {
@@ -66,9 +66,9 @@ void Behaviour_BallPlacement::run() {
         enableTransition(STATE_GOTO);
     }
     else{
-        _skill_doNothing->setMaxPushDistance(999.0f);
-        _skill_doNothing->setDestination(_desiredPosition);
-        _skill_doNothing->setAim(_desiredPosition);
+        _skill_push->setMaxPushDistance(999.0f);
+        _skill_push->setDestination(_desiredPosition);
+        _skill_push->setAim(_desiredPosition);
         if(!placedSuccess) enableTransition(STATE_PUSH);
     }
 }
