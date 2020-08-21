@@ -116,15 +116,15 @@ void Behaviour_Receiver::run() {
             Position desiredPosition;
 
             if(_quadrant == QUADRANT_UP || _quadrant == QUADRANT_UPMID)
-                if(loc()->ourSide().isRight()) desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi + GEARSystem::Angle::pi / 16.0f);
-                else desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi - GEARSystem::Angle::pi / 16.0f);
+                if(loc()->ourSide().isRight()) desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->ourGoal(), 0.9f, 0.0 + GEARSystem::Angle::pi / 16.0f);
+                else desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->ourGoal(), 0.9f, 0.0 - GEARSystem::Angle::pi / 16.0f);
             else
-                if(loc()->ourSide().isRight()) desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi - GEARSystem::Angle::pi / 16.0f);
-                else desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.9f, GEARSystem::Angle::pi + GEARSystem::Angle::pi / 16.0f);
+                if(loc()->ourSide().isRight()) desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->ourGoal(), 0.9f, 0.0 - GEARSystem::Angle::pi / 16.0f);
+                else desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->ourGoal(), 0.9f, 0.0 + GEARSystem::Angle::pi / 16.0f);
 
             _skill_GoToLookTo->setAvoidTeammates(false);
             _skill_GoToLookTo->setDesiredPosition(desiredPosition);
-            _skill_GoToLookTo->setAimPosition(loc()->theirGoal());
+            _skill_GoToLookTo->setAimPosition(loc()->ball());
 
         }
         else{
