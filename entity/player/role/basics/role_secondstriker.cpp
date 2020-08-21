@@ -32,7 +32,6 @@ Role_SecondStriker::Role_SecondStriker() {
     _bh_mkp = NULL;
 
     _isMarkNeeded = true;
-    updateReceiversTimer.start();
     _markId = DIST_INVALID_ID;
 }
 
@@ -48,16 +47,6 @@ void Role_SecondStriker::configure(){
 }
 
 void Role_SecondStriker::run(){
-    // Taking the receivers that attacker can use
-    updateReceiversTimer.stop();
-    if(!_config || updateReceiversTimer.timesec() >= 1.0){ // do it at first time and every second
-        _bh_atk->clearReceivers();
-        emit requestReceivers(player()->playerId());
-
-        _config = true;
-        updateReceiversTimer.start();
-    }
-
     SSLGameInfo *gameInfo = ref()->getGameInfo(player()->team()->teamColor());
     if(gameInfo->penaltyKick()){
         _bh_rcv->setQuadrant(_quadrant);
@@ -157,11 +146,6 @@ bool Role_SecondStriker::isBallComing(float minVelocity, float radius) {
     return (fabs(angDiff) < fabs(angError));
 }
 
-void Role_SecondStriker::takeReceiver(quint8 receiverId){
-    if(_bh_atk == NULL) return ;
-    _bh_atk->addReceiver(receiverId);
-}
-
 void Role_SecondStriker::takeAttacker(quint8 attackerId){
     if(_bh_rcv == NULL) return ;
     _attackerId = attackerId;
@@ -170,4 +154,17 @@ void Role_SecondStriker::takeAttacker(quint8 attackerId){
 
 void Role_SecondStriker::takeIsMarkNeeded(bool isMarkNeeded){
     _isMarkNeeded = isMarkNeeded;
+}
+
+void Role_SecondStriker::clearReceivers(){
+    if(_bh_atk != NULL) _bh_atk->clearReceivers();
+}
+
+void Role_SecondStriker::addReceivers(QList<quint8> rcvList){
+    if(_bh_atk != NULL){
+        int sz = rcvList.size();
+        for(int x = 0; x < sz; x++){
+            _bh_atk->addReceiver(rcvList.at(x));
+        }
+    }
 }

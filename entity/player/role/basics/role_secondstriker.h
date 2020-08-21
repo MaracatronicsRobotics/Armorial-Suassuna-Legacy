@@ -44,9 +44,6 @@ private:
         BEHAVIOUR_MARKPLAYER
     };
 
-    // Timer
-    Timer updateReceiversTimer;
-
     // Parameters
     bool _config;
     bool _isMarkNeeded;
@@ -70,13 +67,15 @@ public:
     void setMarkId(quint8 markId) { _markId = markId; }
     void setQuadrant(int quadrant) { _quadrant = quadrant; }
 
+    // Receivers
+    void clearReceivers();
+    void addReceivers(QList<quint8> rcvList);
+
 signals:
-    void requestReceivers(quint8 playerId);
     void requestAttacker();
     void requestIsMarkNeeded();
 
 public slots:
-    void takeReceiver(quint8 receiverId);
     void takeAttacker(quint8 attackerId);
     void takeIsMarkNeeded(bool isMarkNeeded);
 };
