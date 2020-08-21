@@ -95,13 +95,13 @@ void Behaviour_Attacker::run() {
                 lookPosition = loc()->ball();
             }
             else{
-                lookPosition = loc()->theirGoal();
+                lookPosition = loc()->ball();
                 if(loc()->isInsideTheirArea(loc()->ball())) desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 1.7f, GEARSystem::Angle::pi);
                 else if(loc()->isInsideOurArea(loc()->ball())){
                     desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->ourGoal(), 1.7f, GEARSystem::Angle::pi);
                     lookPosition = loc()->ourGoal();
                 }
-                else desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->theirGoal(), 0.6f, GEARSystem::Angle::pi);
+                else desiredPosition = WR::Utils::threePoints(loc()->ball(), loc()->ourGoal(), 0.6f, 0.0);
             }
         }
 
