@@ -372,22 +372,15 @@ void Playbook_Attack::resetMarkList(){
         }
     }
 
-    // Remove their closest player to ball
-    float minDist = 999.0f;
-    int pos = DIST_INVALID_ID;
-
+    // Remove their players at least 1m to ball
     for(int x = 0; x < markList.size(); x++){
         if(PlayerBus::theirPlayerAvailable(markList.at(x))){
             float dist = PlayerBus::theirPlayer(markList.at(x))->distBall();
-            if(dist < minDist){
-                minDist = dist;
-                pos = x;
+            if(dist < 1.0){
+                markList.removeAt(x);
             }
         }
     }
-
-    if(pos != DIST_INVALID_ID)
-        markList.removeAt(pos);
 
     // Sort for priority (closest to our goal)
     for(int x = 0; x < markList.size() - 1; x++){
