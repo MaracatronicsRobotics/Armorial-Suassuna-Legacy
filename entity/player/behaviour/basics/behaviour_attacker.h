@@ -121,6 +121,11 @@ private:
     Timer shootPassDecisionTimer;
     Timer aimDecisionTimer;
 
+    // Debug
+    void mostrar_niveis(quint8 _id);
+    float _PassingChanceVec[20];
+    float _receivertoGoalVec[20];
+
 public:
     Behaviour_Attacker();
     QString name();
