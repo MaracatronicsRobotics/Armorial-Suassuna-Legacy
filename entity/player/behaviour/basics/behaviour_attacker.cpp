@@ -160,7 +160,9 @@ void Behaviour_Attacker::run() {
             // This is the game_on / our kickoff / our direct kick situation
             // For kickoff and direct kick always use KICK skill
             // Otherwise, use pushBall skill
-
+            for(quint8 i = 0; i< _receiversList.size(); i++){
+                mostrar_niveis(_receiversList.at(i));
+            }
             // First get the best position to kick and the angle interval
             aimDecisionTimer.stop();
             if(aimDecisionTimer.timesec() >= AIM_DECISION_TIME || !firstAim){
@@ -187,19 +189,28 @@ void Behaviour_Attacker::run() {
                 _shootingChance = ((2.0/3.0)*_shootingChance + _mlpResult *(1.0/3.0));
                 _passingChance  = ((2.0/3.0)* _passingChance) + ((1.0 - _mlpResult)*(1.0/3.0));
 
-                /*
-                if(player()->hasBallPossession() && loc()->ballVelocity().abs() <= 1.0){
+
+                if(player()->hasBallPossession()){
                     cout << "A receiver list tem:\n";
                     for(quint8 i=0; i< _receiversList.size(); i++){
                         cout << (int)_receiversList.at(i) << " ";
+                        mostrar_niveis(_receiversList.at(i));
                     }
+
                     cout << "\nO best ID deu: " << (int)_bestRcv << "\n";
                     cout << "\t shootin chance: " << _shootingChance << "\n";
                     cout << "\t passin chance: " << _passingChance << "\n";
                     cout << "\t mlp result: " << _mlpResult << "\n";
                     printf("\t SHOOTINCHANCE DO PF: %lf\n", _shootingChance);
                 }
-                */
+
+                for(quint8 i = 0; i< _receiversList.size(); i++){
+                    mostrar_niveis(_receiversList.at(i));
+                }
+                //checadores
+
+
+                //
 
                 canShoot = !(_passingChance > _shootingChance);
 
@@ -305,6 +316,38 @@ void Behaviour_Attacker::run() {
     }
     break;
     }
+}
+
+void Behaviour_Attacker::mostrar_niveis(quint8 _id){
+    //desenhando no Suassuna a passing chance
+        float alturaps = 0.6 * _PassingChanceVec[(int)_id];
+        cout << "ALTURAPAS " << alturaps << "\n";
+        Position initial = PlayerBus::ourPlayer(_id)->position();
+        initial.setPosition(initial.x()+0.1,initial.y(),initial.z());
+        Position downleft = initial;
+        Position downright, upleft, upright;
+        downright.setPosition(initial.x()+0.05,initial.y(),initial.z());
+        upleft = downleft;
+        upright = downright;
+        upleft.setPosition(upleft.x(),upleft.y()+alturaps,upleft.z());
+        upright.setPosition(upright.x(),upright.y()+alturaps,upright.z());
+        CoachView::drawTriangle(downleft, downright, upleft, RGBA(255,255,0, 0.4, MRCConstants::robotZ + 0.01));
+        CoachView::drawTriangle(upleft, upright, downright, RGBA(255,255,0, 0.4, MRCConstants::robotZ + 0.01));
+    //
+    //desenhando a shooting chance
+        float alturash = 0.6 * _receivertoGoalVec[(int)_id];
+        cout << "ALTURASH " << alturash << "\n";
+        Position initialsh = PlayerBus::ourPlayer(_id)->position();
+        initialsh.setPosition(initialsh.x()-0.1,initialsh.y(),initialsh.z());
+        Position downrightsh = initialsh;
+        Position downleftsh, upleftsh, uprightsh;
+        downleftsh.setPosition(initialsh.x()-0.05,initialsh.y(),initialsh.z());
+        upleftsh = downleftsh;
+        uprightsh = downrightsh;
+        upleftsh.setPosition(upleftsh.x(),upleftsh.y()+alturash,upleftsh.z());
+        uprightsh.setPosition(uprightsh.x(),uprightsh.y()+alturash,uprightsh.z());
+        CoachView::drawTriangle(downleftsh, downrightsh, upleftsh, RGBA(112,219,147, 0.4, MRCConstants::robotZ + 0.01));
+        CoachView::drawTriangle(upleftsh, uprightsh, downrightsh, RGBA(112,219,147, 0.4, MRCConstants::robotZ + 0.01));
 }
 
 bool Behaviour_Attacker::canTakeBall(){
@@ -691,7 +734,7 @@ double Behaviour_Attacker::getFutureKickChance(quint8 _id){
         _angleScore = 0;
     }
 
-    double _shootingChance = (_distScore + _angleScore)/2.0;
+    double _shootingChance = (_distScore*(0.3) + _angleScore*(0.7));
 
     if(_angleScore == 0) return 0;
 
@@ -822,13 +865,48 @@ float Behaviour_Attacker::getPlayerPassingChance(quint8 _id){
         std::cout << "\t PassingChance total: " << (_receiverDistScore + _receiverAngleScore)/2.0 << "\n";
     }
 
-    return (_receiverDistScore+_receiverAngleScore)/2.0;
+    return (_receiverDistScore * (1.0/3.0) + _receiverAngleScore * (2.0/3.0));
+
 }
 
 float Behaviour_Attacker::getFinalPassingChance(quint8 _id){
     float _playerToReceiver = getPlayerPassingChance(_id);
     float _receivertoGoal = getFutureKickChance(_id);
-    return (_playerToReceiver + _receivertoGoal)/2.0;
+    float _actualPassingChance = (_playerToReceiver*(1.0/3.0) + _receivertoGoal*(2.0/3.0));
+    //desenhando no Suassuna a passing chance
+        _PassingChanceVec[_id] = _actualPassingChance;
+        /*
+        float alturaps = 0.3 * _actualPassingChance;
+        Position initial = PlayerBus::ourPlayer(_id)->position();
+        initial.setPosition(initial.x()+0.1,initial.y(),initial.z());
+        Position downleft = initial;
+        Position downright, upleft, upright;
+        downright.setPosition(initial.x()+0.05,initial.y(),initial.z());
+        upleft = downleft;
+        upright = downright;
+        upleft.setPosition(upleft.x(),upleft.y()+alturaps,upleft.z());
+        upright.setPosition(upright.x(),upright.y()+alturaps,upright.z());
+        CoachView::drawTriangle(downleft, downright, upleft, RGBA(255,255,0, 0.4, MRCConstants::robotZ + 0.01));
+        CoachView::drawTriangle(upleft, upright, downright, RGBA(255,255,0, 0.4, MRCConstants::robotZ + 0.01));
+        */
+    //
+    //desenhando a shooting chance
+        _receivertoGoalVec[_id] = _receivertoGoal;
+        /*
+        float alturash = 0.3 * _receivertoGoal;
+        Position initialsh = PlayerBus::ourPlayer(_id)->position();
+        initialsh.setPosition(initialsh.x()-0.1,initialsh.y(),initialsh.z());
+        Position downrightsh = initialsh;
+        Position downleftsh, upleftsh, uprightsh;
+        downleftsh.setPosition(initial.x()-0.05,initial.y(),initial.z());
+        upleftsh = downleftsh;
+        uprightsh = downrightsh;
+        upleftsh.setPosition(upleftsh.x(),upleftsh.y()+alturash,upleftsh.z());
+        upright.setPosition(uprightsh.x(),uprightsh.y()+alturash,uprightsh.z());
+        CoachView::drawTriangle(downleftsh, downrightsh, upleftsh, RGBA(112,219,147, 0.4, MRCConstants::robotZ + 0.01));
+        CoachView::drawTriangle(upleftsh, uprightsh, downrightsh, RGBA(112,219,147, 0.4, MRCConstants::robotZ + 0.01));
+        */
+    return (_playerToReceiver*(1.0/3.0) + _receivertoGoal*(2.0/3.0));
 }
 
 float Behaviour_Attacker::MLP_result(){
