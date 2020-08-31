@@ -26,7 +26,7 @@
 
 #define BALLPREVISION_MINVELOCITY 0.02f
 #define BALLPREVISION_VELOCITY_FACTOR 3.0f
-#define BALLPREVISION_FACTOR_LIMIT 0.15f
+#define BALLPREVISION_FACTOR_LIMIT 0.3f
 
 QString Skill_PushBall::name() {
     return "Skill_PushBall";
