@@ -191,17 +191,18 @@ void Behaviour_Attacker::run() {
 
 
                 if(player()->hasBallPossession()){
-                    cout << "A receiver list tem:\n";
+                    //cout << "A receiver list tem:\n";
                     for(quint8 i=0; i< _receiversList.size(); i++){
-                        cout << (int)_receiversList.at(i) << " ";
+                        //cout << (int)_receiversList.at(i) << " ";
                         mostrar_niveis(_receiversList.at(i));
                     }
-
+/*
                     cout << "\nO best ID deu: " << (int)_bestRcv << "\n";
                     cout << "\t shootin chance: " << _shootingChance << "\n";
                     cout << "\t passin chance: " << _passingChance << "\n";
                     cout << "\t mlp result: " << _mlpResult << "\n";
                     printf("\t SHOOTINCHANCE DO PF: %lf\n", _shootingChance);
+*/
                 }
 
                 for(quint8 i = 0; i< _receiversList.size(); i++){
@@ -321,7 +322,6 @@ void Behaviour_Attacker::run() {
 void Behaviour_Attacker::mostrar_niveis(quint8 _id){
     //desenhando no Suassuna a passing chance
         float alturaps = 0.6 * _PassingChanceVec[(int)_id];
-        cout << "ALTURAPAS " << alturaps << "\n";
         Position initial = PlayerBus::ourPlayer(_id)->position();
         initial.setPosition(initial.x()+0.1,initial.y(),initial.z());
         Position downleft = initial;
@@ -336,7 +336,6 @@ void Behaviour_Attacker::mostrar_niveis(quint8 _id){
     //
     //desenhando a shooting chance
         float alturash = 0.6 * _receivertoGoalVec[(int)_id];
-        cout << "ALTURASH " << alturash << "\n";
         Position initialsh = PlayerBus::ourPlayer(_id)->position();
         initialsh.setPosition(initialsh.x()-0.1,initialsh.y(),initialsh.z());
         Position downrightsh = initialsh;
