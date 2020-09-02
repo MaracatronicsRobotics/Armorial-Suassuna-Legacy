@@ -23,7 +23,7 @@
 
 #define BALLPREVISION_MINVELOCITY 0.02f
 #define BALLPREVISION_VELOCITY_FACTOR 3.0f
-#define BALLPREVISION_FACTOR_LIMIT 0.15f
+#define BALLPREVISION_FACTOR_LIMIT 0.25f
 
 QString Behaviour_MarkBall::name() {
     return "Behaviour_MarkBall";
@@ -58,11 +58,14 @@ void Behaviour_MarkBall::run() {
         }
     }
 
-    // If they don't have poss, aim position is now their goal
-    if(_aimPosition.isUnknown()) _aimPosition = loc()->theirGoal();
-
     // Calc behind ball
-    Position behindBall = WR::Utils::threePoints(loc()->ball(), _aimPosition, 0.3f, GEARSystem::Angle::pi);
+    Position behindBall;
+
+    // If they don't have poss, go in the ball directly, else go to the front of the player
+    if(_aimPosition.isUnknown())
+        behindBall = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.8f, GEARSystem::Angle::pi);
+    else
+        behindBall = WR::Utils::threePoints(loc()->ball(), _aimPosition, 0.4f, GEARSystem::Angle::pi);
 
     if(loc()->ballVelocity().abs() > BALLPREVISION_MINVELOCITY){
         // Calc unitary vector of velocity
@@ -88,16 +91,23 @@ void Behaviour_MarkBall::run() {
     case STATE_POS: {
         desiredPos = behindBall;
 
-        if(player()->isNearbyPosition(behindBall, 0.1f))
-            _state = STATE_TAKE;
+        // If one player have poss (aim isn't unknown), can go to TAKE
+        if(!_aimPosition.isUnknown()){
+            if(player()->isNearbyPosition(behindBall, 0.1f))
+                _state = STATE_TAKE;
+        }
 
         _sk_GoToLookTo->setAvoidOpponents(true);
     }
     break;
     case STATE_TAKE: {
-        desiredPos = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.2f, GEARSystem::Angle::pi);
+        // If no player have poss, just position the player
+        if(_aimPosition.isUnknown())
+            _state = STATE_POS;
 
-        if(player()->distBall() > 0.35f){
+        desiredPos = WR::Utils::threePoints(loc()->ball(), player()->position(), 0.5f, GEARSystem::Angle::pi);
+
+        if(player()->distBall() > 1.0f){
             _state = STATE_POS;
         }
 
