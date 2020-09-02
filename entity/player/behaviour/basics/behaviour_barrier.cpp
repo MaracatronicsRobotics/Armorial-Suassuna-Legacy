@@ -129,6 +129,7 @@ void Behaviour_Barrier::run() {
     _sk_goto->setAvoidTeammates(_avoidAllies);
     _sk_goto->setAvoidOpponents(false);
     _sk_goto->setAvoidOurGoalArea(true);
+    _sk_goto->setMinVelocity(0.1f);
 
     // dribble disable
     player()->dribble(false);
@@ -142,7 +143,7 @@ void Behaviour_Barrier::run() {
         _notAlreadyChosen = true;
 
     // Transitions
-    if(!player()->hasBallPossession() && player()->distBall() > INTERCEPT_MINBALLDIST && (isBallComing(INTERCEPT_MINBALLVELOCITY, 1.0f) || isBallComingToGoal(INTERCEPT_MINBALLDIST))) {
+    if(!player()->team()->opTeam()->hasBallPossession() && !player()->hasBallPossession() && player()->distBall() > INTERCEPT_MINBALLDIST && (isBallComing(INTERCEPT_MINBALLVELOCITY, 1.0f) || isBallComingToGoal(INTERCEPT_MINBALLDIST))) {
         enableTransition(STATE_GK);
     } else {
         if(player()->canKickBall() && player()->distBall() <= 0.4f && _canTakeout && !loc()->isInsideOurArea(loc()->ball(), 1.05f) && WR::Utils::distance(player()->position(), loc()->ourGoal()) <= (_radius + 1.5f)){
