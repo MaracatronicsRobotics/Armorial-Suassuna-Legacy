@@ -53,7 +53,7 @@ void Skill_PushBall::run(){
     }
 
     // Calc behind ball
-    Position behindBall = WR::Utils::threePoints(loc()->ball(), player()->position(), _isPenalty ? 0.0f : 0.1f, GEARSystem::Angle::pi);
+    Position behindBall = WR::Utils::threePoints(loc()->ball(), player()->position(), _isPenalty ? 0.0f : 0.25f, GEARSystem::Angle::pi);
 
     if(loc()->ballVelocity().abs() > BALLPREVISION_MINVELOCITY){
         // Calc unitary vector of velocity
