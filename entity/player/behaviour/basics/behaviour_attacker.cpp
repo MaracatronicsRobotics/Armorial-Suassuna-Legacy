@@ -76,6 +76,7 @@ void Behaviour_Attacker::run() {
 
     switch(_state){
     case STATE_CANTKICK:{
+        player()->dribble(false);
         // Check if can switch state
         if(canTakeBall()){
             _state = STATE_PUSH;
