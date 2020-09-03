@@ -53,6 +53,7 @@ public:
     // Attacker functions
     static void drawTriangle(Position a, Position b, Position c, RGBA color);
     static void drawLine(Position a, Position b, RGBA color);
+    static void drawCircle(double radius, Position pos, RGBA color);
 
 private:
     void initialization();

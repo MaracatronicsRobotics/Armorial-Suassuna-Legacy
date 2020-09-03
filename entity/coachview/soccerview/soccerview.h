@@ -110,6 +110,7 @@ private:
     // Attacker
     std::vector<std::pair<std::pair<Position, std::pair<Position, Position>>, RGBA>> _triangles;
     std::vector<std::pair<std::pair<Position, Position>, RGBA>> _lines;
+    std::vector<std::pair<double, std::pair<Position, RGBA>>> _circles;
 
     vector2d ball;
     vector2d ballVelocity;
@@ -159,6 +160,7 @@ private:
     void drawQuad(vector2d loc1, vector2d loc2, double z=0.0);
     void drawQuad(double x1, double y1, double x2, double y2, double z=0.0){drawQuad(vector2d(x1,y1),vector2d(x2,y2),z);}
     void drawQuad(vector2d v1, vector2d v2, vector2d v3, vector2d v4, double z);
+    void drawArc(Position loc, double r1, double r2, double theta1, double theta2, double z=0.0, RGBA color = RGBA(255, 255, 255, 1.0, 0.0), double dTheta = -1);
     void drawArc(vector2d loc, double r1, double r2, double theta1, double theta2, double z=0.0, double dTheta = -1);
     void drawArc(double x, double y, double r1, double r2, double theta1, double theta2, double z=0.0, double dTheta = -1){drawArc(vector2d(x,y),r1,r2,theta1,theta2,z,dTheta);}
     void drawTriangle(vector2d v1, vector2d v2, vector2d v3, double z);
@@ -177,6 +179,7 @@ private:
     // Attacker
     void addTriangle(std::pair<Position, std::pair<Position, Position>> triangle, RGBA color);
     void addLine(std::pair<Position, Position> line, RGBA color);
+    void addCircle(double radius, Position pos, RGBA color);
 
 protected:
     void paintEvent(QPaintEvent *event);

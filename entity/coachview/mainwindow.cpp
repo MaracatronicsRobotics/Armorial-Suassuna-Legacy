@@ -120,6 +120,10 @@ void MainWindow::drawLine(Position a, Position b, RGBA color){
     if(enableDebug()) ui->openGLWidget->addLine(std::make_pair(a, b), color);
 }
 
+void MainWindow::drawCircle(double radius, Position pos, RGBA color){
+    if(enableDebug()) ui->openGLWidget->addCircle(radius, pos, color);
+}
+
 void MainWindow::resetTree(QString strat, QList<QString> playbookList, QMap<QString, QList<QString>> rolesList,
                            QMap<std::pair<QString, QString>, QList<std::pair<QString, quint8>>> playersList,
                            QMap<QString, QString> behavioursList){
