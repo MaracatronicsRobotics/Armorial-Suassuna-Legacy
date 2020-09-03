@@ -415,6 +415,13 @@ void GLSoccerView::addLine(std::pair<Position, Position> line, RGBA color){
     }
 }
 
+void GLSoccerView::addCircle(double radius, Position pos, RGBA color){
+    if(debugMutex.tryLock()){
+        _circles.push_back(std::make_pair(radius, std::make_pair(pos, color)));
+        debugMutex.unlock();
+    }
+}
+
 void GLSoccerView::drawDebugThings(){
     if(debugMutex.tryLock()){
         // Draw triangles
@@ -429,9 +436,16 @@ void GLSoccerView::drawDebugThings(){
             drawVector(_lines.at(x).first.first, _lines.at(x).first.second, _lines.at(x).second.z, _lines.at(x).second);
         }
 
+        // Draw circles
+        sz = _circles.size();
+        for(int x = 0; x < sz; x++){
+            drawArc(_circles.at(x).second.first, (_circles.at(x).first*1000.0) - 20.0, (_circles.at(x).first*1000.0) + 20.0, -M_PI, M_PI, _circles.at(x).second.second.z, _circles.at(x).second.second);
+        }
+
         // Clear
         _triangles.clear();
         _lines.clear();
+        _circles.clear();
 
         debugMutex.unlock();
     }
@@ -454,6 +468,25 @@ void GLSoccerView::drawQuad(vector2d v1, vector2d v2, vector2d v3, vector2d v4, 
     glVertex3d(v2.x,v2.y,z);
     glVertex3d(v3.x,v3.y,z);
     glVertex3d(v4.x,v4.y,z);
+    glEnd();
+}
+
+void GLSoccerView::drawArc(Position loc, double r1, double r2, double theta1, double theta2, double z, RGBA color, double dTheta)
+{
+    static const double tesselation = 1.0;
+    if(dTheta<0) {
+        dTheta = tesselation/r2;
+    }
+    glBegin(GL_QUAD_STRIP);
+    glColor4f(color.r, color.g, color.b, color.a);
+    for(double theta=theta1; theta<theta2; theta+=dTheta) {
+        double c1 = cos(theta), s1 = sin(theta);
+        glVertex3d(r2*c1+(loc.x()*1000.0),r2*s1+(loc.y()*1000.0),z);
+        glVertex3d(r1*c1+(loc.x()*1000.0),r1*s1+(loc.y()*1000.0),z);
+    }
+    double c1 = cos(theta2), s1 = sin(theta2);
+    glVertex3d(r2*c1+(loc.x()*1000.0),r2*s1+(loc.y()*1000.0),z);
+    glVertex3d(r1*c1+(loc.x()*1000.0),r1*s1+(loc.y()*1000.0),z);
     glEnd();
 }
 
@@ -859,7 +892,7 @@ void GLSoccerView::updateDetection(MRCTeam *ourTeam, MRCTeam *theirTeam) {
         robot.conf = 1.0;
         robots.append(robot);
 
-        if(drawDebug)
+        if(drawDebug && drawPlayerPath)
             robotsNextPositions.append(std::make_pair(robot.team, next));
 
         if(drawAllieVel)

@@ -291,8 +291,15 @@ void Behaviour_Attacker::run() {
                 }
             }else{
                 // Debug to UI
-                CoachView::drawTriangle(player()->position(), loc()->theirGoalLeftPost(), loc()->theirGoalRightPost(), RGBA(178, 34, 34, 0.4, MRCConstants::robotZ + 0.01));
-                CoachView::drawLine(player()->position(), _aim.second.isUnknown() ? loc()->theirGoal() : _aim.second, RGBA(106, 90, 205, 1.0, MRCConstants::robotZ + 0.02));
+                for(int x = 0; x < intervalList.size(); x++){
+                    Line first = Line::getLine(loc()->ball(), intervalList.at(x).angInitial());
+                    Line second = Line::getLine(loc()->ball(), intervalList.at(x).angFinal());
+                    float firstY = first.a() * loc()->theirGoal().x() + first.b();
+                    float secondY = second.a() * loc()->theirGoal().x() + second.b();
+                    if(intervalList.at(x).obstructed()) CoachView::drawTriangle(loc()->ball(), Position(true, loc()->theirGoal().x(), firstY, 0.0), Position(true, loc()->theirGoal().x(), secondY, 0.0), RGBA(178, 34, 34, 0.4, MRCConstants::robotZ + 0.01));
+                    else                                CoachView::drawTriangle(loc()->ball(), Position(true, loc()->theirGoal().x(), firstY, 0.0), Position(true, loc()->theirGoal().x(), secondY, 0.0), RGBA(30, 157, 0, 0.4, MRCConstants::robotZ + 0.01));
+                }
+                CoachView::drawLine(loc()->ball(), _aim.second.isUnknown() ? loc()->theirGoal() : _aim.second, RGBA(255, 69, 0, 1.0, MRCConstants::robotZ + 0.02));
 
                 Position aim = (_aim.second.isUnknown()) ? loc()->theirGoal() : _aim.second;
 
@@ -510,6 +517,7 @@ std::pair<float, Position> Behaviour_Attacker::getBestAimPosition(){
 
     // get free angle with the shifted obstacles
     QList<FreeAngles::Interval> freeAngles = FreeAngles::getFreeAngles(loc()->ball(), theirGoalRightPost, theirGoalLeftPost, obstacles);
+    intervalList = FreeAngles::getFreeAngles(loc()->ball(), theirGoalRightPost, theirGoalLeftPost, obstacles, true);
 
     // Get the largest
 

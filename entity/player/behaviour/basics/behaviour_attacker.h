@@ -68,6 +68,8 @@ private:
     quint8 _bestRcv;
     float _rcvScore;
 
+    QList<FreeAngles::Interval> intervalList;
+
     // Utils functions
     bool canTakeBall();
     quint8 getTheirClosestPlayerToGoal();

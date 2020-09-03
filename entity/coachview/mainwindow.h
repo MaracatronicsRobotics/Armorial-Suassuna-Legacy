@@ -87,6 +87,7 @@ public:
 
     void drawTriangle(Position a, Position b, Position c, RGBA color);
     void drawLine(Position a, Position b, RGBA color);
+    void drawCircle(double radius, Position pos, RGBA color);
 
 private:
     Ui::MainWindow *ui;

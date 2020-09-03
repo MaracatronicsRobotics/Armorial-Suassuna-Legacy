@@ -87,6 +87,11 @@ void CoachView::drawLine(Position a, Position b, RGBA color){
         _suassunaUI->drawLine(a, b, color);
 }
 
+void CoachView::drawCircle(double radius, Position pos, RGBA color){
+    if(_isEnabled)
+        _suassunaUI->drawCircle(radius, pos, color);
+}
+
 void CoachView::initialization(){
    std::cout << MRCConstants::defaultBold << "[COACHVIEW] " << MRCConstants::green << "Thread started.\n" << MRCConstants::reset;
 }
