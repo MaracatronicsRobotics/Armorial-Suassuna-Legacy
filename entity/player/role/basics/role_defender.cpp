@@ -79,6 +79,9 @@ float Role_Defender::distanceFromMidGoalShoot(char side) {
 
     float maxLimit = WR::Utils::distance(loc()->ball(), barrierDivision) * INTERCEPTION_PREVISION / 2.0f + 0.09f;
 
+    leftDistance = abs(leftDistance);
+    rightDistance = abs(rightDistance);
+
     // Limitação das distâncias
     WR::Utils::limitValue(&rightDistance, 0.09f, maxLimit);
     WR::Utils::limitValue(&leftDistance, 0.09f, maxLimit);
