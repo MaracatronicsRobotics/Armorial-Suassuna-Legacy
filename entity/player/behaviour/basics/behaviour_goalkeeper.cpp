@@ -74,6 +74,8 @@ void Behaviour_Goalkeeper::run() {
 
     // goToLookTo (posicionamento do goleiro
     Position desiredPosition = getAttackerInterceptPosition();
+    CoachView::drawLine(loc()->ball(), desiredPosition, RGBA(255, 0, 0, 1.0, MRCConstants::robotZ + 0.02));
+
 
     if(loc()->ourSide().isRight() && desiredPosition.x() > loc()->ourGoal().x()-GOALPOSTS_ERROR){        // cobrir angulos certos (manter goleiro na area do gol!)
         desiredPosition.setPosition(loc()->ourGoal().x()-GOALPOSTS_ERROR, desiredPosition.y(), 0.0);     // varia de lado pra lado, com erros nas barras p precisao
@@ -86,7 +88,7 @@ void Behaviour_Goalkeeper::run() {
     _skill_goToLookTo->setAimPosition(loc()->ball());
     _skill_goToLookTo->setAvoidBall(false);
     _skill_goToLookTo->setAvoidOurGoalArea(false);
-    _skill_goToLookTo->setMinVelocity(0.15f);
+    _skill_goToLookTo->setMinVelocity(player()->distanceTo(desiredPosition) / 0.25);
 
     // kick parameters
     if(!player()->hasBallPossession() && loc()->ballVelocity().abs() >= 0.2f)

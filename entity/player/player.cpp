@@ -52,6 +52,10 @@ Player::Player(World *world, MRCTeam *team, Controller *ctr, quint8 playerID, Ro
     _vyPID = vyPID;
     _vwPID = vwPID;
 
+    if(this->playerId() == getConstants()->getGoalieId()){
+        _vwPID = new PID(3.0, 0.0, 0.0, 6.2, -6.2);
+    }
+
     // Idle control
     _idleCount = 0;
 
