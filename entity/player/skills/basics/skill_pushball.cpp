@@ -22,7 +22,7 @@
 #include "skill_pushball.h"
 #include <entity/player/skills/skills_include.h>
 
-#define BALL_MINDIST 0.12f
+#define BALL_MINDIST 0.115f
 
 #define BALLPREVISION_MINVELOCITY 0.02f
 #define BALLPREVISION_VELOCITY_FACTOR 3.0f
