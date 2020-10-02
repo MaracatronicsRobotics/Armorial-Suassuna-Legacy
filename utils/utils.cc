@@ -363,6 +363,31 @@ int Utils::getPlayerQuadrant(Position playerPosition) {
     return NO_QUADRANT;
 }
 
+int Utils::getPlayerQuadrant(Position playerPosition, FieldSide side) {
+    // Quadrantes relacionados ao campo da divisão B
+    if (side.isRight()) {
+        // QUADRANT_UP
+        if (playerPosition.y() < 3.0f && playerPosition.x() > -4.5f && playerPosition.x() < 1.5f * playerPosition.y() - 4.5f) return QUADRANT_UP;
+        // QUADRANT_UPMID
+        if (playerPosition.y() > 0.0f && playerPosition.x() < 0.0f && playerPosition.x() > 1.5f * playerPosition.y() - 4.5f) return QUADRANT_UPMID;
+        // QUADRANT_BOTMID
+        if (playerPosition.y() < 0.0f && playerPosition.x() < 0.0f && playerPosition.x() > -1.5f * playerPosition.y() - 4.5f) return QUADRANT_BOTMID;
+        // QUADRANT_BOT
+        if (playerPosition.y() > -3.0f && playerPosition.x() > -4.5f && playerPosition.x() < -1.5f * playerPosition.y() - 4.5f) return QUADRANT_BOT;
+    } else {
+        // QUADRANT_UP
+        if (playerPosition.y() < 3.0f && playerPosition.x() < 4.5f && playerPosition.x() > -1.5f * playerPosition.y() + 4.5f) return QUADRANT_UP;
+        // QUADRANT_UPMID
+        if (playerPosition.y() > 0.0f && playerPosition.x() > 0.0f && playerPosition.x() < -1.5f * playerPosition.y() + 4.5f) return QUADRANT_UPMID;
+        // QUADRANT_BOTMID
+        if (playerPosition.y() < 0.0f && playerPosition.x() > 0.0f && playerPosition.x() < 1.5f * playerPosition.y() + 4.5f) return QUADRANT_BOTMID;
+        // QUADRANT_BOT
+        if (playerPosition.y() > -3.0f && playerPosition.x() < 4.5f && playerPosition.x() > 1.5f * playerPosition.y() + 4.5f) return QUADRANT_BOT;
+    }
+
+    return NO_QUADRANT;
+}
+
 int Utils::getOpPlayersInQuadrant(int quadrant) {
     int opPlayersInQuadrant = 0;
     QList<Player*> enemyPlayers = _theirTeam->avPlayers().values();

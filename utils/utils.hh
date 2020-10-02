@@ -80,6 +80,7 @@ namespace WR {
         static std::pair<Position, Position> getQuadrantPositions(int quadrant);
         static Position getPlayerKickDevice(quint8 id, float robotRadius = 0.09f);
         static int getPlayerQuadrant(Position playerPosition);
+        static int getPlayerQuadrant(Position playerPosition, FieldSide side);
         static int getOpPlayersInQuadrant(int quadrant);
         static Position getQuadrantBarycenter(int quadrant);
     };

@@ -52,6 +52,7 @@ public:
     virtual QString name() = 0;
 
     // Auxiliary methods
+    QList<quint8> getAllPlayers() { return _players; }
     QList<quint8> getPlayers() { return _assignmentTable.keys(); }
     QList<Role*> getRoles() { return _assignmentTable.values(); }
     Colors::Color teamColor() { return _ourTeam->teamColor(); }
