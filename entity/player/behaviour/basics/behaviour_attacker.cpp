@@ -732,6 +732,9 @@ double Behaviour_Attacker::getFutureKickChance(quint8 _id){
     }
 
     _angleScore =  bestAim.first / _angle;
+    if(isnan(_angleScore)){
+        _angleScore = 0.0;
+    }
 
     if(_angleScore > 1.0){
         //std::cout << "ESTRANHO : " << _angleScore << "\n";
@@ -767,7 +770,6 @@ std::pair<Point2d, Point2d> Behaviour_Attacker::calc_freeangles_points(quint8 be
 
     //normalizando
     directionkick.setCoords(directionkick.x()/directionkick.norm(),directionkick.y()/directionkick.norm());
-
 
     // rotacionando 90º
     double angulo = acos(directionkick.x());

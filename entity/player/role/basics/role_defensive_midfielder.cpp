@@ -55,9 +55,9 @@ void Role_Defensive_Midfielder::run(){
 
     if(ref()->getGameInfo(player()->team()->teamColor())->directKick() || ref()->getGameInfo(player()->team()->teamColor())->indirectKick() || ref()->getGameInfo(player()->team()->teamColor())->kickoff()){
         if(loc()->isInsideOurField(loc()->ball()))
-            _bh_bar->setRadius(1.8f);
+            _bh_bar->setRadius(1.4f);
         else
-            _bh_bar->setRadius(std::min(std::max(1.8f, 4.5f + eq), 3.1f));
+            _bh_bar->setRadius(std::min(std::max(1.4f, 4.5f + eq), 3.1f));
 
         // If is their direct, mark the player that will make the shoot (avoid direct kick to goal)
         if(ref()->getGameInfo(player()->team()->teamColor())->theirDirectKick()){
@@ -83,7 +83,7 @@ void Role_Defensive_Midfielder::run(){
             // If we are more far to the enemy than our closest player
             if(ourPlayerMinDist <= player()->distBall()){
                 // setting radius
-                _bh_bar->setRadius(1.8f);
+                _bh_bar->setRadius(1.4f);
                 // updating mark id
                 quint8 markId = getMarkId();
                 if(markId != DIST_INVALID_ID) _bh_bar->setMarkPlayer(markId);
@@ -103,11 +103,11 @@ void Role_Defensive_Midfielder::run(){
         else                          _bh_bar->setMarkBall();
 
         if(loc()->isInsideOurField(loc()->ball())){
-            _bh_bar->setRadius(1.8f);
+            _bh_bar->setRadius(1.4f);
         }
         else{
             if(markId != DIST_INVALID_ID && loc()->isInsideOurField(PlayerBus::theirPlayer(markId)->position())) _bh_bar->setRadius(1.8f);
-            else _bh_bar->setRadius(std::min(std::max(1.8f, 4.5f + eq), 3.1f));
+            else _bh_bar->setRadius(std::min(std::max(1.4f, 4.5f + eq), 3.1f));
         }
 
         setBehaviour(BEHAVIOUR_BARRIER);
