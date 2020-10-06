@@ -119,9 +119,10 @@ void Playbook_Defense::run(int numPlayers) {
     float minDist = 999.0f;
     quint8 id = DIST_INVALID_ID;
     for(int x = 0; x < 2; x++){
-        quint8 playerId = players.takeFirst();
-        dist()->removePlayer(playerId);
+        quint8 playerId = DIST_INVALID_ID;
+        if(players.size() > 0) playerId = players.takeFirst();
         if(playerId != DIST_INVALID_ID){
+            dist()->removePlayer(playerId);
             barriers.push_back(playerId);
             if(placedBarriers == 0){
                 if(loc()->ourSide().isRight()) _rl_def.at(x)->setBarrierSide('l');
