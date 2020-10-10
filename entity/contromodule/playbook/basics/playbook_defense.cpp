@@ -86,7 +86,8 @@ void Playbook_Defense::run(int numPlayers) {
         // Taking "enemy" positions
         QList<Position> marks;
         Position posBall = loc()->ball();
-        marks.push_back(markPositions.takeFirst());
+        if(!markPositions.isEmpty()) marks.push_back(markPositions.takeFirst());
+        else                         marks.push_back(posBall);
         marks.push_back(posBall);
         marks.push_back(posBall);
 
@@ -122,7 +123,8 @@ void Playbook_Defense::run(int numPlayers) {
         QList<quint8> barriers;
         for(int x = 0; x < players.size(); x++){
             if(solution[players[x]] == 0){
-                _rl_def_midf->setMarkId(markList.takeFirst());
+                if(!markPositions.isEmpty()) _rl_def_midf->setMarkId(markList.takeFirst());
+                else                         _rl_def_midf->setMarkId(DIST_INVALID_ID);
                 setPlayerRole(players[x], _rl_def_midf);
             }
             else{
