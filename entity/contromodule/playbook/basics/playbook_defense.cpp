@@ -145,7 +145,14 @@ void Playbook_Defense::run(int numPlayers) {
         }
 
         int barrierAt = 0;
+        float dist = 999.0f;
+        quint8 bestId = DIST_INVALID_ID;
         for(int x = 0; x < barriers.size(); x++){
+            float ourDist = WR::Utils::distance(PlayerBus::ourPlayer(barriers[x])->position(), loc()->ball());
+            if(ourDist < dist){
+                dist = ourDist;
+                bestId = barriers[x];
+            }
             setPlayerRole(barriers[x], _rl_def.at(barrierAt));
             if(barrierAt == 0){
                 if(loc()->ourSide().isRight()) _rl_def.at(barrierAt)->setBarrierSide('l');
@@ -156,6 +163,15 @@ void Playbook_Defense::run(int numPlayers) {
                 if(loc()->ourSide().isRight()) _rl_def.at(barrierAt)->setBarrierSide('r');
                 else                           _rl_def.at(barrierAt)->setBarrierSide('l');
             }
+        }
+
+        // Enable takeout for the barrier that is closest to the ball
+        // (avoid double takeout and dribble errors)
+        for(int x = 0; x < barriers.size(); x++){
+            if(bestId == barriers.at(x))
+                _rl_def.at(x)->setBarrierCanTakeout(true);
+            else
+                _rl_def.at(x)->setBarrierCanTakeout(false);
         }
     }
     else{
