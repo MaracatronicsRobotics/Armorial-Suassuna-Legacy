@@ -25,6 +25,13 @@
 #include <entity/contromodule/playbook/playbook.h>
 #include <entity/player/role/mrcroles.h>
 
+typedef struct{
+    int player, target;
+    int val;
+    bool ok;
+} marcation;
+#define inf 100000001
+
 class Playbook_Defense : public Playbook {
 private:
     // Roles
@@ -35,6 +42,7 @@ private:
 
     // Mark
     QList<quint8> markList;
+    QList<Position> markPositions;
     void resetMarkList();
     quint8 requestMarkPlayer(quint8 playerId);
 
@@ -44,6 +52,14 @@ private:
     void configure(int numPlayers);
     void run(int numPlayers);
     int maxNumPlayer();
+
+    // Dynamic barriers DP
+    marcation dp[32][32][32];
+    int weight[32][32];
+    int n_allies;
+    int n_targets;
+    int search(int actualAllieMask, int actualTargetMask, int actualPlayer, int actualTarget);
+    std::pair<int, int> solve();
 public:
     Playbook_Defense();
     QString name();
