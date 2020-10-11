@@ -47,6 +47,15 @@ private:
     QMutex _markMutex;
     float _minDist;
 
+    //
+    int _actualState;
+
+    // State Enum
+    enum{
+        STATE_BARRIER,
+        STATE_CHASE
+    };
+
     // Auxiliar functions
     quint8 getOurPlayerClosestToBall();
     quint8 getTheirPlayerClosestToBall();
@@ -60,6 +69,7 @@ public:
     quint8 getMarkId();
     // minDist => minimum distance of an allie to the ball to be barrier again
     void setMinDist(float minDist) { _minDist = minDist; }
+    int getState() { return _actualState; }
 };
 
 #endif // ROLE_DEFENSIVE_MIDFIELDER_H

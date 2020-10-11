@@ -91,10 +91,15 @@ void Playbook_Defense::run(int numPlayers) {
         marks.push_back(posBall);
         marks.push_back(posBall);
 
-        // Calculating weightss
+        // Calculating weights
         for(int x = 0; x < n_allies; x++){
             for(int y = 0; y < n_targets; y++){
-                Position desiredX = WR::Utils::threePoints(loc()->ourGoal(), marks[y], 1.4f, 0.0f);
+                Position desiredX;
+
+                if(y != 0) desiredX = WR::Utils::threePoints(loc()->ourGoal(), marks[y], 1.4f, 0.0f);
+                else if(_rl_def_midf->getState() == 0) desiredX = WR::Utils::threePoints(loc()->ourGoal(), marks[y], 1.4f, 0.0f);
+                else desiredX = loc()->ball();
+
                 weight[x][y] = int((1000 * WR::Utils::distance(playersPositions[x], desiredX)));
             }
         }
