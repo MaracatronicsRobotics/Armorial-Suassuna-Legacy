@@ -30,6 +30,7 @@ Role_Defensive_Midfielder::Role_Defensive_Midfielder() {
     _bh_mkBall = NULL;
 
     setMarkId(DIST_INVALID_ID);
+    _actualState = STATE_BARRIER;
 }
 
 void Role_Defensive_Midfielder::initializeBehaviours(){
@@ -70,12 +71,13 @@ void Role_Defensive_Midfielder::run(){
         else
             _bh_bar->setMarkBall();
 
+        _actualState = STATE_BARRIER;
         setBehaviour(BEHAVIOUR_BARRIER);
-
     }
     else if(player()->team()->opTeam()->hasBallPossession() && loc()->isInsideOurField(loc()->ball())){
         quint8 playerId = getOurPlayerClosestToBall();
         if(playerId == DIST_INVALID_ID){
+            _actualState = STATE_CHASE;
             setBehaviour(BEHAVIOUR_MARKBALL);
         }
         else{
@@ -89,9 +91,11 @@ void Role_Defensive_Midfielder::run(){
                 if(markId != DIST_INVALID_ID) _bh_bar->setMarkPlayer(markId);
                 else                          _bh_bar->setMarkBall();
 
+                _actualState = STATE_BARRIER;
                 setBehaviour(BEHAVIOUR_BARRIER);
             }
             else{
+                _actualState = STATE_CHASE;
                 setBehaviour(BEHAVIOUR_MARKBALL);
             }
         }
@@ -110,6 +114,7 @@ void Role_Defensive_Midfielder::run(){
             else _bh_bar->setRadius(std::min(std::max(1.4f, 4.5f + eq), 3.1f));
         }
 
+        _actualState = STATE_BARRIER;
         setBehaviour(BEHAVIOUR_BARRIER);
     }
 }
