@@ -62,14 +62,19 @@ void Playbook_Attack::configure(int numPlayers) {
 }
 
 void Playbook_Attack::run(int numPlayers) {
-    if(!_takeMainAttacker || numPlayers != lastNumPlayers){
-        quint8 player = dist()->getKNN(1, loc()->ball()).first();
-        mainAttacker = player;
+    if(!_takeMainAttacker || numPlayers != lastNumPlayers || isAnyFoul()){
+        if(isAnyFoul() && _takeMainAttacker){
+            _attackerId = mainAttacker;
+        }
+        else{
+            quint8 player = dist()->getKNN(1, loc()->ball()).first();
+            mainAttacker = player;
 
-        _attackerId = player;
-        _takeMainAttacker = true;
-        _rcvsNeedUpdate = true;
-        _updatedBots = 0;
+            _attackerId = player;
+            _takeMainAttacker = true;
+            _rcvsNeedUpdate = true;
+            _updatedBots = 0;
+        }
     }
 
     lastNumPlayers = numPlayers;
@@ -133,10 +138,15 @@ void Playbook_Attack::run(int numPlayers) {
     }
 }
 
+bool Playbook_Attack::isAnyFoul(){
+    SSLGameInfo *gameInfo = ref()->getGameInfo(team()->teamColor());
+
+    return (gameInfo->freeKick() || gameInfo->kickoff() || gameInfo->penaltyKick() || !gameInfo->gameOn());
+}
+
 int Playbook_Attack::requestQuadrant(quint8 playerId) {
     // If in direct / indirect / stop / penalty / kickoff, set our receivers to up and bot (walk together with attacker)
-    SSLGameInfo *gameInfo = ref()->getGameInfo(team()->teamColor());
-    if(gameInfo->freeKick() || gameInfo->kickoff() || gameInfo->penaltyKick() || !gameInfo->gameOn()){
+    if(isAnyFoul()){
         if(!leftTaked){
             leftTaked = true;
             return QUADRANT_UP;
