@@ -82,7 +82,6 @@ void Behaviour_Attacker::run() {
             _state = STATE_PUSH;
             break;
         }
-
         // Transition to goToLookTo
         enableTransition(SKT_POS);
         Position lookPosition, desiredPosition;

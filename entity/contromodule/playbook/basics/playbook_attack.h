@@ -64,6 +64,7 @@ private:
     // Utils
     bool isBallComing(Position playerPosition, float minVelocity, float radius);
     QList<quint8> requestReceivers(quint8 playerId);
+    bool isAnyFoul();
 
 public:
     Playbook_Attack();

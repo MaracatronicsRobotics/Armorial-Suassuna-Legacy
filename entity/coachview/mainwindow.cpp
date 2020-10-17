@@ -388,7 +388,7 @@ MainWindow::MainWindow(QWidget *parent, MRCConstants *mrcconstants)
     root = NULL;
     treeWidget = new QTreeWidget(ui->page_tree);
     treeWidget->setObjectName(QStringLiteral("treeWidget"));
-    treeWidget->setGeometry(QRect(0, 0, 621, 211));
+    treeWidget->setGeometry(QRect(0, 0, 621, 209));
     treeWidget->setColumnCount(1);
     QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
     ___qtreewidgetitem->setText(0, QApplication::translate("MainWindow", "Coach Tree", Q_NULLPTR));

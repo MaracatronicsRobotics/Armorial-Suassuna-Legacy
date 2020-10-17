@@ -48,7 +48,7 @@ void SSLStrategy_Halt::run(int numOurPlayers) {
 
     for(int x = 0; x < players.size(); x++){
         quint8 id = players.at(x);
-        if(id != 1 && id != 3)
+        if(id % 2 == 0)
             _pb_defense->addPlayer(id);
         else
             _pb_attack->addPlayer(id);

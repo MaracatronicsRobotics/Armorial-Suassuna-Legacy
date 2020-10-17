@@ -90,6 +90,7 @@ void Behaviour_Receiver::run() {
             _skill_GoToLookTo->setAvoidOpponents(true);
             _skill_GoToLookTo->setAvoidTeammates(true);
         }
+        enableTransition(SK_GOTO);
         return ;
     }
     else if(ref()->getGameInfo(player()->team()->teamColor())->kickoff()){

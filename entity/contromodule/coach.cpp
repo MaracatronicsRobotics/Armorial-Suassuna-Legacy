@@ -242,7 +242,7 @@ void Coach::run(){
         if(strat->isInitialized() == false){
             strat->initialize(_ref, _ourTeam, _theirTeam, _utils, getConstants());
         }
-        strat->runStrategy(agressivityToEnum(_lastAgressivity));
+        strat->runStrategy(AgressivityLevel::HIGH_ATTACK); // fixed strategy to LARC
     }
 }
 
