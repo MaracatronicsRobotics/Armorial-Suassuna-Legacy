@@ -165,7 +165,7 @@ int main(int argc, char *argv[]) {
     ExitHandler::setApplication(&app);
     ExitHandler::setup();
     // Setup constants
-    MRCConstants *mrcconstants = new MRCConstants("../const/config.json", playingAgainstWarthog);
+    MRCConstants *mrcconstants = new MRCConstants("../const/config.json", false);
     // Create and start Suassuna
     Suassuna suassuna(ourTeamId, ourTeamColor, ourFieldSide, enableGUI, mrcconstants);
     suassuna.start();
