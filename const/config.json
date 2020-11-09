@@ -11,7 +11,7 @@
     "RobotMaxLinearSpeed": 3.0,
     "RobotMaxAngularSpeed": 12.5,
 
-    "ThreadFrequency": 60,
+    "ThreadFrequency": 80,
     "GuiUpdateFrequency": 30,
     "GoalieID": 0,
 
