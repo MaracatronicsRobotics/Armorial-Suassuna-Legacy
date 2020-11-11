@@ -22,15 +22,15 @@
 #ifndef EXITHANDLER_H
 #define EXITHANDLER_H
 #include <QObject>
-#include <QApplication>
+#include <QCoreApplication>
 #include <const/constants.h>
 class ExitHandler : public QObject {
 private:
-    static QApplication *_app;
+    static QCoreApplication *_app;
     static int _counter;
 public:
     ExitHandler();
-    static void setApplication(QApplication *app);
+    static void setApplication(QCoreApplication *app);
     static void setup();
     static void run(int s);
 };

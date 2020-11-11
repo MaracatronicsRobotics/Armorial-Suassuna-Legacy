@@ -20,7 +20,7 @@
  ***/
 
 #include <iostream>
-#include <QApplication>
+#include <QCoreApplication>
 #include <suassuna.h>
 #include <exithandler.h>
 #include <instancechecker.h>
@@ -90,7 +90,7 @@ bool validatePlayingAgainstWarthog(const QString &input, bool *valid) {
 }
 
 int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
+    QCoreApplication app(argc, argv);
     app.setApplicationName("Armorial Suassuna");
     app.setApplicationVersion("1.0.0");
     

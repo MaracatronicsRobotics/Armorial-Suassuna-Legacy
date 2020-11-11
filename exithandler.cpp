@@ -24,14 +24,14 @@
 #include "signal.h"
 #include <iostream>
 
-QApplication* ExitHandler::_app = NULL;
+QCoreApplication* ExitHandler::_app = NULL;
 int ExitHandler::_counter = 0;
 
 ExitHandler::ExitHandler() {
 
 }
 
-void ExitHandler::setApplication(QApplication *app) {
+void ExitHandler::setApplication(QCoreApplication *app) {
     ExitHandler::_app = app;
 }
 
