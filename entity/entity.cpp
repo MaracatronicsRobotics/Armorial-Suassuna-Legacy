@@ -42,8 +42,6 @@ void Entity::run() {
             long rest = loopTime() - t.timemsec();
             if(rest >= 0)
                 msleep(rest);
-            else
-                std::cout << MRCConstants::yellow << "[TIMER OVEREXTENDED] " << MRCConstants::reset << name().toStdString() << " for " <<  -rest  << " ms.\n";
         }
     }
     finalization();

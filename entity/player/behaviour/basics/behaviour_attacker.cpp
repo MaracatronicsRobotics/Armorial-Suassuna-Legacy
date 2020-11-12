@@ -730,10 +730,14 @@ double Behaviour_Attacker::getFutureKickChance(quint8 _id){
         _distScore = 1.0;
     }
 
+    WR::Utils::limitValue(&_distScore, 0.0f, 1.0f);
+
     _angleScore =  bestAim.first / _angle;
     if(isnan(_angleScore)){
         _angleScore = 0.0;
     }
+
+    WR::Utils::limitValue(&_angleScore, 0.0f, 1.0f);
 
     if(_angleScore > 1.0){
         //std::cout << "ESTRANHO : " << _angleScore << "\n";
@@ -744,7 +748,7 @@ double Behaviour_Attacker::getFutureKickChance(quint8 _id){
         _angleScore = 0;
     }
 
-    double _shootingChance = (_distScore*(0.3) + _angleScore*(0.7));
+    double _shootingChance = (_distScore*(0.1) + _angleScore*(0.9));
 
     if(_angleScore == 0) return 0;
 
