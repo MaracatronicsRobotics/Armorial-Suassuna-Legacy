@@ -62,8 +62,8 @@ void Behaviour_Receiver::configure() {
 };
 
 void Behaviour_Receiver::run() {
-    if(_quadrant == QUADRANT_UP || _quadrant == QUADRANT_BOT) setActionRadius(1.5, 2.5);
-    else                                                      setActionRadius(1.5, 3.5);
+    if(_quadrant == QUADRANT_UP || _quadrant == QUADRANT_BOT) setActionRadius(2.0, 2.5);
+    else                                                      setActionRadius(2.0, 3.5);
 
     if(ref()->getGameInfo(player()->team()->teamColor())->penaltyKick()){
         if(ref()->getGameInfo(player()->team()->teamColor())->ourPenaltyKick()){

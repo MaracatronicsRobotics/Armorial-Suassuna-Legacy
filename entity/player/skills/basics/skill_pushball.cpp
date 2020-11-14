@@ -79,7 +79,7 @@ void Skill_PushBall::run(){
         _currPos.setUnknown();
         _pushedDistance = 0.0;
 
-        if(player()->distBall() < BALL_MINDIST && isBallInFront())
+        if(player()->distBall() <= BALL_MINDIST && isBallInFront())
             _state = STATE_PUSH;
         else
             player()->goToLookTo(behindBall, loc()->ball(), true, true, false, false, false);
@@ -112,7 +112,7 @@ void Skill_PushBall::run(){
             }
         }
 
-        if(player()->distBall() > (BALL_MINDIST + 0.04f) || !isBallInFront())
+        if(player()->distBall() >= (BALL_MINDIST + 0.015f) || !isBallInFront())
             _state = STATE_POS;
     }
     break;
@@ -123,7 +123,7 @@ bool Skill_PushBall::isBallInFront(){
     Angle anglePlayerBall = player()->angleTo(loc()->ball());
     float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
 
-    return (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
+    return (diff <= atan(0.55)); // atan(0.55) aprox = 29 degree
 }
 
 bool Skill_PushBall::isBehindBall(Position posObjective){

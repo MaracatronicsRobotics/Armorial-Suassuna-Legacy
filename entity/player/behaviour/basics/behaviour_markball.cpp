@@ -143,7 +143,7 @@ bool Behaviour_MarkBall::isBallInFront(){
     Angle anglePlayerBall = player()->angleTo(loc()->ball());
     float diff = WR::Utils::angleDiff(anglePlayerBall, player()->orientation());
 
-    return (diff <= atan(0.7)); // atan(0.7) aprox = 35 degree
+    return (diff <= atan(0.55)); // atan(0.7) aprox = 35 degree
 }
 
 bool Behaviour_MarkBall::isInFrontOfObjective(){

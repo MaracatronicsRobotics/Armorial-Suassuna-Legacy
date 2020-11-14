@@ -311,7 +311,8 @@ Position Player::limitFieldDimensions(Position destination) {
 /* Locomotion algorithms */
 
 std::pair<Angle,float> Player::getNavDirectionDistance(const Position &destination, const Angle &positionToLook, bool avoidTeammates, bool avoidOpponents, bool avoidBall, bool avoidOurGoalArea, bool avoidTheirGoalArea) {
-    _nav->setGoal(destination, positionToLook, avoidTeammates, avoidOpponents, avoidBall, avoidOurGoalArea, avoidTheirGoalArea);
+    bool isFreeKick = _ref->getGameInfo(_team->teamColor())->freeKick();
+    _nav->setGoal(destination, positionToLook, isFreeKick ? false : avoidTeammates, avoidOpponents, avoidBall, avoidOurGoalArea, avoidTheirGoalArea);
     Angle direction = _nav->getDirection();
     float distance = _nav->getDistance();
 

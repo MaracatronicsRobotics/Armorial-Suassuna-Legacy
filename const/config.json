@@ -3,7 +3,7 @@
     "InitialAgressivity": "equilibrated",
     "FirstGoalie": 0,
     "NumberOfPlayers": 12,
-    "MaxKickPower": 6.5,
+    "MaxKickPower": 6.2,
     "RobotRadius": 0.09,
     "BallRadius": 0.025,
     "DistToConsiderBallMovement": 0.2,

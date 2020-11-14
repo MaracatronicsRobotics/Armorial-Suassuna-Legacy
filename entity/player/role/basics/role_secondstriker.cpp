@@ -55,7 +55,7 @@ void Role_SecondStriker::run(){
     else if(gameInfo->directKick() || gameInfo->indirectKick()){
         // The second striker needs to mark players or enable receiver when an kick will occur
         if(gameInfo->ourDirectKick() || gameInfo->ourIndirectKick()){
-            _bh_rcv->setQuadrant(_quadrant);
+           _bh_rcv->setQuadrant(_quadrant);
             setBehaviour(BEHAVIOUR_RECEIVER);
         }
         else{

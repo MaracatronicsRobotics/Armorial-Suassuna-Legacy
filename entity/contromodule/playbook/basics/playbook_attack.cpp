@@ -145,18 +145,6 @@ bool Playbook_Attack::isAnyFoul(){
 }
 
 int Playbook_Attack::requestQuadrant(quint8 playerId) {
-    // If in direct / indirect / stop / penalty / kickoff, set our receivers to up and bot (walk together with attacker)
-    if(isAnyFoul()){
-        if(!leftTaked){
-            leftTaked = true;
-            return QUADRANT_UP;
-        }
-        else if(!rightTaked){
-            rightTaked = true;
-            return QUADRANT_BOT;
-        }
-    }
-
     // Check for potential quadrants to our player
     int qtAtQuadrants[4] = {0};
     QList<Player*> opPlayers = loc()->getOpPlayers().values();
@@ -386,7 +374,7 @@ void Playbook_Attack::resetMarkList(){
     for(int x = 0; x < markList.size(); x++){
         if(PlayerBus::theirPlayerAvailable(markList.at(x))){
             float dist = PlayerBus::theirPlayer(markList.at(x))->distBall();
-            if(dist < 1.0){
+            if(dist < (ref()->getGameInfo(team()->teamColor())->freeKick() ? 2.5f : 1.0f)){
                 markList.removeAt(x);
             }
         }

@@ -25,6 +25,7 @@
 #include <utils/line/line.hh>
 
 #define RECEIVER_INVALID_ID 200
+#define CHIPKICK_PRECISION 0.75f
 
 QString Behaviour_Attacker::name() {
     return "Behaviour_Attacker";
@@ -130,7 +131,7 @@ void Behaviour_Attacker::run() {
                     bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverPosition, shootList, getConstants()->getRobotRadius() * 3.0, false);
 
                     // Adjust kick power based on obstructed path or distance to receiver
-                    if(isObstructed) _sk_kick->setPower(std::min(getConstants()->getMaxKickPower(), 0.75f * sqrt((player()->distanceTo(ourReceiverPosition) * 9.8f) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
+                    if(isObstructed) _sk_kick->setPower(std::min(getConstants()->getMaxKickPower(), CHIPKICK_PRECISION * sqrt((player()->distanceTo(ourReceiverPosition) * 9.8f) / sin(2 * GEARSystem::Angle::toRadians(65.0)))));
                     else             _sk_kick->setPower(std::min(getConstants()->getMaxKickPower(), std::max(getConstants()->getMaxKickPower()/2.0f, 2.0f * player()->distanceTo(ourReceiverPosition))));
 
                     // Set if is parabolic
@@ -182,13 +183,16 @@ void Behaviour_Attacker::run() {
                 _mlpResult = MLP_result();
 
                 // Calculando a chance do jogador chutar ao gol (supondo posse de bola)
-                double _shootingChance = getFutureKickChance(player()->playerId());
+                double _shootingChance = getActualKickChance(player()->playerId());
                 double _passingChance  = _rcvScore;
 
                 // Adaptando a shooting chance e a passing chance com o peso da mlp
-                _shootingChance = ((2.0/3.0)*_shootingChance + _mlpResult *(1.0/3.0));
-                _passingChance  = ((2.0/3.0)* _passingChance) + ((1.0 - _mlpResult)*(1.0/3.0));
+                _shootingChance = ((3.0/4.0) * _shootingChance + _mlpResult *(1.0/4.0));
+                _passingChance  = (((3.0/4.0) * _passingChance) + ((1.0 - _mlpResult)*(1.0/4.0))) / 2.0;
 
+                if(_shootingChance < 0.30){
+                    _shootingChance = 0.0;
+                }
 
                 if(player()->hasBallPossession()){
                     //cout << "A receiver list tem:\n";
@@ -229,7 +233,7 @@ void Behaviour_Attacker::run() {
                     bool isObstructed = loc()->isVectorObstructed(player()->position(), ourReceiverKickDevice, shootList, getConstants()->getRobotRadius() * 3.0, false);
                     float power;
                     // Adjust kick power based on obstructed path or distance to receiver
-                    if(isObstructed) power = std::min(getConstants()->getMaxKickPower(), 0.75f * sqrt((player()->distanceTo(ourReceiverKickDevice) * 9.8f) / sin(2 * GEARSystem::Angle::toRadians(65.0))));
+                    if(isObstructed) power = std::min(getConstants()->getMaxKickPower(), CHIPKICK_PRECISION * sqrt((player()->distanceTo(ourReceiverKickDevice) * 9.8f) / sin(2 * GEARSystem::Angle::toRadians(65.0))));
                     else             power = std::min(getConstants()->getMaxKickPower(), std::max(getConstants()->getMaxKickPower()/2.0f, 2.0f * player()->distanceTo(ourReceiverKickDevice)));
 
                     // Set if is parabolic and make it shoot when sufficiently aligned to the receiver
@@ -755,6 +759,87 @@ double Behaviour_Attacker::getFutureKickChance(quint8 _id){
     return _shootingChance;
 }
 
+double Behaviour_Attacker::getActualKickChance(quint8 _id){
+
+    std::pair<float, Position> bestAim = getBestAssumedPosition(_id);
+
+    //Must know 100% free goal to make comparison
+
+    /* //forma antiga:
+     *
+    _firstSide = WR::Utils::distance(loc()->ball(), loc()->theirGoalRightPost());
+    _secondSide = WR::Utils::distance(loc()->ball(), loc()->theirGoalLeftPost());
+    _oppositeSide = abs((loc()->theirGoalLeftPost().y() - loc()->theirGoalRightPost().y()));
+    double a= _firstSide, b = _secondSide, c = _oppositeSide;
+    _cosAngle = (pow(a,2) + pow(b,2) - pow(c,2))/(2*a*b);
+    _angle = acos(_cosAngle);
+    */
+
+    // Margin to avoid select the post as aim (or outside it)
+    float postMargin = 0.05*loc()->fieldDefenseWidth()/2;
+
+    // Adjust margin
+    if(loc()->theirSide().isRight()) {
+        postMargin = -postMargin;
+    }
+
+    // shift the position of the post to the center of the goal
+
+    Position theirGoalRightPost = loc()->theirGoalRightPost();
+    theirGoalRightPost.setPosition(theirGoalRightPost.x(),
+                                   theirGoalRightPost.y() + postMargin,
+                                   theirGoalRightPost.z());
+
+    Position theirGoalLeftPost = loc()->theirGoalLeftPost();
+    theirGoalLeftPost.setPosition(theirGoalLeftPost.x(),
+                                  theirGoalLeftPost.y() - postMargin,
+                                  theirGoalLeftPost.z());
+    Position posTheirGoal = loc()->theirGoal();
+
+    float minPosAngle = WR::Utils::getAngle(PlayerBus::ourPlayer(_id)->position(), theirGoalRightPost);
+    float maxPosAngle = WR::Utils::getAngle(PlayerBus::ourPlayer(_id)->position(), theirGoalLeftPost);
+    _angle = abs(maxPosAngle - minPosAngle);
+    WR::Utils::angleLimitZeroTwoPi(&_angle);
+
+    _distScore = 0;
+
+    if(abs(WR::Utils::distance(loc()->theirGoal(),PlayerBus::ourPlayer(_id)->position()))< 4.5){
+        _distScore = ((pow ( ( WR::Utils::distance(PlayerBus::ourPlayer(_id)->position(),loc()->theirGoal()) - 4.5 ),2)/9) + abs(( WR::Utils::distance(PlayerBus::ourPlayer(_id)->position(),loc()->theirGoal()) - 4.5 )/3))/2;
+    }
+    if(abs(WR::Utils::distance(loc()->theirGoal(),PlayerBus::ourPlayer(_id)->position()))< 1.5){
+        _distScore = 1.0;
+    }
+
+    WR::Utils::limitValue(&_distScore, 0.0f, 1.0f);
+
+    _angle = GEARSystem::Angle::toRadians(15.0f);
+    _angleScore =  bestAim.first / _angle;
+    if(isnan(_angleScore)){
+        _angleScore = 0.0;
+    }
+
+    WR::Utils::limitValue(&_angleScore, 0.0f, 1.0f);
+
+    if(_angleScore > 1.0){
+        //std::cout << "ESTRANHO : " << _angleScore << "\n";
+        _angleScore = 1.0;
+    }
+
+    if(bestAim.first <= GEARSystem::Angle::toRadians(5.0f)){
+        _angleScore = 0;
+    }
+
+    double _shootingChance = (_distScore*(0.1) + _angleScore*(0.9));
+
+    if(bestAim.first > GEARSystem::Angle::toRadians(15.0)){
+        _shootingChance = 1.0;
+    }
+
+    if(_angleScore == 0) return 0;
+
+    return _shootingChance;
+}
+
 
 double Behaviour_Attacker::getsizebar(Point2d recpos, Point2d directbarra){
     return 0.5;
@@ -885,7 +970,7 @@ float Behaviour_Attacker::getPlayerPassingChance(quint8 _id){
 float Behaviour_Attacker::getFinalPassingChance(quint8 _id){
     float _playerToReceiver = getPlayerPassingChance(_id);
     float _receivertoGoal = getFutureKickChance(_id);
-    float _actualPassingChance = (_playerToReceiver*(1.0/3.0) + _receivertoGoal*(2.0/3.0));
+    float _actualPassingChance = (_playerToReceiver*(1.0/6.0) + _receivertoGoal*(5.0/6.0));
     //desenhando no Suassuna a passing chance
         _PassingChanceVec[_id] = _actualPassingChance;
         /*
@@ -919,7 +1004,10 @@ float Behaviour_Attacker::getFinalPassingChance(quint8 _id){
         CoachView::drawTriangle(downleftsh, downrightsh, upleftsh, RGBA(112,219,147, 0.4, MRCConstants::robotZ + 0.01));
         CoachView::drawTriangle(upleftsh, uprightsh, downrightsh, RGBA(112,219,147, 0.4, MRCConstants::robotZ + 0.01));
         */
-    return (_playerToReceiver*(1.0/3.0) + _receivertoGoal*(2.0/3.0));
+    float passingChance = (_playerToReceiver*(1.0/3.0) + _receivertoGoal*(2.0/3.0));
+    WR::Utils::limitValue(&passingChance, 0.0f, 1.0f);
+
+    return passingChance;
 }
 
 float Behaviour_Attacker::MLP_result(){

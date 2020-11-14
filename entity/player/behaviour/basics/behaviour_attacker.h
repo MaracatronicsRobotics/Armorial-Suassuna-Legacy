@@ -33,7 +33,7 @@
 #define RECEIVER_DECISION_TIME_AT_FOUL 4.0f //seconds
 #define RECEIVER_DECISION_TIME         0.2f // seconds
 #define AIM_DECISION_TIME              0.2f // seconds
-#define SHOOT_PASS_DECISION_TIME       0.5f // seconds
+#define SHOOT_PASS_DECISION_TIME       0.75f // seconds
 
 typedef struct{
     bool valid;
@@ -85,6 +85,7 @@ private:
     void Opp(playerInfo kicker, playerInfo oppGoalie, playerInfo opp[]);
     bool isObst(playerInfo kicker, playerInfo player);
 
+    double getActualKickChance(quint8 _id);
     double getFutureKickChance(quint8 _id);
     float getPlayerPassingChance(quint8 _id);
     float getFinalPassingChance(quint8 _id);
