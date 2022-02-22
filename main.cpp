@@ -19,160 +19,53 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#include <iostream>
-#include <QCoreApplication>
-#include <suassuna.h>
-#include <exithandler.h>
-#include <instancechecker.h>
-#include <const/constants.h>
+#include <QApplication>
+#include <QCommandLineParser>
 
-#include <utils/fieldside/fieldside.hh>
-#include <utils/fields/wrfields.hh>
+#include <src/exithandler/exithandler.h>
 
-Competitions::Competition validateCategory(const QString &input, bool *valid) {
-    *valid = true;
-    if(input.toLower()=="ssl")
-        return Competitions::SSL;
-    else if(input.toLower()=="vss")
-        return Competitions::VSS;
+QCoreApplication *createApplication(int &argc, char *argv[]) {
+    // Try to found in args an '--gui'
+    bool foundArg = false;
+    for (int i = 0; i < argc; ++i) {
+        if (!qstrcmp(argv[i], "--gui")) {
+            foundArg = true;
+            break;
+        }
+    }
+
+    // if not found, call core application
+    if(!foundArg) {
+        return new QCoreApplication(argc, argv);
+    }
+    // otherwise, call gui application
     else {
-        *valid = false;
-        return Competitions::SSL; // return default
+        return new QApplication(argc, argv);
     }
 }
 
-Colors::Color validateTeamColor(const QString &input, bool *valid) {
-    *valid = true;
-    if(input.toLower()=="yellow")
-        return Colors::YELLOW;
-    else if(input.toLower()=="blue")
-        return Colors::BLUE;
-    else {
-        *valid = false;
-        return Colors::YELLOW; // return default
-    }
-}
+int main(int argc, char *argv[]){
+    QScopedPointer<QCoreApplication> a(createApplication(argc, argv));
 
-FieldSide validateFieldSide(const QString &input, bool *valid) {
-    *valid = true;
-    if(input.toLower()=="right")
-        return Sides::RIGHT;
-    else if(input.toLower()=="left")
-        return Sides::LEFT;
-    else {
-        *valid = false;
-        return Sides::RIGHT; // return default
-    }
-}
-
-bool validateEnableGUI(const QString &input, bool *valid) {
-    *valid = true;
-    if(input.toLower()=="true")
-        return true;
-    else if(input.toLower()=="false")
-        return false;
-    else {
-        *valid = false;
-        return true; // return default
-    }
-}
-
-bool validatePlayingAgainstWarthog(const QString &input, bool *valid) {
-    *valid = true;
-    if(input.toLower()=="true")
-        return true;
-    else if(input.toLower()=="false")
-        return false;
-    else {
-        *valid = false;
-        return true; // return default
-    }
-}
-
-int main(int argc, char *argv[]) {
-    QCoreApplication app(argc, argv);
-    app.setApplicationName("Armorial Suassuna");
-    app.setApplicationVersion("1.0.0");
-    
-    // Duplicated instance checking
-    InstanceChecker::waitIfDuplicated(app.applicationName());
-
-    // Command line parser, get arguments
+    // Setup command line parser
     QCommandLineParser parser;
-    parser.setApplicationDescription("Suassuna application help.");
     parser.addHelpOption();
     parser.addVersionOption();
-    parser.addPositionalArgument("teamColor", "Sets the team color ('yellow' or 'blue', default='yellow').");
-    parser.addPositionalArgument("fieldSide", "Sets the field side ('right' or 'left', default='right').");
-    parser.addPositionalArgument("enableGUI", "Enable or disable the GUI ('true' or 'false', default='true').");
-    parser.addPositionalArgument("playingAgainstWarthog", "Set playing against warthog ('true' or 'false', default='false'.");
-    parser.process(app);
-    QStringList args = parser.positionalArguments();
 
-    // Suassuna parameters (with default values)    
-    Colors::Color ourTeamColor = Colors::YELLOW;
-    FieldSide ourFieldSide = Sides::RIGHT;
-    bool enableGUI = true;
-    bool playingAgainstWarthog = false;
+    // Setup application options
+    // Use gui
+    QCommandLineOption useGuiOption("gui", "Enable GUI mode");
+    parser.addOption(useGuiOption);
 
-    // Check arguments
-    // Category
-    // Team color
-    if(args.size() >= 1) {
-        bool valid;
-        ourTeamColor = validateTeamColor(args.at(0), &valid);
-        if(valid==false) {
-            std::cout << ">> Armorial Suassuna: Invalid team color argument '" << args.at(0).toStdString() << "'.\n>> Please check help below.\n\n";
-            parser.showHelp();
-            return EXIT_FAILURE;
-        }
-    }
-    // Field side
-    if(args.size() >= 2) {
-        bool valid;
-        ourFieldSide = validateFieldSide(args.at(1), &valid);
-        if(valid==false) {
-            std::cout << ">> Armorial Suassuna: Invalid field side argument '" << args.at(1).toStdString() << "'.\n>> Please check help below.\n\n";
-            parser.showHelp();
-            return EXIT_FAILURE;
-        }
-    }
-    // Enable GUI
-    if(args.size() >= 3) {
-        bool valid;
-        enableGUI = validateEnableGUI(args.at(2), &valid);
-        if(valid==false) {
-            std::cout << ">> Armorial Suassuna: Invalid enable GUI argument '" << args.at(2).toStdString() << "'.\n>> Please check help below.\n\n";
-            parser.showHelp();
-            return EXIT_FAILURE;
-        }
-    }
-    // Playing against Warthog
-    if(args.size() >= 4) {
-        bool valid;
-        playingAgainstWarthog = validatePlayingAgainstWarthog(args.at(3), &valid);
-        if(valid==false) {
-            std::cout << ">> Armorial Suassuna: Invalid playing against warthog argument '" << args.at(3).toStdString() << "'.\n>> Please check help below.\n\n";
-            parser.showHelp();
-            return EXIT_FAILURE;
-        }
-    }
-
-    quint8 ourTeamId = (ourTeamColor == Colors::YELLOW) ? 0 : 1;
-    if(playingAgainstWarthog) ourTeamId = 1;
+    // Process parser in application
+    parser.process(*a);
 
     // Setup ExitHandler
-    ExitHandler::setApplication(&app);
+    ExitHandler::setApplication(a.data());
     ExitHandler::setup();
-    // Setup constants
-    MRCConstants *mrcconstants = new MRCConstants("../const/config.json", false);
-    // Create and start Suassuna
-    Suassuna suassuna(ourTeamId, ourTeamColor, ourFieldSide, enableGUI, mrcconstants);
-    suassuna.start();
-    // Block main thread
-    bool retn = app.exec();
-    // Stop Suassuna
-    suassuna.stop();
 
-    return retn;
+    // Wait for application end
+    bool exec = a->exec();
+
+    return exec;
 }
