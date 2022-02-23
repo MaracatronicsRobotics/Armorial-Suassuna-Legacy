@@ -52,12 +52,18 @@ SOURCES += \
     proto/visionservice.pb.cc \
     src/constants/constants.cpp \
     src/entities/entity.cpp \
+    src/entities/referee/SSLReferee/sslgameinfo.cpp \
+    src/entities/referee/SSLReferee/sslreferee.cpp \
+    src/entities/referee/ballplay/ballplay.cpp \
+    src/entities/referee/gameinfo.cpp \
+    src/entities/referee/gameinfo/gameinfo.cpp \
+    src/entities/referee/referee.cpp \
     src/entities/world/world.cpp \
     src/entities/worldmap/locations/locations.cpp \
     src/entities/worldmap/worldmap.cpp \
     src/exithandler/exithandler.cpp \
     src/services/actuator/actuatorservice.cpp \
-    src/services/coach/coachservice.cpp \
+    # src/services/coach/coachservice.cpp \
     src/suassuna.cpp \
     src/utils/text/text.cpp \
     src/utils/timer/timer.cpp \
@@ -85,12 +91,19 @@ HEADERS += \
     proto/visionservice.pb.h \
     src/constants/constants.h \
     src/entities/entity.h \
+    src/entities/referee/SSLReferee/sslgameinfo.h \
+    src/entities/referee/SSLReferee/sslreferee.h \
+    src/entities/referee/ballplay/ballplay.h \
+    src/entities/referee/gameinfo.h \
+    src/entities/referee/gameinfo/gameinfo.h \
+    src/entities/referee/referee.h \
+    src/entities/referee/refereeflags.h \
     src/entities/world/world.h \
     src/entities/worldmap/locations/locations.h \
     src/entities/worldmap/worldmap.h \
     src/exithandler/exithandler.h \
     src/services/actuator/actuatorservice.h \
-    src/services/coach/coachservice.h \
+    # src/services/coach/coachservice.h \
     src/suassuna.h \
     src/utils/text/text.h \
     src/utils/timer/timer.h \
