@@ -113,7 +113,7 @@ void CoachService::connectToServer() {
 
 Constants* CoachService::getConstants() {
     if(_constants == nullptr) {
-        std::cout << Text::yellow("[WARNING] ", true) + Text::bold("Constants with nullptr value at ActuatorClient.\n");
+        std::cout << Text::yellow("[WARNING] ", true) + Text::bold("Constants with nullptr value at CoachClient.\n");
     }
 
     return _constants;
