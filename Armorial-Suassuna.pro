@@ -22,12 +22,14 @@ LIBS += -lQt5Core -lprotobuf -lgrpc++ -lGLU
 
 system(echo "compiling protobuf" && cd proto/services && protoc --grpc_out=../ --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` *.proto && cd ../../..)
 system(echo "compiling protobuf" && cd proto/services && protoc --cpp_out=../ *.proto && cd ../../..)
+system(echo "generating grsim .proto" && cd proto/grsim && protoc --cpp_out=../ *.proto && cd ../../..)
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
+DEFINES += APP_NAME=\\\"$$TARGET\\\"
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 DEFINES += PROJECT_PATH=\\\"$${PWD}\\\"
 
@@ -37,6 +39,20 @@ DEFINES += PROJECT_PATH=\\\"$${PWD}\\\"
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    main.cpp \
+    proto/actuatorservice.grpc.pb.cc \
+    proto/actuatorservice.pb.cc \
+    proto/coachservice.grpc.pb.cc \
+    proto/coachservice.pb.cc \
+    proto/grSim_Commands.pb.cc \
+    proto/grSim_Packet.pb.cc \
+    proto/grSim_Replacement.pb.cc \
+    proto/messages.grpc.pb.cc \
+    proto/messages.pb.cc \
+    proto/sensorservice.grpc.pb.cc \
+    proto/sensorservice.pb.cc \
+    proto/visionservice.grpc.pb.cc \
+    proto/visionservice.pb.cc \
     main.cpp \
     src/constants/constants.cpp \
     src/entities/entity.cpp \
@@ -54,6 +70,19 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
+    proto/actuatorservice.grpc.pb.h \
+    proto/actuatorservice.pb.h \
+    proto/coachservice.grpc.pb.h \
+    proto/coachservice.pb.h \
+    proto/grSim_Commands.pb.h \
+    proto/grSim_Packet.pb.h \
+    proto/grSim_Replacement.pb.h \
+    proto/messages.grpc.pb.h \
+    proto/messages.pb.h \
+    proto/sensorservice.grpc.pb.h \
+    proto/sensorservice.pb.h \
+    proto/visionservice.grpc.pb.h \
+    proto/visionservice.pb.h \
     src/constants/constants.h \
     src/entities/entity.h \
     src/entities/world/world.h \
@@ -63,3 +92,7 @@ HEADERS += \
     src/suassuna.h \
     src/utils/text/text.h \
     src/utils/timer/timer.h
+
+DISTFILES += \
+    proto/LICENSE \
+    proto/README.md
