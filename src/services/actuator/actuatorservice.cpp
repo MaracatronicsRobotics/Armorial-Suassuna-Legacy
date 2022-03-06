@@ -21,7 +21,79 @@
 
 #include "actuatorservice.h"
 
-ActuatorService::ActuatorService()
-{
+#include <src/utils/text/text.h>
 
+ActuatorService::ActuatorService(Constants *constants) {
+    _constants = constants;
+
+    connectToServer();
+}
+
+void ActuatorService::SetControl(ControlPacket cp) {
+    grpc::ClientContext context;
+    google::protobuf::Empty emptyRequest;
+
+    grpc::Status requestStatus = _stub->SetControl(&context, cp, &emptyRequest);
+
+    if (!requestStatus.ok()) {
+        std::cout << Text::yellow("[WARNING] ", true) + Text::bold("ActuatorService::SetControl() received a not OK status from gRPC request.") + '\n';
+    }
+}
+
+void ActuatorService::SetControls(QList<ControlPacket> cpList) {
+    grpc::ClientContext context;
+    google::protobuf::Empty emptyRequest;
+    QList<ControlPacket> packets;
+    for (ControlPacket packet : cpList) {
+        packets.push_back(packet);
+    }
+
+    std::unique_ptr<grpc::ClientWriter<ControlPacket>> writer = _stub->SetControls(&context, &emptyRequest);
+    for(ControlPacket cp : packets) {
+        bool resp = writer->Write(cp);
+        if (!resp) {
+            break;
+        }
+
+        //Should we have here a little delay on the thread?
+    }
+    writer->WritesDone();
+    grpc::Status streamStatus = writer->Finish();
+    if (!streamStatus.ok()) {
+        std::cout << Text::yellow("[WARNING] ", true) + Text::bold("ActuatorService::SetControl() received a not OK status from gRPC stream.") + '\n';
+    }
+}
+
+QList<ControlPacket> ActuatorService::GetControls(){
+    grpc::ClientContext context;
+    google::protobuf::Empty emptyRequest;
+    ControlPacket cp;
+    QList<ControlPacket> cpList;
+
+    std::unique_ptr<grpc::ClientReader<ControlPacket>> reader = _stub->GetControls(&context, emptyRequest);
+    while (reader->Read(&cp)) {
+        cpList.push_back(cp);
+    }
+
+    return cpList;
+}
+
+bool ActuatorService::isConnectedToServer(){
+    return (   _channel->GetState(false) == GRPC_CHANNEL_READY
+            || _channel->GetState(false) == GRPC_CHANNEL_IDLE
+            || _channel->GetState(false) == GRPC_CHANNEL_CONNECTING);
+}
+
+void ActuatorService::connectToServer(){
+    QString serviceAddress = QString("%1:%2").arg(_actuatorServiceAddress).arg(_actuatorServicePort);
+    _channel = grpc::CreateChannel(serviceAddress.toStdString(), grpc::InsecureChannelCredentials());
+    _stub = Actuator::ActuatorService::NewStub(_channel);
+}
+
+Constants* ActuatorService::getConstants(){
+    if(_constants == nullptr) {
+        std::cout << Text::yellow("[WARNING] ", true) + Text::bold("Constants with nullptr value at ActuatorClient.\n");
+    }
+
+    return _constants;
 }

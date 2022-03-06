@@ -22,11 +22,47 @@
 #ifndef ACTUATORSERVICE_H
 #define ACTUATORSERVICE_H
 
+#include <grpc/grpc.h>
+
+#include <grpcpp/security/server_credentials.h>
+#include <grpcpp/server.h>
+#include <grpcpp/server_builder.h>
+#include <grpcpp/server_context.h>
+
+#include <grpcpp/channel.h>
+#include <grpcpp/client_context.h>
+#include <grpcpp/create_channel.h>
+#include <grpcpp/security/credentials.h>
+
+#include <src/constants/constants.h>
+#include <proto/actuatorservice.grpc.pb.h>
+
 
 class ActuatorService
 {
 public:
-    ActuatorService();
+    ActuatorService(Constants *constants);
+
+    void SetControl(ControlPacket cp);
+    void SetControls(QList<ControlPacket> cpList);
+    QList<ControlPacket> GetControls();
+
+protected:
+    bool isConnectedToServer();
+    void connectToServer();
+
+private:
+    // Constants
+    Constants *_constants;
+    Constants* getConstants();
+
+    // gRPC channel related network methods and vars
+    std::unique_ptr<Actuator::ActuatorService::Stub> _stub;
+    std::shared_ptr<grpc::Channel> _channel;
+
+    // Network
+    QString _actuatorServiceAddress;
+    quint16 _actuatorServicePort;
 };
 
 #endif // ACTUATORSERVICE_H
