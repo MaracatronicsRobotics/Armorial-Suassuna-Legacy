@@ -23,6 +23,12 @@
 #include <QCommandLineParser>
 
 #include <src/exithandler/exithandler.h>
+#include <src/constants/constants.h>
+#include <src/entities/entity.h>
+#include <src/services/actuator/actuatorservice.h>
+#include <src/services/coach/coachservice.h>
+#include <src/utils/text/text.h>
+#include <src/utils/timer/timer.h>
 
 QCoreApplication *createApplication(int &argc, char *argv[]) {
     // Try to found in args an '--gui'
@@ -46,6 +52,8 @@ QCoreApplication *createApplication(int &argc, char *argv[]) {
 
 int main(int argc, char *argv[]){
     QScopedPointer<QCoreApplication> a(createApplication(argc, argv));
+    a->setApplicationName("Armorial Suassuna");
+    a->setApplicationVersion("2.0.0");
 
     // Setup command line parser
     QCommandLineParser parser;
@@ -63,6 +71,35 @@ int main(int argc, char *argv[]){
     // Setup ExitHandler
     ExitHandler::setApplication(a.data());
     ExitHandler::setup();
+
+    Constants *constants = new Constants(QString(PROJECT_PATH) + "/src/constants/constants.json");
+
+    ActuatorService *actuator = new ActuatorService(constants);
+    CoachService *coach = new CoachService(constants);
+
+    ControlPacket cp;
+    cp.set_dribbling(true);
+
+    ControlPacket cp2;
+    cp2.set_w1(0.5);
+    cp2.set_w2(0.5);
+    cp2.set_w3(0.5);
+    cp2.set_w4(0.5);
+
+    QList<ControlPacket> cpList;
+    cpList.push_back(cp);
+    cpList.push_back(cp2);
+
+    QList<ControlPacket> receiving;
+
+    std::cout << Text::green("[LOG] ", true) + Text::bold("ActuatorService::SetControl() to be tested.") + '\n';
+    actuator->SetControl(cp);
+
+    std::cout << Text::green("[LOG] ", true) + Text::bold("ActuatorService::SetControls() to be tested.") + '\n';
+    actuator->SetControls(cpList);
+
+    std::cout << Text::green("[LOG] ", true) + Text::bold("ActuatorService::GetControls() to be tested.") + '\n';
+    receiving = actuator->GetControls();
 
     // Wait for application end
     bool exec = a->exec();
