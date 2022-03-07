@@ -43,13 +43,9 @@ void ActuatorService::SetControl(ControlPacket cp) {
 void ActuatorService::SetControls(QList<ControlPacket> cpList) {
     grpc::ClientContext context;
     google::protobuf::Empty emptyRequest;
-    QList<ControlPacket> packets;
-    for (ControlPacket packet : cpList) {
-        packets.push_back(packet);
-    }
 
     std::unique_ptr<grpc::ClientWriter<ControlPacket>> writer = _stub->SetControls(&context, &emptyRequest);
-    for(ControlPacket cp : packets) {
+    for(ControlPacket cp : cpList) {
         bool resp = writer->Write(cp);
         if (!resp) {
             break;
