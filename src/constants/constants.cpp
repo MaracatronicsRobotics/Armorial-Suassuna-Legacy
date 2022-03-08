@@ -27,6 +27,7 @@
 Constants::Constants(QString fileName) {
     _fileName = fileName;
 
+
     file.setFileName(_fileName);
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QString val = file.readAll();
@@ -57,6 +58,12 @@ Constants::Constants(QString fileName) {
 
     _timeToSendPacketZero = docMap["timeToSendPacketZero"].toFloat();
     std::cout << Text::bold("Time to send packet zero: ") + Text::green(std::to_string(_timeToSendPacketZero), true) << std::endl;
+
+    _RefereeAddress = doc_map["RefereeAddress"].toString();
+    std::cout << Text::bold("Referee Address: " + _RefereeAddress.toStdString()) << std::endl;
+
+    _RefereePort = doc_map["RefereePort"].toInt();
+    std::cout << Text::bold("Referee Port: " + std::to_string(_RefereePort)) << std::endl;
 
 }
 
@@ -148,4 +155,24 @@ float Constants::getTimeToSendPacketZero() const {
 
 void Constants::setTimeToSendPacketZero(float timeToSendPacketZero) {
     _timeToSendPacketZero = timeToSendPacketZero;
+}
+
+QString Constants::getRefereeAddress() const
+{
+    return _RefereeAddress;
+}
+
+void Constants::setRefereeAddress(const QString &RefereeAddress)
+{
+    _RefereeAddress = RefereeAddress;
+}
+
+quint16 Constants::getRefereePort() const
+{
+    return _RefereePort;
+}
+
+void Constants::setRefereePort(const quint16 &RefereePort)
+{
+    _RefereePort = RefereePort;
 }
