@@ -142,7 +142,7 @@ void SSLReferee::loop() {
         // Fill command info
         if(packet.has_command()) {
             if(_lastCommand != packet.command()) {
-                std::cout << Text::purple("[REFEREE] ", true) << Text::bold("Received new command: " + Referee_Command_Name(packet.command())) + '\n';
+                std::cout << Text::pu_lastCommandrple("[REFEREE] ", true) << Text::bold("Received new command: " + Referee_Command_Name(packet.command())) + '\n';
 
                 // Process command in gameInfo
                 _gameInfo->processCommand(packet.command());
@@ -204,7 +204,7 @@ Referee_Command SSLReferee::getLastCommand() {
     return lastCommand;
 }
 
-Referee_TeamInfo SSLReferee::getLastTeamInfo(Colors::Color teamColor) {
+Referee_TeamInfo SSLReferee::getLastTeamInfo(Color teamColor) {
     _packetMutex.lockForRead();
     Referee_TeamInfo lastTeamInfo = _lastTeamsInfo.value(teamColor);
     _packetMutex.unlock();
@@ -234,20 +234,20 @@ void SSLReferee::createAndInitializeSocket() {
 
     // Connect to referee multicast
     // Bind socket
-    if(_refereeSocket->bind(QHostAddress(getConstants()->refereeAddress()), getConstants()->refereePort(), QUdpSocket::ShareAddress) == false) {
-        std::cout << Text::cyan("[REFEREE] ", true) + Text::bold("Failed to bind referee socket at address '" + getConstants()->refereeAddress().toStdString() + "' and port '" + std::to_string(getConstants()->refereePort()) + "'") + '\n';
+    if(_refereeSocket->bind(QHostAddress(getConstants()->getRefereeAddress()), getConstants()->getRefereePort(), QUdpSocket::ShareAddress) == false) {
+        std::cout << Text::cyan("[REFEREE] ", true) + Text::bold("Failed to bind referee socket at address '" + getConstants()->getRefereeAddress().toStdString() + "' and port '" + std::to_string(getConstants()->getRefereePort()) + "'") + '\n';
         return ;
     }
 
     // Join multicast
-    if(_refereeSocket->joinMulticastGroup(QHostAddress(getConstants()->refereeAddress())) == false) {
-        std::cout << Text::cyan("[REFEREE] ", true) + Text::bold("Failed to bind referee socket at address '" + getConstants()->refereeAddress().toStdString() + "'") + '\n';
+    if(_refereeSocket->joinMulticastGroup(QHostAddress(getConstants()->getRefereeAddress())) == false) {
+        std::cout << Text::cyan("[REFEREE] ", true) + Text::bold("Failed to bind referee socket at address '" + getConstants()->getRefereeAddress().toStdString() + "'") + '\n';
         return ;
     }
 
     std::cout << Text::cyan("[REFEREE] ", true) + Text::bold("Started at address '"
-                                                             + getConstants()->refereeAddress().toStdString() + "' and port '"
-                                                             + std::to_string(getConstants()->refereePort()) + "'") + '\n';
+                                                             + getConstants()->getRefereeAddress().toStdString() + "' and port '"
+                                                             + std::to_string(getConstants()->getRefereePort()) + "'") + '\n';
 }
 
 Constants* SSLReferee::getConstants() {
