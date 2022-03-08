@@ -78,28 +78,69 @@ int main(int argc, char *argv[]){
     CoachService *coach = new CoachService(constants);
 
     ControlPacket cp;
-    cp.set_dribbling(true);
+
+    cp = actuator->setVelocity(0, false, 1.0f, 0.0f, 0.0f);
 
     ControlPacket cp2;
-    cp2.set_w1(0.5);
-    cp2.set_w2(0.5);
-    cp2.set_w3(0.5);
-    cp2.set_w4(0.5);
+    cp2 = actuator->setDrible(1, false, true);
+
+    ControlPacket cp3;
+    cp3 = actuator->setAngularSpeed(3, false, 1.0f, false);
+
+    ControlPacket cp4;
+    cp4 = actuator->setVelocity(2, false, 1.5f, 0.0f, 0.0f);
 
     QList<ControlPacket> cpList;
     cpList.push_back(cp);
     cpList.push_back(cp2);
+    cpList.push_back(cp3);
+    cpList.push_back(cp4);
 
     QList<ControlPacket> receiving;
 
-    std::cout << Text::green("[LOG] ", true) + Text::bold("ActuatorService::SetControl() to be tested.") + '\n';
-    actuator->SetControl(cp);
+    //std::cout << Text::green("[LOG] ", true) + Text::bold("ActuatorService::SetControl() to be tested.") + '\n';
+    //std::cout << Text::green("[LOG] ", true) + Text::bold("ControlPacket: ")
+    //          << Text::bold("Robot ID: " + std::to_string(cp.robotidentifier().robotid())) + " "
+    //          << Text::bold("Robot Color: Yellow") + " \n";
+    //actuator->SetControl(cp);
 
     std::cout << Text::green("[LOG] ", true) + Text::bold("ActuatorService::SetControls() to be tested.") + '\n';
     actuator->SetControls(cpList);
 
     std::cout << Text::green("[LOG] ", true) + Text::bold("ActuatorService::GetControls() to be tested.") + '\n';
     receiving = actuator->GetControls();
+
+    //std::cout << Text::green("[LOG] ", true) + Text::bold("ActuatorService::SetControl() to be tested. #2") + '\n';
+    //actuator->SetControl(cp2);
+
+    if (receiving.size() > 0) {
+        std::cout << Text::yellow("[LOG] ", true) + Text::bold("Receiving list size: " + std::to_string(receiving.size())) + "\n";
+        while (receiving.size() > 0) {
+            actuator->SetControls(receiving);
+            receiving = actuator->GetControls();
+            if (receiving.size() > 0) {
+                std::cout << Text::yellow("[LOG] ", true) + Text::bold("Receiving list size: " + std::to_string(receiving.size())) + "\n";
+            } else {
+                std::cout << Text::green("[LOG] ", true) + Text::bold("Receiving list size: " + std::to_string(receiving.size())) + "\n";
+            }
+        }
+    } else {
+        std::cout << Text::green("[LOG] ", true) + Text::bold("Receiving list size: " + std::to_string(receiving.size())) + "\n";
+    }
+
+
+    //TEST: COACH
+    Color *color = new Color();
+    color->set_isblue(true);
+
+    RobotIdentifier robotID;
+    robotID.set_robotid(2);
+    robotID.set_allocated_robotcolor(color);
+
+    Robot r2d2 = coach->getRobot(robotID);
+    QList<Robot> robots = coach->getRobots(*color);
+
+
 
     // Wait for application end
     bool exec = a->exec();
