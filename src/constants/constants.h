@@ -66,6 +66,12 @@ public:
 
     float getTimeToSendPacketZero() const;
     void setTimeToSendPacketZero(float timeToSendPacketZero);
+    
+    QString getRefereeAddress() const;
+    void setRefereeAddress(const QString &RefereeAddress);
+
+    quint16 getRefereePort() const;
+    void setRefereePort(const quint16 &RefereePort);
 
 private:
     QString _fileName;
@@ -78,12 +84,17 @@ private:
 
     QString _SimAddress;
     quint16 _SimActuatorPort;
+    
+    QString _RefereeAddress;
+    quint16 _RefereePort;
 
     // Team Constants
     QString _teamColor;
     FieldSide _teamSide;
     int _qtdPlayers;
     float _timeToSendPacketZero;
+    
+   
 };
 
 #endif // CONSTANTS_H
