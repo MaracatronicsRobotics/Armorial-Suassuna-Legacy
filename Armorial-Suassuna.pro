@@ -61,7 +61,8 @@ SOURCES += \
     src/services/coach/coachservice.cpp \
     src/suassuna.cpp \
     src/utils/text/text.cpp \
-    src/utils/timer/timer.cpp
+    src/utils/timer/timer.cpp \
+    src/utils/utils.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -90,7 +91,8 @@ HEADERS += \
     src/services/coach/coachservice.h \
     src/suassuna.h \
     src/utils/text/text.h \
-    src/utils/timer/timer.h
+    src/utils/timer/timer.h \
+    src/utils/utils.h
 
 DISTFILES += \
     proto/LICENSE \

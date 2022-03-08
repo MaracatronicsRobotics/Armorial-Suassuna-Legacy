@@ -27,6 +27,8 @@
 CoachService::CoachService(Constants *constants) {
     _constants = constants;
 
+    _coachServiceAddress = getConstants()->getGRPCAddress();
+    _coachServicePort = getConstants()->getGRPCCoachPort();
     connectToServer();
 }
 
