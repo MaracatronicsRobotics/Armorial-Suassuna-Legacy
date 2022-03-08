@@ -26,6 +26,8 @@
 ActuatorService::ActuatorService(Constants *constants) {
     _constants = constants;
 
+    _actuatorServiceAddress = getConstants()->getGRPCAddress();
+    _actuatorServicePort = getConstants()->getGRPCActuatorPort();
     connectToServer();
 }
 
@@ -56,7 +58,7 @@ void ActuatorService::SetControls(QList<ControlPacket> cpList) {
     writer->WritesDone();
     grpc::Status streamStatus = writer->Finish();
     if (!streamStatus.ok()) {
-        std::cout << Text::yellow("[WARNING] ", true) + Text::bold("ActuatorService::SetControl() received a not OK status from gRPC stream.") + '\n';
+        std::cout << Text::yellow("[WARNING] ", true) + Text::bold("ActuatorService::SetControls() received a not OK status from gRPC stream.") + '\n';
     }
 }
 
@@ -72,6 +74,121 @@ QList<ControlPacket> ActuatorService::GetControls(){
     }
 
     return cpList;
+}
+
+ControlPacket ActuatorService::getNewControlPacket(){
+    ControlPacket cp;
+
+    Velocity *vel = new Velocity();
+    vel->set_vx(0.0f);
+    vel->set_vy(0.0f);
+    vel->set_vz(0.0f);
+    vel->set_isinvalid(true);
+
+    Velocity *robotVel = new Velocity();
+    robotVel->set_vx(0.0f);
+    robotVel->set_vy(0.0f);
+    robotVel->set_vz(0.0f);
+    robotVel->set_isinvalid(true);
+
+    Color *robotColor = new Color();
+    robotColor->set_isblue(false);
+
+    RobotIdentifier *robotID = new RobotIdentifier();
+    robotID->set_robotid(0);
+    robotID->set_allocated_robotcolor(robotColor);
+
+    AngularSpeed *angularSpeed = new AngularSpeed();
+    angularSpeed->set_vw(0.0f);
+    angularSpeed->set_isindegrees(false);
+    angularSpeed->set_isinvalid(true);
+
+    cp.set_w1(0.0f);
+    cp.set_w2(0.0f);
+    cp.set_w3(0.0f);
+    cp.set_w4(0.0f);
+    cp.set_dribbling(false);
+    cp.set_allocated_kickspeed(vel);
+    cp.set_allocated_robotvelocity(robotVel);
+    cp.set_allocated_robotidentifier(robotID);
+    cp.set_allocated_robotangularspeed(angularSpeed);
+
+    return cp;
+}
+
+ControlPacket ActuatorService::setVelocity(int robotID, bool robotColor, float vx, float vy, float vz) {
+    RobotIdentifier *ID = new RobotIdentifier();
+    Color *color = new Color();
+    color->set_isblue(robotColor);
+    ControlPacket cp = getNewControlPacket();
+
+    Velocity *robotVel = new Velocity();
+    robotVel->set_vx(vx);
+    robotVel->set_vy(vy);
+    robotVel->set_vz(vz);
+    robotVel->set_isinvalid(false);
+
+    ID->set_robotid(robotID);
+    ID->set_allocated_robotcolor(color);
+
+    cp.set_allocated_robotidentifier(ID);
+    cp.set_allocated_robotvelocity(robotVel);
+    return cp;
+}
+
+ControlPacket ActuatorService::setAngularSpeed(int robotID, bool robotColor, float vw, bool isInDegrees) {
+    RobotIdentifier *ID = new RobotIdentifier();
+    Color *color = new Color();
+    color->set_isblue(robotColor);
+    ControlPacket cp;
+
+    AngularSpeed *angularSpeed = new AngularSpeed();
+    angularSpeed->set_vw(vw);
+    angularSpeed->set_isindegrees(isInDegrees);
+    angularSpeed->set_isinvalid(false);
+
+    ID->set_robotid(robotID);
+    ID->set_allocated_robotcolor(color);
+
+    cp.set_allocated_robotidentifier(ID);
+    cp.set_allocated_robotangularspeed(angularSpeed);
+
+    return cp;
+}
+
+ControlPacket ActuatorService::setKickSpeed(int robotID, bool robotColor, float vx, float vy, float vz) {
+    RobotIdentifier *ID = new RobotIdentifier();
+    Color *color = new Color();
+    color->set_isblue(robotColor);
+    ControlPacket cp = getNewControlPacket();
+
+    Velocity *robotKickSpeed = new Velocity();
+    robotKickSpeed->set_vx(vx);
+    robotKickSpeed->set_vy(vy);
+    robotKickSpeed->set_vz(vz);
+    robotKickSpeed->set_isinvalid(false);
+
+    ID->set_robotid(robotID);
+    ID->set_allocated_robotcolor(color);
+
+    cp.set_allocated_robotidentifier(ID);
+    cp.set_allocated_robotvelocity(robotKickSpeed);
+    return cp;
+}
+
+ControlPacket ActuatorService::setDrible(int robotID, bool robotColor, bool dribleOn) {
+    RobotIdentifier *ID = new RobotIdentifier();
+    Color *color = new Color();
+    color->set_isblue(robotColor);
+    ControlPacket cp = getNewControlPacket();
+
+    ID->set_robotid(robotID);
+    ID->set_allocated_robotcolor(color);
+
+    cp.set_allocated_robotidentifier(ID);
+    cp.set_dribbling(dribleOn);
+
+    return cp;
 }
 
 bool ActuatorService::isConnectedToServer(){
