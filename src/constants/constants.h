@@ -73,6 +73,14 @@ public:
     quint16 getRefereePort() const;
     void setRefereePort(const quint16 &RefereePort);
 
+    QString getTeamSide() const;
+    void setTeamSide(const QString &teamSide);
+
+    bool isTeamSideLeft();
+    bool isTeamSideRight();
+
+    void swapTeamSide();
+
 private:
     QString _fileName;
     QFile file;
