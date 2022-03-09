@@ -31,6 +31,8 @@
 #include <src/utils/text/text.h>
 #include <src/utils/timer/timer.h>
 
+#include <src/entities/worldmap/worldmap.h>
+
 QCoreApplication *createApplication(int &argc, char *argv[]) {
     // Try to found in args an '--gui'
     bool foundArg = false;
@@ -77,6 +79,9 @@ int main(int argc, char *argv[]){
 
     // Wait for application end
     bool exec = a->exec();
+
+    worldMap->stopEntity();
+    worldMap->wait();
 
     return exec;
 }
