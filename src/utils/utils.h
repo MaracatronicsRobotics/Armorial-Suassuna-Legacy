@@ -24,22 +24,43 @@
 
 #include <proto/messages.grpc.pb.h>
 #include <src/constants/constants.h>
+#include <src/services/coach/coachservice.h>
 
 
 class Utils
 {
 public:
-    Utils();
+    Utils(Constants *constants);
 
+    //General objects
     static Robot getRobot(int robotID, bool isBlue);
     static Ball getBall();
     static Field getField();
 
-    //getRobot info methods
+    //ControlPacket methods
+    static ControlPacket getVoidControlPacket();
+    static ControlPacket getControlPacket(int robotID, bool isBlue);
 
-    //getBall info methods
+    //General methods
+    static Position getPosition(float x, float y, float z, bool isInvalid);
+    static Angle getAngle(float value, bool isInDegrees, bool isInvalid);
+    static Velocity getVelocity(float vx, float vy, float vz, bool isInvalid);
+    static Acceleration getAcceleration(float ax, float ay, float az, bool isInvalid);
+    static AngularSpeed getAngularSpeed(float vw, bool isInDegrees, bool isInvalid);
+
+    //getRobot info methods
+    static RobotIdentifier getRobotID(int robotID, bool isBlue);
+    static RobotStatus getRobotStatus(int robotID, bool isBlue);
 
     //getField info methods
+    static FieldLineSegment getLine(Position p1, Position p2);
+    static FieldCircularArc getArc(Position center, float a1, float a2);
+
+    //algebric methods
+
+private:
+    Constants *_constants;
+    static ControlPacket _baseControlPacket;
 };
 
 #endif // UTILS_H
