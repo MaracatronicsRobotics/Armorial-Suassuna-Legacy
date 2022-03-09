@@ -35,6 +35,7 @@
 #include <grpcpp/security/credentials.h>
 
 #include <src/constants/constants.h>
+#include <src/utils/utils.h>
 #include <proto/actuatorservice.grpc.pb.h>
 
 
@@ -47,7 +48,6 @@ public:
     void SetControls(QList<ControlPacket> cpList);
     QList<ControlPacket> GetControls();
 
-    ControlPacket getNewControlPacket();
     ControlPacket setVelocity(int robotID, bool robotColor, float vx, float vy, float vz);
     ControlPacket setAngularSpeed(int robotID, bool robotColor, float vw, bool isInDegrees);
     ControlPacket setKickSpeed(int robotID, bool robotColor, float vx, float vy, float vz);
