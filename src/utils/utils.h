@@ -59,7 +59,6 @@ public:
     //algebric methods
 
 private:
-    Constants *_constants;
     static ControlPacket _baseControlPacket;
 };
 
