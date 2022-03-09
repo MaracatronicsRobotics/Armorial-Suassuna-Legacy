@@ -27,6 +27,8 @@
 #include <QList>
 
 #define ROBOT_INVALID_ID 200
+#define YELLOW 0
+#define BLUE 1
 
 class Constants
 {

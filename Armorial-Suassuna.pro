@@ -53,16 +53,29 @@ SOURCES += \
     proto/visionservice.grpc.pb.cc \
     proto/visionservice.pb.cc \
     main.cpp \
+    proto/actuatorservice.grpc.pb.cc \
+    proto/actuatorservice.pb.cc \
+    proto/coachservice.grpc.pb.cc \
+    proto/coachservice.pb.cc \
+    proto/messages.grpc.pb.cc \
+    proto/messages.pb.cc \
+    proto/sensorservice.grpc.pb.cc \
+    proto/sensorservice.pb.cc \
+    proto/visionservice.grpc.pb.cc \
+    proto/visionservice.pb.cc \
     src/constants/constants.cpp \
     src/entities/entity.cpp \
     src/entities/world/world.cpp \
+    src/entities/worldmap/locations/locations.cpp \
+    src/entities/worldmap/worldmap.cpp \
     src/exithandler/exithandler.cpp \
     src/services/actuator/actuatorservice.cpp \
     src/services/coach/coachservice.cpp \
     src/suassuna.cpp \
     src/utils/text/text.cpp \
     src/utils/timer/timer.cpp \
-    src/utils/utils.cpp
+    src/utils/utils.cpp \
+    src/utils/types/fieldside/fieldside.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -86,13 +99,17 @@ HEADERS += \
     src/constants/constants.h \
     src/entities/entity.h \
     src/entities/world/world.h \
+    src/entities/worldmap/locations/locations.h \
+    src/entities/worldmap/worldmap.h \
     src/exithandler/exithandler.h \
     src/services/actuator/actuatorservice.h \
     src/services/coach/coachservice.h \
     src/suassuna.h \
     src/utils/text/text.h \
     src/utils/timer/timer.h \
-    src/utils/utils.h
+    src/utils/utils.h \
+    src/utils/types/fieldside/fieldside.h \
+    src/utils/types/fieldside/side.h
 
 DISTFILES += \
     proto/LICENSE \
