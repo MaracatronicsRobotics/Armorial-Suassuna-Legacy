@@ -45,7 +45,7 @@ private:
     // Packet management
     Referee_Command _lastCommand;
     Referee_Stage _lastStage;
-    QHash<Color, Referee_TeamInfo> _lastTeamsInfo;
+    QHash<bool, Referee_TeamInfo> _lastTeamsInfo;
     Position _lastPlacementPosition;
     int _remainingTime;
     QReadWriteLock _packetMutex;

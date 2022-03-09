@@ -21,6 +21,9 @@
 
 #include "referee.h"
 
+#define YELLOW 0
+#define BLUE 1
+
 SSLReferee::SSLReferee(Constants *constants, WorldMap *worldMap) : Entity() {
     // Take constants and worldmap
     _constants = constants;
@@ -30,8 +33,14 @@ SSLReferee::SSLReferee(Constants *constants, WorldMap *worldMap) : Entity() {
     _remainingTime = 0;
     _lastCommand = Referee_Command_HALT;
     _lastStage = Referee_Stage_NORMAL_FIRST_HALF_PRE;
-    for(int i = Colors::Color::YELLOW; i <= Colors::Color::BLUE; i++) {
-        _lastTeamsInfo.insert(Colors::Color(i), Referee_TeamInfo());
+
+    // novo
+    _lastTeamsInfo.insert(true, Referee_TeamInfo());
+    _lastTeamsInfo.insert(false, Referee_TeamInfo());
+
+    // antigo
+    for(int i = YELLOW; i <= BLUE; i++) {
+        _lastTeamsInfo.insert(i, Referee_TeamInfo());
     }
 
     // Create ballplay pointer
@@ -87,30 +96,30 @@ void SSLReferee::loop() {
 
         // Check if is to swap side
         if(packet.blue_team_on_positive_half()) {
-            if(getConstants()->teamColor() == Colors::Color::BLUE) {
+            if(getConstants()->isTeamBlue()) {
                 // If is blue team and is at left (negative) side, swap
-                if(getConstants()->teamSide().isLeft()) {
+                if(getConstants()->isTeamSideLeft()) {
                     getConstants()->swapTeamSide();
                 }
             }
             else {
                 // If is yellow team and is at right (positive) side, swap
-                if(getConstants()->teamSide().isRight()) {
+                if(getConstants()->isTeamSideRight()) {
                     getConstants()->swapTeamSide();
                 }
             }
         }
         else {
             // Case blue is at negative half (left)
-            if(getConstants()->teamColor() == Colors::Color::YELLOW) {
+            if(getConstants()->isTeamYellow()) {
                 // If is yellow team and is at left (negative) side, swap
-                if(getConstants()->teamSide().isLeft()) {
+                if(getConstants()->isTeamSideLeft()) {
                     getConstants()->swapTeamSide();
                 }
             }
             else {
                 // If is blue and is at right (positive) side, swap
-                if(getConstants()->teamSide().isRight()) {
+                if(getConstants()->isTeamSideRight()) {
                     getConstants()->swapTeamSide();
                 }
             }
@@ -121,14 +130,14 @@ void SSLReferee::loop() {
 
         // Fill blue team info
         if(packet.has_blue()) {
-            _lastTeamsInfo.take(Colors::Color::BLUE);
-            _lastTeamsInfo.insert(Colors::Color::BLUE, packet.blue());
+            _lastTeamsInfo.take(true);
+            _lastTeamsInfo.insert(true, packet.blue());
         }
 
         // Fill yellow team info
         if(packet.has_yellow()) {
-            _lastTeamsInfo.take(Colors::Color::YELLOW);
-            _lastTeamsInfo.insert(Colors::Color::YELLOW, packet.yellow());
+            _lastTeamsInfo.take(YELLOW);
+            _lastTeamsInfo.insert(YELLOW, packet.yellow());
         }
 
         // Fill stage info
@@ -142,7 +151,7 @@ void SSLReferee::loop() {
         // Fill command info
         if(packet.has_command()) {
             if(_lastCommand != packet.command()) {
-                std::cout << Text::pu_lastCommandrple("[REFEREE] ", true) << Text::bold("Received new command: " + Referee_Command_Name(packet.command())) + '\n';
+                std::cout << Text::purple("[REFEREE] ", true) << Text::bold("Received new command: " + Referee_Command_Name(packet.command())) + '\n';
 
                 // Process command in gameInfo
                 _gameInfo->processCommand(packet.command());
@@ -158,7 +167,10 @@ void SSLReferee::loop() {
 
         // Fill placement position info
         if(packet.has_designated_position()) {
-            _lastPlacementPosition = Position(true, packet.designated_position().x()/1000.0f, packet.designated_position().y()/1000.0f);
+            _lastPlacementPosition = Position();
+            _lastPlacementPosition.set_x(packet.designated_position().x()/1000.0f);
+            _lastPlacementPosition.set_y(packet.designated_position().y()/1000.0f);
+            _lastPlacementPosition.set_isinvalid(false);
         }
 
         _packetMutex.unlock();
@@ -205,8 +217,12 @@ Referee_Command SSLReferee::getLastCommand() {
 }
 
 Referee_TeamInfo SSLReferee::getLastTeamInfo(Color teamColor) {
+    bool color = YELLOW;
+    if (teamColor.isblue()){
+        color = BLUE;
+    }
     _packetMutex.lockForRead();
-    Referee_TeamInfo lastTeamInfo = _lastTeamsInfo.value(teamColor);
+    Referee_TeamInfo lastTeamInfo = _lastTeamsInfo.value(color);
     _packetMutex.unlock();
 
     return lastTeamInfo;

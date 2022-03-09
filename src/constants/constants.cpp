@@ -65,6 +65,9 @@ Constants::Constants(QString fileName) {
     _RefereePort = doc_map["RefereePort"].toInt();
     std::cout << Text::bold("Referee Port: " + std::to_string(_RefereePort)) << std::endl;
 
+    _teamSide = doc_map["TeamSide"];
+    std::cout << Text::bold("Team Side: " + std::to_string(_teamSide)) << std::endl;
+
 }
 
 bool Constants::isTeamBlue() {
