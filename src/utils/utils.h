@@ -30,7 +30,7 @@
 class Utils
 {
 public:
-    Utils(Constants *constants);
+    Utils();
 
     //General objects
     static Robot getRobot(int robotID, bool isBlue);

@@ -21,8 +21,7 @@
 
 #include "utils.h"
 
-Utils::Utils(Constants *constants) {
-    _constants = constants;
+Utils::Utils() {
 
     RobotIdentifier baseID;
     Color *baseColor = new Color();
