@@ -25,34 +25,34 @@ Utils::Utils() {
 
 }
 
-Robot Utils::getRobot(int robotID, bool isBlue) {
+Robot Utils::robot(int ID, bool isBlue) {
     //Returns a blank robot object with ID: robotID; and Color: isBlue
     Robot robot;
 
-    RobotIdentifier robotIdentifier = getRobotID(robotID, isBlue);
-    Position robotPos = getPosition(0.0f, 0.0f, 0.0f, true);
-    Angle robotAngle = getAngle(0.0f, false, true);
-    Velocity robotVel = getVelocity(0.0f, 0.0f, 0.0f, true);
-    Acceleration robotAcceleration = getAcceleration(0.0f, 0.0f, 0.0f, true);
-    AngularSpeed robotAngularSpd = getAngularSpeed(0.0f, false, true);
-    RobotStatus robotStatus = getRobotStatus(robotID, isBlue);
+    RobotIdentifier robotIdentifier = robotID(ID, isBlue);
+    Position robotPos = position(0.0f, 0.0f, 0.0f, true);
+    Angle robotAngle = angle(0.0f, false, true);
+    Velocity robotVel = velocity(0.0f, 0.0f, 0.0f, true);
+    Acceleration robotAcceleration = acceleration(0.0f, 0.0f, 0.0f, true);
+    AngularSpeed robotAngularSpd = angularSpeed(0.0f, false, true);
+    RobotStatus robotStats = robotStatus(ID, isBlue);
 
     robot.set_allocated_robotidentifier(&robotIdentifier);
     robot.set_allocated_robotposition(&robotPos);
     robot.set_allocated_robotorientation(&robotAngle);
     robot.set_allocated_robotacceleration(&robotAcceleration);
     robot.set_allocated_robotangularspeed(&robotAngularSpd);
-    robot.set_allocated_robotstatus(&robotStatus);
+    robot.set_allocated_robotstatus(&robotStats);
 
     return robot;
 }
 
-Ball Utils::getBall() {
+Ball Utils::ball() {
     Ball ball;
 
-    Position ballPos = getPosition(0.0f, 0.0f, 0.0f, true);
-    Velocity ballVel = getVelocity(0.0f, 0.0f, 0.0f, true);
-    Acceleration ballAcceleration = getAcceleration(0.0f, 0.0f, 0.0f, true);
+    Position ballPos = position(0.0f, 0.0f, 0.0f, true);
+    Velocity ballVel = velocity(0.0f, 0.0f, 0.0f, true);
+    Acceleration ballAcceleration = acceleration(0.0f, 0.0f, 0.0f, true);
 
     ball.set_allocated_ballposition(&ballPos);
     ball.set_allocated_ballvelocity(&ballVel);
@@ -61,7 +61,7 @@ Ball Utils::getBall() {
     return ball;
 }
 
-Field Utils::getField() {
+Field Utils::field() {
     Field field;
 
     field.set_fieldlength(0.0f);
@@ -76,7 +76,7 @@ Field Utils::getField() {
     return field;
 }
 
-ControlPacket Utils::getVoidControlPacket() {
+ControlPacket Utils::voidControlPacket() {
     //This method returns a void controlPacket
 
     RobotIdentifier baseID;
@@ -86,10 +86,10 @@ ControlPacket Utils::getVoidControlPacket() {
     baseID.set_robotid(0);
     baseID.set_allocated_robotcolor(baseColor);
 
-    Velocity baseVel = getVelocity(0.0f, 0.0f, 0.0f, true);
-    Velocity baseKickSpeed = getVelocity(0.0f, 0.0f, 0.0f, true);
+    Velocity baseVel = velocity(0.0f, 0.0f, 0.0f, true);
+    Velocity baseKickSpeed = velocity(0.0f, 0.0f, 0.0f, true);
 
-    AngularSpeed baseAngularSpeed = getAngularSpeed(0.0f, false, true);
+    AngularSpeed baseAngularSpeed = angularSpeed(0.0f, false, true);
 
     ControlPacket cp;
     cp.set_allocated_robotidentifier(&baseID);
@@ -105,19 +105,19 @@ ControlPacket Utils::getVoidControlPacket() {
     return cp;
 }
 
-ControlPacket Utils::getControlPacket(int robotID, bool isBlue) {
+ControlPacket Utils::controlPacket(int ID, bool isBlue) {
     //This method returns a controlPacket prepared for Robot #robotID Team isBlue
 
-    RobotIdentifier robotIdentifier = getRobotID(robotID, isBlue);
+    RobotIdentifier robotIdentifier = robotID(ID, isBlue);
 
-    ControlPacket cp = getVoidControlPacket();
+    ControlPacket cp = voidControlPacket();
     cp.set_allocated_robotidentifier(&robotIdentifier);
 
     return cp;
 }
 
 //General methods
-Position Utils::getPosition(float x, float y, float z, bool isInvalid) {
+Position Utils::position(float x, float y, float z, bool isInvalid) {
     Position pos;
 
     pos.set_x(x);
@@ -130,7 +130,7 @@ Position Utils::getPosition(float x, float y, float z, bool isInvalid) {
     return pos;
 }
 
-Angle Utils::getAngle(float value, bool isInDegrees, bool isInvalid) {
+Angle Utils::angle(float value, bool isInDegrees, bool isInvalid) {
     Angle angle;
 
     angle.set_value(value);
@@ -142,7 +142,7 @@ Angle Utils::getAngle(float value, bool isInDegrees, bool isInvalid) {
     return angle;
 }
 
-Velocity Utils::getVelocity(float vx, float vy, float vz, bool isInvalid) {
+Velocity Utils::velocity(float vx, float vy, float vz, bool isInvalid) {
     Velocity velocity;
 
     velocity.set_vx(vx);
@@ -155,7 +155,7 @@ Velocity Utils::getVelocity(float vx, float vy, float vz, bool isInvalid) {
     return velocity;
 }
 
-Acceleration Utils::getAcceleration(float ax, float ay, float az, bool isInvalid) {
+Acceleration Utils::acceleration(float ax, float ay, float az, bool isInvalid) {
     Acceleration acceleration;
 
     acceleration.set_ax(ax);
@@ -168,7 +168,7 @@ Acceleration Utils::getAcceleration(float ax, float ay, float az, bool isInvalid
     return acceleration;
 }
 
-AngularSpeed Utils::getAngularSpeed(float vw, bool isInDegrees, bool isInvalid) {
+AngularSpeed Utils::angularSpeed(float vw, bool isInDegrees, bool isInvalid) {
     AngularSpeed angularSpeed;
 
     angularSpeed.set_vw(vw);
@@ -181,9 +181,9 @@ AngularSpeed Utils::getAngularSpeed(float vw, bool isInDegrees, bool isInvalid) 
 }
 
 //Robot info methods
-RobotIdentifier Utils::getRobotID(int robotID, bool isBlue) {
+RobotIdentifier Utils::robotID(int ID, bool isBlue) {
     RobotIdentifier robotIdentifier;
-    robotIdentifier.set_robotid(robotID);
+    robotIdentifier.set_robotid(ID);
 
     Color *color = new Color();
     color->set_isblue(isBlue);
@@ -193,9 +193,9 @@ RobotIdentifier Utils::getRobotID(int robotID, bool isBlue) {
     return robotIdentifier;
 }
 
-RobotStatus Utils::getRobotStatus(int robotID, bool isBlue) {
+RobotStatus Utils::robotStatus(int ID, bool isBlue) {
     RobotStatus robotStatus;
-    RobotIdentifier robotIdentifier = getRobotID(robotID, isBlue);
+    RobotIdentifier robotIdentifier = robotID(ID, isBlue);
 
     robotStatus.set_allocated_robotidentifier(&robotIdentifier);
     robotStatus.set_batterycharge(0.0f);
@@ -208,10 +208,10 @@ RobotStatus Utils::getRobotStatus(int robotID, bool isBlue) {
 }
 
 //getField info methods
-FieldLineSegment Utils::getLine(Position p1, Position p2) {
+FieldLineSegment Utils::line(Position p1, Position p2) {
     FieldLineSegment line;
-    Position pos1 = getPosition(p1.x(), p1.y(), p1.z(), p1.isinvalid());
-    Position pos2 = getPosition(p2.x(), p2.y(), p2.z(), p2.isinvalid());
+    Position pos1 = position(p1.x(), p1.y(), p1.z(), p1.isinvalid());
+    Position pos2 = position(p2.x(), p2.y(), p2.z(), p2.isinvalid());
 
     //Here we should check if pos1 or pos2 are invalid
 
@@ -222,9 +222,9 @@ FieldLineSegment Utils::getLine(Position p1, Position p2) {
     return line;
 }
 
-FieldCircularArc Utils::getArc(Position center, float a1, float a2){
+FieldCircularArc Utils::arc(Position center, float a1, float a2){
     FieldCircularArc arc;
-    Position c = getPosition(center.x(), center.y(), center.z(), center.isinvalid());
+    Position c = position(center.x(), center.y(), center.z(), center.isinvalid());
 
     //Here we should check if center is invalid
 
@@ -237,9 +237,9 @@ FieldCircularArc Utils::getArc(Position center, float a1, float a2){
 }
 
 Position Utils::threePoints(const Position &near, const Position &far, float distance, float beta, bool isInDegrees) {
-    Angle alpha = getAngle(atan2(far.y() - near.y(), far.x() - near.x()), isInDegrees, false);
-    Angle gama = getAngle(alpha.value() + beta, isInDegrees, false);
-    Position p = getPosition(near.x() + distance*cos(gama.value()), near.y() + distance*sin(gama.value()), 0.0f, false);
+    Angle alpha = angle(atan2(far.y() - near.y(), far.x() - near.x()), isInDegrees, false);
+    Angle gama = angle(alpha.value() + beta, isInDegrees, false);
+    Position p = position(near.x() + distance*cos(gama.value()), near.y() + distance*sin(gama.value()), 0.0f, false);
 
     if (p.isinvalid()) {
         //Here we should verify if p is actually valid. I though something like:
@@ -266,18 +266,18 @@ bool Utils::isPointAtSegment(const Position &s1, const Position &s2, const Posit
     } else {
         Position min, max;
         if (s2.x() >= s1.x()) {
-            min = getPosition(s1.x(), min.y(), 0.0f, false);
-            max = getPosition(s2.x(), max.y(), 0.0f, false);
+            min = position(s1.x(), min.y(), 0.0f, false);
+            max = position(s2.x(), max.y(), 0.0f, false);
         } else {
-            min = getPosition(s2.x(), min.y(), 0.0f, false);
-            max = getPosition(s1.x(), max.y(), 0.0f, false);
+            min = position(s2.x(), min.y(), 0.0f, false);
+            max = position(s1.x(), max.y(), 0.0f, false);
         }
         if (s2.y() >= s1.y()) {
-            min = getPosition(min.x(), s1.y(), 0.0f, false);
-            max = getPosition(max.x(), s2.y(), 0.0f, false);
+            min = position(min.x(), s1.y(), 0.0f, false);
+            max = position(max.x(), s2.y(), 0.0f, false);
         } else {
-            min = getPosition(min.x(), s2.y(), 0.0f, false);
-            max = getPosition(max.x(), s1.y(), 0.0f, false);
+            min = position(min.x(), s2.y(), 0.0f, false);
+            max = position(max.x(), s1.y(), 0.0f, false);
         }
 
         return (point.x() >= min.x() && point.x() <= max.x() && point.y() >= min.y() && point.y() <= max.y());
@@ -285,13 +285,13 @@ bool Utils::isPointAtSegment(const Position &s1, const Position &s2, const Posit
 }
 
 Position Utils::projectPointAtLine(const Position &s1, const Position &s2, const Position &point) {
-    const Position a = getPosition(point.x() - s1.x(), point.y() - s1.y(), point.z() - s1.z(), false);
-    const Position b = getPosition(s2.x() - s1.x(), s2.y() - s1.y(), s2.z() - s1.z(), false);
+    const Position a = position(point.x() - s1.x(), point.y() - s1.y(), point.z() - s1.z(), false);
+    const Position b = position(s2.x() - s1.x(), s2.y() - s1.y(), s2.z() - s1.z(), false);
     const float bModule = sqrt(pow(b.x(), 2) + pow(b.y(), 2));
-    const Position bUnitary = getPosition(b.x() / bModule, b.y() / bModule, b.z(), false);
+    const Position bUnitary = position(b.x() / bModule, b.y() / bModule, b.z(), false);
     const float scalar = Utils::scalarProduct(a, bUnitary);
 
-    return getPosition(s1.x() + (scalar * bUnitary.x()), s1.y() + (scalar * bUnitary.y()), 0.0f, false);
+    return position(s1.x() + (scalar * bUnitary.x()), s1.y() + (scalar * bUnitary.y()), 0.0f, false);
 }
 
 Position Utils::projectPointAtSegment(const Position &s1, const Position &s2, const Position &point) {
@@ -321,5 +321,135 @@ float Utils::distanceToSegment(const Position &s1, const Position &s2, const Pos
         const float d1 = Utils::distance(point, s1);
         const float d2 = Utils::distance(point, s2);
         return (d1 <= d2)? d1 : d2;
+    }
+}
+
+float Utils::scalarProduct(const Position &A, const Position &B) {
+    return A.x()*B.x() + A.y()*B.y();
+}
+
+float Utils::crossProduct(const Position &A, const Position &B) {
+    return A.x()*B.y() - A.y()*B.x();
+}
+
+float Utils::getPerpendicularCoefficient(const Position &s1, const Position &s2) {
+    float coefAngular= (s2.y() - s1.y())/(s2.x() - s1.x());
+    float perpendicularCoef = -(1.0f/coefAngular);
+    return perpendicularCoef;
+}
+
+Position Utils::hasInterceptionSegments(const Position &s1, const Position &s2, const Position &s3, const Position &s4) {
+    float denominador = (s4.y() - s3.y()) * (s2.x() - s1.x()) - (s4.x() - s3.x()) * (s2.y()-s1.y());
+
+    if (denominador!=0.0f){ // segmentos se interceptam
+        float u = ((s4.x() - s3.x())*(s1.y() - s3.y()) - (s4.y() - s3.y())*(s1.x() - s3.x()));
+        float v = ((s2.x() - s1.x())*(s1.y() - s3.y()) - (s2.y() - s1.y())*(s1.x() - s3.x()));
+
+        if (u !=0.0f) {
+
+            float xIntersec = s1.x() + (u/denominador)*(s2.x()-s1.x());
+            float yIntersec = s1.y() + (u/denominador)*(s2.y()-s1.y());
+            return position(xIntersec, yIntersec, 0.0f, false);
+
+        } else if (v !=0.0f) {
+
+            float xIntersec = s3.x() + (v/denominador) * (s4.x()-s3.x());
+            float yIntersec = s3.y() + (v/denominador) * (s4.y()-s3.y());
+
+            return position(xIntersec, yIntersec, 0.0f, false);
+        } else { // caso especial -> as linhas sao coincidentes
+
+            return position(s1.x(), s1.y(), 0.0f, false);
+
+        }
+    } else {
+        //Os segmentos sao paralelos
+        return position(0.0f, 0.0f, 0.0f, true);
+    }
+}
+
+float Utils::getAngle(const Position &a, const Position &b) {
+    return atan2(b.y()-a.y(), b.x()-a.x());
+}
+
+float Utils::angleDiff(const float A, const Angle &B) {
+    return angleDiff(A, B.value());
+}
+
+float Utils::angleDiff(const Angle &A, const float B) {
+    return angleDiff(A.value(), B);
+}
+
+float Utils::angleDiff(const Angle &A, const Angle &B) {
+    return angleDiff(A.value(), B.value());
+}
+
+float Utils::angleDiff(const float A, const float B) {
+    float diff = fabs(B - A);
+    if(diff > M_PI) {
+        diff = (2.0 * M_PI) - diff;
+    }
+    return diff;
+}
+
+void Utils::angleLimitZeroTwoPi(float *angle) {
+    while(*angle < 0) {
+        *angle += (2.0 * M_PI);
+    }
+
+    while(*angle > (2.0 * M_PI)) {
+        *angle -= (2.0 * M_PI);
+    }
+}
+
+Position Utils::vectorSum(const Position &v1, const Position &v2, float m) {
+    return position(v1.x() + m * v2.x(), v1.y() + m * v2.y(), 0.0f, false);
+}
+
+Position Utils::vectorSum(const Position &v1, const Velocity &v2, float m) {
+    return position(v1.x() + m * v2.vx(), v1.y() + m * v2.vy(), 0.0f, false);
+}
+
+Position Utils::vectorSum(const Velocity &v1, const Position &v2, float m) {
+    return position(v1.vx() + m * v2.x(), v1.vy() + m * v2.y(), 0.0f, false);
+}
+
+Velocity Utils::vectorSum(const Velocity &v1, const Velocity &v2, float m) {
+    return velocity(v1.vx() + m * v2.vx(), v1.vy() + m * v2.vy(), 0.0f, false);
+
+}
+
+bool Utils::checkInterval(double value, double minValue, double maxValue) {
+    return (minValue<value && value<maxValue);
+}
+
+void Utils::limitValue(float *value, float minValue, float maxValue) {
+    if(*value > maxValue) {
+        *value = maxValue;
+    }
+    else if(*value < minValue) {
+        *value = minValue;
+    }
+}
+
+void Utils::limitMinValue(float *value, float minValue) {
+    if(minValue == 0) {
+        return;
+    }
+
+    if((*value) > 0 && (*value) < minValue) {
+        (*value) = minValue;
+    }
+    else if((*value) < 0 && (*value) > -minValue) {
+        (*value) = -minValue;
+    }
+}
+
+bool Utils::approximateToZero(float *value, float error) {
+    if(checkInterval((*value), -error, error)) {
+        (*value) = 0;
+        return true;
+    } else {
+        return false;
     }
 }

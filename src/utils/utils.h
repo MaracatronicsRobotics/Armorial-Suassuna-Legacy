@@ -33,28 +33,28 @@ public:
     Utils();
 
     //General objects
-    static Robot getRobot(int robotID, bool isBlue);
-    static Ball getBall();
-    static Field getField();
+    static Robot robot(int ID, bool isBlue);
+    static Ball ball();
+    static Field field();
 
     //ControlPacket methods
-    static ControlPacket getVoidControlPacket();
-    static ControlPacket getControlPacket(int robotID, bool isBlue);
+    static ControlPacket voidControlPacket();
+    static ControlPacket controlPacket(int ID, bool isBlue);
 
     //General methods
-    static Position getPosition(float x, float y, float z, bool isInvalid);
-    static Angle getAngle(float value, bool isInDegrees, bool isInvalid);
-    static Velocity getVelocity(float vx, float vy, float vz, bool isInvalid);
-    static Acceleration getAcceleration(float ax, float ay, float az, bool isInvalid);
-    static AngularSpeed getAngularSpeed(float vw, bool isInDegrees, bool isInvalid);
+    static Position position(float x, float y, float z, bool isInvalid);
+    static Angle angle(float value, bool isInDegrees, bool isInvalid);
+    static Velocity velocity(float vx, float vy, float vz, bool isInvalid);
+    static Acceleration acceleration(float ax, float ay, float az, bool isInvalid);
+    static AngularSpeed angularSpeed(float vw, bool isInDegrees, bool isInvalid);
 
     //getRobot info methods
-    static RobotIdentifier getRobotID(int robotID, bool isBlue);
-    static RobotStatus getRobotStatus(int robotID, bool isBlue);
+    static RobotIdentifier robotID(int ID, bool isBlue);
+    static RobotStatus robotStatus(int ID, bool isBlue);
 
     //getField info methods
-    static FieldLineSegment getLine(Position p1, Position p2);
-    static FieldCircularArc getArc(Position center, float a1, float a2);
+    static FieldLineSegment line(Position p1, Position p2);
+    static FieldCircularArc arc(Position center, float a1, float a2);
 
     //algebric methods
     static Position threePoints(const Position &near, const Position &far, float distance, float beta, bool isInDegrees);
