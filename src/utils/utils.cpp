@@ -29,20 +29,32 @@ Robot Utils::robot(int ID, bool isBlue) {
     //Returns a blank robot object with ID: robotID; and Color: isBlue
     Robot robot;
 
-    RobotIdentifier robotIdentifier = robotID(ID, isBlue);
-    Position robotPos = position(0.0f, 0.0f, 0.0f, true);
-    Angle robotAngle = angle(0.0f, false, true);
-    Velocity robotVel = velocity(0.0f, 0.0f, 0.0f, true);
-    Acceleration robotAcceleration = acceleration(0.0f, 0.0f, 0.0f, true);
-    AngularSpeed robotAngularSpd = angularSpeed(0.0f, false, true);
-    RobotStatus robotStats = robotStatus(ID, isBlue);
+    RobotIdentifier *robotIdentifier = new RobotIdentifier();
+    robotIdentifier->CopyFrom(Utils::robotID(ID, isBlue));
+    Position *robotPos = new Position();
+    robotPos->CopyFrom(Utils::position(0.0f, 0.0f, 0.0f, true));
 
-    robot.set_allocated_robotidentifier(&robotIdentifier);
-    robot.set_allocated_robotposition(&robotPos);
-    robot.set_allocated_robotorientation(&robotAngle);
-    robot.set_allocated_robotacceleration(&robotAcceleration);
-    robot.set_allocated_robotangularspeed(&robotAngularSpd);
-    robot.set_allocated_robotstatus(&robotStats);
+    Angle *robotAngle = new Angle();
+    robotAngle->CopyFrom(Utils::angle(0.0f, false, true));
+
+    Velocity *robotVel = new Velocity();
+    robotVel->CopyFrom(Utils::velocity(0.0f, 0.0f, 0.0f, true));
+
+    Acceleration *robotAcceleration = new Acceleration();
+    robotAcceleration->CopyFrom(Utils::acceleration(0.0f, 0.0f, 0.0f, true));
+
+    AngularSpeed *robotAngularSpd = new AngularSpeed();
+    robotAngularSpd->CopyFrom(Utils::angularSpeed(0.0f, false, true));
+
+    RobotStatus *robotStats = new RobotStatus();
+    robotStats->CopyFrom(Utils::robotStatus(ID, isBlue));
+
+    robot.set_allocated_robotidentifier(robotIdentifier);
+    robot.set_allocated_robotposition(robotPos);
+    robot.set_allocated_robotorientation(robotAngle);
+    robot.set_allocated_robotacceleration(robotAcceleration);
+    robot.set_allocated_robotangularspeed(robotAngularSpd);
+    robot.set_allocated_robotstatus(robotStats);
 
     return robot;
 }
@@ -50,13 +62,18 @@ Robot Utils::robot(int ID, bool isBlue) {
 Ball Utils::ball() {
     Ball ball;
 
-    Position ballPos = position(0.0f, 0.0f, 0.0f, true);
-    Velocity ballVel = velocity(0.0f, 0.0f, 0.0f, true);
-    Acceleration ballAcceleration = acceleration(0.0f, 0.0f, 0.0f, true);
+    Position *ballPos = new Position();
+    ballPos->CopyFrom(Utils::position(0.0f, 0.0f, 0.0f, true));
 
-    ball.set_allocated_ballposition(&ballPos);
-    ball.set_allocated_ballvelocity(&ballVel);
-    ball.set_allocated_ballacceleration(&ballAcceleration);
+    Velocity *ballVel = new Velocity();
+    ballVel->CopyFrom(Utils::velocity(0.0f, 0.0f, 0.0f, true));
+
+    Acceleration *ballAcceleration = new Acceleration();
+    ballAcceleration->CopyFrom(Utils::acceleration(0.0f, 0.0f, 0.0f, true));
+
+    ball.set_allocated_ballposition(ballPos);
+    ball.set_allocated_ballvelocity(ballVel);
+    ball.set_allocated_ballacceleration(ballAcceleration);
 
     return ball;
 }
@@ -79,23 +96,22 @@ Field Utils::field() {
 ControlPacket Utils::voidControlPacket() {
     //This method returns a void controlPacket
 
-    RobotIdentifier baseID;
-    Color *baseColor = new Color();
-    baseColor->set_isblue(false);
+    RobotIdentifier *baseID = new RobotIdentifier();
+    baseID->CopyFrom(Utils::robotID(0, false));
 
-    baseID.set_robotid(0);
-    baseID.set_allocated_robotcolor(baseColor);
+    Velocity *baseVel = new Velocity();
+    baseVel->CopyFrom(Utils::velocity(0.0f, 0.0f, 0.0f, true));
+    Velocity *baseKickSpeed = new Velocity();
+    baseKickSpeed->CopyFrom(Utils::velocity(0.0f, 0.0f, 0.0f, true));
 
-    Velocity baseVel = velocity(0.0f, 0.0f, 0.0f, true);
-    Velocity baseKickSpeed = velocity(0.0f, 0.0f, 0.0f, true);
-
-    AngularSpeed baseAngularSpeed = angularSpeed(0.0f, false, true);
+    AngularSpeed *baseAngularSpeed = new AngularSpeed();
+    baseAngularSpeed->CopyFrom(Utils::angularSpeed(0.0f, false, true));
 
     ControlPacket cp;
-    cp.set_allocated_robotidentifier(&baseID);
-    cp.set_allocated_robotvelocity(&baseVel);
-    cp.set_allocated_robotangularspeed(&baseAngularSpeed);
-    cp.set_allocated_kickspeed(&baseKickSpeed);
+    cp.set_allocated_robotidentifier(baseID);
+    cp.set_allocated_robotvelocity(baseVel);
+    cp.set_allocated_robotangularspeed(baseAngularSpeed);
+    cp.set_allocated_kickspeed(baseKickSpeed);
     cp.set_dribbling(false);
     cp.set_w1(0.0f);
     cp.set_w2(0.0f);
@@ -108,10 +124,11 @@ ControlPacket Utils::voidControlPacket() {
 ControlPacket Utils::controlPacket(int ID, bool isBlue) {
     //This method returns a controlPacket prepared for Robot #robotID Team isBlue
 
-    RobotIdentifier robotIdentifier = robotID(ID, isBlue);
+    RobotIdentifier *robotIdentifier = new RobotIdentifier();
+    robotIdentifier->CopyFrom(Utils::robotID(ID, isBlue));
 
     ControlPacket cp = voidControlPacket();
-    cp.set_allocated_robotidentifier(&robotIdentifier);
+    cp.set_allocated_robotidentifier(robotIdentifier);
 
     return cp;
 }
