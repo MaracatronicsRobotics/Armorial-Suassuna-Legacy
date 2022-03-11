@@ -76,50 +76,63 @@ QList<ControlPacket> ActuatorService::GetControls(){
     return cpList;
 }
 
-ControlPacket ActuatorService::setVelocity(int ID, bool robotColor, float vx, float vy, float vz) {
-    ControlPacket cp = Utils::voidControlPacket();
+ControlPacket* ActuatorService::setVelocity(int ID, bool robotColor, float vx, float vy, float vz) {
+    ControlPacket *cp = new ControlPacket();
+    cp->CopyFrom(Utils::voidControlPacket());
 
-    RobotIdentifier robotIdentifier = Utils::robotID(ID, robotColor);
-    Velocity robotVel = Utils::velocity(vx, vy, vz, false);
+    RobotIdentifier *robotIdentifier = new RobotIdentifier();
+    robotIdentifier->CopyFrom(Utils::robotID(ID, robotColor));
 
-    cp.set_allocated_robotidentifier(&robotIdentifier);
-    cp.set_allocated_robotvelocity(&robotVel);
-    return cp;
-}
+    Velocity *robotVel = new Velocity();
+    robotVel->CopyFrom(Utils::velocity(vx, vy, vz, false));
 
-ControlPacket ActuatorService::setAngularSpeed(int ID, bool robotColor, float vw, bool isInDegrees) {
-    ControlPacket cp = Utils::voidControlPacket();
-
-    RobotIdentifier robotIdentifier = Utils::robotID(ID, robotColor);
-
-    AngularSpeed angularSpeed = Utils::angularSpeed(vw, isInDegrees, false);
-
-    cp.set_allocated_robotidentifier(&robotIdentifier);
-    cp.set_allocated_robotangularspeed(&angularSpeed);
+    cp->set_allocated_robotidentifier(robotIdentifier);
+    cp->set_allocated_robotvelocity(robotVel);
 
     return cp;
 }
 
-ControlPacket ActuatorService::setKickSpeed(int ID, bool robotColor, float vx, float vy, float vz) {
-    ControlPacket cp = Utils::voidControlPacket();
+ControlPacket* ActuatorService::setAngularSpeed(int ID, bool robotColor, float vw, bool isInDegrees) {
+    ControlPacket *cp = new ControlPacket();
+    cp->CopyFrom(Utils::voidControlPacket());
 
-    RobotIdentifier robotIdentifier = Utils::robotID(ID, robotColor);
+    RobotIdentifier *robotIdentifier = new RobotIdentifier();
+    robotIdentifier->CopyFrom(Utils::robotID(ID, robotColor));
 
-    Velocity robotKickSpeed = Utils::velocity(vx, vy, vz, false);
+    AngularSpeed *angularSpeed = new AngularSpeed();
+    angularSpeed->CopyFrom(Utils::angularSpeed(vw, isInDegrees, false));
 
-    cp.set_allocated_robotidentifier(&robotIdentifier);
-    cp.set_allocated_robotvelocity(&robotKickSpeed);
+    cp->set_allocated_robotidentifier(robotIdentifier);
+    cp->set_allocated_robotangularspeed(angularSpeed);
 
     return cp;
 }
 
-ControlPacket ActuatorService::setDrible(int ID, bool robotColor, bool dribleOn) {
-    ControlPacket cp = Utils::voidControlPacket();
+ControlPacket* ActuatorService::setKickSpeed(int ID, bool robotColor, float vx, float vy, float vz) {
+    ControlPacket *cp = new ControlPacket();
+    cp->CopyFrom(Utils::voidControlPacket());
 
-    RobotIdentifier robotIdentifier = Utils::robotID(ID, robotColor);
+    RobotIdentifier *robotIdentifier = new RobotIdentifier();
+    robotIdentifier->CopyFrom(Utils::robotID(ID, robotColor));
 
-    cp.set_allocated_robotidentifier(&robotIdentifier);
-    cp.set_dribbling(dribleOn);
+    Velocity *robotKickSpeed = new Velocity();
+    robotKickSpeed->CopyFrom(Utils::velocity(vx, vy, vz, false));
+
+    cp->set_allocated_robotidentifier(robotIdentifier);
+    cp->set_allocated_robotvelocity(robotKickSpeed);
+
+    return cp;
+}
+
+ControlPacket* ActuatorService::setDrible(int ID, bool robotColor, bool dribleOn) {
+    ControlPacket *cp = new ControlPacket();
+    cp->CopyFrom(Utils::voidControlPacket());
+
+    RobotIdentifier *robotIdentifier = new RobotIdentifier();
+    robotIdentifier->CopyFrom(Utils::robotID(ID, robotColor));
+
+    cp->set_allocated_robotidentifier(robotIdentifier);
+    cp->set_dribbling(dribleOn);
 
     return cp;
 }
