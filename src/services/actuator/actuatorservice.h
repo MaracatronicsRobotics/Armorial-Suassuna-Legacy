@@ -48,10 +48,10 @@ public:
     void SetControls(QList<ControlPacket> cpList);
     QList<ControlPacket> GetControls();
 
-    ControlPacket setVelocity(int robotID, bool robotColor, float vx, float vy, float vz);
-    ControlPacket setAngularSpeed(int robotID, bool robotColor, float vw, bool isInDegrees);
-    ControlPacket setKickSpeed(int robotID, bool robotColor, float vx, float vy, float vz);
-    ControlPacket setDrible(int robotID, bool robotColor, bool dribleOn);
+    ControlPacket setVelocity(int ID, bool robotColor, float vx, float vy, float vz);
+    ControlPacket setAngularSpeed(int ID, bool robotColor, float vw, bool isInDegrees);
+    ControlPacket setKickSpeed(int ID, bool robotColor, float vx, float vy, float vz);
+    ControlPacket setDrible(int ID, bool robotColor, bool dribleOn);
 
 protected:
     bool isConnectedToServer();
