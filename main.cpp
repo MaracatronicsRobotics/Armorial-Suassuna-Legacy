@@ -77,34 +77,43 @@ int main(int argc, char *argv[]){
     ActuatorService *actuator = new ActuatorService(constants);
     CoachService *coach = new CoachService(constants);
 
-    ControlPacket cp;
+    ControlPacket *cp;
 
     cp = actuator->setVelocity(0, false, 1.0f, 0.0f, 0.0f);
 
-    ControlPacket cp2;
+    ControlPacket *cp2;
     cp2 = actuator->setDrible(1, false, true);
 
-    ControlPacket cp3;
+    ControlPacket *cp3;
     cp3 = actuator->setAngularSpeed(3, false, 1.0f, false);
 
-    ControlPacket cp4;
+    ControlPacket *cp4;
     cp4 = actuator->setVelocity(2, false, 1.5f, 0.0f, 0.0f);
 
+    ControlPacket *cp5;
+    cp5 = actuator->setVelocity(4, false, 0.5f, 0.0f, 0.0f);
+
     QList<ControlPacket> cpList;
-    cpList.push_back(cp);
-    cpList.push_back(cp2);
-    cpList.push_back(cp3);
-    cpList.push_back(cp4);
+    //cpList.push_back(*cp);
+    cpList.push_back(*cp2);
+    cpList.push_back(*cp3);
+    cpList.push_back(*cp4);
+    cpList.push_back(*cp5);
 
     QList<ControlPacket> receiving;
 
-    //std::cout << Text::green("[LOG] ", true) + Text::bold("ActuatorService::SetControl() to be tested.") + '\n';
-    //std::cout << Text::green("[LOG] ", true) + Text::bold("ControlPacket: ")
-    //          << Text::bold("Robot ID: " + std::to_string(cp.robotidentifier().robotid())) + " "
-    //          << Text::bold("Robot Color: Yellow") + " \n";
-    //actuator->SetControl(cp);
+    std::cout << Text::green("[LOG] ", true) + Text::bold("ActuatorService::SetControl() to be tested.") + '\n';
+    std::cout << Text::green("[LOG] ", true) + Text::bold("ControlPacket: ")
+              << Text::bold("Robot ID: " + std::to_string(cp->robotidentifier().robotid())) + " "
+              << Text::bold("Robot Color: Yellow") + " \n";
+    actuator->SetControl(*cp);
 
     std::cout << Text::green("[LOG] ", true) + Text::bold("ActuatorService::SetControls() to be tested.") + '\n';
+    for (ControlPacket packet : cpList) {
+        std::cout << Text::green("[LOG] ", true) + Text::bold("ControlPacket: ")
+                  << Text::bold("Robot ID: " + std::to_string(packet.robotidentifier().robotid())) + " "
+                  << Text::bold("Robot Color: Yellow") + " \n";
+    }
     actuator->SetControls(cpList);
 
     std::cout << Text::green("[LOG] ", true) + Text::bold("ActuatorService::GetControls() to be tested.") + '\n';
@@ -128,19 +137,25 @@ int main(int argc, char *argv[]){
         std::cout << Text::green("[LOG] ", true) + Text::bold("Receiving list size: " + std::to_string(receiving.size())) + "\n";
     }
 
-
     //TEST: COACH
     Color *color = new Color();
-    color->set_isblue(true);
+    color->set_isblue(false);
 
-    RobotIdentifier robotID;
-    robotID.set_robotid(2);
-    robotID.set_allocated_robotcolor(color);
-
-    Robot r2d2 = coach->getRobot(robotID);
     QList<Robot> robots = coach->getRobots(*color);
 
+    std::string teamColor;
+    if (color->isblue()) {
+        teamColor = Text::blue("blue");
+    } else {
+        teamColor = Text::yellow("yellow");
+    }
 
+    for (Robot r : robots) {
+        std::cout << Text::green("[LOG] ", true) + Text::bold("Robot #" + std::to_string(r.robotidentifier().robotid()) + " of team ")
+                  << teamColor
+                  << Text::bold(" is positioned in coordinates: ")
+                  << Text::blue("( " + std::to_string(r.robotposition().x()) + ", " + std::to_string(r.robotposition().y()) + ")", true) + "\n";
+    }
 
     // Wait for application end
     bool exec = a->exec();
