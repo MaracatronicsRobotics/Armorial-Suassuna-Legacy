@@ -39,10 +39,9 @@ Robot CoachService::getRobot(RobotIdentifier identifier) {
     grpc::Status requestStatus = _stub->GetRobot(&context, identifier, &robot);
 
     if(!requestStatus.ok()) {
-        std::cout << Text::yellow("[WARNING] ", true) + Text::bold(QString("CoachService::getRobot(RobotIdentifier) received a not OK status from gRPC request. Passed RobotIdentifier id = %1 and color = %2").
-                                                                   arg(identifier.robotid()).
-                                                                   arg(identifier.robotcolor().isblue() ? "blue" : "yellow").toStdString()) + '\n';
-
+        spdlog::warn(Text::bold(QString("CoachService::getRobot(RobotIdentifier) received a not OK status from gRPC request. Passed RobotIdentifier id = %1 and color = %2").
+                                arg(identifier.robotid()).
+                                arg(identifier.robotcolor().isblue() ? "blue" : "yellow").toStdString()));
         // Creating an fake robot identifier and allocate it into the robot
         RobotIdentifier *robotIdentifier = new RobotIdentifier();
         robotIdentifier->set_robotid(ROBOT_INVALID_ID);
