@@ -81,10 +81,10 @@ ControlPacket* ActuatorService::setVelocity(int ID, bool robotColor, float vx, f
     cp->CopyFrom(Utils::voidControlPacket());
 
     RobotIdentifier *robotIdentifier = new RobotIdentifier();
-    robotIdentifier->CopyFrom(Utils::robotID(ID, robotColor));
+    robotIdentifier->CopyFrom(Utils::getRobotIdObject(ID, robotColor));
 
     Velocity *robotVel = new Velocity();
-    robotVel->CopyFrom(Utils::velocity(vx, vy, vz, false));
+    robotVel->CopyFrom(Utils::getVelocityObject(vx, vy, vz, false));
 
     cp->set_allocated_robotidentifier(robotIdentifier);
     cp->set_allocated_robotvelocity(robotVel);
@@ -97,10 +97,10 @@ ControlPacket* ActuatorService::setAngularSpeed(int ID, bool robotColor, float v
     cp->CopyFrom(Utils::voidControlPacket());
 
     RobotIdentifier *robotIdentifier = new RobotIdentifier();
-    robotIdentifier->CopyFrom(Utils::robotID(ID, robotColor));
+    robotIdentifier->CopyFrom(Utils::getRobotIdObject(ID, robotColor));
 
     AngularSpeed *angularSpeed = new AngularSpeed();
-    angularSpeed->CopyFrom(Utils::angularSpeed(vw, isInDegrees, false));
+    angularSpeed->CopyFrom(Utils::getAngularSpeedObject(vw, isInDegrees, false));
 
     cp->set_allocated_robotidentifier(robotIdentifier);
     cp->set_allocated_robotangularspeed(angularSpeed);
@@ -113,10 +113,10 @@ ControlPacket* ActuatorService::setKickSpeed(int ID, bool robotColor, float vx, 
     cp->CopyFrom(Utils::voidControlPacket());
 
     RobotIdentifier *robotIdentifier = new RobotIdentifier();
-    robotIdentifier->CopyFrom(Utils::robotID(ID, robotColor));
+    robotIdentifier->CopyFrom(Utils::getRobotIdObject(ID, robotColor));
 
     Velocity *robotKickSpeed = new Velocity();
-    robotKickSpeed->CopyFrom(Utils::velocity(vx, vy, vz, false));
+    robotKickSpeed->CopyFrom(Utils::getVelocityObject(vx, vy, vz, false));
 
     cp->set_allocated_robotidentifier(robotIdentifier);
     cp->set_allocated_robotvelocity(robotKickSpeed);
@@ -129,7 +129,7 @@ ControlPacket* ActuatorService::setDrible(int ID, bool robotColor, bool dribleOn
     cp->CopyFrom(Utils::voidControlPacket());
 
     RobotIdentifier *robotIdentifier = new RobotIdentifier();
-    robotIdentifier->CopyFrom(Utils::robotID(ID, robotColor));
+    robotIdentifier->CopyFrom(Utils::getRobotIdObject(ID, robotColor));
 
     cp->set_allocated_robotidentifier(robotIdentifier);
     cp->set_dribbling(dribleOn);

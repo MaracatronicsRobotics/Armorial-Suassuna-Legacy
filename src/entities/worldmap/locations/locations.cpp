@@ -24,6 +24,7 @@
 
 #include <math.h>
 #include <src/utils/text/text.h>
+#include <src/utils/utils.h>
 
 Locations::Locations(Constants *constants) {
     _constants = constants;
@@ -47,28 +48,28 @@ void Locations::updateFieldData(Field field) {
     _goalLength = fieldDefenseStretch() + 2*_goalWidth;
 
     // Update field corners
-    _fieldBottomLeftCorner  = /*Position(true, -fieldX, -fieldY)*/ Position();
-    _fieldBottomRightCorner = /*Position(true, fieldX, -fieldY)*/ Position();
-    _fieldTopLeftCorner     = /*Position(true, -fieldX, fieldY)*/ Position();
-    _fieldTopRightCorner    = /*Position(true, fieldX, fieldY)*/ Position();
+    _fieldBottomLeftCorner  = Utils::getPositionObject(-fieldX, -fieldY);
+    _fieldBottomRightCorner = Utils::getPositionObject(fieldX, -fieldY);
+    _fieldTopLeftCorner     = Utils::getPositionObject(-fieldX, fieldY);
+    _fieldTopRightCorner    = Utils::getPositionObject(fieldX, fieldY);
 
     // Update goal/posts positions
-    _rightGoalLeftPost = /*Position(true, fieldX, -goalY)*/ Position();
-    _rightGoalRightPost = /*Position(true, fieldX, goalY)*/ Position();
-    _leftGoalLeftPost = /*Position(true, -fieldX, goalY)*/ Position();
-    _leftGoalRightPost = /*Position(true, -fieldX, -goalY)*/ Position();
+    _rightGoalLeftPost = Utils::getPositionObject(fieldX, -goalY);
+    _rightGoalRightPost = Utils::getPositionObject(fieldX, goalY);
+    _leftGoalLeftPost = Utils::getPositionObject(-fieldX, goalY);
+    _leftGoalRightPost = Utils::getPositionObject(-fieldX, -goalY);
 
     // Penalty marks
-    _rightPenaltyMark = /*Position(true, (penaltyDist), 0.0)*/ Position();
-    _leftPenaltyMark = /*Position(true, (-penaltyDist), 0.0)*/ Position();
+    _rightPenaltyMark = Utils::getPositionObject(penaltyDist, 0.0);
+    _leftPenaltyMark = Utils::getPositionObject(-penaltyDist, 0.0);
 }
 
 FieldSide Locations::ourSide() {
-    return /*getConstants()->teamSide()*/ FieldSide();
+    return getConstants()->getTeamSide();
 }
 
 FieldSide Locations::theirSide() {
-    return /*getConstants()->teamSide().oppositeSide()*/ FieldSide().oppositeSide();
+    return getConstants()->getOppositeSide();
 }
 
 Position Locations::fieldCenter() {
@@ -126,7 +127,7 @@ Position Locations::fieldRightTopCorner() {
     float fMaxY = fieldMaxY();
 
     _mutex.lockForRead();
-    Position fRightTopCorner = /*Position(true, fMaxX, fMaxY)*/ Position();
+    Position fRightTopCorner = Utils::getPositionObject(fMaxX, fMaxY);
     _mutex.unlock();
 
     return fRightTopCorner;
@@ -137,7 +138,7 @@ Position Locations::fieldRightBottomCorner() {
     float fMinY = fieldMinY();
 
     _mutex.lockForRead();
-    Position fRightBottomCorner = /*Position(true, fMaxX, fMinY)*/ Position();
+    Position fRightBottomCorner = Utils::getPositionObject(fMaxX, fMinY);
     _mutex.unlock();
 
     return fRightBottomCorner;
@@ -148,7 +149,7 @@ Position Locations::fieldLeftTopCorner() {
     float fMaxY = fieldMaxY();
 
     _mutex.lockForRead();
-    Position fLeftTopCorner = /*Position(true, fMinX, fMaxY)*/ Position();
+    Position fLeftTopCorner = Utils::getPositionObject(fMinX, fMaxY);
     _mutex.unlock();
 
     return fLeftTopCorner;
@@ -159,7 +160,7 @@ Position Locations::fieldLeftBottomCorner() {
     float fMinY = fieldMinY();
 
     _mutex.lockForRead();
-    Position fLeftBottomCorner = /*Position(true, fMinX, fMinY)*/ Position();
+    Position fLeftBottomCorner = Utils::getPositionObject(fMinX, fMinY);
     _mutex.unlock();
 
     return fLeftBottomCorner;
@@ -183,7 +184,7 @@ Position Locations::ourFieldBottomCorner() {
 
 Position Locations::ourGoal() {
     _mutex.lockForRead();
-    Position ourG = /*Position(true, (ourSide().isRight() ? _rightGoalLeftPost : _leftGoalLeftPost).x(), 0.0)*/ Position();
+    Position ourG = Utils::getPositionObject((ourSide().isRight() ? _rightGoalLeftPost : _leftGoalLeftPost).x(), 0.0);
     _mutex.unlock();
 
     return ourG;
@@ -231,7 +232,7 @@ Position Locations::theirFieldBottomCorner() {
 
 Position Locations::theirGoal() {
     _mutex.lockForRead();
-    Position theirG = /*Position(true, (theirSide().isRight() ? _rightGoalLeftPost : _leftGoalLeftPost).x(), 0.0)*/ Position();
+    Position theirG = Utils::getPositionObject((theirSide().isRight() ? _rightGoalLeftPost : _leftGoalLeftPost).x(), 0.0);
     _mutex.unlock();
 
     return theirG;

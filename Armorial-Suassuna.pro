@@ -39,19 +39,6 @@ DEFINES += PROJECT_PATH=\\\"$${PWD}\\\"
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    proto/actuatorservice.grpc.pb.cc \
-    proto/actuatorservice.pb.cc \
-    proto/coachservice.grpc.pb.cc \
-    proto/coachservice.pb.cc \
-    proto/grSim_Commands.pb.cc \
-    proto/grSim_Packet.pb.cc \
-    proto/grSim_Replacement.pb.cc \
-    proto/messages.grpc.pb.cc \
-    proto/messages.pb.cc \
-    proto/sensorservice.grpc.pb.cc \
-    proto/sensorservice.pb.cc \
-    proto/visionservice.grpc.pb.cc \
-    proto/visionservice.pb.cc \
     main.cpp \
     proto/actuatorservice.grpc.pb.cc \
     proto/actuatorservice.pb.cc \

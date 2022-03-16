@@ -26,6 +26,8 @@
 #include <QtCore>
 #include <QList>
 
+#include <src/utils/types/fieldside/fieldside.h>
+
 #define ROBOT_INVALID_ID 200
 #define YELLOW 0
 #define BLUE 1
@@ -39,6 +41,10 @@ public:
     bool isTeamYellow();
     QString getTeamColor() const;
     void setTeamColor(const QString &teamColor);
+
+    FieldSide getTeamSide();
+    FieldSide getOppositeSide();
+    void swapTeamSide();
 
     int getQtdPlayers() const;
     void setQtdPlayers(int qtdPlayers);
@@ -75,6 +81,7 @@ private:
 
     // Team Constants
     QString _teamColor;
+    FieldSide _teamSide;
     int _qtdPlayers;
     float _timeToSendPacketZero;
 };

@@ -80,8 +80,5 @@ int main(int argc, char *argv[]){
     // Wait for application end
     bool exec = a->exec();
 
-    worldMap->stopEntity();
-    worldMap->wait();
-
     return exec;
 }

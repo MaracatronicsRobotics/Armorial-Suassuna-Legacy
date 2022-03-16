@@ -7,6 +7,7 @@
     "SimActuatorPort": "20011",
     
     "teamColor": "yellow",
+    "teamSide": "left",
     "qtdPlayers": 11,
     "timeToSendPacketZero": 1000.0
 }

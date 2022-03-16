@@ -49,6 +49,9 @@ Constants::Constants(QString fileName) {
     _teamColor = docMap["teamColor"].toString();
     std::cout << Text::bold("Team Color: ") + Text::green(_teamColor.toStdString(), true) << std::endl;
 
+    _teamSide = FieldSide(docMap["teamSide"].toString().toLower() == "left" ? Sides::LEFT : Sides::RIGHT);
+    std::cout << Text::bold("Team Side: ") + Text::green(docMap["teamSide"].toString().toLower().toStdString(), true) << std::endl;
+
     _qtdPlayers = docMap["qtdPlayers"].toInt();
     std::cout << Text::bold("Number of players: ") + Text::green(std::to_string(_qtdPlayers), true) << std::endl;
 
@@ -77,6 +80,18 @@ QString Constants::getTeamColor() const {
 
 void Constants::setTeamColor(const QString &teamColor) {
     _teamColor = teamColor;
+}
+
+FieldSide Constants::getTeamSide() {
+    return _teamSide;
+}
+
+FieldSide Constants::getOppositeSide() {
+    return _teamSide.oppositeSide();
+}
+
+void Constants::swapTeamSide() {
+    _teamSide = FieldSide(_teamSide.isLeft() ? Sides::RIGHT : Sides::LEFT);
 }
 
 int Constants::getQtdPlayers() const {
