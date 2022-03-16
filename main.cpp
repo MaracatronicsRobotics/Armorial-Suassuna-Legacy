@@ -21,6 +21,7 @@
 
 #include <QApplication>
 #include <QCommandLineParser>
+#include <spdlog/spdlog.h>
 
 #include <src/exithandler/exithandler.h>
 #include <src/constants/constants.h>
@@ -51,6 +52,8 @@ QCoreApplication *createApplication(int &argc, char *argv[]) {
 }
 
 int main(int argc, char *argv[]){
+    spdlog::enable_backtrace(32);
+
     QScopedPointer<QCoreApplication> a(createApplication(argc, argv));
     a->setApplicationName("Armorial Suassuna");
     a->setApplicationVersion("2.0.0");
@@ -77,6 +80,9 @@ int main(int argc, char *argv[]){
     ActuatorService *actuator = new ActuatorService(constants);
     CoachService *coach = new CoachService(constants);
 
+    Ball ball = coach->getBall();
+    Field field = coach->getField();
+
     ControlPacket *cp;
 
     cp = actuator->setVelocity(0, false, 1.0f, 0.0f, 0.0f);
@@ -102,35 +108,37 @@ int main(int argc, char *argv[]){
 
     QList<ControlPacket> receiving;
 
-    std::cout << Text::green("[LOG] ", true) + Text::bold("ActuatorService::SetControl() to be tested.") + '\n';
-    std::cout << Text::green("[LOG] ", true) + Text::bold("ControlPacket: ")
-              << Text::bold("Robot ID: " + std::to_string(cp->robotidentifier().robotid())) + " "
-              << Text::bold("Robot Color: Yellow") + " \n";
+
+    spdlog::info(Text::bold("ActuatorService::SetControl() to be tested."));
+
+    spdlog::info(Text::bold("ControlPacket: ") +
+                 Text::bold("Robot ID: " + std::to_string(cp->robotidentifier().robotid())) + " " +
+                 Text::bold("Robot Color: Yellow"));
     actuator->SetControl(*cp);
 
-    std::cout << Text::green("[LOG] ", true) + Text::bold("ActuatorService::SetControls() to be tested.") + '\n';
+    spdlog::info(Text::bold("ActuatorService::SetControls() to be tested."));
     for (ControlPacket packet : cpList) {
-        std::cout << Text::green("[LOG] ", true) + Text::bold("ControlPacket: ")
-                  << Text::bold("Robot ID: " + std::to_string(packet.robotidentifier().robotid())) + " "
-                  << Text::bold("Robot Color: Yellow") + " \n";
+        spdlog::info(Text::bold("ControlPacket: ") +
+                     Text::bold("Robot ID: " + std::to_string(packet.robotidentifier().robotid())) + " " +
+                     Text::bold("Robot Color: Yellow"));
     }
     actuator->SetControls(cpList);
 
-    std::cout << Text::green("[LOG] ", true) + Text::bold("ActuatorService::GetControls() to be tested.") + '\n';
+    spdlog::info(Text::bold("ActuatorService::GetControls() to be tested."));
     receiving = actuator->GetControls();
 
     //std::cout << Text::green("[LOG] ", true) + Text::bold("ActuatorService::SetControl() to be tested. #2") + '\n';
     //actuator->SetControl(cp2);
 
     if (receiving.size() > 0) {
-        std::cout << Text::yellow("[LOG] ", true) + Text::bold("Receiving list size: " + std::to_string(receiving.size())) + "\n";
+        spdlog::warn(Text::bold("Receiving list size: " + std::to_string(receiving.size())));
         while (receiving.size() > 0) {
             actuator->SetControls(receiving);
             receiving = actuator->GetControls();
             if (receiving.size() > 0) {
-                std::cout << Text::yellow("[LOG] ", true) + Text::bold("Receiving list size: " + std::to_string(receiving.size())) + "\n";
+                spdlog::warn(Text::bold("Receiving list size: " + std::to_string(receiving.size())));
             } else {
-                std::cout << Text::green("[LOG] ", true) + Text::bold("Receiving list size: " + std::to_string(receiving.size())) + "\n";
+                spdlog::info(Text::bold("Receiving list size: " + std::to_string(receiving.size())));
             }
         }
     } else {

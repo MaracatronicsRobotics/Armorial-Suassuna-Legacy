@@ -48,11 +48,11 @@ public:
     static Acceleration acceleration(float ax, float ay, float az, bool isInvalid);
     static AngularSpeed angularSpeed(float vw, bool isInDegrees, bool isInvalid);
 
-    //getRobot info methods
+    //Robot info methods
     static RobotIdentifier robotID(int ID, bool isBlue);
     static RobotStatus robotStatus(int ID, bool isBlue);
 
-    //getField info methods
+    //Field info methods
     static FieldLineSegment line(Position p1, Position p2);
     static FieldCircularArc arc(Position center, float a1, float a2);
 

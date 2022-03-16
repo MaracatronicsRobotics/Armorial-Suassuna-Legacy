@@ -75,7 +75,7 @@ Ball CoachService::getBall() {
     grpc::Status requestStatus = _stub->GetBall(&context, emptyRequest, &ball);
 
     if(!requestStatus.ok()) {
-        std::cout << Text::yellow("[WARNING] ", true) + Text::bold("CoachService::getBall() received a not OK status from gRPC request.") + '\n';
+        spdlog::warn(Text::bold("CoachService::getBall() received a not OK status from gRPC request."));
 
         // Creating an invalid position and allocate it into the ball
         Position *position = new Position();
@@ -95,7 +95,7 @@ Field CoachService::getField() {
     grpc::Status requestStatus = _stub->GetField(&context, emptyRequest, &field);
 
     if(!requestStatus.ok()) {
-        std::cout << Text::yellow("[WARNING] ", true) + Text::bold("CoachService::getField() received a not OK status from gRPC request.") + '\n';
+        spdlog::warn(Text::bold("CoachService::getField() received a not OK status from gRPC request."));
     }
 
     return field;

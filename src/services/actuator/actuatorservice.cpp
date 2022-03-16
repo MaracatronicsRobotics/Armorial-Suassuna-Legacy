@@ -38,7 +38,7 @@ void ActuatorService::SetControl(ControlPacket cp) {
     grpc::Status requestStatus = _stub->SetControl(&context, cp, &emptyRequest);
 
     if (!requestStatus.ok()) {
-        std::cout << Text::yellow("[WARNING] ", true) + Text::bold("ActuatorService::SetControl() received a not OK status from gRPC request.") + '\n';
+        spdlog::warn(Text::bold("ActuatorService::SetControl() received a not OK status from gRPC request."));
     }
 }
 
@@ -58,7 +58,7 @@ void ActuatorService::SetControls(QList<ControlPacket> cpList) {
     writer->WritesDone();
     grpc::Status streamStatus = writer->Finish();
     if (!streamStatus.ok()) {
-        std::cout << Text::yellow("[WARNING] ", true) + Text::bold("ActuatorService::SetControls() received a not OK status from gRPC stream.") + '\n';
+        spdlog::warn(Text::bold("ActuatorService::SetControls() received a not OK status from gRPC request."));
     }
 }
 
@@ -151,7 +151,7 @@ void ActuatorService::connectToServer(){
 
 Constants* ActuatorService::getConstants(){
     if(_constants == nullptr) {
-        std::cout << Text::yellow("[WARNING] ", true) + Text::bold("Constants with nullptr value at ActuatorClient.\n");
+        spdlog::warn(Text::bold("Constants with nullptr value at ActuatorClient."));
     }
 
     return _constants;

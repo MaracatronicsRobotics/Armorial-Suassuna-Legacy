@@ -38,6 +38,8 @@
 #include <src/constants/constants.h>
 #include <proto/coachservice.grpc.pb.h>
 
+#include <spdlog/spdlog.h>
+
 class CoachService
 {
 public:
