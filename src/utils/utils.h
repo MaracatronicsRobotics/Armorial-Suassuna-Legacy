@@ -32,29 +32,29 @@ class Utils
 public:
     Utils();
 
-    //General objects
-    static Robot robot(int ID, bool isBlue);
-    static Ball ball();
-    static Field field();
+    // General objects
+    static Robot getRobotObject(int ID, bool isBlue);
+    static Ball getBallObject();
+    static Field getFieldObject();
 
-    //ControlPacket methods
+    // ControlPacket methods
     static ControlPacket voidControlPacket();
     static ControlPacket controlPacket(int ID, bool isBlue);
 
-    //General methods
-    static Position position(float x, float y, float z, bool isInvalid);
-    static Angle angle(float value, bool isInDegrees, bool isInvalid);
-    static Velocity velocity(float vx, float vy, float vz, bool isInvalid);
-    static Acceleration acceleration(float ax, float ay, float az, bool isInvalid);
-    static AngularSpeed angularSpeed(float vw, bool isInDegrees, bool isInvalid);
+    // General methods
+    static Position getPositionObject(float x, float y, float z = 0.0f, bool isInvalid = false);
+    static Angle getAngleObject(float value, bool isInDegrees, bool isInvalid);
+    static Velocity getVelocityObject(float vx, float vy, float vz, bool isInvalid);
+    static Acceleration getAccelerationObject(float ax, float ay, float az, bool isInvalid);
+    static AngularSpeed getAngularSpeedObject(float vw, bool isInDegrees, bool isInvalid);
 
-    //Robot info methods
-    static RobotIdentifier robotID(int ID, bool isBlue);
-    static RobotStatus robotStatus(int ID, bool isBlue);
+    // Robot info methods
+    static RobotIdentifier getRobotIdObject(int ID, bool isBlue);
+    static RobotStatus getRobotStatusObject(int ID, bool isBlue);
 
-    //Field info methods
-    static FieldLineSegment line(Position p1, Position p2);
-    static FieldCircularArc arc(Position center, float a1, float a2);
+    // Field info methods
+    static FieldLineSegment getFieldLineObject(Position p1, Position p2);
+    static FieldCircularArc getFieldArcObject(Position center, float a1, float a2);
 
     //algebric methods
     static Position threePoints(const Position &near, const Position &far, float distance, float beta, bool isInDegrees);

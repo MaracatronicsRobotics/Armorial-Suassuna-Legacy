@@ -25,29 +25,29 @@ Utils::Utils() {
 
 }
 
-Robot Utils::robot(int ID, bool isBlue) {
+Robot Utils::getRobotObject(int ID, bool isBlue) {
     //Returns a blank robot object with ID: robotID; and Color: isBlue
     Robot robot;
 
     RobotIdentifier *robotIdentifier = new RobotIdentifier();
-    robotIdentifier->CopyFrom(Utils::robotID(ID, isBlue));
+    robotIdentifier->CopyFrom(Utils::getRobotIdObject(ID, isBlue));
     Position *robotPos = new Position();
-    robotPos->CopyFrom(Utils::position(0.0f, 0.0f, 0.0f, true));
+    robotPos->CopyFrom(Utils::getPositionObject(0.0f, 0.0f, 0.0f, true));
 
     Angle *robotAngle = new Angle();
-    robotAngle->CopyFrom(Utils::angle(0.0f, false, true));
+    robotAngle->CopyFrom(Utils::getAngleObject(0.0f, false, true));
 
     Velocity *robotVel = new Velocity();
-    robotVel->CopyFrom(Utils::velocity(0.0f, 0.0f, 0.0f, true));
+    robotVel->CopyFrom(Utils::getVelocityObject(0.0f, 0.0f, 0.0f, true));
 
     Acceleration *robotAcceleration = new Acceleration();
-    robotAcceleration->CopyFrom(Utils::acceleration(0.0f, 0.0f, 0.0f, true));
+    robotAcceleration->CopyFrom(Utils::getAccelerationObject(0.0f, 0.0f, 0.0f, true));
 
     AngularSpeed *robotAngularSpd = new AngularSpeed();
-    robotAngularSpd->CopyFrom(Utils::angularSpeed(0.0f, false, true));
+    robotAngularSpd->CopyFrom(Utils::getAngularSpeedObject(0.0f, false, true));
 
     RobotStatus *robotStats = new RobotStatus();
-    robotStats->CopyFrom(Utils::robotStatus(ID, isBlue));
+    robotStats->CopyFrom(Utils::getRobotStatusObject(ID, isBlue));
 
     robot.set_allocated_robotidentifier(robotIdentifier);
     robot.set_allocated_robotposition(robotPos);
@@ -59,17 +59,17 @@ Robot Utils::robot(int ID, bool isBlue) {
     return robot;
 }
 
-Ball Utils::ball() {
+Ball Utils::getBallObject() {
     Ball ball;
 
     Position *ballPos = new Position();
-    ballPos->CopyFrom(Utils::position(0.0f, 0.0f, 0.0f, true));
+    ballPos->CopyFrom(Utils::getPositionObject(0.0f, 0.0f, 0.0f, true));
 
     Velocity *ballVel = new Velocity();
-    ballVel->CopyFrom(Utils::velocity(0.0f, 0.0f, 0.0f, true));
+    ballVel->CopyFrom(Utils::getVelocityObject(0.0f, 0.0f, 0.0f, true));
 
     Acceleration *ballAcceleration = new Acceleration();
-    ballAcceleration->CopyFrom(Utils::acceleration(0.0f, 0.0f, 0.0f, true));
+    ballAcceleration->CopyFrom(Utils::getAccelerationObject(0.0f, 0.0f, 0.0f, true));
 
     ball.set_allocated_ballposition(ballPos);
     ball.set_allocated_ballvelocity(ballVel);
@@ -78,7 +78,7 @@ Ball Utils::ball() {
     return ball;
 }
 
-Field Utils::field() {
+Field Utils::getFieldObject() {
     Field field;
 
     field.set_fieldlength(0.0f);
@@ -97,15 +97,15 @@ ControlPacket Utils::voidControlPacket() {
     //This method returns a void controlPacket
 
     RobotIdentifier *baseID = new RobotIdentifier();
-    baseID->CopyFrom(Utils::robotID(0, false));
+    baseID->CopyFrom(Utils::getRobotIdObject(0, false));
 
     Velocity *baseVel = new Velocity();
-    baseVel->CopyFrom(Utils::velocity(0.0f, 0.0f, 0.0f, true));
+    baseVel->CopyFrom(Utils::getVelocityObject(0.0f, 0.0f, 0.0f, true));
     Velocity *baseKickSpeed = new Velocity();
-    baseKickSpeed->CopyFrom(Utils::velocity(0.0f, 0.0f, 0.0f, true));
+    baseKickSpeed->CopyFrom(Utils::getVelocityObject(0.0f, 0.0f, 0.0f, true));
 
     AngularSpeed *baseAngularSpeed = new AngularSpeed();
-    baseAngularSpeed->CopyFrom(Utils::angularSpeed(0.0f, false, true));
+    baseAngularSpeed->CopyFrom(Utils::getAngularSpeedObject(0.0f, false, true));
 
     ControlPacket cp;
     cp.set_allocated_robotidentifier(baseID);
@@ -125,7 +125,7 @@ ControlPacket Utils::controlPacket(int ID, bool isBlue) {
     //This method returns a controlPacket prepared for Robot #robotID Team isBlue
 
     RobotIdentifier *robotIdentifier = new RobotIdentifier();
-    robotIdentifier->CopyFrom(Utils::robotID(ID, isBlue));
+    robotIdentifier->CopyFrom(Utils::getRobotIdObject(ID, isBlue));
 
     ControlPacket cp = voidControlPacket();
     cp.set_allocated_robotidentifier(robotIdentifier);
@@ -133,8 +133,8 @@ ControlPacket Utils::controlPacket(int ID, bool isBlue) {
     return cp;
 }
 
-//General methods
-Position Utils::position(float x, float y, float z, bool isInvalid) {
+// General methods
+Position Utils::getPositionObject(float x, float y, float z, bool isInvalid) {
     Position pos;
 
     pos.set_x(x);
@@ -147,19 +147,19 @@ Position Utils::position(float x, float y, float z, bool isInvalid) {
     return pos;
 }
 
-Angle Utils::angle(float value, bool isInDegrees, bool isInvalid) {
+Angle Utils::getAngleObject(float value, bool isInDegrees, bool isInvalid) {
     Angle angle;
 
     angle.set_value(value);
     angle.set_isindegrees(isInDegrees);
     angle.set_isinvalid(isInvalid);
 
-    //Here we should check if the angle actually exists
+    // Here we should check if the angle actually exists
 
     return angle;
 }
 
-Velocity Utils::velocity(float vx, float vy, float vz, bool isInvalid) {
+Velocity Utils::getVelocityObject(float vx, float vy, float vz, bool isInvalid) {
     Velocity velocity;
 
     velocity.set_vx(vx);
@@ -167,12 +167,12 @@ Velocity Utils::velocity(float vx, float vy, float vz, bool isInvalid) {
     velocity.set_vz(vz);
     velocity.set_isinvalid(isInvalid);
 
-    //Here we should check if is realistic (not too high i.e.)
+    // Here we should check if is realistic (not too high i.e.)
 
     return velocity;
 }
 
-Acceleration Utils::acceleration(float ax, float ay, float az, bool isInvalid) {
+Acceleration Utils::getAccelerationObject(float ax, float ay, float az, bool isInvalid) {
     Acceleration acceleration;
 
     acceleration.set_ax(ax);
@@ -185,7 +185,7 @@ Acceleration Utils::acceleration(float ax, float ay, float az, bool isInvalid) {
     return acceleration;
 }
 
-AngularSpeed Utils::angularSpeed(float vw, bool isInDegrees, bool isInvalid) {
+AngularSpeed Utils::getAngularSpeedObject(float vw, bool isInDegrees, bool isInvalid) {
     AngularSpeed angularSpeed;
 
     angularSpeed.set_vw(vw);
@@ -198,7 +198,7 @@ AngularSpeed Utils::angularSpeed(float vw, bool isInDegrees, bool isInvalid) {
 }
 
 //Robot info methods
-RobotIdentifier Utils::robotID(int ID, bool isBlue) {
+RobotIdentifier Utils::getRobotIdObject(int ID, bool isBlue) {
     RobotIdentifier robotIdentifier;
     robotIdentifier.set_robotid(ID);
 
@@ -210,9 +210,9 @@ RobotIdentifier Utils::robotID(int ID, bool isBlue) {
     return robotIdentifier;
 }
 
-RobotStatus Utils::robotStatus(int ID, bool isBlue) {
+RobotStatus Utils::getRobotStatusObject(int ID, bool isBlue) {
     RobotStatus robotStatus;
-    RobotIdentifier robotIdentifier = robotID(ID, isBlue);
+    RobotIdentifier robotIdentifier = getRobotIdObject(ID, isBlue);
 
     robotStatus.set_allocated_robotidentifier(&robotIdentifier);
     robotStatus.set_batterycharge(0.0f);
@@ -225,10 +225,10 @@ RobotStatus Utils::robotStatus(int ID, bool isBlue) {
 }
 
 //getField info methods
-FieldLineSegment Utils::line(Position p1, Position p2) {
+FieldLineSegment Utils::getFieldLineObject(Position p1, Position p2) {
     FieldLineSegment line;
-    Position pos1 = position(p1.x(), p1.y(), p1.z(), p1.isinvalid());
-    Position pos2 = position(p2.x(), p2.y(), p2.z(), p2.isinvalid());
+    Position pos1 = getPositionObject(p1.x(), p1.y(), p1.z(), p1.isinvalid());
+    Position pos2 = getPositionObject(p2.x(), p2.y(), p2.z(), p2.isinvalid());
 
     //Here we should check if pos1 or pos2 are invalid
 
@@ -239,9 +239,9 @@ FieldLineSegment Utils::line(Position p1, Position p2) {
     return line;
 }
 
-FieldCircularArc Utils::arc(Position center, float a1, float a2){
+FieldCircularArc Utils::getFieldArcObject(Position center, float a1, float a2){
     FieldCircularArc arc;
-    Position c = position(center.x(), center.y(), center.z(), center.isinvalid());
+    Position c = getPositionObject(center.x(), center.y(), center.z(), center.isinvalid());
 
     //Here we should check if center is invalid
 
@@ -254,9 +254,9 @@ FieldCircularArc Utils::arc(Position center, float a1, float a2){
 }
 
 Position Utils::threePoints(const Position &near, const Position &far, float distance, float beta, bool isInDegrees) {
-    Angle alpha = angle(atan2(far.y() - near.y(), far.x() - near.x()), isInDegrees, false);
-    Angle gama = angle(alpha.value() + beta, isInDegrees, false);
-    Position p = position(near.x() + distance*cos(gama.value()), near.y() + distance*sin(gama.value()), 0.0f, false);
+    Angle alpha = getAngleObject(atan2(far.y() - near.y(), far.x() - near.x()), isInDegrees, false);
+    Angle gama = getAngleObject(alpha.value() + beta, isInDegrees, false);
+    Position p = getPositionObject(near.x() + distance*cos(gama.value()), near.y() + distance*sin(gama.value()), 0.0f, false);
 
     if (p.isinvalid()) {
         //Here we should verify if p is actually valid. I though something like:
@@ -283,18 +283,18 @@ bool Utils::isPointAtSegment(const Position &s1, const Position &s2, const Posit
     } else {
         Position min, max;
         if (s2.x() >= s1.x()) {
-            min = position(s1.x(), min.y(), 0.0f, false);
-            max = position(s2.x(), max.y(), 0.0f, false);
+            min = getPositionObject(s1.x(), min.y(), 0.0f, false);
+            max = getPositionObject(s2.x(), max.y(), 0.0f, false);
         } else {
-            min = position(s2.x(), min.y(), 0.0f, false);
-            max = position(s1.x(), max.y(), 0.0f, false);
+            min = getPositionObject(s2.x(), min.y(), 0.0f, false);
+            max = getPositionObject(s1.x(), max.y(), 0.0f, false);
         }
         if (s2.y() >= s1.y()) {
-            min = position(min.x(), s1.y(), 0.0f, false);
-            max = position(max.x(), s2.y(), 0.0f, false);
+            min = getPositionObject(min.x(), s1.y(), 0.0f, false);
+            max = getPositionObject(max.x(), s2.y(), 0.0f, false);
         } else {
-            min = position(min.x(), s2.y(), 0.0f, false);
-            max = position(max.x(), s1.y(), 0.0f, false);
+            min = getPositionObject(min.x(), s2.y(), 0.0f, false);
+            max = getPositionObject(max.x(), s1.y(), 0.0f, false);
         }
 
         return (point.x() >= min.x() && point.x() <= max.x() && point.y() >= min.y() && point.y() <= max.y());
@@ -302,13 +302,13 @@ bool Utils::isPointAtSegment(const Position &s1, const Position &s2, const Posit
 }
 
 Position Utils::projectPointAtLine(const Position &s1, const Position &s2, const Position &point) {
-    const Position a = position(point.x() - s1.x(), point.y() - s1.y(), point.z() - s1.z(), false);
-    const Position b = position(s2.x() - s1.x(), s2.y() - s1.y(), s2.z() - s1.z(), false);
+    const Position a = getPositionObject(point.x() - s1.x(), point.y() - s1.y(), point.z() - s1.z(), false);
+    const Position b = getPositionObject(s2.x() - s1.x(), s2.y() - s1.y(), s2.z() - s1.z(), false);
     const float bModule = sqrt(pow(b.x(), 2) + pow(b.y(), 2));
-    const Position bUnitary = position(b.x() / bModule, b.y() / bModule, b.z(), false);
+    const Position bUnitary = getPositionObject(b.x() / bModule, b.y() / bModule, b.z(), false);
     const float scalar = Utils::scalarProduct(a, bUnitary);
 
-    return position(s1.x() + (scalar * bUnitary.x()), s1.y() + (scalar * bUnitary.y()), 0.0f, false);
+    return getPositionObject(s1.x() + (scalar * bUnitary.x()), s1.y() + (scalar * bUnitary.y()), 0.0f, false);
 }
 
 Position Utils::projectPointAtSegment(const Position &s1, const Position &s2, const Position &point) {
@@ -366,22 +366,22 @@ Position Utils::hasInterceptionSegments(const Position &s1, const Position &s2, 
 
             float xIntersec = s1.x() + (u/denominador)*(s2.x()-s1.x());
             float yIntersec = s1.y() + (u/denominador)*(s2.y()-s1.y());
-            return position(xIntersec, yIntersec, 0.0f, false);
+            return getPositionObject(xIntersec, yIntersec, 0.0f, false);
 
         } else if (v !=0.0f) {
 
             float xIntersec = s3.x() + (v/denominador) * (s4.x()-s3.x());
             float yIntersec = s3.y() + (v/denominador) * (s4.y()-s3.y());
 
-            return position(xIntersec, yIntersec, 0.0f, false);
+            return getPositionObject(xIntersec, yIntersec, 0.0f, false);
         } else { // caso especial -> as linhas sao coincidentes
 
-            return position(s1.x(), s1.y(), 0.0f, false);
+            return getPositionObject(s1.x(), s1.y(), 0.0f, false);
 
         }
     } else {
         //Os segmentos sao paralelos
-        return position(0.0f, 0.0f, 0.0f, true);
+        return getPositionObject(0.0f, 0.0f, 0.0f, true);
     }
 }
 
@@ -420,19 +420,19 @@ void Utils::angleLimitZeroTwoPi(float *angle) {
 }
 
 Position Utils::vectorSum(const Position &v1, const Position &v2, float m) {
-    return position(v1.x() + m * v2.x(), v1.y() + m * v2.y(), 0.0f, false);
+    return getPositionObject(v1.x() + m * v2.x(), v1.y() + m * v2.y(), 0.0f, false);
 }
 
 Position Utils::vectorSum(const Position &v1, const Velocity &v2, float m) {
-    return position(v1.x() + m * v2.vx(), v1.y() + m * v2.vy(), 0.0f, false);
+    return getPositionObject(v1.x() + m * v2.vx(), v1.y() + m * v2.vy(), 0.0f, false);
 }
 
 Position Utils::vectorSum(const Velocity &v1, const Position &v2, float m) {
-    return position(v1.vx() + m * v2.x(), v1.vy() + m * v2.y(), 0.0f, false);
+    return getPositionObject(v1.vx() + m * v2.x(), v1.vy() + m * v2.y(), 0.0f, false);
 }
 
 Velocity Utils::vectorSum(const Velocity &v1, const Velocity &v2, float m) {
-    return velocity(v1.vx() + m * v2.vx(), v1.vy() + m * v2.vy(), 0.0f, false);
+    return getVelocityObject(v1.vx() + m * v2.vx(), v1.vy() + m * v2.vy(), 0.0f, false);
 
 }
 
