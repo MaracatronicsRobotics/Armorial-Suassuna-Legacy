@@ -1,0 +1,20 @@
+name: Build
+on:
+  push:
+  pull_request:
+jobs:
+  build-linux:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-20.04 ]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: "Install dependencies"
+        run: sudo apt-get update && sudo apt-get install build-essential cmake qt5-default libprotobuf-dev protobuf-compiler libprotoc-dev protobuf-compiler-grpc libgrpc++-dev libgrpc-dev libgtest-dev && sudo apt-get upgrade
+      - name: "Install spdlog"
+        run: git clone https://github.com/gabime/spdlog.git && cd spdlog && mkdir build && cd build && cmake .. && make -j && cd ../..
+      - name: "Build Armorial-Suassuna"
+        run: mkdir build && cd build && qmake .. && make -j8
