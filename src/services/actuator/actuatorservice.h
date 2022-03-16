@@ -38,6 +38,8 @@
 #include <src/utils/utils.h>
 #include <proto/actuatorservice.grpc.pb.h>
 
+#include <spdlog/spdlog.h>
+
 
 class ActuatorService
 {
