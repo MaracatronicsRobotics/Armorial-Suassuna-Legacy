@@ -13,8 +13,6 @@ jobs:
         with:
           submodules: recursive
       - name: "Install dependencies"
-        run: sudo apt-get update && sudo apt-get install build-essential cmake qt5-default libprotobuf-dev protobuf-compiler libprotoc-dev protobuf-compiler-grpc libgrpc++-dev libgrpc-dev libgtest-dev && sudo apt-get upgrade
-      - name: "Install spdlog"
-        run: git clone https://github.com/gabime/spdlog.git && cd spdlog && mkdir build && cd build && cmake .. && make -j && cd ../..
+        run: sudo apt-get update && sudo apt-get install build-essential cmake qt5-default libprotobuf-dev protobuf-compiler libprotoc-dev protobuf-compiler-grpc libgrpc++-dev libgrpc-dev libgtest-dev libspdlog-dev && sudo apt-get upgrade
       - name: "Build Armorial-Suassuna"
         run: mkdir build && cd build && qmake .. && make -j8
