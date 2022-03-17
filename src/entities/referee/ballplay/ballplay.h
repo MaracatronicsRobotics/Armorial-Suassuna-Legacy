@@ -1,15 +1,16 @@
 #ifndef BALLPLAY_H
 #define BALLPLAY_H
 
-#include <proto/messages.pb.h>
+#include <src/utils/utils.h>
 #include <src/constants/constants.h>
-// include worldMap when its done
-// #include <src/entities/world/worldMap.h>
+#include <src/entities/worldmap/worldmap.h>
+
+#include <proto/messages.pb.h>
 
 class BallPlay
 {
 public:
-    BallPlay(Constants *constants, World *world);
+    BallPlay(Constants *constants, WorldMap *worldMap);
 
     void resetPlay(bool initialState = false);
     bool isBallInPlay();
@@ -20,8 +21,8 @@ private:
     Constants* getConstants();
 
     // WorldMap
-    World *_world;
-    World* getWorld();
+    WorldMap *_worldMap;
+    WorldMap* getWorldMap();
 
     // Internal
     bool _ballInPlay;

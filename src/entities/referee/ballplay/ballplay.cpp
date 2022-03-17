@@ -2,20 +2,19 @@
 
 #include <src/utils/text/text.h>
 
-BallPlay::BallPlay(Constants *constants, World *worldMap) {
+BallPlay::BallPlay(Constants *constants, WorldMap *worldMap) {
     _constants = constants;
     _worldMap = worldMap;
 }
 
 void BallPlay::resetPlay(bool initialState) {
     _ballInPlay = initialState;
-    _initialBallPosition = getWorldMap()->getBall().getPosition();
+    _initialBallPosition = getWorldMap()->getBall().ballposition();
 }
 
 bool BallPlay::isBallInPlay() {
-    Position actualBallPosition = getWorldMap()->getBall().getPosition();
-
-    if(Utils::distance(_initialBallPosition, actualBallPosition) >= getConstants()->minDistToConsiderBallMovement()) {
+    Position actualBallPosition = getWorldMap()->getBall().ballposition();
+    if(Utils::distance(_initialBallPosition, actualBallPosition) >= getConstants()->getMinDistToConsiderBallMovement()) {
         _ballInPlay = true;
     }
 
