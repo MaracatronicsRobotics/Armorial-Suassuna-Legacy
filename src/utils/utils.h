@@ -24,8 +24,9 @@
 
 #include <proto/messages.grpc.pb.h>
 #include <src/constants/constants.h>
+#include <src/entities/worldmap/worldmap.h>
 #include <src/services/coach/coachservice.h>
-
+#include <src/utils/text/text.h>
 
 class Utils
 {
@@ -36,6 +37,12 @@ public:
     static Robot getRobotObject(int ID, bool isBlue);
     static Ball getBallObject();
     static Field getFieldObject();
+
+    static void setConstants(Constants *constants);
+    static Constants* getConstants();
+
+    static void setWorldMap(WorldMap *worldMap);
+    static WorldMap* getWorldMap();
 
     // ControlPacket methods
     static ControlPacket voidControlPacket();
@@ -90,6 +97,22 @@ public:
     static void limitValue(float *value, float minValue, float maxValue);
     static void limitMinValue(float *value, float minValue);
     static bool approximateToZero(float *value, float error = 1e-3);
+
+    static bool isInsideOurField(const Position &pos);
+    static bool isInsideTheirField(const Position &pos);
+    static bool isInsideOurArea(const Position &pos, float factor = 1.0);
+    static bool isInsideTheirArea(const Position &pos, float factor = 1.0);
+    static bool isOutsideField(const Position &pos, float factor = 1.0);
+    static bool isOutsideField(const Position &pos, float dx, float dy);
+    static bool isInsideField(const Position &pos, float factor = 1.0);
+    static bool isInsideField(const Position &pos, float dx, float dy);
+
+private:
+    static Constants* _constants;
+    static WorldMap* _worldMap;
+
+    static bool _isInsideArea(const Position &pos, float factor, const Position &goalLeftPost, const Position &goalRightDeslocatedPost);
+    static bool _isOutsideField(const Position &pos, const float maxX, const float maxY);
 };
 
 #endif // UTILS_H

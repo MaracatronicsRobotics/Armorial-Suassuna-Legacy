@@ -21,6 +21,9 @@
 
 #include "utils.h"
 
+Constants* Utils::_constants = nullptr;
+WorldMap* Utils::_worldMap = nullptr;
+
 Utils::Utils() {
 
 }
@@ -469,4 +472,107 @@ bool Utils::approximateToZero(float *value, float error) {
     } else {
         return false;
     }
+}
+
+bool Utils::isInsideOurField(const Position &pos) {
+
+    return ((getConstants()->getTeamSide().isRight() && pos.x()>=0.0f) || (getConstants()->getTeamSide().isLeft() && pos.x() <= 0.0f));
+}
+bool Utils::isInsideTheirField(const Position &pos) {
+    return (isInsideOurField(pos)==false);
+}
+bool Utils::isInsideOurArea(const Position &pos, float factor) {
+    double x_offset = getConstants()->getTeamSide().isLeft() ? (1.0 * factor) : (-1.0 * factor);
+    double y_offset = getConstants()->getTeamSide().isLeft() ? (0.5 * factor) : (-0.5 * factor);
+
+    Position ourGoalLeftPost = getWorldMap()->getLocations()->ourGoalLeftPost();
+    Position ourGoalRightPost = getWorldMap()->getLocations()->ourGoalRightPost();
+
+    Position test = getPositionObject(ourGoalLeftPost.x(), ourGoalLeftPost.y() - y_offset);
+    Position ourGoalRightDeslocatedPost = getPositionObject(ourGoalRightPost.x() + x_offset, ourGoalRightPost.y() + y_offset );
+
+    return _isInsideArea(pos, factor, test, ourGoalRightDeslocatedPost);
+}
+bool Utils::isInsideTheirArea(const Position &pos, float factor) {
+    double x_offset = getConstants()->getOppositeSide().isLeft() ? (1.0 * factor) : (-1.0 * factor);
+    double y_offset = getConstants()->getOppositeSide().isLeft() ? (0.5 * factor) : (-0.5 * factor);
+
+    Position theirGoalLeftPost = getWorldMap()->getLocations()->theirGoalLeftPost();
+    Position theirGoalRightPost = getWorldMap()->getLocations()->theirGoalRightPost();
+
+    Position test = getPositionObject(theirGoalLeftPost.x(), theirGoalLeftPost.y() - y_offset);
+    Position theirGoalRightDeslocatedPost = getPositionObject(theirGoalRightPost.x() + x_offset, theirGoalRightPost.y() + y_offset);
+
+    return _isInsideArea(pos, factor, test, theirGoalRightDeslocatedPost);
+}
+bool Utils::isOutsideField(const Position &pos, float factor) {
+    float fieldMaxX = getWorldMap()->getLocations()->fieldMaxX();
+    float fieldMaxY = getWorldMap()->getLocations()->fieldMaxY();
+    return _isOutsideField(pos, factor*fieldMaxX, factor*fieldMaxY);
+}
+bool Utils::isOutsideField(const Position &pos, const float dx, const float dy) {
+    float fieldMaxX = getWorldMap()->getLocations()->fieldMaxX();
+    float fieldMaxY = getWorldMap()->getLocations()->fieldMaxY();
+    return _isOutsideField(pos, fieldMaxX+dx, fieldMaxY+dy);
+}
+bool Utils::isInsideField(const Position &pos, float factor) {
+    return (!isOutsideField(pos, factor));
+}
+bool Utils::isInsideField(const Position &pos, float dx, float dy) {
+    return (!isOutsideField(pos, dx, dy));
+}
+bool Utils::_isInsideArea(const Position &pos, float factor, const Position &goalLeftPost, const Position &goalRightDeslocatedPost) {
+    // rectangle
+    double min_x = std::min(goalLeftPost.x(), goalRightDeslocatedPost.x());
+    double max_x = std::max(goalLeftPost.x(), goalRightDeslocatedPost.x());
+
+    double min_y = std::min(goalLeftPost.y(), goalRightDeslocatedPost.y());
+    double max_y = std::max(goalLeftPost.y(), goalRightDeslocatedPost.y());
+
+    bool x = (pos.x() >= min_x  && pos.x() <= max_x);
+    bool y = (pos.y() >= min_y && pos.y() <= max_y);
+
+    return x && y;
+
+    /*
+    return( (pos.x() <= std::max(goalLeftPost.x() * factor, goalRightDeslocatedPost.x() * factor)) && (pos.x() >= std::min(goalLeftPost.x() * factor, goalRightDeslocatedPost.x() * factor)) &&
+                (pos.y() <= std::max(goalLeftPost.y() * factor, goalRightDeslocatedPost.y() * factor)) && (pos.y() >= std::min(goalLeftPost.y() * factor, goalRightDeslocatedPost.y() * factor)) );
+    */
+}
+bool Utils::_isOutsideField(const Position &pos, const float maxX, const float maxY) {
+    if(fabs(pos.x()) > maxX)
+        return true;
+    if(fabs(pos.y()) > maxY)
+        return true;
+    return false;
+}
+
+void Utils::setConstants(Constants *constants){
+    _constants = constants;
+}
+
+Constants* Utils::getConstants() {
+    if(_constants == nullptr) {
+        std::cout << Text::red("[ERROR] ", true) << Text::bold("Constants with nullptr value at Utils") + '\n';
+    }
+    else {
+        return _constants;
+    }
+
+    return nullptr;
+}
+
+void Utils::setWorldMap(WorldMap *worldMap){
+    _worldMap = worldMap;
+}
+
+WorldMap* Utils::getWorldMap() {
+    if(_worldMap == nullptr) {
+        std::cout << Text::red("[ERROR] ", true) << Text::bold("WorldMap with nullptr value at Utils") + '\n';
+    }
+    else {
+        return _worldMap;
+    }
+
+    return nullptr;
 }
