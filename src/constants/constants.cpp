@@ -59,15 +59,14 @@ Constants::Constants(QString fileName) {
     _timeToSendPacketZero = docMap["timeToSendPacketZero"].toFloat();
     std::cout << Text::bold("Time to send packet zero: ") + Text::green(std::to_string(_timeToSendPacketZero), true) << std::endl;
 
-    _RefereeAddress = doc_map["RefereeAddress"].toString();
+    _RefereeAddress = docMap["RefereeAddress"].toString();
     std::cout << Text::bold("Referee Address: " + _RefereeAddress.toStdString()) << std::endl;
 
-    _RefereePort = doc_map["RefereePort"].toInt();
+    _RefereePort = docMap["RefereePort"].toInt();
     std::cout << Text::bold("Referee Port: " + std::to_string(_RefereePort)) << std::endl;
 
-    _teamSide = doc_map["TeamSide"];
-    std::cout << Text::bold("Team Side: " + std::to_string(_teamSide)) << std::endl;
-
+    _minDistToConsiderBallMovement = docMap["minDistToConsiderBallMovement"].toFloat();
+    std::cout << Text::bold("Min distance to consider ball movement Side: " + std::to_string(_minDistToConsiderBallMovement)) << std::endl;
 }
 
 bool Constants::isTeamBlue() {
@@ -178,4 +177,12 @@ quint16 Constants::getRefereePort() const
 void Constants::setRefereePort(const quint16 &RefereePort)
 {
     _RefereePort = RefereePort;
+}
+
+float Constants::getMinDistToConsiderBallMovement(){
+    return _minDistToConsiderBallMovement;
+}
+
+void Constants::setMinDistToConsiderBallMovement(float minDistToConsiderBallMovement){
+    _minDistToConsiderBallMovement = minDistToConsiderBallMovement;
 }

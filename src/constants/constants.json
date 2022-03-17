@@ -13,7 +13,9 @@
     "teamColor": "yellow",
     "teamSide": "left",
     "qtdPlayers": 11,
-    "timeToSendPacketZero": 1000.0
+    "timeToSendPacketZero": 1000.0,
+
+    "minDistToConsiderBallMovement": 10.0
 }
 
     
