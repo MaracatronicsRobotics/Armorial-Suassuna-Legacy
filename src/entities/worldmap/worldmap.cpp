@@ -125,8 +125,8 @@ void WorldMap::loop() {
 
     // Update robots in map
     _robots.clear();
-    _robots.insert(YELLOW, yellowRobots);
-    _robots.insert(BLUE, blueRobots);
+    _robots.insert(YELLOW_ID, yellowRobots);
+    _robots.insert(BLUE_ID, blueRobots);
 
     // Unlock mutex
     _mutex.unlock();
