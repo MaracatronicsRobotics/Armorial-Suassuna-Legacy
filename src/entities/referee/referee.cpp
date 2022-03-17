@@ -98,13 +98,14 @@ void SSLReferee::loop() {
         if(packet.blue_team_on_positive_half()) {
             if(getConstants()->isTeamBlue()) {
                 // If is blue team and is at left (negative) side, swap
-                if(getConstants()->isTeamSideLeft()) {
+
+                if(getConstants()->getTeamSide().isLeft()) {
                     getConstants()->swapTeamSide();
                 }
             }
             else {
                 // If is yellow team and is at right (positive) side, swap
-                if(getConstants()->isTeamSideRight()) {
+                if(getConstants()->getTeamSide().isRight()) {
                     getConstants()->swapTeamSide();
                 }
             }
@@ -113,13 +114,13 @@ void SSLReferee::loop() {
             // Case blue is at negative half (left)
             if(getConstants()->isTeamYellow()) {
                 // If is yellow team and is at left (negative) side, swap
-                if(getConstants()->isTeamSideLeft()) {
+                if(getConstants()->getTeamSide().isLeft()) {
                     getConstants()->swapTeamSide();
                 }
             }
             else {
                 // If is blue and is at right (positive) side, swap
-                if(getConstants()->isTeamSideRight()) {
+                if(getConstants()->getTeamSide().isRight()) {
                     getConstants()->swapTeamSide();
                 }
             }
@@ -237,11 +238,12 @@ Position SSLReferee::getLastPlacementPosition() {
 }
 
 bool SSLReferee::isBallInPlay() {
-    Position ballPosition = getWorldMap()->getBall().getPosition();
+
+    Position ballPosition = getWorldMap()->getBall().ballposition();
     return !(!getGameInfo()->canKickBall()
-             || getWorldMap()->getLocations()->isInsideOurArea(ballPosition)
-             || getWorldMap()->getLocations()->isInsideTheirArea(ballPosition)
-             || getWorldMap()->getLocations()->isOutsideField(ballPosition));
+             || Utils::isInsideOurArea(ballPosition)
+             || Utils::isInsideTheirArea(ballPosition)
+             || Utils::isOutsideField(ballPosition));
 }
 
 void SSLReferee::createAndInitializeSocket() {

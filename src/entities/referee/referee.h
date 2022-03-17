@@ -6,9 +6,11 @@
 #include <QNetworkDatagram>
 
 #include <src/utils/text/text.h>
+#include <src/utils/utils.h>
 #include <src/entities/entity.h>
 #include <src/entities/referee/gameinfo/gameinfo.h>
 #include <src/entities/referee/ballplay/ballplay.h>
+#include <src/entities/worldmap/worldmap.h>
 
 #include <proto/messages.pb.h>
 #include <proto/ssl_gc_referee_message.pb.h>
