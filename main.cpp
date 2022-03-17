@@ -76,6 +76,10 @@ int main(int argc, char *argv[]){
     ExitHandler::setup();
 
     Constants *constants = new Constants(QString(PROJECT_PATH) + "/src/constants/constants.json");
+    WorldMap *worldMap = new WorldMap(constants);
+
+    Utils::setConstants(constants);
+    Utils::setWorldMap(worldMap);
 
     // Wait for application end
     bool exec = a->exec();
