@@ -29,8 +29,8 @@
 #include <src/utils/types/fieldside/fieldside.h>
 
 #define ROBOT_INVALID_ID 200
-#define YELLOW 0
-#define BLUE 1
+#define YELLOW_ID 0
+#define BLUE_ID 1
 
 class Constants
 {
@@ -76,10 +76,8 @@ public:
     QString getTeamSide() const;
     void setTeamSide(const QString &teamSide);
 
-    bool isTeamSideLeft();
-    bool isTeamSideRight();
-
-    void swapTeamSide();
+    float getMinDistToConsiderBallMovement();
+    void setMinDistToConsiderBallMovement(float minDistToConsiderBallMovement);
 
 private:
     QString _fileName;
@@ -101,8 +99,8 @@ private:
     FieldSide _teamSide;
     int _qtdPlayers;
     float _timeToSendPacketZero;
-    
-   
+
+    float _minDistToConsiderBallMovement;
 };
 
 #endif // CONSTANTS_H
