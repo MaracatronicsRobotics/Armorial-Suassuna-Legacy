@@ -60,7 +60,7 @@ private:
     Constants* getConstants();
 
     // gRPC channel related network methods and vars
-    std::unique_ptr<Coach::CoachService::Stub> _stub;
+    std::unique_ptr<Armorial::Coach::CoachService::Stub> _stub;
     std::shared_ptr<grpc::Channel> _channel;
 
     // Network

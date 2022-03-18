@@ -32,6 +32,7 @@
 #include <src/utils/timer/timer.h>
 
 #include <src/entities/worldmap/worldmap.h>
+#include <src/entities/referee/referee.h>
 
 QCoreApplication *createApplication(int &argc, char *argv[]) {
     // Try to found in args an '--gui'
@@ -81,8 +82,14 @@ int main(int argc, char *argv[]){
     Utils::setConstants(constants);
     Utils::setWorldMap(worldMap);
 
+    SSLReferee *referee = new SSLReferee(constants, worldMap);
+    referee->start();
+
     // Wait for application end
     bool exec = a->exec();
+
+    referee->stopEntity();
+    referee->wait();
 
     return exec;
 }

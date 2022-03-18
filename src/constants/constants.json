@@ -7,8 +7,8 @@
     "SimAddress": "127.0.0.1",
     "SimActuatorPort": "20011",
     
-    "RefereeeAddress": "localhost",
-    "RefereePort": "1234",
+    "RefereeAddress": "224.5.23.1",
+    "RefereePort": "10003",
     
     "teamColor": "yellow",
     "teamSide": "left",

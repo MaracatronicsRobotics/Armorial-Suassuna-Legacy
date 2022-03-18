@@ -65,7 +65,7 @@ private:
     Constants* getConstants();
 
     // gRPC channel related network methods and vars
-    std::unique_ptr<Actuator::ActuatorService::Stub> _stub;
+    std::unique_ptr<Armorial::Actuator::ActuatorService::Stub> _stub;
     std::shared_ptr<grpc::Channel> _channel;
 
     // Network
