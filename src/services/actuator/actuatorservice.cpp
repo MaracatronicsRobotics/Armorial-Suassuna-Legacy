@@ -146,7 +146,7 @@ bool ActuatorService::isConnectedToServer(){
 void ActuatorService::connectToServer(){
     QString serviceAddress = QString("%1:%2").arg(_actuatorServiceAddress).arg(_actuatorServicePort);
     _channel = grpc::CreateChannel(serviceAddress.toStdString(), grpc::InsecureChannelCredentials());
-    _stub = Actuator::ActuatorService::NewStub(_channel);
+    _stub = Armorial::Actuator::ActuatorService::NewStub(_channel);
 }
 
 Constants* ActuatorService::getConstants(){

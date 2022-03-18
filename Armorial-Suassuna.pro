@@ -23,6 +23,7 @@ LIBS += -lQt5Core -lprotobuf -lgrpc++ -lGLU
 system(echo "compiling protobuf" && cd proto/services && protoc --grpc_out=../ --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` *.proto && cd ../../..)
 system(echo "compiling protobuf" && cd proto/services && protoc --cpp_out=../ *.proto && cd ../../..)
 system(echo "generating grsim .proto" && cd proto/grsim && protoc --cpp_out=../ *.proto && cd ../../..)
+system(echo "generating refereee .proto" && cd proto/referee && protoc --cpp_out=../ *.proto && cd ../../..)
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -105,8 +106,7 @@ HEADERS += \
     proto/grSim_Replacement.pb.h \
     proto/messages.grpc.pb.h \
     proto/messages.pb.h \
-    proto/sensor    proto/messages_robocup_ssl_robot_status.pb.h \
-service.grpc.pb.h \
+    proto/messages_robocup_ssl_robot_status.pb.h \
     proto/sensorservice.pb.h \
     proto/ssl_gc_api.pb.h \
     proto/ssl_gc_change.pb.h \

@@ -109,7 +109,7 @@ bool CoachService::isConnectedToServer() {
 void CoachService::connectToServer() {
     QString serviceAddress = QString("%1:%2").arg(_coachServiceAddress).arg(_coachServicePort);
     _channel = grpc::CreateChannel(serviceAddress.toStdString(), grpc::InsecureChannelCredentials());
-    _stub = Coach::CoachService::NewStub(_channel);
+    _stub = Armorial::Coach::CoachService::NewStub(_channel);
 }
 
 Constants* CoachService::getConstants() {

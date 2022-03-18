@@ -27,10 +27,13 @@
 #include <QList>
 
 #include <src/utils/types/fieldside/fieldside.h>
+#include <proto/messages.pb.h>
 
 #define ROBOT_INVALID_ID 200
 #define YELLOW_ID 0
 #define BLUE_ID 1
+
+using namespace Armorial;
 
 class Constants
 {
@@ -100,6 +103,7 @@ private:
     int _qtdPlayers;
     float _timeToSendPacketZero;
 
+    // Foul/Referee-related constants
     float _minDistToConsiderBallMovement;
 };
 

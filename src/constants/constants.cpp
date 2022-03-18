@@ -60,13 +60,13 @@ Constants::Constants(QString fileName) {
     std::cout << Text::bold("Time to send packet zero: ") + Text::green(std::to_string(_timeToSendPacketZero), true) << std::endl;
 
     _RefereeAddress = docMap["RefereeAddress"].toString();
-    std::cout << Text::bold("Referee Address: " + _RefereeAddress.toStdString()) << std::endl;
+    std::cout << Text::bold("Referee Address: ") + Text::green(_RefereeAddress.toStdString(), true) << std::endl;
 
     _RefereePort = docMap["RefereePort"].toInt();
-    std::cout << Text::bold("Referee Port: " + std::to_string(_RefereePort)) << std::endl;
+    std::cout << Text::bold("Referee Port: ") + Text::green(std::to_string(_RefereePort), true) << std::endl;
 
     _minDistToConsiderBallMovement = docMap["minDistToConsiderBallMovement"].toFloat();
-    std::cout << Text::bold("Min distance to consider ball movement Side: " + std::to_string(_minDistToConsiderBallMovement)) << std::endl;
+    std::cout << Text::bold("Min distance to consider ball movement Side: ") + Text::green(std::to_string(_minDistToConsiderBallMovement), true) << std::endl;
 }
 
 bool Constants::isTeamBlue() {
