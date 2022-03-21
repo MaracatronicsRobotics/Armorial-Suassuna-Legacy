@@ -83,6 +83,9 @@ SOURCES += \
     src/entities/referee/referee.cpp \
     src/entities/player/player.cpp \
     src/entities/role/role.cpp \
+    src/entities/skill/goto/goto.cpp \
+    src/entities/skill/rotateto/rotateto.cpp \
+    src/entities/skill/skill.cpp \
     src/entities/world/world.cpp \
     src/entities/worldmap/locations/locations.cpp \
     src/entities/worldmap/worldmap.cpp \
@@ -145,6 +148,9 @@ HEADERS += \
     src/entities/referee/refereeflags.h \
     src/entities/player/player.h \
     src/entities/role/role.h \
+    src/entities/skill/goto/goto.h \
+    src/entities/skill/rotateto/rotateto.h \
+    src/entities/skill/skill.h \
     src/entities/world/world.h \
     src/entities/worldmap/locations/locations.h \
     src/entities/worldmap/worldmap.h \
