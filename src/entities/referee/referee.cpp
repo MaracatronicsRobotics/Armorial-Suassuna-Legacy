@@ -21,8 +21,8 @@
 
 #include "referee.h"
 
-#define YELLOW 0
-#define BLUE 1
+#define YELLOW false
+#define BLUE true
 
 SSLReferee::SSLReferee(Constants *constants, WorldMap *worldMap) : Entity() {
     // Take constants and worldmap
@@ -131,8 +131,8 @@ void SSLReferee::loop() {
 
         // Fill blue team info
         if(packet.has_blue()) {
-            _lastTeamsInfo.take(true);
-            _lastTeamsInfo.insert(true, packet.blue());
+            _lastTeamsInfo.take(BLUE);
+            _lastTeamsInfo.insert(BLUE, packet.blue());
         }
 
         // Fill yellow team info
@@ -186,6 +186,20 @@ void SSLReferee::loop() {
 }
 
 void SSLReferee::finalization() {
+    // Check if socket is open and close it
+    if(_refereeSocket->isOpen()) {
+        _refereeSocket->close();
+    }
+
+    // Delete socket pointer
+    delete _refereeSocket;
+
+    // Delete ballplay pointer
+    delete _ballPlay;
+
+    // Delete gameInfo pointer
+    delete _gameInfo;
+
     std::cout << Text::cyan("[REFEREE] ", true) + Text::bold("Client finished.") + '\n';
 }
 
