@@ -39,9 +39,10 @@ Robot CoachService::getRobot(RobotIdentifier identifier) {
     grpc::Status requestStatus = _stub->GetRobot(&context, identifier, &robot);
 
     if(!requestStatus.ok()) {
-        spdlog::warn(Text::bold(QString("CoachService::getRobot(RobotIdentifier) received a not OK status from gRPC request. Passed RobotIdentifier id = %1 and color = %2").
+        spdlog::warn(Text::purple("CoachService::getRobot(RobotIdentifier)")
+                     + Text::bold(QString(" received a not OK status from gRPC request. Passed RobotIdentifier ID = %1 and Color = %2").
                                 arg(identifier.robotid()).
-                                arg(identifier.robotcolor().isblue() ? "blue" : "yellow").toStdString()));
+                                arg(identifier.robotcolor().isblue() ? "BLUE" : "YELLOW").toStdString()));
         // Creating an fake robot identifier and allocate it into the robot
         RobotIdentifier *robotIdentifier = new RobotIdentifier();
         robotIdentifier->set_robotid(ROBOT_INVALID_ID);
@@ -74,7 +75,7 @@ Ball CoachService::getBall() {
     grpc::Status requestStatus = _stub->GetBall(&context, emptyRequest, &ball);
 
     if(!requestStatus.ok()) {
-        spdlog::warn(Text::bold("CoachService::getBall() received a not OK status from gRPC request."));
+        spdlog::warn(Text::purple("CoachService::getBall()") + Text::bold(" received a not OK status from gRPC request."));
 
         // Creating an invalid position and allocate it into the ball
         Position *position = new Position();
@@ -94,7 +95,7 @@ Field CoachService::getField() {
     grpc::Status requestStatus = _stub->GetField(&context, emptyRequest, &field);
 
     if(!requestStatus.ok()) {
-        spdlog::warn(Text::bold("CoachService::getField() received a not OK status from gRPC request."));
+        spdlog::warn(Text::purple("CoachService::getField()") + Text::bold(" received a not OK status from gRPC request."));
     }
 
     return field;
@@ -114,7 +115,7 @@ void CoachService::connectToServer() {
 
 Constants* CoachService::getConstants() {
     if(_constants == nullptr) {
-        std::cout << Text::yellow("[WARNING] ", true) + Text::bold("Constants with nullptr value at CoachClient.\n");
+        spdlog::warn(Text::bold("Constants with nullptr value at CoachClient."));
     }
 
     return _constants;

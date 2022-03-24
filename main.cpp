@@ -34,6 +34,8 @@
 #include <src/entities/worldmap/worldmap.h>
 #include <src/entities/referee/referee.h>
 
+#include <src/entities/player/player.h>
+
 QCoreApplication *createApplication(int &argc, char *argv[]) {
     // Try to found in args an '--gui'
     bool foundArg = false;
@@ -78,6 +80,7 @@ int main(int argc, char *argv[]){
 
     Constants *constants = new Constants(QString(PROJECT_PATH) + "/src/constants/constants.json");
     WorldMap *worldMap = new WorldMap(constants);
+    worldMap->start();
 
     Utils::setConstants(constants);
     Utils::setWorldMap(worldMap);
@@ -85,11 +88,77 @@ int main(int argc, char *argv[]){
     SSLReferee *referee = new SSLReferee(constants, worldMap);
     referee->start();
 
+    Color TeamColor = Color();
+    TeamColor.set_isblue(false);
+
+    QList<Player*> playerList;
+
+    for(Robot r: worldMap->getRobots(TeamColor)) {
+        Player *p = new Player(r.robotidentifier().robotid(), constants);
+        playerList.push_back(p);
+    }
+
+    for (Player* player: playerList) {
+        player->start();
+    }
+
+    //Player *player0 = new Player(0, constants);
+    //Player *player1 = new Player(1, constants);
+    //Player *player2 = new Player(2, constants);
+    //Player *player3 = new Player(3, constants);
+    //Player *player4 = new Player(4, constants);
+    //Player *player5 = new Player(5, constants);
+
+    //player0->start();
+    //player1->start();
+    //player2->start();
+    //player3->start();
+    //player4->start();
+    //player5->start();
+
+    for (Player* player: playerList) {
+        if (player->getPlayerID() == 0) {
+            spdlog::info(Text::cyan(QString("[PLAYER %1 : %2] ")
+                                    .arg("YELLOW")
+                                    .arg(player->getPlayerID()).toStdString(), true)
+                         + Text::bold(QString("Position: (%1,%2,%3).")
+                                    .arg(player->getPlayerPos().x())
+                                    .arg(player->getPlayerPos().y())
+                                    .arg(player->getPlayerPos().z()).toStdString()));
+        }
+    }
+
     // Wait for application end
     bool exec = a->exec();
 
+    //player0->stopEntity();
+    //player0->wait();
+
+    for (Player* player: playerList) {
+        player->stopEntity();
+        player->wait();
+    }
+
+    //player1->stopEntity();
+    //player1->wait();
+    //
+    //player2->stopEntity();
+    //player2->wait();
+    //
+    //player3->stopEntity();
+    //player3->wait();
+    //
+    //player4->stopEntity();
+    //player4->wait();
+    //
+    //player5->stopEntity();
+    //player5->wait();
+
     referee->stopEntity();
     referee->wait();
+
+    worldMap->stopEntity();
+    worldMap->wait();
 
     return exec;
 }
