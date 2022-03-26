@@ -108,6 +108,9 @@ private:
     // Referee
     SSLReferee *_referee;
     SSLReferee* getReferee();
+
+    Position _dest;
+    Position _lookTo;
 };
 
 #endif // PLAYER_H

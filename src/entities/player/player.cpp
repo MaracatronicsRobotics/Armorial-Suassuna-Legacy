@@ -30,6 +30,14 @@ Player::Player(int playerID, WorldMap *worldMap, SSLReferee *referee, Constants 
     _worldMap = worldMap;
     _referee = referee;
     _isDribbling = false;
+    _dest.set_x(-4.3f);
+    _dest.set_y(0.0f);
+    _dest.set_z(0.0f);
+    _dest.set_isinvalid(false);
+    _lookTo.set_x(0.0f);
+    _lookTo.set_y(2.0f);
+    _lookTo.set_z(0.0f);
+    _lookTo.set_isinvalid(false);
 }
 
 Player::~Player() {
@@ -169,8 +177,8 @@ void Player::playerGoTo(Position pos) {
                                 .arg(Player::getConstants()->isTeamBlue() ? "Blue" : "Yellow").toStdString()));
     } else {
         Position playerPos = Player::getPlayerPos();
-        float dx = (playerPos.x() - pos.x())/2;
-        float dy = (playerPos.y() - pos.y())/2;
+        float dx = (playerPos.x() - pos.x());
+        float dy = (playerPos.y() - pos.y());
 
         // Getting halfway vectors trying to avoid enormous velocities
         // This should be fixed after implementing PID
@@ -178,7 +186,7 @@ void Player::playerGoTo(Position pos) {
         float vx = (dx * cos(getPlayerOrientation().value()) + dy * sin(getPlayerOrientation().value()));
         float vy = (dy * cos(getPlayerOrientation().value()) + dx * sin(getPlayerOrientation().value()));
 
-        _playerControl = _actuatorService->setVelocity(_playerID, Player::getConstants()->isTeamBlue(), vx, vy, 0.0f);
+        _playerControl = _actuatorService->setVelocity(_playerID, Player::getConstants()->isTeamBlue(), -vx/2, -vy/2, 0.0f);
         _playerControls.push_back(*_playerControl);
     }
 }
@@ -233,6 +241,31 @@ void Player::loop() {
     _mutex.lockForWrite();
 
 
+    if (getPlayerPos().x() >= 4.0f) {
+        _dest.set_x(-4.0f - 0.2f);
+        _dest.set_y(0.0f);
+        _dest.set_z(0.0f);
+        _dest.set_isinvalid(false);
+        _lookTo.set_x(0.0f);
+        _lookTo.set_y(2.0f);
+        _lookTo.set_z(0.0f);
+        _lookTo.set_isinvalid(false);
+    } else if (getPlayerPos().x() <= -4.0f) {
+        _dest.set_x(4.0f + 0.2f);
+        _dest.set_y(0.0f);
+        _dest.set_z(0.0f);
+        _dest.set_isinvalid(false);
+        _lookTo.set_x(0.0f);
+        _lookTo.set_y(-2.0f);
+        _lookTo.set_z(0.0f);
+        _lookTo.set_isinvalid(false);
+    }
+
+    if(Utils::distance(getPlayerPos(), _dest) >= 0.0f) {
+        playerGoTo(_dest);
+        //playerRotateTo(_lookTo);
+    }
+
     // Send ControlPackets
     if (_playerControls.size() > 0) {
         getActuatorService()->SetControls(_playerControls);
@@ -254,7 +287,6 @@ void Player::loop() {
                             .arg(getWorld()->getBall().ballposition().y())
                             .arg(getWorld()->getBall().ballposition().z()).toStdString()));
 
-    // End Test
 
     _playerControls.clear();
 
