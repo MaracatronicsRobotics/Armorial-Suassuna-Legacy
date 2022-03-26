@@ -21,14 +21,14 @@
 
 #include "player.h"
 
-Player::Player(int playerID, Constants *constants) {
+Player::Player(int playerID, WorldMap *worldMap, SSLReferee *referee, Constants *constants) {
     _constants = constants;
     _playerID = playerID;
     _actuatorService = nullptr;
     _coachService = nullptr;
     _playerControl = nullptr;
-    _worldMap = nullptr;
-    _referee = nullptr;
+    _worldMap = worldMap;
+    _referee = referee;
     _isDribbling = false;
 }
 
@@ -222,12 +222,6 @@ void Player::initialization() {
     // Create Control Packet pointer
     _playerControl = new ControlPacket();
 
-    // Create WorldMap pointer
-    _worldMap = new WorldMap(getConstants());
-
-    // Create Referee pointer
-    _referee = new SSLReferee(getConstants(), getWorld());
-
     // Log
     spdlog::info(Text::cyan(QString("[PLAYER %1 : %2] ")
                             .arg(Player::getConstants()->isTeamBlue() ? "BLUE" : "YELLOW")
@@ -245,6 +239,20 @@ void Player::loop() {
     }
 
     // Test
+
+    spdlog::info(Text::cyan(QString("[PLAYER %1 : %2] ")
+                            .arg("YELLOW")
+                            .arg(getPlayerID()).toStdString(), true)
+                 + Text::bold(QString("Position: (%1,%2,%3).")
+                            .arg(getPlayerPos().x())
+                            .arg(getPlayerPos().y())
+                            .arg(getPlayerPos().z()).toStdString()));
+
+    spdlog::info(Text::cyan("[BALL] ", true)
+                 + Text::bold(QString("Position: (%1,%2,%3).")
+                            .arg(getWorld()->getBall().ballposition().x())
+                            .arg(getWorld()->getBall().ballposition().y())
+                            .arg(getWorld()->getBall().ballposition().z()).toStdString()));
 
     // End Test
 

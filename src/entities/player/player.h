@@ -35,7 +35,7 @@
 class Player : public Entity
 {
 public:
-    Player(int playerID, Constants *constants);
+    Player(int playerID, WorldMap *worldMap, SSLReferee *referee, Constants *constants);
     ~Player();
     QString name();
 
