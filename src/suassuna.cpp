@@ -27,6 +27,9 @@ Suassuna::Suassuna(Constants *constants) {
 
     // Creating world
     _world = new World(getConstants());
+
+    // Setting GUI as nullptr
+    _gui = nullptr;
 }
 
 void Suassuna::start(bool useGui) {
@@ -41,6 +44,12 @@ void Suassuna::start(bool useGui) {
     // Set utils
     Utils::setConstants(getConstants());
     Utils::setWorldMap(_worldMap);
+
+    // Setup GUI
+    if(useGui) {
+        _gui = new GUI();
+        _gui->show();
+    }
 
     // Starting world
     _world->start();
@@ -58,10 +67,10 @@ void Suassuna::stop() {
     delete _world;
 
     // If gui pointer is not null, close and delete it
-    //if(_gui != nullptr) {
-    //    _gui->close();
-    //    delete _gui;
-    //}
+    if(_gui != nullptr) {
+        _gui->close();
+        delete _gui;
+    }
 }
 
 Constants* Suassuna::getConstants() {
