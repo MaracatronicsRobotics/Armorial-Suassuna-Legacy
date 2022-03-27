@@ -22,6 +22,7 @@
 #ifndef SUASSUNA_H
 #define SUASSUNA_H
 
+#include <src/gui/gui.h>
 #include <src/entities/referee/referee.h>
 #include <src/entities/player/player.h>
 #include <src/entities/world/world.h>
@@ -44,6 +45,7 @@ private:
     // Modules
     SSLReferee *_referee;
     WorldMap *_worldMap;
+    GUI *_gui;
 
     // World (thread manager)
     World *_world;

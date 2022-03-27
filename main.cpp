@@ -78,7 +78,7 @@ int main(int argc, char *argv[]){
     Suassuna *suassuna = new Suassuna(constants);
 
     // Start Suassuna
-    suassuna->start(true);
+    suassuna->start(parser.isSet(useGuiOption));
 
     // Wait for application end
     bool exec = a->exec();

@@ -84,6 +84,7 @@ SOURCES += \
     src/entities/worldmap/locations/locations.cpp \
     src/entities/worldmap/worldmap.cpp \
     src/exithandler/exithandler.cpp \
+    src/gui/gui.cpp \
     src/services/actuator/actuatorservice.cpp \
     src/services/coach/coachservice.cpp \
     src/suassuna.cpp \
@@ -141,6 +142,7 @@ HEADERS += \
     src/entities/worldmap/locations/locations.h \
     src/entities/worldmap/worldmap.h \
     src/exithandler/exithandler.h \
+    src/gui/gui.h \
     src/services/actuator/actuatorservice.h \
     src/services/coach/coachservice.h \
     src/suassuna.h \
@@ -153,3 +155,6 @@ HEADERS += \
 DISTFILES += \
     proto/LICENSE \
     proto/README.md
+
+FORMS += \
+    src/gui/gui.ui
