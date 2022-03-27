@@ -21,7 +21,56 @@
 
 #include "suassuna.h"
 
-Suassuna::Suassuna()
-{
+Suassuna::Suassuna(Constants *constants) {
+    // Setting up constants
+    _constants = constants;
 
+    // Creating world
+    _world = new World(getConstants());
+}
+
+void Suassuna::start(bool useGui) {
+    // Creating World Map
+    _worldMap = new WorldMap(getConstants());
+    _world->addEntity(_worldMap, 0);
+
+    // Creating gand adding referee to world
+    _referee = new SSLReferee(getConstants(), _worldMap);
+    _world->addEntity(_referee, 0);
+
+    // Set utils
+    Utils::setConstants(getConstants());
+    Utils::setWorldMap(_worldMap);
+
+    // Starting world
+    _world->start();
+
+    // Disabling world thread (loop() won't run anymore)
+    _world->disableLoop();
+}
+
+void Suassuna::stop() {
+    // Stopping and waiting world
+    _world->stopEntity();
+    _world->wait();
+
+    // Deleting world (it also delete all other entities added to it)
+    delete _world;
+
+    // If gui pointer is not null, close and delete it
+    //if(_gui != nullptr) {
+    //    _gui->close();
+    //    delete _gui;
+    //}
+}
+
+Constants* Suassuna::getConstants() {
+    if(_constants == nullptr) {
+        std::cout << Text::red("[ERROR] ", true) << Text::bold("Constants with nullptr value at Suassuna") + '\n';
+    }
+    else {
+        return _constants;
+    }
+
+    return nullptr;
 }
