@@ -1,0 +1,28 @@
+name: Task
+description: Create an task
+labels: 'template: task'
+body:
+  - type: textarea
+    attributes:
+      label: Describe the task
+      description: A clear and concise description of what you want and what your will do in the task.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Describe the expected requirements for the task
+      description: A clear and concise description of what you want to happen. Please use checkboxes here.
+    validations:
+      required: true
+  - type: dropdown
+    id: download
+    attributes:
+      label: Provide the expected days to finish this task
+      options:
+        - 7 days
+        - 15 days
+        - 30 days
+        - Another amount of time (please specify in the comments
+    validations:
+      required: true
+
