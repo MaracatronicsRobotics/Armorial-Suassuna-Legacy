@@ -22,11 +22,31 @@
 #ifndef SUASSUNA_H
 #define SUASSUNA_H
 
+#include <src/entities/referee/referee.h>
+#include <src/entities/player/player.h>
+#include <src/entities/world/world.h>
+#include <src/entities/worldmap/worldmap.h>
 
 class Suassuna
 {
 public:
-    Suassuna();
+    Suassuna(Constants *constants);
+
+    // Internal management
+    void start(bool useGui);
+    void stop();
+
+private:
+    // Constants
+    Constants *_constants;
+    Constants* getConstants();
+
+    // Modules
+    SSLReferee *_referee;
+    WorldMap *_worldMap;
+
+    // World (thread manager)
+    World *_world;
 };
 
 #endif // SUASSUNA_H

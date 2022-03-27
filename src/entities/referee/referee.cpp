@@ -186,20 +186,6 @@ void SSLReferee::loop() {
 }
 
 void SSLReferee::finalization() {
-    // Check if socket is open and close it
-    if(_refereeSocket->isOpen()) {
-        _refereeSocket->close();
-    }
-
-    // Delete socket pointer
-    delete _refereeSocket;
-
-    // Delete ballplay pointer
-    delete _ballPlay;
-
-    // Delete gameInfo pointer
-    delete _gameInfo;
-
     std::cout << Text::cyan("[REFEREE] ", true) + Text::bold("Client finished.") + '\n';
 }
 
