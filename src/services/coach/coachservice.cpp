@@ -19,9 +19,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-
 #include "coachservice.h"
 
+#include <src/utils/utils.h>
 #include <src/utils/text/text.h>
 
 CoachService::CoachService(Constants *constants) {
@@ -33,13 +33,18 @@ CoachService::CoachService(Constants *constants) {
 }
 
 Robot CoachService::getRobot(RobotIdentifier identifier) {
+    if(!isConnectedToServer()) {
+        spdlog::warn(Text::purple(__PRETTY_FUNCTION__, true) + Text::bold(" requested gRPC server but it is disconnected."));
+        return Utils::getInvalidRobotObject();
+    }
+
     grpc::ClientContext context;
     Robot robot;
 
     grpc::Status requestStatus = _stub->GetRobot(&context, identifier, &robot);
 
     if(!requestStatus.ok()) {
-        spdlog::warn(Text::purple("CoachService::getRobot(RobotIdentifier)")
+        spdlog::warn(Text::purple(__PRETTY_FUNCTION__, true)
                      + Text::bold(QString(" received a not OK status from gRPC request. Passed RobotIdentifier ID = %1 and Color = %2").
                                 arg(identifier.robotid()).
                                 arg(identifier.robotcolor().isblue() ? "BLUE" : "YELLOW").toStdString()));
@@ -54,6 +59,11 @@ Robot CoachService::getRobot(RobotIdentifier identifier) {
 }
 
 QList<Robot> CoachService::getRobots(Color teamColor) {
+    if(!isConnectedToServer()) {
+        spdlog::warn(Text::purple(__PRETTY_FUNCTION__, true) + Text::bold(" requested gRPC server but it is disconnected."));
+        return QList<Robot>();
+    }
+
     grpc::ClientContext context;
 
     std::unique_ptr<grpc::ClientReader<Robot>> reader = _stub->GetRobots(&context, teamColor);
@@ -68,6 +78,11 @@ QList<Robot> CoachService::getRobots(Color teamColor) {
 }
 
 Ball CoachService::getBall() {
+    if(!isConnectedToServer()) {
+        spdlog::warn(Text::purple(__PRETTY_FUNCTION__, true) + Text::bold(" requested gRPC server but it is disconnected."));
+        return Ball();
+    }
+
     grpc::ClientContext context;
     google::protobuf::Empty emptyRequest;
     Ball ball;
@@ -75,7 +90,7 @@ Ball CoachService::getBall() {
     grpc::Status requestStatus = _stub->GetBall(&context, emptyRequest, &ball);
 
     if(!requestStatus.ok()) {
-        spdlog::warn(Text::purple("CoachService::getBall()") + Text::bold(" received a not OK status from gRPC request."));
+        spdlog::warn(Text::purple(__PRETTY_FUNCTION__, true) + Text::bold(" received a not OK status from gRPC request."));
 
         // Creating an invalid position and allocate it into the ball
         Position *position = new Position();
@@ -88,6 +103,11 @@ Ball CoachService::getBall() {
 }
 
 Field CoachService::getField() {
+    if(!isConnectedToServer()) {
+        spdlog::warn(Text::purple(__PRETTY_FUNCTION__, true) + Text::bold(" requested gRPC server but it is disconnected."));
+        return Field();
+    }
+
     grpc::ClientContext context;
     google::protobuf::Empty emptyRequest;
     Field field;
@@ -95,7 +115,7 @@ Field CoachService::getField() {
     grpc::Status requestStatus = _stub->GetField(&context, emptyRequest, &field);
 
     if(!requestStatus.ok()) {
-        spdlog::warn(Text::purple("CoachService::getField()") + Text::bold(" received a not OK status from gRPC request."));
+        spdlog::warn(Text::purple(__PRETTY_FUNCTION__, true) + Text::bold(" received a not OK status from gRPC request."));
     }
 
     return field;

@@ -32,17 +32,27 @@ ActuatorService::ActuatorService(Constants *constants) {
 }
 
 void ActuatorService::SetControl(ControlPacket cp) {
+    if(!isConnectedToServer()) {
+        spdlog::warn(Text::purple(__PRETTY_FUNCTION__, true) + Text::bold(" requested gRPC server but it is disconnected."));
+        return ;
+    }
+
     grpc::ClientContext context;
     google::protobuf::Empty emptyRequest;
 
     grpc::Status requestStatus = _stub->SetControl(&context, cp, &emptyRequest);
 
     if (!requestStatus.ok()) {
-        spdlog::warn(Text::bold("ActuatorService::SetControl() received a not OK status from gRPC request."));
+        spdlog::warn(Text::purple(__PRETTY_FUNCTION__, true) + Text::bold(" received a not OK status from gRPC request."));
     }
 }
 
 void ActuatorService::SetControls(QList<ControlPacket> cpList) {
+    if(!isConnectedToServer()) {
+        spdlog::warn(Text::purple(__PRETTY_FUNCTION__, true) + Text::bold(" requested gRPC server but it is disconnected."));
+        return ;
+    }
+
     grpc::ClientContext context;
     google::protobuf::Empty emptyRequest;
 
@@ -58,27 +68,12 @@ void ActuatorService::SetControls(QList<ControlPacket> cpList) {
     writer->WritesDone();
     grpc::Status streamStatus = writer->Finish();
     if (!streamStatus.ok()) {
-        spdlog::warn(Text::bold("ActuatorService::SetControls() received a not OK status from gRPC request."));
+        spdlog::warn(Text::purple(__PRETTY_FUNCTION__, true) + Text::bold(" received a not OK status from gRPC request."));
     }
-}
-
-QList<ControlPacket> ActuatorService::GetControls(){
-    grpc::ClientContext context;
-    google::protobuf::Empty emptyRequest;
-    ControlPacket cp;
-    QList<ControlPacket> cpList;
-
-    std::unique_ptr<grpc::ClientReader<ControlPacket>> reader = _stub->GetControls(&context, emptyRequest);
-    while (reader->Read(&cp)) {
-        cpList.push_back(cp);
-    }
-
-    return cpList;
 }
 
 ControlPacket* ActuatorService::setVelocity(int ID, bool robotColor, float vx, float vy, float vz) {
     ControlPacket *cp = new ControlPacket();
-    cp->CopyFrom(Utils::voidControlPacket());
 
     RobotIdentifier *robotIdentifier = new RobotIdentifier();
     robotIdentifier->CopyFrom(Utils::getRobotIdObject(ID, robotColor));
@@ -94,7 +89,6 @@ ControlPacket* ActuatorService::setVelocity(int ID, bool robotColor, float vx, f
 
 ControlPacket* ActuatorService::setAngularSpeed(int ID, bool robotColor, float vw, bool isInDegrees) {
     ControlPacket *cp = new ControlPacket();
-    cp->CopyFrom(Utils::voidControlPacket());
 
     RobotIdentifier *robotIdentifier = new RobotIdentifier();
     robotIdentifier->CopyFrom(Utils::getRobotIdObject(ID, robotColor));
@@ -110,7 +104,6 @@ ControlPacket* ActuatorService::setAngularSpeed(int ID, bool robotColor, float v
 
 ControlPacket* ActuatorService::setKickSpeed(int ID, bool robotColor, float vx, float vy, float vz) {
     ControlPacket *cp = new ControlPacket();
-    cp->CopyFrom(Utils::voidControlPacket());
 
     RobotIdentifier *robotIdentifier = new RobotIdentifier();
     robotIdentifier->CopyFrom(Utils::getRobotIdObject(ID, robotColor));
@@ -126,7 +119,6 @@ ControlPacket* ActuatorService::setKickSpeed(int ID, bool robotColor, float vx, 
 
 ControlPacket* ActuatorService::setDrible(int ID, bool robotColor, bool dribleOn) {
     ControlPacket *cp = new ControlPacket();
-    cp->CopyFrom(Utils::voidControlPacket());
 
     RobotIdentifier *robotIdentifier = new RobotIdentifier();
     robotIdentifier->CopyFrom(Utils::getRobotIdObject(ID, robotColor));

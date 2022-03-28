@@ -48,7 +48,6 @@ public:
 
     void SetControl(ControlPacket cp);
     void SetControls(QList<ControlPacket> cpList);
-    QList<ControlPacket> GetControls();
 
     ControlPacket* setVelocity(int ID, bool robotColor, float vx, float vy, float vz);
     ControlPacket* setAngularSpeed(int ID, bool robotColor, float vw, bool isInDegrees);

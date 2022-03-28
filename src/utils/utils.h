@@ -35,6 +35,7 @@ public:
 
     // General objects
     static Robot getRobotObject(int ID, bool isBlue);
+    static Robot getInvalidRobotObject();
     static Ball getBallObject();
     static Field getFieldObject();
 
@@ -45,7 +46,6 @@ public:
     static WorldMap* getWorldMap();
 
     // ControlPacket methods
-    static ControlPacket voidControlPacket();
     static ControlPacket controlPacket(int ID, bool isBlue);
 
     // General methods

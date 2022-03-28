@@ -62,6 +62,10 @@ Robot Utils::getRobotObject(int ID, bool isBlue) {
     return robot;
 }
 
+Robot Utils::getInvalidRobotObject() {
+    return getRobotObject(ROBOT_INVALID_ID, false);
+}
+
 Ball Utils::getBallObject() {
     Ball ball;
 
@@ -96,41 +100,13 @@ Field Utils::getFieldObject() {
     return field;
 }
 
-ControlPacket Utils::voidControlPacket() {
-    //This method returns a void controlPacket
-
-    RobotIdentifier *baseID = new RobotIdentifier();
-    baseID->CopyFrom(Utils::getRobotIdObject(0, false));
-
-    Velocity *baseVel = new Velocity();
-    baseVel->CopyFrom(Utils::getVelocityObject(0.0f, 0.0f, 0.0f, true));
-    Velocity *baseKickSpeed = new Velocity();
-    baseKickSpeed->CopyFrom(Utils::getVelocityObject(0.0f, 0.0f, 0.0f, true));
-
-    AngularSpeed *baseAngularSpeed = new AngularSpeed();
-    baseAngularSpeed->CopyFrom(Utils::getAngularSpeedObject(0.0f, false, true));
-
-    ControlPacket cp;
-    cp.set_allocated_robotidentifier(baseID);
-    cp.set_allocated_robotvelocity(baseVel);
-    cp.set_allocated_robotangularspeed(baseAngularSpeed);
-    cp.set_allocated_kickspeed(baseKickSpeed);
-    cp.set_dribbling(false);
-    cp.set_w1(0.0f);
-    cp.set_w2(0.0f);
-    cp.set_w3(0.0f);
-    cp.set_w4(0.0f);
-
-    return cp;
-}
-
 ControlPacket Utils::controlPacket(int ID, bool isBlue) {
     //This method returns a controlPacket prepared for Robot #robotID Team isBlue
 
     RobotIdentifier *robotIdentifier = new RobotIdentifier();
     robotIdentifier->CopyFrom(Utils::getRobotIdObject(ID, isBlue));
 
-    ControlPacket cp = voidControlPacket();
+    ControlPacket cp = ControlPacket();
     cp.set_allocated_robotidentifier(robotIdentifier);
 
     return cp;
