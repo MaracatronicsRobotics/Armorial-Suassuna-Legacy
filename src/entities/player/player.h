@@ -77,7 +77,7 @@ private:
     void finalization();
 
     // Player Control
-    QList<ControlPacket> _playerControls;
+    //QList<ControlPacket> _playerControls;
     ControlPacket *_playerControl;
     int _playerID;
     bool _isDribbling;
@@ -109,6 +109,8 @@ private:
     SSLReferee *_referee;
     SSLReferee* getReferee();
 
+
+    //Only for testing purposes
     Position _dest;
     Position _lookTo;
 };

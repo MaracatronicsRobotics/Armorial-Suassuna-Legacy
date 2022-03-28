@@ -30,6 +30,9 @@ Player::Player(int playerID, WorldMap *worldMap, SSLReferee *referee, Constants 
     _worldMap = worldMap;
     _referee = referee;
     _isDribbling = false;
+
+
+    //Only for testing purposes
     _dest.set_x(-4.3f);
     _dest.set_y(0.0f);
     _dest.set_z(0.0f);
@@ -187,7 +190,6 @@ void Player::playerGoTo(Position pos) {
         float vy = (dy * cos(getPlayerOrientation().value()) + dx * sin(getPlayerOrientation().value()));
 
         _playerControl = _actuatorService->setVelocity(_playerID, Player::getConstants()->isTeamBlue(), -vx/2, -vy/2, 0.0f);
-        _playerControls.push_back(*_playerControl);
     }
 }
 
@@ -216,7 +218,6 @@ void Player::playerRotateTo(Position pos, Position referencePos) {
         float vw = (ori - angleRobotToTarget)/2;
 
         _playerControl = _actuatorService->setAngularSpeed(_playerID, Player::getConstants()->isTeamBlue(), vw, false);
-        _playerControls.push_back(*_playerControl);
     }
 }
 
@@ -266,9 +267,9 @@ void Player::loop() {
         //playerRotateTo(_lookTo);
     }
 
-    // Send ControlPackets
-    if (_playerControls.size() > 0) {
-        getActuatorService()->SetControls(_playerControls);
+    // Send ControlPacket
+    if (_playerControl != nullptr) {
+        getActuatorService()->SetControl(*_playerControl);
     }
 
     // Test
@@ -287,8 +288,6 @@ void Player::loop() {
                             .arg(getWorld()->getBall().ballposition().y())
                             .arg(getWorld()->getBall().ballposition().z()).toStdString()));
 
-
-    _playerControls.clear();
 
     // Unlock mutex
     _mutex.unlock();
