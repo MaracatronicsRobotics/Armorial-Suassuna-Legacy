@@ -46,7 +46,9 @@ public:
     static WorldMap* getWorldMap();
 
     // ControlPacket methods
-    static ControlPacket controlPacket(int ID, bool isBlue);
+    static ControlPacket controlPacket(int ID, bool isBlue, float vx = 0.0f, float vy = 0.0f, float vz = 0.0f
+            , float vw = 0.0f, bool isInDegrees = false
+            , float vxKick = 0.0f, float vyKick = 0.0f, float vzKick = 0.0f, bool dribleOn = false);
 
     // General methods
     static Position getPositionObject(float x, float y, float z = 0.0f, bool isInvalid = false);

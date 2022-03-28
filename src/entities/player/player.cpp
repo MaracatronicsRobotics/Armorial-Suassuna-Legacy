@@ -26,7 +26,6 @@ Player::Player(int playerID, WorldMap *worldMap, SSLReferee *referee, Constants 
     _playerID = playerID;
     _actuatorService = nullptr;
     _coachService = nullptr;
-    _playerControl = nullptr;
     _worldMap = worldMap;
     _referee = referee;
     _isDribbling = false;
@@ -171,54 +170,36 @@ QString Player::behaviorName() {
 void Player::playerGoTo(Position pos) {
     // Here use pid output
     // For now, lets just go straight to pos without limits
-    if (_playerControl == nullptr) {
-        spdlog::error(Text::bold("Player ControlPacket with nullptr value at Player::playerGoTo"));
-        _playerControl->CopyFrom(Utils::controlPacket(_playerID, Player::getConstants()->isTeamBlue()));
-        _actuatorService->SetControl(*_playerControl);
-        spdlog::warn(Text::bold(QString("Sending zero packet to Robot: %1 of Team: %2")
-                                .arg(_playerID)
-                                .arg(Player::getConstants()->isTeamBlue() ? "Blue" : "Yellow").toStdString()));
-    } else {
-        Position playerPos = Player::getPlayerPos();
-        float dx = (playerPos.x() - pos.x());
-        float dy = (playerPos.y() - pos.y());
 
-        // Getting halfway vectors trying to avoid enormous velocities
-        // This should be fixed after implementing PID
+    Position playerPos = Player::getPlayerPos();
+    float dx = (playerPos.x() - pos.x());
+    float dy = (playerPos.y() - pos.y());
 
-        float vx = (dx * cos(getPlayerOrientation().value()) + dy * sin(getPlayerOrientation().value()));
-        float vy = (dy * cos(getPlayerOrientation().value()) + dx * sin(getPlayerOrientation().value()));
+    // Getting halfway vectors trying to avoid enormous velocities
+    // This should be fixed after implementing PID
 
-        _playerControl = _actuatorService->setVelocity(_playerID, Player::getConstants()->isTeamBlue(), -vx/2, -vy/2, 0.0f);
-    }
+    float vx = (dx * cos(getPlayerOrientation().value()) + dy * sin(getPlayerOrientation().value()));
+    float vy = (dy * cos(getPlayerOrientation().value()) + dx * sin(getPlayerOrientation().value()));
+
+    _playerControl = Utils::controlPacket(_playerID, getConstants()->isTeamBlue(), -vx/2, -vy/2);
 }
 
 void Player::playerRotateTo(Position pos, Position referencePos) {
-    if (_playerControl == nullptr) {
-        spdlog::error(Text::bold("Player ControlPacket with nullptr value at Player::playerRotateTo"));
-        _playerControl->CopyFrom(Utils::controlPacket(_playerID, Player::getConstants()->isTeamBlue()));
-        _actuatorService->SetControl(*_playerControl);
-        spdlog::warn(Text::bold(QString("Sending zero packet to Robot: %1 of Team: %2")
-                                .arg(_playerID)
-                                .arg(Player::getConstants()->isTeamBlue() ? "Blue" : "Yellow").toStdString()));
-    } else {
-        // If Pos is invalid, use playerPos
-        if (referencePos.isinvalid()) {
-            referencePos = Player::getPlayerPos();
-        }
-
-        float angleRobotToObjective = Player::getRotationAngleTo(pos, referencePos);
-        float ori = Player::getPlayerOrientation().value();
-
-        if (ori > M_PI) ori -= 2.0 * M_PI;
-        if (ori < -M_PI) ori += 2.0 * M_PI;
-
-        float angleRobotToTarget = ori + angleRobotToObjective;
-
-        float vw = (ori - angleRobotToTarget)/2;
-
-        _playerControl = _actuatorService->setAngularSpeed(_playerID, Player::getConstants()->isTeamBlue(), vw, false);
+    if (referencePos.isinvalid()) {
+        referencePos = Player::getPlayerPos();
     }
+
+    float angleRobotToObjective = Player::getRotationAngleTo(pos, referencePos);
+    float ori = Player::getPlayerOrientation().value();
+
+    if (ori > M_PI) ori -= 2.0 * M_PI;
+    if (ori < -M_PI) ori += 2.0 * M_PI;
+
+    float angleRobotToTarget = ori + angleRobotToObjective;
+
+    float vw = (ori - angleRobotToTarget)/2;
+
+    _playerControl = Utils::controlPacket(_playerID, getConstants()->isTeamBlue(), 0.0f, 0.0f, 0.0f, vw, false);
 }
 
 
@@ -229,7 +210,7 @@ void Player::initialization() {
     _coachService = new CoachService(getConstants());
 
     // Create Control Packet pointer
-    _playerControl = new ControlPacket();
+    _playerControl = Utils::controlPacket(_playerID, getConstants()->isTeamBlue());
 
     // Log
     spdlog::info(Text::cyan(QString("[PLAYER %1 : %2] ")
@@ -268,9 +249,8 @@ void Player::loop() {
     }
 
     // Send ControlPacket
-    if (_playerControl != nullptr) {
-        getActuatorService()->SetControl(*_playerControl);
-    }
+
+    getActuatorService()->SetControl(_playerControl);
 
     // Test
 
@@ -281,12 +261,6 @@ void Player::loop() {
                             .arg(getPlayerPos().x())
                             .arg(getPlayerPos().y())
                             .arg(getPlayerPos().z()).toStdString()));
-
-    spdlog::info(Text::cyan("[BALL] ", true)
-                 + Text::bold(QString("Position: (%1,%2,%3).")
-                            .arg(getWorld()->getBall().ballposition().x())
-                            .arg(getWorld()->getBall().ballposition().y())
-                            .arg(getWorld()->getBall().ballposition().z()).toStdString()));
 
 
     // Unlock mutex

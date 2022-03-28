@@ -100,7 +100,9 @@ Field Utils::getFieldObject() {
     return field;
 }
 
-ControlPacket Utils::controlPacket(int ID, bool isBlue) {
+ControlPacket Utils::controlPacket(int ID, bool isBlue, float vx, float vy
+                                   , float vz, float vw, bool isInDegrees
+                                   , float vxKick, float vyKick, float vzKick, bool dribleOn) {
     //This method returns a controlPacket prepared for Robot #robotID Team isBlue
 
     RobotIdentifier *robotIdentifier = new RobotIdentifier();
@@ -108,6 +110,23 @@ ControlPacket Utils::controlPacket(int ID, bool isBlue) {
 
     ControlPacket cp = ControlPacket();
     cp.set_allocated_robotidentifier(robotIdentifier);
+
+    Velocity *robotVel = new Velocity();
+    robotVel->CopyFrom(Utils::getVelocityObject(vx, vy, vz, false));
+
+    cp.set_allocated_robotvelocity(robotVel);
+
+    AngularSpeed *angularSpeed = new AngularSpeed();
+    angularSpeed->CopyFrom(Utils::getAngularSpeedObject(vw, isInDegrees, false));
+
+    cp.set_allocated_robotangularspeed(angularSpeed);
+
+    Velocity *robotKickSpeed = new Velocity();
+    robotKickSpeed->CopyFrom(Utils::getVelocityObject(vxKick, vyKick, vzKick, false));
+
+    cp.set_allocated_kickspeed(robotKickSpeed);
+
+    cp.set_dribbling(dribleOn);
 
     return cp;
 }

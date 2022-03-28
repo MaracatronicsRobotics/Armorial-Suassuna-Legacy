@@ -78,7 +78,7 @@ private:
 
     // Player Control
     //QList<ControlPacket> _playerControls;
-    ControlPacket *_playerControl;
+    ControlPacket _playerControl;
     int _playerID;
     bool _isDribbling;
     Position _playerPos;
