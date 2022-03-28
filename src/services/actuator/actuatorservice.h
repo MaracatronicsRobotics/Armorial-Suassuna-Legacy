@@ -49,11 +49,6 @@ public:
     void SetControl(ControlPacket cp);
     void SetControls(QList<ControlPacket> cpList);
 
-    ControlPacket* setVelocity(int ID, bool robotColor, float vx, float vy, float vz);
-    ControlPacket* setAngularSpeed(int ID, bool robotColor, float vw, bool isInDegrees);
-    ControlPacket* setKickSpeed(int ID, bool robotColor, float vx, float vy, float vz);
-    ControlPacket* setDrible(int ID, bool robotColor, bool dribleOn);
-
 protected:
     bool isConnectedToServer();
     void connectToServer();
