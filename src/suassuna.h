@@ -49,6 +49,9 @@ private:
 
     // World (thread manager)
     World *_world;
+
+    // Player
+    Player *_player;
 };
 
 #endif // SUASSUNA_H

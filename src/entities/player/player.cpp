@@ -30,16 +30,8 @@ Player::Player(int playerID, WorldMap *worldMap, SSLReferee *referee, Constants 
     _referee = referee;
     _isDribbling = false;
 
-
-    //Only for testing purposes
-    _dest.set_x(-4.3f);
-    _dest.set_y(0.0f);
-    _dest.set_z(0.0f);
-    _dest.set_isinvalid(false);
-    _lookTo.set_x(0.0f);
-    _lookTo.set_y(2.0f);
-    _lookTo.set_z(0.0f);
-    _lookTo.set_isinvalid(false);
+    // Creating void cp
+    _playerControl = Utils::controlPacket(playerID, getConstants()->isTeamBlue());
 }
 
 Player::~Player() {
@@ -172,16 +164,19 @@ void Player::playerGoTo(Position pos) {
     // For now, lets just go straight to pos without limits
 
     Position playerPos = Player::getPlayerPos();
-    float dx = (playerPos.x() - pos.x());
-    float dy = (playerPos.y() - pos.y());
+    float dx = (pos.x() - playerPos.x());
+    float dy = (pos.y() - playerPos.y());
 
     // Getting halfway vectors trying to avoid enormous velocities
     // This should be fixed after implementing PID
 
     float vx = (dx * cos(getPlayerOrientation().value()) + dy * sin(getPlayerOrientation().value()));
-    float vy = (dy * cos(getPlayerOrientation().value()) + dx * sin(getPlayerOrientation().value()));
+    float vy = (dy * cos(getPlayerOrientation().value()) - dx * sin(getPlayerOrientation().value()));
 
-    _playerControl = Utils::controlPacket(_playerID, getConstants()->isTeamBlue(), -vx/2, -vy/2);
+    Velocity *robotVel = new Velocity();
+    robotVel->CopyFrom(Utils::getVelocityObject(vx/2, vy/2, 0.0f, false));
+    _playerControl.set_allocated_robotvelocity(robotVel);
+    //_playerControl = Utils::controlPacket(_playerID, getConstants()->isTeamBlue(), vx/2, vy/2);
 }
 
 void Player::playerRotateTo(Position pos, Position referencePos) {
@@ -197,9 +192,13 @@ void Player::playerRotateTo(Position pos, Position referencePos) {
 
     float angleRobotToTarget = ori + angleRobotToObjective;
 
-    float vw = (ori - angleRobotToTarget)/2;
+    float vw = ori - angleRobotToTarget;
 
-    _playerControl = Utils::controlPacket(_playerID, getConstants()->isTeamBlue(), 0.0f, 0.0f, 0.0f, vw, false);
+    AngularSpeed *robotVW = new AngularSpeed();
+    robotVW->CopyFrom(Utils::getAngularSpeedObject(-(2*vw), false, false));
+
+    _playerControl.set_allocated_robotangularspeed(robotVW);
+    //_playerControl = Utils::controlPacket(_playerID, getConstants()->isTeamBlue(), 0.0f, 0.0f, 0.0f, -(2*vw), false);
 }
 
 
@@ -223,29 +222,18 @@ void Player::loop() {
     _mutex.lockForWrite();
 
 
-    if (getPlayerPos().x() >= 4.0f) {
-        _dest.set_x(-4.0f - 0.2f);
-        _dest.set_y(0.0f);
-        _dest.set_z(0.0f);
-        _dest.set_isinvalid(false);
-        _lookTo.set_x(0.0f);
-        _lookTo.set_y(2.0f);
-        _lookTo.set_z(0.0f);
-        _lookTo.set_isinvalid(false);
-    } else if (getPlayerPos().x() <= -4.0f) {
-        _dest.set_x(4.0f + 0.2f);
-        _dest.set_y(0.0f);
-        _dest.set_z(0.0f);
-        _dest.set_isinvalid(false);
-        _lookTo.set_x(0.0f);
-        _lookTo.set_y(-2.0f);
-        _lookTo.set_z(0.0f);
-        _lookTo.set_isinvalid(false);
-    }
+    _dest.set_x(-4.5f);
+    _dest.set_y(3.0f);
+    _dest.set_z(0.0f);
+    _dest.set_isinvalid(false);
+    _lookTo.set_x(0.0f);
+    _lookTo.set_y(0.0f);
+    _lookTo.set_z(0.0f);
+    _lookTo.set_isinvalid(false);
 
     if(Utils::distance(getPlayerPos(), _dest) >= 0.0f) {
         playerGoTo(_dest);
-        //playerRotateTo(_lookTo);
+        playerRotateTo(_lookTo);
     }
 
     // Send ControlPacket

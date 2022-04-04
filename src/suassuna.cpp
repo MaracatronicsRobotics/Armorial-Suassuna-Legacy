@@ -45,6 +45,9 @@ void Suassuna::start(bool useGui) {
     Utils::setConstants(getConstants());
     Utils::setWorldMap(_worldMap);
 
+    _player = new Player(5, _worldMap, _referee, getConstants());
+    _world->addEntity(_player, 1);
+
     // Setup GUI
     if(useGui) {
         _gui = new GUI();
