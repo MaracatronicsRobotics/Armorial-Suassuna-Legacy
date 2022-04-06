@@ -84,6 +84,7 @@ SOURCES += \
     src/entities/player/player.cpp \
     src/entities/role/role.cpp \
     src/entities/skill/goto/goto.cpp \
+    src/entities/skill/kick/kick.cpp \
     src/entities/skill/rotateto/rotateto.cpp \
     src/entities/skill/skill.cpp \
     src/entities/world/world.cpp \
@@ -149,6 +150,7 @@ HEADERS += \
     src/entities/player/player.h \
     src/entities/role/role.h \
     src/entities/skill/goto/goto.h \
+    src/entities/skill/kick/kick.h \
     src/entities/skill/rotateto/rotateto.h \
     src/entities/skill/skill.h \
     src/entities/world/world.h \
