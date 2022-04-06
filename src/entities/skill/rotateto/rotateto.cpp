@@ -44,6 +44,10 @@ void RotateTo::configure() {
 
 void RotateTo::run() {
     if(!_targetPosition.isinvalid()) {
-        player()->rotateTo(_targetPosition, _referencePosition);
+        if (_referencePosition.isinvalid()){
+            player()->playerRotateTo(_targetPosition);
+        } else {
+            player()->playerRotateTo(_targetPosition, _referencePosition);
+        }
     }
 }

@@ -39,6 +39,6 @@ void GoTo::configure() {
 
 void GoTo::run() {
     if(!_targetPosition.isinvalid()) {
-        player()->goTo(_targetPosition);
+        player()->playerGoTo(_targetPosition);
     }
 }
