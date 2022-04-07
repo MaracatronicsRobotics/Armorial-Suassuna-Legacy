@@ -223,6 +223,7 @@ void Player::playerRotateTo(Position pos, Position referencePos) {
 
     float angleRobotToObjective = Player::getRotationAngleTo(pos, referencePos);
     float ori = Player::getPlayerOrientation().value();
+    // For 'ori', we should need check if player orientation is in degrees or rad
 
     if (ori > M_PI) ori -= 2.0 * M_PI;
     if (ori < -M_PI) ori += 2.0 * M_PI;
@@ -315,6 +316,9 @@ void Player::loop() {
         }
         _mutexRole.unlock();
     }
+
+    // Unlock mutex
+    _mutex.unlock();
 }
 
 void Player::finalization() {
