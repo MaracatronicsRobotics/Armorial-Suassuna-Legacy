@@ -136,6 +136,9 @@ float Player::getPlayerDistanceTo(Position targetPos) {
 
 bool Player::hasBallPossession() {
     // Need sensor
+    if ((Utils::distance(Player::getPlayerPos(), Player::getWorld()->getBall().ballposition()) >= 0.25f) && Player::isLookingTo(Player::getWorld()->getBall().ballposition())) {
+        return true;
+    }
     return false;
 }
 
