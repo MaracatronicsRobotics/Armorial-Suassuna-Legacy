@@ -11,7 +11,7 @@
     "RefereePort": "10003",
     
     "teamColor": "yellow",
-    "teamSide": "left",
+    "teamSide": "right",
     "qtdPlayers": 11,
     "timeToSendPacketZero": 1000.0,
 
