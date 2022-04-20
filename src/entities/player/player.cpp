@@ -303,7 +303,7 @@ void Player::loop() {
             _playerRole->runRole();
         }
 
-        // Send ControlPacket
+    getActuatorService()->SetControl(_playerControl);
 
         if (!isPlayerInAvaliableRobots()) {
             getActuatorService()->SetControl(Utils::controlPacket(_playerID, getConstants()->isTeamBlue()));
@@ -316,9 +316,6 @@ void Player::loop() {
         }
         _mutexRole.unlock();
     }
-
-    // Unlock mutex
-    _mutex.unlock();
 }
 
 void Player::finalization() {
