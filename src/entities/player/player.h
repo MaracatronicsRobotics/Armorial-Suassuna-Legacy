@@ -49,6 +49,7 @@ public:
     Velocity getPlayerVelocity();
     Acceleration getPlayerAcceleration();
     RobotStatus getPlayerStatus();
+    bool isPlayerInAvaliableRobots();
 
     // Player Aux methods
     float getPlayerAngleTo(Position targetPos);

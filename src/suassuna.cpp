@@ -45,8 +45,24 @@ void Suassuna::start(bool useGui) {
     Utils::setConstants(getConstants());
     Utils::setWorldMap(_worldMap);
 
-    _player = new Player(5, _worldMap, _referee, getConstants());
-    _world->addEntity(_player, 1);
+    Player *player0 = new Player(0, _worldMap, _referee, getConstants());
+    _playerList.push_back(player0);
+    _world->addEntity(player0, 1);
+    Player *player1 = new Player(1, _worldMap, _referee, getConstants());
+    _playerList.push_back(player1);
+    _world->addEntity(player1, 1);
+    Player *player2 = new Player(2, _worldMap, _referee, getConstants());
+    _playerList.push_back(player2);
+    _world->addEntity(player2, 1);
+    Player *player3 = new Player(3, _worldMap, _referee, getConstants());
+    _playerList.push_back(player3);
+    _world->addEntity(player3, 1);
+    Player *player4 = new Player(4, _worldMap, _referee, getConstants());
+    _playerList.push_back(player4);
+    _world->addEntity(player4, 1);
+    Player *player5 = new Player(5, _worldMap, _referee, getConstants());
+    _playerList.push_back(player5);
+    _world->addEntity(player5, 1);
 
     // Setup GUI
     if(useGui) {

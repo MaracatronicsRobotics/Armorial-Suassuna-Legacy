@@ -50,7 +50,8 @@ private:
     // World (thread manager)
     World *_world;
 
-    // Player
+    // Players
+    QList<Player*> _playerList;
     Player *_player;
 };
 

@@ -96,6 +96,22 @@ RobotStatus Player::getPlayerStatus() {
     return robotStatus;
 }
 
+bool Player::isPlayerInAvaliableRobots() {
+    Color teamColor;
+    teamColor.set_isblue(getConstants()->isTeamBlue());
+    Robot robot;
+    robot = Utils::getRobotObject(getPlayerID(), getConstants()->isTeamBlue());
+    bool contain = false;
+    for (Robot r : getWorld()->getRobots(teamColor)) {
+        if (robot.robotidentifier().robotid() == r.robotidentifier().robotid()) {
+            if (robot.robotidentifier().robotcolor().isblue() == r.robotidentifier().robotcolor().isblue()) {
+                contain = true;
+            }
+        }
+    }
+    return contain;
+}
+
 float Player::getPlayerAngleTo(Position targetPos) {
     return atan2(targetPos.y() - Player::getPlayerPos().y(), targetPos.x() - Player::getPlayerPos().x());
 }
@@ -225,26 +241,33 @@ void Player::loop() {
     _mutex.lockForWrite();
 
 
-    _dest.set_x(-4.5f);
-    _dest.set_y(3.0f);
-    _dest.set_z(0.0f);
-    _dest.set_isinvalid(false);
-    _lookTo.set_x(0.0f);
-    _lookTo.set_y(0.0f);
-    _lookTo.set_z(0.0f);
-    _lookTo.set_isinvalid(false);
+//    _dest.set_x(-4.0f);
+//    _dest.set_y(getPlayerPos().y());
+//    _dest.set_z(0.0f);
+//    _dest.set_isinvalid(false);
 
-    if(Utils::distance(getPlayerPos(), _dest) >= 0.0f) {
-        playerGoTo(_dest);
-        playerRotateTo(_lookTo);
-    }
+//    _lookTo.set_x(0.0f);
+//    _lookTo.set_y(0.0f);
+//    _lookTo.set_z(0.0f);
+//    _lookTo.set_isinvalid(false);
+
 
     // Send ControlPacket
 
-    getActuatorService()->SetControl(_playerControl);
+
+    if (!isPlayerInAvaliableRobots()) {
+        getActuatorService()->SetControl(Utils::controlPacket(_playerID, getConstants()->isTeamBlue()));
+        spdlog::warn(Text::red(QString("[Player %1 : %2] ")
+                                .arg(getPlayerID())
+                                .arg(getConstants()->getTeamColor()).toStdString(), true)
+                     + Text::bold("not found in WorldMap."));
+    } else {
+        getActuatorService()->SetControl(_playerControl);
+    }
 
     // Test
 
+    /*
     spdlog::info(Text::cyan(QString("[PLAYER %1 : %2] ")
                             .arg("YELLOW")
                             .arg(getPlayerID()).toStdString(), true)
@@ -252,6 +275,7 @@ void Player::loop() {
                             .arg(getPlayerPos().x())
                             .arg(getPlayerPos().y())
                             .arg(getPlayerPos().z()).toStdString()));
+    */
 
 
     // Unlock mutex
