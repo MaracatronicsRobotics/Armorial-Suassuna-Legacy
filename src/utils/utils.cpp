@@ -210,9 +210,10 @@ RobotIdentifier Utils::getRobotIdObject(int ID, bool isBlue) {
 
 RobotStatus Utils::getRobotStatusObject(int ID, bool isBlue) {
     RobotStatus robotStatus;
-    RobotIdentifier robotIdentifier = getRobotIdObject(ID, isBlue);
+    RobotIdentifier *robotIdentifier = new RobotIdentifier();
+    robotIdentifier->CopyFrom(getRobotIdObject(ID, isBlue));
 
-    robotStatus.set_allocated_robotidentifier(&robotIdentifier);
+    robotStatus.set_allocated_robotidentifier(robotIdentifier);
     robotStatus.set_batterycharge(0.0f);
     robotStatus.set_capacitorcharge(0.0f);
     robotStatus.set_isdribbling(false);
