@@ -220,7 +220,29 @@ void Player::playerRotateTo(Position pos, Position referencePos) {
     //_playerControl = Utils::controlPacket(_playerID, getConstants()->isTeamBlue(), 0.0f, 0.0f, 0.0f, -(2*vw), false);
 }
 
+void Player::playerDribble(bool enable) {
+    _playerControl.set_dribbling(enable);
+}
 
+void Player::playerKick(float power, bool isChip) {
+    float robotOri = Player::getPlayerOrientation().value();
+
+    if (robotOri > M_PI) robotOri -= 2.0 * M_PI;
+    if (robotOri < -M_PI) robotOri += 2.0 * M_PI;
+
+    float kickX = cos(robotOri) * power;
+    float kickY = sin(robotOri) * power;
+
+    Velocity *kickVel = new Velocity();
+    kickVel->CopyFrom(Utils::getVelocityObject(kickX, kickY, 0.0f, false));
+
+    if (isChip) {
+        // Set chip kick
+        kickVel->set_vz(power/2);
+    }
+
+    _playerControl.set_allocated_kickspeed(kickVel);
+}
 
 void Player::initialization() {
     // Create Actuator service pointers
