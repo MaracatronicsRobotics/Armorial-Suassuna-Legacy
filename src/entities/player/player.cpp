@@ -262,20 +262,7 @@ void Player::loop() {
     // Lock mutex for write and send requests to Actuator Service
     _mutex.lockForWrite();
 
-
-//    _dest.set_x(-4.0f);
-//    _dest.set_y(getPlayerPos().y());
-//    _dest.set_z(0.0f);
-//    _dest.set_isinvalid(false);
-
-//    _lookTo.set_x(0.0f);
-//    _lookTo.set_y(0.0f);
-//    _lookTo.set_z(0.0f);
-//    _lookTo.set_isinvalid(false);
-
-
     // Send ControlPacket
-
 
     if (!isPlayerInAvaliableRobots()) {
         getActuatorService()->SetControl(Utils::controlPacket(_playerID, getConstants()->isTeamBlue()));
@@ -286,19 +273,6 @@ void Player::loop() {
     } else {
         getActuatorService()->SetControl(_playerControl);
     }
-
-    // Test
-
-    /*
-    spdlog::info(Text::cyan(QString("[PLAYER %1 : %2] ")
-                            .arg("YELLOW")
-                            .arg(getPlayerID()).toStdString(), true)
-                 + Text::bold(QString("Position: (%1,%2,%3).")
-                            .arg(getPlayerPos().x())
-                            .arg(getPlayerPos().y())
-                            .arg(getPlayerPos().z()).toStdString()));
-    */
-
 
     // Unlock mutex
     _mutex.unlock();
