@@ -303,8 +303,6 @@ void Player::loop() {
             _playerRole->runRole();
         }
 
-    getActuatorService()->SetControl(_playerControl);
-
         if (!isPlayerInAvaliableRobots()) {
             getActuatorService()->SetControl(Utils::controlPacket(_playerID, getConstants()->isTeamBlue()));
             spdlog::error(Text::red(QString("[Player %1 : %2] ")
@@ -316,6 +314,18 @@ void Player::loop() {
         }
         _mutexRole.unlock();
     }
+
+    // Test
+
+    /*
+    spdlog::info(Text::cyan(QString("[PLAYER %1 : %2] ")
+                            .arg("YELLOW")
+                            .arg(getPlayerID()).toStdString(), true)
+                 + Text::bold(QString("Position: (%1,%2,%3).")
+                            .arg(getPlayerPos().x())
+                            .arg(getPlayerPos().y())
+                            .arg(getPlayerPos().z()).toStdString()));
+    */
 }
 
 void Player::finalization() {
