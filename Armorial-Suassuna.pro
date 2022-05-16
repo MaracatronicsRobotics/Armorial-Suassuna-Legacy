@@ -80,6 +80,7 @@ SOURCES += \
     src/entities/referee/gameinfo/gameinfo.cpp \
     src/entities/referee/referee.cpp \
     src/entities/player/player.cpp \
+    src/entities/role/role.cpp \
     src/entities/world/world.cpp \
     src/entities/worldmap/locations/locations.cpp \
     src/entities/worldmap/worldmap.cpp \
@@ -138,6 +139,7 @@ HEADERS += \
     src/entities/referee/referee.h \
     src/entities/referee/refereeflags.h \
     src/entities/player/player.h \
+    src/entities/role/role.h \
     src/entities/world/world.h \
     src/entities/worldmap/locations/locations.h \
     src/entities/worldmap/worldmap.h \
