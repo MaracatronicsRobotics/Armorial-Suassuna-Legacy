@@ -26,18 +26,12 @@ Player::Player(int playerID, WorldMap *worldMap, SSLReferee *referee, Constants 
     _playerID = playerID;
     _actuatorService = nullptr;
     _coachService = nullptr;
-    _playerControl = nullptr;
     _worldMap = worldMap;
     _referee = referee;
     _isDribbling = false;
-    _dest.set_x(-4.3f);
-    _dest.set_y(0.0f);
-    _dest.set_z(0.0f);
-    _dest.set_isinvalid(false);
-    _lookTo.set_x(0.0f);
-    _lookTo.set_y(2.0f);
-    _lookTo.set_z(0.0f);
-    _lookTo.set_isinvalid(false);
+
+    // Creating void cp
+    _playerControl = Utils::controlPacket(playerID, getConstants()->isTeamBlue());
 }
 
 Player::~Player() {
@@ -102,6 +96,22 @@ RobotStatus Player::getPlayerStatus() {
     return robotStatus;
 }
 
+bool Player::isPlayerInAvaliableRobots() {
+    Color teamColor;
+    teamColor.set_isblue(getConstants()->isTeamBlue());
+    Robot robot;
+    robot = Utils::getRobotObject(getPlayerID(), getConstants()->isTeamBlue());
+    bool contain = false;
+    for (Robot r : getWorld()->getRobots(teamColor)) {
+        if (robot.robotidentifier().robotid() == r.robotidentifier().robotid()) {
+            if (robot.robotidentifier().robotcolor().isblue() == r.robotidentifier().robotcolor().isblue()) {
+                contain = true;
+            }
+        }
+    }
+    return contain;
+}
+
 float Player::getPlayerAngleTo(Position targetPos) {
     return atan2(targetPos.y() - Player::getPlayerPos().y(), targetPos.x() - Player::getPlayerPos().x());
 }
@@ -142,6 +152,9 @@ float Player::getPlayerDistanceTo(Position targetPos) {
 
 bool Player::hasBallPossession() {
     // Need sensor
+    if ((Utils::distance(Player::getPlayerPos(), Player::getWorld()->getBall().ballposition()) >= 0.25f) && Player::isLookingTo(Player::getWorld()->getBall().ballposition())) {
+        return true;
+    }
     return false;
 }
 
@@ -168,59 +181,68 @@ QString Player::behaviorName() {
 void Player::playerGoTo(Position pos) {
     // Here use pid output
     // For now, lets just go straight to pos without limits
-    if (_playerControl == nullptr) {
-        spdlog::error(Text::bold("Player ControlPacket with nullptr value at Player::playerGoTo"));
-        _playerControl->CopyFrom(Utils::controlPacket(_playerID, Player::getConstants()->isTeamBlue()));
-        _actuatorService->SetControl(*_playerControl);
-        spdlog::warn(Text::bold(QString("Sending zero packet to Robot: %1 of Team: %2")
-                                .arg(_playerID)
-                                .arg(Player::getConstants()->isTeamBlue() ? "Blue" : "Yellow").toStdString()));
-    } else {
-        Position playerPos = Player::getPlayerPos();
-        float dx = (playerPos.x() - pos.x());
-        float dy = (playerPos.y() - pos.y());
 
-        // Getting halfway vectors trying to avoid enormous velocities
-        // This should be fixed after implementing PID
+    Position playerPos = Player::getPlayerPos();
+    float dx = (pos.x() - playerPos.x());
+    float dy = (pos.y() - playerPos.y());
 
-        float vx = (dx * cos(getPlayerOrientation().value()) + dy * sin(getPlayerOrientation().value()));
-        float vy = (dy * cos(getPlayerOrientation().value()) + dx * sin(getPlayerOrientation().value()));
+    // Getting halfway vectors trying to avoid enormous velocities
+    // This should be fixed after implementing PID
 
-        _playerControl = _actuatorService->setVelocity(_playerID, Player::getConstants()->isTeamBlue(), -vx/2, -vy/2, 0.0f);
-        _playerControls.push_back(*_playerControl);
-    }
+    float vx = (dx * cos(getPlayerOrientation().value()) + dy * sin(getPlayerOrientation().value()));
+    float vy = (dy * cos(getPlayerOrientation().value()) - dx * sin(getPlayerOrientation().value()));
+
+    Velocity *robotVel = new Velocity();
+    robotVel->CopyFrom(Utils::getVelocityObject(vx/2, vy/2, 0.0f, false));
+    _playerControl.set_allocated_robotvelocity(robotVel);
+    //_playerControl = Utils::controlPacket(_playerID, getConstants()->isTeamBlue(), vx/2, vy/2);
 }
 
 void Player::playerRotateTo(Position pos, Position referencePos) {
-    if (_playerControl == nullptr) {
-        spdlog::error(Text::bold("Player ControlPacket with nullptr value at Player::playerRotateTo"));
-        _playerControl->CopyFrom(Utils::controlPacket(_playerID, Player::getConstants()->isTeamBlue()));
-        _actuatorService->SetControl(*_playerControl);
-        spdlog::warn(Text::bold(QString("Sending zero packet to Robot: %1 of Team: %2")
-                                .arg(_playerID)
-                                .arg(Player::getConstants()->isTeamBlue() ? "Blue" : "Yellow").toStdString()));
-    } else {
-        // If Pos is invalid, use playerPos
-        if (referencePos.isinvalid()) {
-            referencePos = Player::getPlayerPos();
-        }
-
-        float angleRobotToObjective = Player::getRotationAngleTo(pos, referencePos);
-        float ori = Player::getPlayerOrientation().value();
-
-        if (ori > M_PI) ori -= 2.0 * M_PI;
-        if (ori < -M_PI) ori += 2.0 * M_PI;
-
-        float angleRobotToTarget = ori + angleRobotToObjective;
-
-        float vw = (ori - angleRobotToTarget)/2;
-
-        _playerControl = _actuatorService->setAngularSpeed(_playerID, Player::getConstants()->isTeamBlue(), vw, false);
-        _playerControls.push_back(*_playerControl);
+    if (referencePos.isinvalid()) {
+        referencePos = Player::getPlayerPos();
     }
+
+    float angleRobotToObjective = Player::getRotationAngleTo(pos, referencePos);
+    float ori = Player::getPlayerOrientation().value();
+
+    if (ori > M_PI) ori -= 2.0 * M_PI;
+    if (ori < -M_PI) ori += 2.0 * M_PI;
+
+    float angleRobotToTarget = ori + angleRobotToObjective;
+
+    float vw = ori - angleRobotToTarget;
+
+    AngularSpeed *robotVW = new AngularSpeed();
+    robotVW->CopyFrom(Utils::getAngularSpeedObject(-(2*vw), false, false));
+
+    _playerControl.set_allocated_robotangularspeed(robotVW);
+    //_playerControl = Utils::controlPacket(_playerID, getConstants()->isTeamBlue(), 0.0f, 0.0f, 0.0f, -(2*vw), false);
 }
 
+void Player::playerDribble(bool enable) {
+    _playerControl.set_dribbling(enable);
+}
 
+void Player::playerKick(float power, bool isChip) {
+    float robotOri = Player::getPlayerOrientation().value();
+
+    if (robotOri > M_PI) robotOri -= 2.0 * M_PI;
+    if (robotOri < -M_PI) robotOri += 2.0 * M_PI;
+
+    float kickX = cos(robotOri) * power;
+    float kickY = sin(robotOri) * power;
+
+    Velocity *kickVel = new Velocity();
+    kickVel->CopyFrom(Utils::getVelocityObject(kickX, kickY, 0.0f, false));
+
+    if (isChip) {
+        // Set chip kick
+        kickVel->set_vz(power/2);
+    }
+
+    _playerControl.set_allocated_kickspeed(kickVel);
+}
 
 void Player::initialization() {
     // Create Actuator service pointers
@@ -228,7 +250,7 @@ void Player::initialization() {
     _coachService = new CoachService(getConstants());
 
     // Create Control Packet pointer
-    _playerControl = new ControlPacket();
+    _playerControl = Utils::controlPacket(_playerID, getConstants()->isTeamBlue());
 
     // Log
     spdlog::info(Text::cyan(QString("[PLAYER %1 : %2] ")
@@ -240,55 +262,17 @@ void Player::loop() {
     // Lock mutex for write and send requests to Actuator Service
     _mutex.lockForWrite();
 
+    // Send ControlPacket
 
-    if (getPlayerPos().x() >= 4.0f) {
-        _dest.set_x(-4.0f - 0.2f);
-        _dest.set_y(0.0f);
-        _dest.set_z(0.0f);
-        _dest.set_isinvalid(false);
-        _lookTo.set_x(0.0f);
-        _lookTo.set_y(2.0f);
-        _lookTo.set_z(0.0f);
-        _lookTo.set_isinvalid(false);
-    } else if (getPlayerPos().x() <= -4.0f) {
-        _dest.set_x(4.0f + 0.2f);
-        _dest.set_y(0.0f);
-        _dest.set_z(0.0f);
-        _dest.set_isinvalid(false);
-        _lookTo.set_x(0.0f);
-        _lookTo.set_y(-2.0f);
-        _lookTo.set_z(0.0f);
-        _lookTo.set_isinvalid(false);
+    if (!isPlayerInAvaliableRobots()) {
+        getActuatorService()->SetControl(Utils::controlPacket(_playerID, getConstants()->isTeamBlue()));
+        spdlog::warn(Text::red(QString("[Player %1 : %2] ")
+                                .arg(getPlayerID())
+                                .arg(getConstants()->getTeamColor()).toStdString(), true)
+                     + Text::bold("not found in WorldMap."));
+    } else {
+        getActuatorService()->SetControl(_playerControl);
     }
-
-    if(Utils::distance(getPlayerPos(), _dest) >= 0.0f) {
-        playerGoTo(_dest);
-        //playerRotateTo(_lookTo);
-    }
-
-    // Send ControlPackets
-    if (_playerControls.size() > 0) {
-        getActuatorService()->SetControls(_playerControls);
-    }
-
-    // Test
-
-    spdlog::info(Text::cyan(QString("[PLAYER %1 : %2] ")
-                            .arg("YELLOW")
-                            .arg(getPlayerID()).toStdString(), true)
-                 + Text::bold(QString("Position: (%1,%2,%3).")
-                            .arg(getPlayerPos().x())
-                            .arg(getPlayerPos().y())
-                            .arg(getPlayerPos().z()).toStdString()));
-
-    spdlog::info(Text::cyan("[BALL] ", true)
-                 + Text::bold(QString("Position: (%1,%2,%3).")
-                            .arg(getWorld()->getBall().ballposition().x())
-                            .arg(getWorld()->getBall().ballposition().y())
-                            .arg(getWorld()->getBall().ballposition().z()).toStdString()));
-
-
-    _playerControls.clear();
 
     // Unlock mutex
     _mutex.unlock();

@@ -49,6 +49,10 @@ private:
 
     // World (thread manager)
     World *_world;
+
+    // Players
+    QList<Player*> _playerList;
+    Player *_player;
 };
 
 #endif // SUASSUNA_H

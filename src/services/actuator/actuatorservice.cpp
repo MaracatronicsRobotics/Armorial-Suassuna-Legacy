@@ -72,63 +72,6 @@ void ActuatorService::SetControls(QList<ControlPacket> cpList) {
     }
 }
 
-ControlPacket* ActuatorService::setVelocity(int ID, bool robotColor, float vx, float vy, float vz) {
-    ControlPacket *cp = new ControlPacket();
-
-    RobotIdentifier *robotIdentifier = new RobotIdentifier();
-    robotIdentifier->CopyFrom(Utils::getRobotIdObject(ID, robotColor));
-
-    Velocity *robotVel = new Velocity();
-    robotVel->CopyFrom(Utils::getVelocityObject(vx, vy, vz, false));
-
-    cp->set_allocated_robotidentifier(robotIdentifier);
-    cp->set_allocated_robotvelocity(robotVel);
-
-    return cp;
-}
-
-ControlPacket* ActuatorService::setAngularSpeed(int ID, bool robotColor, float vw, bool isInDegrees) {
-    ControlPacket *cp = new ControlPacket();
-
-    RobotIdentifier *robotIdentifier = new RobotIdentifier();
-    robotIdentifier->CopyFrom(Utils::getRobotIdObject(ID, robotColor));
-
-    AngularSpeed *angularSpeed = new AngularSpeed();
-    angularSpeed->CopyFrom(Utils::getAngularSpeedObject(vw, isInDegrees, false));
-
-    cp->set_allocated_robotidentifier(robotIdentifier);
-    cp->set_allocated_robotangularspeed(angularSpeed);
-
-    return cp;
-}
-
-ControlPacket* ActuatorService::setKickSpeed(int ID, bool robotColor, float vx, float vy, float vz) {
-    ControlPacket *cp = new ControlPacket();
-
-    RobotIdentifier *robotIdentifier = new RobotIdentifier();
-    robotIdentifier->CopyFrom(Utils::getRobotIdObject(ID, robotColor));
-
-    Velocity *robotKickSpeed = new Velocity();
-    robotKickSpeed->CopyFrom(Utils::getVelocityObject(vx, vy, vz, false));
-
-    cp->set_allocated_robotidentifier(robotIdentifier);
-    cp->set_allocated_robotvelocity(robotKickSpeed);
-
-    return cp;
-}
-
-ControlPacket* ActuatorService::setDrible(int ID, bool robotColor, bool dribleOn) {
-    ControlPacket *cp = new ControlPacket();
-
-    RobotIdentifier *robotIdentifier = new RobotIdentifier();
-    robotIdentifier->CopyFrom(Utils::getRobotIdObject(ID, robotColor));
-
-    cp->set_allocated_robotidentifier(robotIdentifier);
-    cp->set_dribbling(dribleOn);
-
-    return cp;
-}
-
 bool ActuatorService::isConnectedToServer(){
     return (   _channel->GetState(false) == GRPC_CHANNEL_READY
             || _channel->GetState(false) == GRPC_CHANNEL_IDLE

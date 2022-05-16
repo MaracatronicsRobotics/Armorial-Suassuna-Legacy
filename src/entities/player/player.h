@@ -49,6 +49,7 @@ public:
     Velocity getPlayerVelocity();
     Acceleration getPlayerAcceleration();
     RobotStatus getPlayerStatus();
+    bool isPlayerInAvaliableRobots();
 
     // Player Aux methods
     float getPlayerAngleTo(Position targetPos);
@@ -77,8 +78,8 @@ private:
     void finalization();
 
     // Player Control
-    QList<ControlPacket> _playerControls;
-    ControlPacket *_playerControl;
+    //QList<ControlPacket> _playerControls;
+    ControlPacket _playerControl;
     int _playerID;
     bool _isDribbling;
     Position _playerPos;
@@ -109,6 +110,8 @@ private:
     SSLReferee *_referee;
     SSLReferee* getReferee();
 
+
+    //Only for testing purposes
     Position _dest;
     Position _lookTo;
 };

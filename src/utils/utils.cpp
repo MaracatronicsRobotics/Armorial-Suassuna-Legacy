@@ -100,7 +100,9 @@ Field Utils::getFieldObject() {
     return field;
 }
 
-ControlPacket Utils::controlPacket(int ID, bool isBlue) {
+ControlPacket Utils::controlPacket(int ID, bool isBlue, float vx, float vy
+                                   , float vz, float vw, bool isInDegrees
+                                   , float vxKick, float vyKick, float vzKick, bool dribleOn) {
     //This method returns a controlPacket prepared for Robot #robotID Team isBlue
 
     RobotIdentifier *robotIdentifier = new RobotIdentifier();
@@ -108,6 +110,23 @@ ControlPacket Utils::controlPacket(int ID, bool isBlue) {
 
     ControlPacket cp = ControlPacket();
     cp.set_allocated_robotidentifier(robotIdentifier);
+
+    Velocity *robotVel = new Velocity();
+    robotVel->CopyFrom(Utils::getVelocityObject(vx, vy, vz, false));
+
+    cp.set_allocated_robotvelocity(robotVel);
+
+    AngularSpeed *angularSpeed = new AngularSpeed();
+    angularSpeed->CopyFrom(Utils::getAngularSpeedObject(vw, isInDegrees, false));
+
+    cp.set_allocated_robotangularspeed(angularSpeed);
+
+    Velocity *robotKickSpeed = new Velocity();
+    robotKickSpeed->CopyFrom(Utils::getVelocityObject(vxKick, vyKick, vzKick, false));
+
+    cp.set_allocated_kickspeed(robotKickSpeed);
+
+    cp.set_dribbling(dribleOn);
 
     return cp;
 }
@@ -191,9 +210,10 @@ RobotIdentifier Utils::getRobotIdObject(int ID, bool isBlue) {
 
 RobotStatus Utils::getRobotStatusObject(int ID, bool isBlue) {
     RobotStatus robotStatus;
-    RobotIdentifier robotIdentifier = getRobotIdObject(ID, isBlue);
+    RobotIdentifier *robotIdentifier = new RobotIdentifier();
+    robotIdentifier->CopyFrom(getRobotIdObject(ID, isBlue));
 
-    robotStatus.set_allocated_robotidentifier(&robotIdentifier);
+    robotStatus.set_allocated_robotidentifier(robotIdentifier);
     robotStatus.set_batterycharge(0.0f);
     robotStatus.set_capacitorcharge(0.0f);
     robotStatus.set_isdribbling(false);
@@ -206,13 +226,15 @@ RobotStatus Utils::getRobotStatusObject(int ID, bool isBlue) {
 //getField info methods
 FieldLineSegment Utils::getFieldLineObject(Position p1, Position p2) {
     FieldLineSegment line;
-    Position pos1 = getPositionObject(p1.x(), p1.y(), p1.z(), p1.isinvalid());
-    Position pos2 = getPositionObject(p2.x(), p2.y(), p2.z(), p2.isinvalid());
+    Position *pos1 = new Position();
+    pos1->CopyFrom(getPositionObject(p1.x(), p1.y(), p1.z(), p1.isinvalid()));
+    Position *pos2 = new Position();
+    pos2->CopyFrom(getPositionObject(p2.x(), p2.y(), p2.z(), p2.isinvalid()));
 
     //Here we should check if pos1 or pos2 are invalid
 
-    line.set_allocated_p1(&pos1);
-    line.set_allocated_p2(&pos2);
+    line.set_allocated_p1(pos1);
+    line.set_allocated_p2(pos2);
     line.set_thickness(0.0f);
 
     return line;
@@ -220,11 +242,12 @@ FieldLineSegment Utils::getFieldLineObject(Position p1, Position p2) {
 
 FieldCircularArc Utils::getFieldArcObject(Position center, float a1, float a2){
     FieldCircularArc arc;
-    Position c = getPositionObject(center.x(), center.y(), center.z(), center.isinvalid());
+    Position *c = new Position();
+    c->CopyFrom(getPositionObject(center.x(), center.y(), center.z(), center.isinvalid()));
 
     //Here we should check if center is invalid
 
-    arc.set_allocated_center(&c);
+    arc.set_allocated_center(c);
     arc.set_a1(a1);
     arc.set_a2(a2);
     arc.set_thickness(0.0f);
