@@ -26,6 +26,7 @@
 
 #include <src/constants/constants.h>
 #include <src/entities/worldmap/worldmap.h>
+#include <src/entities/referee/referee.h>
 #include <src/entities/player/player.h>
 
 class Role
@@ -35,7 +36,7 @@ public:
     virtual ~Role();
 
     bool isInitialized();
-    void initialize(Constants *constants, WorldMap *worldMap, Referee *referee);
+    void initialize(Constants *constants, WorldMap *worldMap, SSLReferee *referee);
     void setPlayer(Player *player);
 
     void runRole();
@@ -43,18 +44,18 @@ public:
     virtual QString name() = 0;
 
     int getActualBehaviour();
-    virtual void initializedBehaviours() = 0;
+    virtual void initializeBehaviours() = 0;
     //QHash<int, Behaviour*> getBehaviours();
-    void setBehaviour(int id);
+    void setBehaviour(int behaviourID);
 
     Player* player();
 
 protected:
-    void addBehaviour(int id); //still needs the Behaviour class
+    void addBehaviour(int behaviourID); //still needs the Behaviour class
 
     Constants* getConstants();
     WorldMap* getWorldMap();
-    Referee* getReferee();
+    SSLReferee* getReferee();
     Locations* getLocations();
 
 private:
@@ -65,7 +66,7 @@ private:
 
     Constants *_constants;
     WorldMap *_worldMap;
-    Referee *_referee;
+    SSLReferee *_referee;
     Locations *_loc;
 
     //QMap<int, Behaviour*> _behaviourList;

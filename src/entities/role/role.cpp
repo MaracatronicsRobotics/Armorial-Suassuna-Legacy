@@ -38,7 +38,7 @@ bool Role::isInitialized() {
     return _initialized;
 }
 
-void Role::initialize(Constants *constants, WorldMap *worldMap, Referee *referee) {
+void Role::initialize(Constants *constants, WorldMap *worldMap, SSLReferee *referee) {
     _constants = constants;
     _worldMap = worldMap;
     _referee = referee;
@@ -47,7 +47,7 @@ void Role::initialize(Constants *constants, WorldMap *worldMap, Referee *referee
     }
 
     _configureEnabled = true;
-    initializedBehaviours();
+    initializeBehaviours();
     configure();
     _configureEnabled = false;
 
@@ -65,6 +65,24 @@ void Role::runRole() {
     }
 
     run();
+}
+
+int Role::getActualBehaviour() {
+    return _actualBehaviour;
+}
+
+void Role::setBehaviour(int behaviourID) {
+    _actualBehaviour = behaviourID;
+}
+
+Player* Role::player() {
+    if (_player == nullptr) {
+        spdlog::error(Text::red("[ERROR] ", true) + Text::bold(QString("Player with nullptr value at Role " + name() + "!\n").toStdString()));
+    } else {
+        return _player;
+    }
+
+    return nullptr;
 }
 
 Constants* Role::getConstants() {
@@ -85,7 +103,7 @@ WorldMap* Role::getWorldMap() {
     return nullptr;
 }
 
-Referee* Role::getReferee() {
+SSLReferee* Role::getReferee() {
     if (_referee == nullptr) {
         spdlog::error(Text::red("[ERROR] ", true) + Text::bold(QString("Referee with nullptr value at Role " + name() + "!\n").toStdString()));
     } else {
