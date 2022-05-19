@@ -35,18 +35,45 @@ public:
     virtual ~Role();
 
     bool isInitialized();
-    void initialize(Constants *constants, WorldMap *worldMap);
+    void initialize(Constants *constants, WorldMap *worldMap, Referee *referee);
     void setPlayer(Player *player);
 
     void runRole();
 
     virtual QString name() = 0;
+
     int getActualBehaviour();
+    virtual void initializedBehaviours() = 0;
     //QHash<int, Behaviour*> getBehaviours();
     void setBehaviour(int id);
 
     Player* player();
 
+protected:
+    void addBehaviour(int id); //still needs the Behaviour class
+
+    Constants* getConstants();
+    WorldMap* getWorldMap();
+    Referee* getReferee();
+    Locations* getLocations();
+
+private:
+    virtual void configure() = 0;
+    virtual void run() = 0;
+
+    Player *_player;
+
+    Constants *_constants;
+    WorldMap *_worldMap;
+    Referee *_referee;
+    Locations *_loc;
+
+    //QMap<int, Behaviour*> _behaviourList;
+    //Behaviour *_behaviour;
+    int _actualBehaviour;
+
+    bool _initialized;
+    bool _configureEnabled;
 };
 
 #endif // ROLE_H
