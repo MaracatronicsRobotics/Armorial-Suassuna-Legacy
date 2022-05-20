@@ -22,75 +22,59 @@
 #ifndef BEHAVIOUR_H
 #define BEHAVIOUR_H
 
+//#include <src/entities/coach/basecoach.h>
+#include <src/constants/constants.h>
+#include <src/entities/worldmap/worldmap.h>
 #include <src/entities/player/player.h>
-#include <entity/player/skills/skill.h>
-//#include <entity/player/playeraccess.h>
-//#include <entity/player/playerbus.h>
-#include <src/entities/referee/referee.h>
-#include <src/utils/text/text.h>
-#include <QObject>
 
-class Behaviour : public QObject {
-    Q_OBJECT
+class Behaviour
+{
 public:
     Behaviour();
     virtual ~Behaviour();
 
-    // Called one time before run is first called
-    bool isInitialized() { return _initialized; }
-    void initialize(Locations *loc, SSLReferee *ref, Constants *constants);
-    void setPlayer(Player *player, PlayerAccess *playerAccess);
-
-    // Called in Player loop
-    void runBehaviour();
+    // Behavior name (for debug)
     virtual QString name() = 0;
 
+    // Init skill control
+    bool isInitialized();
+    void initialize(Constants *constants, WorldMap *worldMap);
+    void setPlayer(Player *player);
+
+    // Method to run in role
+    void runBehaviour();
+
 protected:
-    void usesSkill(Skill *skill);
-    void setInitialSkill(Skill *skill);
-    void addTransition(int id, Skill *source, Skill *target);
-    void enableTransition(int id);
+    // Skill control methods
+    void addSkill(int id, Skill *skill);
+    void setSkill(int id);
 
-    // Filtered player access on behavior
-    PlayerAccess* player();
-    Locations *loc();
-    SSLReferee *ref();
-    Constants *getConstants();
+    // Player and constants getters
+    Player* player();
+    Constants* getConstants();
+    WorldMap* getWorldMap();
+    Locations* loc();
+
 private:
-    class SkillTransition {
-    private:
-        Skill *_source, *_target;
-    public:
-        SkillTransition(Skill *source, Skill *target) {
-            _source = source;
-            _target = target;
-        }
-        Skill* source() const { return _source; }
-        Skill* target() const { return _target; }
-    };
-
-    // Implemented by children behaviour
+    // Virtual implementation in inherited classes
     virtual void configure() = 0;
     virtual void run() = 0;
-    bool _configureEnabled;
 
     // Player access
     Player *_player;
-    PlayerAccess *_playerAccess;
+
+    // Constants
     Constants *_constants;
 
-    // Referee
-    SSLReferee *_ref;
+    // WorldMap
+    WorldMap *_worldMap;
 
-    // Game info
-    Locations *_loc;
+    // Skills list
+    QMap<int, Skill*> _skillList;
+    Skill *_actualSkill;
 
-    // State machine encapsulation
-    QHash<int,SkillTransition*> _transitionTable;
-    QList<Skill*> _skillList;
-    Skill *_skill;
-
-    // Behavior initialized
+    // Initialize control
     bool _initialized;
 };
+
 #endif // BEHAVIOUR_H

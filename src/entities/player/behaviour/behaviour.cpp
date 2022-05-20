@@ -22,142 +22,117 @@
 #include "behaviour.h"
 
 Behaviour::Behaviour() {
-    _skill = NULL;
-    _configureEnabled = false;
-    _player = NULL;
-    _playerAccess = NULL;
-    _loc = NULL;
-    _ref = NULL;
+    _player = nullptr;
+    _worldMap = nullptr;
+    _constants = nullptr;
+    _actualSkill = nullptr;
     _initialized = false;
 }
 
 Behaviour::~Behaviour() {
-    // Delete skills transitions
-    QList<SkillTransition*> transitions = _transitionTable.values();
-    QList<SkillTransition*>::iterator it;
-    for(it=transitions.begin(); it!=transitions.end(); it++){
-            delete *it;
+    // Deleting skills
+    QList<Skill*> skillList = _skillList.values();
+    QList<Skill*>::iterator it;
+
+    for(it = skillList.begin(); it != skillList.end(); it++) {
+        delete *it;
     }
-    _transitionTable.clear();
-    // Delete skills
-    QList<Skill*>::iterator it2;
-    for(it2=_skillList.begin(); it2!=_skillList.end(); it2++){
-            delete *it2;
-    }
+
+    // Cleaning map
     _skillList.clear();
 }
 
-void Behaviour::initialize(Locations *loc, SSLReferee *ref, Constants *constants) {
-    _loc = loc;
-    _ref = ref;
-    _constants=constants;
-    // Configurate skills to be used
-    _configureEnabled = true;
+bool Behaviour::isInitialized() {
+    return _initialized;
+}
+
+void Behaviour::initialize(Constants *constants, WorldMap *worldMap) {
+    _constants = constants;
+    _worldMap = worldMap;
     configure();
-    _configureEnabled = false;
     _initialized = true;
 }
 
-void Behaviour::setPlayer(Player *player, PlayerAccess *playerAccess) {
+void Behaviour::setPlayer(Player *player) {
     _player = player;
-    _playerAccess = playerAccess;
 }
 
 void Behaviour::runBehaviour() {
-    // Check if behavior has at least one skill set
-    if(_skillList.size()==0) {
-        std::cout << Text::red("[ERROR] ") << name().toStdString() << " has no skills set!\n";
-        return;
+    // Check if Behaviour have at least one skill
+    if(_skillList.size() == 0) {
+        std::cout << Text::red("[ERROR] ", true) << Text::bold(this->name().toStdString() + ":Has no skills set!.") + '\n';
+        return ;
     }
-    // Run behavior (implemented by child)
+
+    // Run Behaviour (implemented by child inherited method)
     run();
-    // Run skill (implemented by skill)
-    if(_skill->isInitialized()==false)
-        _skill->initialize(_loc, getConstants());
-    _skill->setPlayer(_player);
-    _skill->runSkill();
 }
 
-void Behaviour::usesSkill(Skill *skill) {
-    if(_configureEnabled==false) {
-        std::cout << Text::yellow("[WARNING] ") << "Blocked '" << name().toStdString() << "' setting Skill to use outside configure().\n";
-        return;
+void Behaviour::addSkill(int id, Skill *skill) {
+    if(_skillList.contains(id)) {
+        std::cout << Text::red("[ERROR] ", true) << Text::bold(this->name().toStdString() + ":Trying to add a skill with an id already associated.") + '\n';
+        return ;
     }
-    if(_skillList.contains(skill)==false) {
-        // Add to list
-        _skillList.push_back(skill);
-        // If setting first skill, use as initial state (default)
-        if(_skill==NULL)
-            _skill = skill;
-   }
-}
 
-void Behaviour::setInitialSkill(Skill *skill) {
-    // Set initial skill
-    if(_skillList.contains(skill))
-        _skill = skill;
-    else
-        std::cout << Text::red("[ERROR] ") << name().toStdString() << " setting initial skill '" << skill->name().toStdString() << "' that isn't at skill list!\n";
-}
-
-void Behaviour::addTransition(int id, Skill *source, Skill *target) {
-    // Check if isn't a invalid transition (same source for same id)
-    if(_transitionTable.contains(id)) {
-        QList<SkillTransition*> transitions = _transitionTable.values(id);
-        QList<SkillTransition*>::const_iterator it;
-        for(it=transitions.constBegin(); it!=transitions.constEnd(); it++) {
-            const SkillTransition *transition = *it;
-            if(transition->source()==source) {
-                std::cout << Text::red("[ERROR] ") << name().toStdString() << " adding invalid transition from " << source->name().toStdString() << " to " << target->name().toStdString() << "; source already has a transition with id " << id << "!\n";
-                return;
-            }
-        }
+    // If is the first skill added, set it as actualSkill
+    if(_actualSkill == nullptr) {
+        _actualSkill = skill;
     }
-    // Add transition to transitionTable
-    SkillTransition *tmpTransition = new SkillTransition(source, target);
-    _transitionTable.insertMulti(id, tmpTransition);
+
+    _skillList.insert(id, skill);
 }
 
-void Behaviour::enableTransition(int id) {
-    // Check if transition exists
-    if(_transitionTable.contains(id)==false) {
-        std::cout << Text::red("[ERROR] ") << name().toStdString() << ", enabling transition id '" << id << "' not found!\n";
-        return;
+void Behaviour::setSkill(int id) {
+    if(!_skillList.contains(id)) {
+        std::cout << Text::red("[ERROR] ", true) << Text::bold(this->name().toStdString() + ":Trying to set an skill that has not added previously.") + '\n';
+        return ;
     }
-    // Get transitions in transition table
-    QList<SkillTransition*> transitions = _transitionTable.values(id);
-    // For each transition, add transition and emit signal
-    QList<SkillTransition*>::const_iterator it;
-    for(it=transitions.constBegin(); it!=transitions.constEnd(); it++) {
-        const SkillTransition *transition = *it;
-        // Check if curr state is source state
-        if(_skill!=transition->source())
-            continue;
-        // Do transition
-        _skill = transition->target();
-        break;
+
+    _actualSkill = _skillList.value(id);
+
+    // Check if initialized
+    if(!_actualSkill->isInitialized()) {
+        _actualSkill->initialize(getConstants());
     }
+
+    // Run skill
+    _actualSkill->setPlayer(player());
+    _actualSkill->runSkill();
 }
 
-PlayerAccess* Behaviour::player() {
-    if(_playerAccess==NULL)
-        std::cout << Text::red("[ERROR] ") << name().toStdString() << ", requesting player(), playerAccess not set!\n";
-    return _playerAccess;
+Player* Behaviour::player() {
+    return _player;
+}
+
+Constants* Behaviour::getConstants() {
+    if(_constants == nullptr) {
+        std::cout << Text::red("[ERROR] ", true) << Text::bold("Constants with nullptr value at " + this->name().toStdString()) + '\n';
+    }
+    else {
+        return _constants;
+    }
+
+    return nullptr;
+}
+
+WorldMap* Behaviour::getWorldMap() {
+    if(_worldMap == nullptr) {
+        std::cout << Text::red("[ERROR] ", true) << Text::bold("WorldMap with nullptr value at " + this->name().toStdString()) + '\n';
+    }
+    else {
+        return _worldMap;
+    }
+
+    return nullptr;
 }
 
 Locations* Behaviour::loc() {
-    if(_loc==NULL)
-        std::cout << Text::red("[ERROR] ") << name().toStdString() << ", requesting loc(), loc not initialized!\n";
-    return _loc;
-}
-Constants *Behaviour::getConstants() {
-    if(_constants==NULL)
-        std::cout << Text::red("[ERROR] ") << name().toStdString() << ", requesting getConstants(), _mrcconstants not initialized!\n";
-    return _constants;
-}
+    if(_worldMap == nullptr) {
+        std::cout << Text::red("[ERROR] ", true) << Text::bold("Locations with nullptr value at " + this->name().toStdString()) + '\n';
+    }
+    else {
+        return getWorldMap()->getLocations();
+    }
 
-SSLReferee* Behaviour::ref() {
-    if(_ref==NULL)
-        std::cout << Text::red("[ERROR] ") << name().toStdString() << ", requesting ref(), ref not initialized!\n";
-    return _ref;
+    return nullptr;
 }
