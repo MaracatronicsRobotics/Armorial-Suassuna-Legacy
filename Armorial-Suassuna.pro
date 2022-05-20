@@ -77,6 +77,7 @@ SOURCES += \
     src/constants/constants.cpp \
     src/entities/entity.cpp \
     src/entities/player/behaviour/behaviour.cpp \
+    src/entities/player/behaviour/gotolookto/gotolookto.cpp \
     src/entities/referee/ballplay/ballplay.cpp \
     src/entities/referee/gameinfo/gameinfo.cpp \
     src/entities/referee/referee.cpp \
@@ -137,6 +138,7 @@ HEADERS += \
     src/entities/baseCoach.h \
     src/entities/entity.h \
     src/entities/player/behaviour/behaviour.h \
+    src/entities/player/behaviour/gotolookto/gotolookto.h \
     src/entities/referee/ballplay/ballplay.h \
     src/entities/referee/gameinfo/gameinfo.h \
     src/entities/referee/referee.h \

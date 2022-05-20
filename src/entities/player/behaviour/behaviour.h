@@ -26,6 +26,7 @@
 #include <src/constants/constants.h>
 #include <src/entities/worldmap/worldmap.h>
 #include <src/entities/player/player.h>
+#include <src/entities/player/skill/skill.h>
 
 class Behaviour
 {
