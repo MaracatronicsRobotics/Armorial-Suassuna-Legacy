@@ -25,13 +25,28 @@ Role::Role() {
     _player = nullptr;
     _constants = nullptr;
     _worldMap = nullptr;
+    _behaviour = nullptr;
+    _goToLookTo = nullptr;
+    _actualBehaviour = nullptr;
     _initialized = false;
     _configureEnabled = true;
-    _actualBehaviour = -1;
+    _isHalted = false;
 }
 
 Role::~Role() {
-    //Here to clean behaviourList
+    QHash<int, Behaviour*>:: iterator it;
+    for (it = _behaviourList.begin(); it != _behaviourList.end(); it++) {
+        if ( (*it) == nullptr) {
+            continue;
+        } else {
+            delete *it;
+        }
+    }
+    _behaviourList.clear();
+
+    if (_goToLookTo != nullptr) {
+        delete _goToLookTo;
+    }
 }
 
 bool Role::isInitialized() {
@@ -47,7 +62,13 @@ void Role::initialize(Constants *constants, WorldMap *worldMap, SSLReferee *refe
     }
 
     _configureEnabled = true;
+    //_goToLookTo = new Behaviour_GoToLookTo();
     initializeBehaviours();
+
+    if(getReferee()->getGameInfo()->timeOut()) {
+        _isHalted = true;
+    }
+
     configure();
     _configureEnabled = false;
 
@@ -59,20 +80,74 @@ void Role::setPlayer(Player *player) {
 }
 
 void Role::runRole() {
-    if (/*_behaviourList.size() == 0 && */ getConstants() == nullptr) {
+    if (_behaviourList.size() == 0) {
         spdlog::error(Text::red("[ERROR] ", true) + Text::bold(QString("Role " + name() + " has no behaviours set!\n").toStdString()));
+        player()->playerIdle();
         return;
     }
 
+    if (!getReferee()->getGameInfo()->canMove()) {
+        player()->playerIdle();
+        return;
+    }
+
+    if (getReferee()->getGameInfo()->timeOut()) {
+        if (_isHalted) {
+            player()->playerIdle();
+            return;
+        }
+
+        Locations *loc = getWorldMap()->getLocations();
+        Color teamColor;
+        teamColor.set_isblue(getConstants()->isTeamBlue());
+        QList<int> availablePlayers = getWorldMap()->getRobotsIDs(teamColor);
+        // Maybe sort here (but not sure)
+
+        Position desiredPosition = Position();
+        desiredPosition.set_isinvalid(false);
+        desiredPosition.set_x(loc->ourGoal().x() + (loc->ourSide().isLeft() ? loc->fieldDefenseWidth() /*+ getConstants().robotRadius()*/ : -loc->fieldDefenseWidth() /*- getConstants().robotRadius()*/));
+        desiredPosition.set_y(loc->fieldDefenseWidth() - (availablePlayers.indexOf(player()->getPlayerID()) * (2*loc->fieldDefenseWidth() / std::max(1, (availablePlayers.size() - 1)))));
+        desiredPosition.set_z(0.0f);
+
+        Position lookTo = Position();
+        lookTo.set_isinvalid(false);
+        lookTo.set_x(-(loc->ourGoal().x() + (loc->ourSide().isLeft() ? loc->fieldDefenseWidth() /*+ getConstants()->robotRadius()*/ : -loc->fieldDefenseWidth() /*- getConstants()->robotRadius()*/)));
+        lookTo.set_y(loc->fieldDefenseWidth() - (availablePlayers.indexOf(player()->getPlayerID()) * (2*loc->fieldDefenseWidth() / std::max(1, (availablePlayers.size() - 1)))));
+        lookTo.set_z(0.0f);
+
+        if (player()->getPlayerDistanceTo(desiredPosition) <= player()->getLinearError()) {
+            _isHalted = true;
+        } else {
+            _goToLookTo->setPlayer(player());
+            // Here comes GoToLookTo setters
+            _goToLookTo->runBehaviour();
+        }
+        return;
+    } else {
+        _isHalted = false;
+    }
+
     run();
+
+    if (!_actualBehaviour->isInitialized()) {
+        _actualBehaviour->initialize(getLocations(), getReferee(), getConstants());
+    }
+
+    _actualBehaviour->setPlayer(player());
+    _actualBehaviour->runBehaviour();
 }
 
-int Role::getActualBehaviour() {
+Behaviour* Role::getActualBehaviour() {
     return _actualBehaviour;
 }
 
 void Role::setBehaviour(int behaviourID) {
-    _actualBehaviour = behaviourID;
+    if (!_behaviourList.contains(behaviourID)) {
+        spdlog::error(Text::red("[ERROR] ", true) + Text::bold(QString("Behaviour ID not found at Role " + name() + "'s behaviour list!\n").toStdString()));
+        return;
+    }
+
+    _actualBehaviour = _behaviourList.value(behaviourID);
 }
 
 Player* Role::player() {
@@ -83,6 +158,15 @@ Player* Role::player() {
     }
 
     return nullptr;
+}
+
+void Role::addBehaviour(int behaviourID, Behaviour *behaviour) {
+    if (_behaviourList.contains(behaviourID)) {
+        spdlog::error(Text::red("[ERROR] ", true) + Text::bold(QString("Behaviour ID already found at Role " + name() + "'s behaviour list!\n").toStdString()));
+        return ;
+    }
+
+    _behaviourList.insert(behaviourID, behaviour);
 }
 
 Constants* Role::getConstants() {

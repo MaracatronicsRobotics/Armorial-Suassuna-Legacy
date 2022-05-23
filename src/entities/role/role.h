@@ -28,9 +28,10 @@
 #include <src/entities/worldmap/worldmap.h>
 #include <src/entities/referee/referee.h>
 #include <src/entities/player/player.h>
+#include <src/entities/player/behaviour/behaviour.h>
 
-class Role
-{
+class Role : public QObject {
+    Q_OBJECT
 public:
     Role();
     virtual ~Role();
@@ -43,15 +44,15 @@ public:
 
     virtual QString name() = 0;
 
-    int getActualBehaviour();
+    Behaviour* getActualBehaviour();
     virtual void initializeBehaviours() = 0;
-    //QHash<int, Behaviour*> getBehaviours();
+    QHash<int, Behaviour*> getBehaviours();
     void setBehaviour(int behaviourID);
 
     Player* player();
 
 protected:
-    void addBehaviour(int behaviourID); //still needs the Behaviour class
+    void addBehaviour(int behaviourID, Behaviour *behaviour);
 
     Constants* getConstants();
     WorldMap* getWorldMap();
@@ -69,9 +70,14 @@ private:
     SSLReferee *_referee;
     Locations *_loc;
 
-    //QMap<int, Behaviour*> _behaviourList;
-    //Behaviour *_behaviour;
-    int _actualBehaviour;
+    // Behaviours for game status control
+    Behaviour *_goToLookTo; // Future changes: Behaviour -> GoToLookTo (wich extends behaviour)
+    bool _isHalted;
+
+    // Behaviour list
+    QHash<int, Behaviour*> _behaviourList;
+    Behaviour *_behaviour;
+    Behaviour *_actualBehaviour;
 
     bool _initialized;
     bool _configureEnabled;

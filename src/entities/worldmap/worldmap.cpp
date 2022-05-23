@@ -71,6 +71,20 @@ QList<Robot> WorldMap::getRobots(Color color) {
     return listToSearch;
 }
 
+QList<int> WorldMap::getRobotsIDs(Color color) {
+    // Lock mutex for read and get the list for the identifier color
+    _mutex.lockForRead();
+    QList<Robot> listToSearch = _robots.value(color.isblue());
+    QList<int> listIDs;
+    for (Robot r : listToSearch) {
+        listIDs.push_back(r.robotidentifier().robotid());
+    }
+    _mutex.unlock();
+
+    // Return the list
+    return listIDs;
+}
+
 Field WorldMap::getField() {
     // Lock mutex for read and take the field var
     _mutex.lockForRead();

@@ -21,6 +21,8 @@
 
 #include "player.h"
 
+#include <src/entities/role/role.h>
+
 Player::Player(int playerID, WorldMap *worldMap, SSLReferee *referee, Constants *constants) {
     _constants = constants;
     _playerID = playerID;
@@ -102,7 +104,7 @@ bool Player::isPlayerInAvaliableRobots() {
     Robot robot;
     robot = Utils::getRobotObject(getPlayerID(), getConstants()->isTeamBlue());
     bool contain = false;
-    for (Robot r : getWorld()->getRobots(teamColor)) {
+    for (Robot r : getWorldMap()->getRobots(teamColor)) {
         if (robot.robotidentifier().robotid() == r.robotidentifier().robotid()) {
             if (robot.robotidentifier().robotcolor().isblue() == r.robotidentifier().robotcolor().isblue()) {
                 contain = true;
@@ -152,7 +154,7 @@ float Player::getPlayerDistanceTo(Position targetPos) {
 
 bool Player::hasBallPossession() {
     // Need sensor
-    if ((Utils::distance(Player::getPlayerPos(), Player::getWorld()->getBall().ballposition()) >= 0.25f) && Player::isLookingTo(Player::getWorld()->getBall().ballposition())) {
+    if ((Utils::distance(Player::getPlayerPos(), Player::getWorldMap()->getBall().ballposition()) >= 0.25f) && Player::isLookingTo(Player::getWorldMap()->getBall().ballposition())) {
         return true;
     }
     return false;
@@ -168,14 +170,30 @@ bool Player::isLookingTo(Position targetPos) {
     return (diff <= 0.1f); // Here goes Angular Error, should be set later
 }
 
+float Player::getLinearError() {
+    return 0.05f; // 5cm
+}
+
+float Player::getAngularError() {
+    return 0.02f; // ≃ 1.15 deg
+}
+
 QString Player::roleName() {
-    QString roleName = "Still needs the Role Class";
+    _mutexRole.lockForRead();
+    QString roleName = (_playerRole == nullptr) ? "No Role" : _playerRole->name();
+    _mutexRole.unlock();
     return roleName;
 }
 
 QString Player::behaviorName() {
     QString behaviorName = "Still needs the Behavior Class";
     return behaviorName;
+}
+
+void Player::setRole(Role *role) {
+    _mutexRole.lockForWrite();
+    _playerRole = role;
+    _mutexRole.unlock();
 }
 
 void Player::playerGoTo(Position pos) {
@@ -244,6 +262,10 @@ void Player::playerKick(float power, bool isChip) {
     _playerControl.set_allocated_kickspeed(kickVel);
 }
 
+void Player::playerIdle() {
+    _playerControl = Utils::controlPacket(getPlayerID(), getConstants()->isTeamBlue());
+}
+
 void Player::initialization() {
     // Create Actuator service pointers
     _actuatorService = new ActuatorService(getConstants());
@@ -260,22 +282,39 @@ void Player::initialization() {
 
 void Player::loop() {
     // Lock mutex for write and send requests to Actuator Service
-    _mutex.lockForWrite();
+    if (getPlayerPos().isinvalid()) {
+        if (_idleCount < IDLE_COUNT) {
+            setRole(nullptr);
+            playerIdle();
 
-    // Send ControlPacket
-
-    if (!isPlayerInAvaliableRobots()) {
-        getActuatorService()->SetControl(Utils::controlPacket(_playerID, getConstants()->isTeamBlue()));
-        spdlog::warn(Text::red(QString("[Player %1 : %2] ")
-                                .arg(getPlayerID())
-                                .arg(getConstants()->getTeamColor()).toStdString(), true)
-                     + Text::bold("not found in WorldMap."));
+            _idleCount++;
+        }
     } else {
-        getActuatorService()->SetControl(_playerControl);
-    }
+        _idleCount = 0;
 
-    // Unlock mutex
-    _mutex.unlock();
+        this->playerKick(0.0f, false);
+        _mutexRole.lockForWrite();
+        if (_playerRole != nullptr) {
+            if (!_playerRole->isInitialized()) {
+                _playerRole->initialize(getConstants(), getWorldMap(), getReferee());
+            }
+            _playerRole->setPlayer(this);
+            _playerRole->runRole();
+        }
+
+        // Send ControlPacket
+
+        if (!isPlayerInAvaliableRobots()) {
+            getActuatorService()->SetControl(Utils::controlPacket(_playerID, getConstants()->isTeamBlue()));
+            spdlog::error(Text::red(QString("[Player %1 : %2] ")
+                                    .arg(getPlayerID())
+                                    .arg(getConstants()->getTeamColor()).toStdString(), true)
+                         + Text::bold("not found in WorldMap."));
+        } else {
+            getActuatorService()->SetControl(_playerControl);
+        }
+        _mutexRole.unlock();
+    }
 }
 
 void Player::finalization() {
@@ -312,7 +351,7 @@ Constants* Player::getConstants() {
     return nullptr;
 }
 
-WorldMap* Player::getWorld() {
+WorldMap* Player::getWorldMap() {
     if(_worldMap == nullptr) {
         spdlog::error(Text::bold("WorldMap with nullptr value at Player"));
     } else {

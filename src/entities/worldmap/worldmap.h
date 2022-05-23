@@ -40,6 +40,7 @@ public:
     // Data getters
     Robot getRobot(RobotIdentifier identifier);
     QList<Robot> getRobots(Color color);
+    QList<int> getRobotsIDs(Color color);
     Field getField();
     Ball getBall();
 

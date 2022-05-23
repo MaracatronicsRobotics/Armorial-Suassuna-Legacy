@@ -29,8 +29,9 @@
 #include <src/entities/worldmap/worldmap.h>
 #include <src/utils/utils.h>
 
-// This has to be on Coach or a BaseCoach header
-#include <src/entities/referee/referee.h>
+#include <src/entities/baseCoach.h>
+
+#define IDLE_COUNT 60
 
 class Player : public Entity
 {
@@ -58,16 +59,21 @@ public:
     bool hasBallPossession();
     bool isLookingTo(Position targetPos);
 
+    // Player Error
+    float getLinearError();
+    float getAngularError();
+
     // Role Management
     QString roleName();
     QString behaviorName();
-    //void setRole(/* Here comes the Role Class */);
+    void setRole(Role *role);
 
     // Skills
     void playerGoTo(Position pos);
     void playerRotateTo(Position pos, Position referencePos = Position(Utils::getPositionObject(0.0f, 0.0f, 0.0f, true)));
     void playerDribble(bool enable);
     void playerKick(float power, bool isChip);
+    void playerIdle();
 
     //PlayerControls
     void getPlayerControl(int ID, bool isBlue);
@@ -81,14 +87,15 @@ private:
     //QList<ControlPacket> _playerControls;
     ControlPacket _playerControl;
     int _playerID;
+    int _idleCount;
     bool _isDribbling;
     Position _playerPos;
 
     // Player Role
-    /* Here comes the Role Class */
+    Role *_playerRole;
 
     // Mutex
-    QReadWriteLock _mutex;
+    QReadWriteLock _mutexRole;
 
     // Actuator Service
     ActuatorService *_actuatorService;
@@ -104,7 +111,7 @@ private:
 
     // WorldMap
     WorldMap *_worldMap;
-    WorldMap* getWorld();
+    WorldMap* getWorldMap();
 
     // Referee
     SSLReferee *_referee;
