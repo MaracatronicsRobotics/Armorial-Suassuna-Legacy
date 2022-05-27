@@ -34,7 +34,7 @@ public:
 
     void setPositionToGo(Position &positionToGo);
     void setPositionToLook(Position &positionToLook);
-    void setUseToGoAsReference(bool useToGoAsReference);
+    void setReferencePosition(Position &referencePosition);
 
 private:
     // Behavior inherited methods
@@ -54,7 +54,7 @@ private:
     // Internal
     Position _positionToGo;
     Position _positionToLook;
-    bool _useToGoAsReference;
+    Position _referencePosition;
 };
 
 #endif // BEHAVIOR_GOTOLOOKTO_H

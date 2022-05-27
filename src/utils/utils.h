@@ -66,7 +66,7 @@ public:
     static FieldCircularArc getFieldArcObject(Position center, float a1, float a2);
 
     //algebric methods
-    static Position threePoints(const Position &near, const Position &far, float distance, float beta, bool isInDegrees);
+    static Position threePoints(const Position &near, const Position &far, float distance, float beta, bool isInDegrees = false);
 
     static float distance(const Position &a, const Position &b);
 

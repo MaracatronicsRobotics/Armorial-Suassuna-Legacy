@@ -22,9 +22,10 @@
 #include <src/entities/player/behaviour/gotolookto/gotolookto.h>
 
 Behaviour_GoToLookTo::Behaviour_GoToLookTo() {
-    _positionToGo = Utils::getPositionObject(0.0f, 0.0f, 0.0f, false);
-    _positionToLook = Utils::getPositionObject(0.0f, 0.0f, 0.0f, false);
-    setUseToGoAsReference(true);
+    _positionToGo = Utils::getPositionObject(0.0f, 0.0f, 0.0f, true);
+    _positionToLook = Utils::getPositionObject(0.0f, 0.0f, 0.0f, true);
+    _referencePosition = Utils::getPositionObject(0.0, 0.0, 0.0, true);
+    //setUseToGoAsReference(true);
 }
 
 QString Behaviour_GoToLookTo::name() {
@@ -39,8 +40,8 @@ void Behaviour_GoToLookTo::setPositionToLook(Position &positionToLook) {
     _positionToLook = positionToLook;
 }
 
-void Behaviour_GoToLookTo::setUseToGoAsReference(bool useToGoAsReference) {
-    _useToGoAsReference = useToGoAsReference;
+void Behaviour_GoToLookTo::setReferencePosition(Position &referencePosition) {
+    _referencePosition = referencePosition;
 }
 
 void Behaviour_GoToLookTo::configure() {
@@ -72,7 +73,11 @@ void Behaviour_GoToLookTo::run() {
             //player()->setAngularP(std::get<0>(getConstants()->playerAngularPID()) * prop);
         }
 
-        _skill_rotateTo->setReferencePosition(_useToGoAsReference ? _positionToGo : player()->getPlayerPos());
+        if(_referencePosition.isinvalid()) {
+            _referencePosition = player()->getPlayerPos();
+        }
+
+        _skill_rotateTo->setReferencePosition(_referencePosition);
         _skill_rotateTo->setTargetPosition(_positionToLook);
         setSkill(SKILL_ROTATETO);
     }

@@ -32,6 +32,8 @@ Player::Player(int playerID, WorldMap *worldMap, SSLReferee *referee, Constants 
     _referee = referee;
     _isDribbling = false;
 
+    _playerRole = nullptr;
+
     // Creating void cp
     _playerControl = Utils::controlPacket(playerID, getConstants()->isTeamBlue());
 }
@@ -294,6 +296,7 @@ void Player::loop() {
         _idleCount = 0;
 
         this->playerKick(0.0f, false);
+
         _mutexRole.lockForWrite();
         if (_playerRole != nullptr) {
             if (!_playerRole->isInitialized()) {
@@ -314,18 +317,6 @@ void Player::loop() {
         }
         _mutexRole.unlock();
     }
-
-    // Test
-
-    /*
-    spdlog::info(Text::cyan(QString("[PLAYER %1 : %2] ")
-                            .arg("YELLOW")
-                            .arg(getPlayerID()).toStdString(), true)
-                 + Text::bold(QString("Position: (%1,%2,%3).")
-                            .arg(getPlayerPos().x())
-                            .arg(getPlayerPos().y())
-                            .arg(getPlayerPos().z()).toStdString()));
-    */
 }
 
 void Player::finalization() {

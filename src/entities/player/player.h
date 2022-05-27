@@ -117,7 +117,6 @@ private:
     SSLReferee *_referee;
     SSLReferee* getReferee();
 
-
     //Only for testing purposes
     Position _dest;
     Position _lookTo;

@@ -21,6 +21,8 @@
 
 #include "suassuna.h"
 
+#include <src/entities/player/role/role_default/role_default.h>
+
 Suassuna::Suassuna(Constants *constants) {
     // Setting up constants
     _constants = constants;
@@ -35,34 +37,38 @@ Suassuna::Suassuna(Constants *constants) {
 void Suassuna::start(bool useGui) {
     // Creating World Map
     _worldMap = new WorldMap(getConstants());
-    _world->addEntity(_worldMap, 0);
+    _world->addEntity(_worldMap, 2);
 
     // Creating gand adding referee to world
     _referee = new SSLReferee(getConstants(), _worldMap);
-    _world->addEntity(_referee, 0);
+    _world->addEntity(_referee, 1);
 
     // Set utils
     Utils::setConstants(getConstants());
     Utils::setWorldMap(_worldMap);
 
+
+    Role_Default *role_default = new Role_Default();
+
     Player *player0 = new Player(0, _worldMap, _referee, getConstants());
+    player0->setRole(role_default);
     _playerList.push_back(player0);
-    _world->addEntity(player0, 1);
+    _world->addEntity(player0, 0);
     Player *player1 = new Player(1, _worldMap, _referee, getConstants());
     _playerList.push_back(player1);
-    _world->addEntity(player1, 1);
+    _world->addEntity(player1, 0);
     Player *player2 = new Player(2, _worldMap, _referee, getConstants());
     _playerList.push_back(player2);
-    _world->addEntity(player2, 1);
+    _world->addEntity(player2, 0);
     Player *player3 = new Player(3, _worldMap, _referee, getConstants());
     _playerList.push_back(player3);
-    _world->addEntity(player3, 1);
+    _world->addEntity(player3, 0);
     Player *player4 = new Player(4, _worldMap, _referee, getConstants());
     _playerList.push_back(player4);
-    _world->addEntity(player4, 1);
+    _world->addEntity(player4, 0);
     Player *player5 = new Player(5, _worldMap, _referee, getConstants());
     _playerList.push_back(player5);
-    _world->addEntity(player5, 1);
+    _world->addEntity(player5, 0);
 
     // Setup GUI
     if(useGui) {
