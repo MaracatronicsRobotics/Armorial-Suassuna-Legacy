@@ -130,7 +130,7 @@ void Role::runRole() {
     run();
 
     if (!_actualBehaviour->isInitialized()) {
-        _actualBehaviour->initialize(getLocations(), getReferee(), getConstants());
+        _actualBehaviour->initialize(getConstants(), getWorldMap());
     }
 
     _actualBehaviour->setPlayer(player());

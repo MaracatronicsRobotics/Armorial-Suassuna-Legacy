@@ -86,7 +86,7 @@ SOURCES += \
     src/entities/player/skill/kick/kick.cpp \
     src/entities/player/skill/rotateto/rotateto.cpp \
     src/entities/player/skill/skill.cpp \
-    src/entities/role/role.cpp \
+    src/entities/player/role/role.cpp \
     src/entities/world/world.cpp \
     src/entities/worldmap/locations/locations.cpp \
     src/entities/worldmap/worldmap.cpp \
@@ -153,7 +153,7 @@ HEADERS += \
     src/entities/player/skill/kick/kick.h \
     src/entities/player/skill/rotateto/rotateto.h \
     src/entities/player/skill/skill.h \
-    src/entities/role/role.h \
+    src/entities/player/role/role.h \
     src/entities/world/world.h \
     src/entities/worldmap/locations/locations.h \
     src/entities/worldmap/worldmap.h \

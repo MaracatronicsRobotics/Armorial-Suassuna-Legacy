@@ -21,7 +21,7 @@
 
 #include "player.h"
 
-#include <src/entities/role/role.h>
+#include <src/entities/player/role/role.h>
 
 Player::Player(int playerID, WorldMap *worldMap, SSLReferee *referee, Constants *constants) {
     _constants = constants;
@@ -367,6 +367,16 @@ WorldMap* Player::getWorldMap() {
         spdlog::error(Text::bold("WorldMap with nullptr value at Player"));
     } else {
         return _worldMap;
+    }
+
+    return nullptr;
+}
+
+SSLReferee* Player::getReferee() {
+    if(_referee == nullptr) {
+        spdlog::error(Text::bold("SSLReferee with nullptr value at Player"));
+    } else {
+        return _referee;
     }
 
     return nullptr;
