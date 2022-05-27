@@ -18,7 +18,7 @@ QT += core \
         opengl
 
 DEFINES += QT_DEPRECATED_WARNINGS
-LIBS += -lQt5Core -lprotobuf -lgrpc++ -lGLU
+LIBS += -lQt5Core -lprotobuf -lgrpc++ -lGLU -lfmt
 
 system(echo "compiling protobuf" && cd proto/services && protoc --grpc_out=../ --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` *.proto && cd ../../..)
 system(echo "compiling protobuf" && cd proto/services && protoc --cpp_out=../ *.proto && cd ../../..)
