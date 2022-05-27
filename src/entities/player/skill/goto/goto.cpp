@@ -19,40 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef SKILL_KICK_H
-#define SKILL_KICK_H
+#include "goto.h"
 
-#include <src/entities/skill/skill.h>
-#include <src/utils/utils.h>
-#include <src/entities/worldmap/worldmap.h>
+Skill_GoTo::Skill_GoTo() {
+    _targetPosition = Utils::getPositionObject(0.0, 0.0);
+}
 
-class Kick : public Skill {
-private:
-    void run();
-    Position _aimPosition;
+QString Skill_GoTo::name() {
+    return "Skill_GoTo";
+}
 
-    enum{
-        STATE_POS,
-        STATE_KICK
-    };
+void Skill_GoTo::setTargetPosition(Position &targetPosition) {
+    _targetPosition = targetPosition;
+}
 
-    int _state;
-    float _power;
-    bool _isChip;
-    WorldMap *_worldMap;
-    bool isBehindBall(Position posObjective);
-    bool isBallInFront();
-    bool isInFrontOfObjective();
+void Skill_GoTo::configure() {
 
-public:
-    Kick(WorldMap *worldMap);
-    QString name();
+}
 
-    void setAim (Position pos) { _aimPosition = pos; }
-    void setPower(float power) { _power = power; }
-    void setIsChip(bool isChip) { _isChip = isChip; }
-    void setState(int state) { _state = state; }
-    WorldMap* getWorldMap();
-};
-
-#endif // SKILL_KICK_H
+void Skill_GoTo::run() {
+    if(!_targetPosition.isinvalid()) {
+        player()->playerGoTo(_targetPosition);
+    }
+}

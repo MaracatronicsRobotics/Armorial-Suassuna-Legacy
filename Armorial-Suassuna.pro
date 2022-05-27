@@ -82,11 +82,11 @@ SOURCES += \
     src/entities/referee/gameinfo/gameinfo.cpp \
     src/entities/referee/referee.cpp \
     src/entities/player/player.cpp \
+    src/entities/player/skill/goto/goto.cpp \
+    src/entities/player/skill/kick/kick.cpp \
+    src/entities/player/skill/rotateto/rotateto.cpp \
+    src/entities/player/skill/skill.cpp \
     src/entities/role/role.cpp \
-    src/entities/skill/goto/goto.cpp \
-    src/entities/skill/kick/kick.cpp \
-    src/entities/skill/rotateto/rotateto.cpp \
-    src/entities/skill/skill.cpp \
     src/entities/world/world.cpp \
     src/entities/worldmap/locations/locations.cpp \
     src/entities/worldmap/worldmap.cpp \
@@ -143,16 +143,17 @@ HEADERS += \
     src/entities/entity.h \
     src/entities/player/behaviour/behaviour.h \
     src/entities/player/behaviour/gotolookto/gotolookto.h \
+    src/entities/player/skill/skills.h \
     src/entities/referee/ballplay/ballplay.h \
     src/entities/referee/gameinfo/gameinfo.h \
     src/entities/referee/referee.h \
     src/entities/referee/refereeflags.h \
     src/entities/player/player.h \
+    src/entities/player/skill/goto/goto.h \
+    src/entities/player/skill/kick/kick.h \
+    src/entities/player/skill/rotateto/rotateto.h \
+    src/entities/player/skill/skill.h \
     src/entities/role/role.h \
-    src/entities/skill/goto/goto.h \
-    src/entities/skill/kick/kick.h \
-    src/entities/skill/rotateto/rotateto.h \
-    src/entities/skill/skill.h \
     src/entities/world/world.h \
     src/entities/worldmap/locations/locations.h \
     src/entities/worldmap/worldmap.h \

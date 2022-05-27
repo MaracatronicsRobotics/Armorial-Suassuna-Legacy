@@ -1,3 +1,4 @@
+
 /***
  * Maracatronics Robotics
  * Federal University of Pernambuco (UFPE) at Recife
@@ -19,35 +20,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#include "rotateto.h"
+#ifndef ROTATETO_H
+#define ROTATETO_H
 
-RotateTo::RotateTo() {
-    _targetPosition = Utils::getPositionObject(0.0, 0.0);
-    _referencePosition = Utils::getPositionObject(0.0, 0.0);
-}
+#include <src/entities/player/skill/skill.h>
 
-QString RotateTo::name() {
-    return "Skill_RotateTo";
-}
+class Skill_RotateTo : public Skill
+{
+public:
+    Skill_RotateTo();
+    QString name();
 
-void RotateTo::setTargetPosition(Position &targetPosition) {
-    _targetPosition = targetPosition;
-}
+    // Target management
+    void setTargetPosition(Position &targetPosition);
+    void setReferencePosition(Position referencePosition);
 
-void RotateTo::setReferencePosition(Position referencePosition) {
-    _referencePosition = referencePosition;
-}
+private:
+    // Skill inherited methods
+    void configure();
+    void run();
 
-void RotateTo::configure() {
+    // Internal
+    Position _targetPosition;
+    Position _referencePosition;
+};
 
-}
-
-void RotateTo::run() {
-    if(!_targetPosition.isinvalid()) {
-        if (_referencePosition.isinvalid()){
-            player()->playerRotateTo(_targetPosition);
-        } else {
-            player()->playerRotateTo(_targetPosition, _referencePosition);
-        }
-    }
-}
+#endif // ROTATETO_H

@@ -19,26 +19,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#include "goto.h"
+#ifndef GOTO_H
+#define GOTO_H
 
-GoTo::GoTo() {
-    _targetPosition = Utils::getPositionObject(0.0, 0.0);
-}
+#include <src/entities/player/skill/skill.h>
 
-QString GoTo::name() {
-    return "Skill_GoTo";
-}
+class Skill_GoTo : public Skill
+{
+public:
+    Skill_GoTo();
+    QString name();
 
-void GoTo::setTargetPosition(Position &targetPosition) {
-    _targetPosition = targetPosition;
-}
+    // Target management
+    void setTargetPosition(Position &targetPosition);
 
-void GoTo::configure() {
+private:
+    // Skill inherited methods
+    void configure();
+    void run();
 
-}
+    // Internal
+    Position _targetPosition;
+};
 
-void GoTo::run() {
-    if(!_targetPosition.isinvalid()) {
-        player()->playerGoTo(_targetPosition);
-    }
-}
+#endif // GOTO_H

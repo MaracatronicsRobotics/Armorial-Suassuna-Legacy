@@ -25,11 +25,11 @@
 #define MINDISTBALL_AVOIDROBOTS 0.4f
 #define SWITCHSTATE_MINDISTBALL 0.35f
 
-QString Kick::name() {
+QString Skill_Kick::name() {
     return "Skill_Kick";
 }
 
-Kick::Kick(WorldMap *worldMap) {
+Skill_Kick::Skill_Kick(WorldMap *worldMap) {
     _worldMap = worldMap;
     _isChip = false;
     // Create a default, invalid position
@@ -37,7 +37,7 @@ Kick::Kick(WorldMap *worldMap) {
     _state = STATE_KICK;
 }
 
-void Kick::run() {
+void Skill_Kick::run() {
     if(_aimPosition.isinvalid())
         return;
 
@@ -109,7 +109,7 @@ void Kick::run() {
         player()->playerKick(_power, _isChip);
 }
 
-bool Kick::isBehindBall(Position posObjective){
+bool Skill_Kick::isBehindBall(Position posObjective){
     Position posBall = getWorldMap()->getBall().ballposition();
     Position posPlayer = player()->getPlayerPos();
     float anglePlayer = Utils::getAngle(posBall, posPlayer);
@@ -119,14 +119,14 @@ bool Kick::isBehindBall(Position posObjective){
     return (diff>(M_PI/2.0f));
 }
 
-bool Kick::isBallInFront(){
+bool Skill_Kick::isBallInFront(){
     float anglePlayerBall = player()->getPlayerAngleTo(getWorldMap()->getBall().ballposition());
     float diff = Utils::angleDiff(anglePlayerBall, player()->getPlayerOrientation());
 
     return (diff <= atan(0.55)); // atan(0.7) aprox = 35 degree
 }
 
-bool Kick::isInFrontOfObjective(){
+bool Skill_Kick::isInFrontOfObjective(){
     float anglePlayerObj = player()->getPlayerAngleTo(_aimPosition);
     float diff = Utils::angleDiff(anglePlayerObj, player()->getPlayerOrientation());
 
@@ -136,6 +136,6 @@ bool Kick::isInFrontOfObjective(){
     return (diff <= angle_error);
 }
 
-WorldMap* Kick::getWorldMap(){
+WorldMap* Skill_Kick::getWorldMap(){
     return _worldMap;
 }

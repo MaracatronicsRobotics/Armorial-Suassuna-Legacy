@@ -1,4 +1,3 @@
-
 /***
  * Maracatronics Robotics
  * Federal University of Pernambuco (UFPE) at Recife
@@ -20,29 +19,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef ROTATETO_H
-#define ROTATETO_H
+#ifndef SKILL_KICK_H
+#define SKILL_KICK_H
 
-#include <src/entities/skill/skill.h>
+#include <src/entities/player/skill/skill.h>
+#include <src/utils/utils.h>
+#include <src/entities/worldmap/worldmap.h>
 
-class RotateTo : public Skill
-{
+class Skill_Kick : public Skill {
+private:
+    void run();
+    Position _aimPosition;
+
+    enum{
+        STATE_POS,
+        STATE_KICK
+    };
+
+    int _state;
+    float _power;
+    bool _isChip;
+    WorldMap *_worldMap;
+    bool isBehindBall(Position posObjective);
+    bool isBallInFront();
+    bool isInFrontOfObjective();
+
 public:
-    RotateTo();
+    Skill_Kick(WorldMap *worldMap);
     QString name();
 
-    // Target management
-    void setTargetPosition(Position &targetPosition);
-    void setReferencePosition(Position referencePosition);
-
-private:
-    // Skill inherited methods
-    void configure();
-    void run();
-
-    // Internal
-    Position _targetPosition;
-    Position _referencePosition;
+    void setAim (Position pos) { _aimPosition = pos; }
+    void setPower(float power) { _power = power; }
+    void setIsChip(bool isChip) { _isChip = isChip; }
+    void setState(int state) { _state = state; }
+    WorldMap* getWorldMap();
 };
 
-#endif // ROTATETO_H
+#endif // SKILL_KICK_H

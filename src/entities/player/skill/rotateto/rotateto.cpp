@@ -19,27 +19,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef GOTO_H
-#define GOTO_H
+#include "rotateto.h"
 
-#include <src/entities/skill/skill.h>
+Skill_RotateTo::Skill_RotateTo() {
+    _targetPosition = Utils::getPositionObject(0.0, 0.0);
+    _referencePosition = Utils::getPositionObject(0.0, 0.0);
+}
 
-class GoTo : public Skill
-{
-public:
-    GoTo();
-    QString name();
+QString Skill_RotateTo::name() {
+    return "Skill_RotateTo";
+}
 
-    // Target management
-    void setTargetPosition(Position &targetPosition);
+void Skill_RotateTo::setTargetPosition(Position &targetPosition) {
+    _targetPosition = targetPosition;
+}
 
-private:
-    // Skill inherited methods
-    void configure();
-    void run();
+void Skill_RotateTo::setReferencePosition(Position referencePosition) {
+    _referencePosition = referencePosition;
+}
 
-    // Internal
-    Position _targetPosition;
-};
+void Skill_RotateTo::configure() {
 
-#endif // GOTO_H
+}
+
+void Skill_RotateTo::run() {
+    if(!_targetPosition.isinvalid()) {
+        if (_referencePosition.isinvalid()){
+            player()->playerRotateTo(_targetPosition);
+        } else {
+            player()->playerRotateTo(_targetPosition, _referencePosition);
+        }
+    }
+}

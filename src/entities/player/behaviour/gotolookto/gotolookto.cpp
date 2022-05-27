@@ -58,7 +58,7 @@ void Behaviour_GoToLookTo::run() {
         _skill_goTo->setTargetPosition(_positionToGo);
     }
     else {
-        Position playerPosition = player()->position();
+        Position playerPosition = player()->getPlayerPos();
         _skill_goTo->setTargetPosition(playerPosition);
     }
     setSkill(SKILL_GOTO);
@@ -68,10 +68,11 @@ void Behaviour_GoToLookTo::run() {
         if(!_positionToGo.isinvalid()) {
             float maxDistPossible = sqrt(pow(loc()->fieldWidth(), 2) + pow(loc()->fieldLength(), 2));
             float prop = std::max(0.2f, (maxDistPossible - player()->getPlayerDistanceTo(_positionToGo)) / maxDistPossible);
-            player()->setAngularP(std::get<0>(getConstants()->playerAngularPID()) * prop);
+            /// TODO: pid
+            //player()->setAngularP(std::get<0>(getConstants()->playerAngularPID()) * prop);
         }
 
-        _skill_rotateTo->setReferencePosition(_useToGoAsReference ? _positionToGo : player()->position());
+        _skill_rotateTo->setReferencePosition(_useToGoAsReference ? _positionToGo : player()->getPlayerPos());
         _skill_rotateTo->setTargetPosition(_positionToLook);
         setSkill(SKILL_ROTATETO);
     }

@@ -22,8 +22,9 @@
 #ifndef BEHAVIOR_GOTOLOOKTO_H
 #define BEHAVIOR_GOTOLOOKTO_H
 
+#include <QString>
 #include <src/entities/player/behaviour/behaviour.h>
-#include "QString"
+#include <src/entities/player/skill/skills.h>
 
 class Behaviour_GoToLookTo : public Behaviour
 {
