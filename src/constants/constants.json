@@ -15,7 +15,9 @@
     "qtdPlayers": 11,
     "timeToSendPacketZero": 1000.0,
 
-    "minDistToConsiderBallMovement": 10.0
+    "minDistToConsiderBallMovement": 10.0,
+
+    "robotRadius": 0.09
 }
 
     

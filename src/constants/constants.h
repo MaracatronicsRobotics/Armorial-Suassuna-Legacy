@@ -82,6 +82,9 @@ public:
     float getMinDistToConsiderBallMovement();
     void setMinDistToConsiderBallMovement(float minDistToConsiderBallMovement);
 
+    float getRobotRadius() const;
+    void setRobotRadius(float value);
+
 private:
     QString _fileName;
     QFile file;
@@ -105,6 +108,9 @@ private:
 
     // Foul/Referee-related constants
     float _minDistToConsiderBallMovement;
+
+    // Robot dimensions
+    float _robotRadius;
 };
 
 #endif // CONSTANTS_H

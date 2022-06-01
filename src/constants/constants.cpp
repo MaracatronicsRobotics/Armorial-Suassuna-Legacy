@@ -67,6 +67,9 @@ Constants::Constants(QString fileName) {
 
     _minDistToConsiderBallMovement = docMap["minDistToConsiderBallMovement"].toFloat();
     std::cout << Text::bold("Min distance to consider ball movement Side: ") + Text::green(std::to_string(_minDistToConsiderBallMovement), true) << std::endl;
+
+    _robotRadius = docMap["robotRadius"].toFloat();
+    std::cout << Text::bold("Robot radius: ") + Text::green(std::to_string(_robotRadius), true) << std::endl;
 }
 
 bool Constants::isTeamBlue() {
@@ -185,4 +188,14 @@ float Constants::getMinDistToConsiderBallMovement(){
 
 void Constants::setMinDistToConsiderBallMovement(float minDistToConsiderBallMovement){
     _minDistToConsiderBallMovement = minDistToConsiderBallMovement;
+}
+
+float Constants::getRobotRadius() const
+{
+    return _robotRadius;
+}
+
+void Constants::setRobotRadius(float value)
+{
+    _robotRadius = value;
 }
