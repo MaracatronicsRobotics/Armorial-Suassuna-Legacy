@@ -19,8 +19,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef BEHAVIOR_GOTOLOOKTO_H
-#define BEHAVIOR_GOTOLOOKTO_H
+#ifndef BEHAVIOUR_GOTOLOOKTO_H
+#define BEHAVIOUR_GOTOLOOKTO_H
 
 #include <QString>
 #include <src/entities/player/behaviour/behaviour.h>
@@ -57,4 +57,4 @@ private:
     Position _referencePosition;
 };
 
-#endif // BEHAVIOR_GOTOLOOKTO_H
+#endif // BEHAVIOUR_GOTOLOOKTO_H
