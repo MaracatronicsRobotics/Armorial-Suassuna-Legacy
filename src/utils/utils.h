@@ -56,6 +56,7 @@ public:
     static Velocity getVelocityObject(float vx, float vy, float vz, bool isInvalid);
     static Acceleration getAccelerationObject(float ax, float ay, float az, bool isInvalid);
     static AngularSpeed getAngularSpeedObject(float vw, bool isInDegrees, bool isInvalid);
+    static Color getColorObject(bool isBlue);
 
     // Robot info methods
     static RobotIdentifier getRobotIdObject(int ID, bool isBlue);
