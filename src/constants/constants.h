@@ -91,6 +91,16 @@ public:
     float getBallRadius() const;
     void setBallRadius(float ballRadius);
 
+    float maxKickPower();
+    float maxChipKickPower();
+    float maxRobotLinearSpeed();
+    float maxRobotAngularSpeed();
+    float playerChipKickAngle();
+    QList<float> playerLinearPID();
+    QList<float> playerAngularPID();
+    QList<float> keeperLinearPID();
+    QList<float> keeperAngularPID();
+
 private:
     QString _fileName;
     QFile file;
@@ -112,6 +122,15 @@ private:
     int _qtdPlayers;
     float _timeToSendPacketZero;
     quint16 _keeperID;
+    float _maxKickPower;
+    float _maxChipKickPower;
+    float _maxRobotLinearSpeed;
+    float _maxRobotAngularSpeed;
+    float _playerChipKickAngle;
+    QList<float> _playerLinearPID;
+    QList<float> _playerAngularPID;
+    QList<float> _keeperLinearPID;
+    QList<float> _keeperAngularPID;
 
     // Foul/Referee-related constants
     float _minDistToConsiderBallMovement;

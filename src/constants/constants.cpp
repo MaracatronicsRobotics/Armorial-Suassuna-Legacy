@@ -76,6 +76,61 @@ Constants::Constants(QString fileName) {
 
     _keeperID = quint16(docMap["keeperID"].toInt());
     std::cout << Text::bold("Keeper ID: ") + Text::green(std::to_string(_keeperID), true) << std::endl;
+
+    _maxKickPower = docMap["maxKickPower"].toFloat();
+    std::cout << Text::bold("Max kick power: ") + Text::green(std::to_string(maxKickPower())) << std::endl;
+
+    _maxChipKickPower = docMap["maxChipKickPower"].toFloat();
+    std::cout << Text::bold("Max chip kick power: ") + Text::green(std::to_string(maxChipKickPower())) << std::endl;
+
+    _maxRobotLinearSpeed = docMap["maxRobotLinearSpeed"].toFloat();
+    std::cout << Text::bold("Max robot linear speed: ") + Text::green(std::to_string(maxRobotLinearSpeed())) << std::endl;
+
+    _maxRobotAngularSpeed = docMap["maxRobotAngularSpeed"].toFloat();
+    std::cout << Text::bold("Max robot angular speed: ") + Text::green(std::to_string(maxRobotAngularSpeed())) << std::endl;
+
+    _playerChipKickAngle = docMap["playerChipKickAngle"].toFloat();
+    std::cout << Text::bold("Player chip kick angle: ") + Text::green(std::to_string(playerChipKickAngle())) << std::endl;
+
+    QList<QVariant> playerLinearPIDList = docMap["playerLinearPID"].toList();
+    for (QVariant i: playerLinearPIDList) {
+        _playerLinearPID.push_back(i.toFloat());
+    }
+    std::cout << Text::bold("Player linear PID: {")
+                 + Text::green(std::to_string(playerLinearPID().at(0))) + ", "
+                 + Text::green(std::to_string(playerLinearPID().at(1))) + ", "
+                 + Text::green(std::to_string(playerLinearPID().at(2)))
+              << Text::bold("}") << std::endl;
+
+    QList<QVariant> playerAngularPIDList = docMap["playerAngularPID"].toList();
+    for (QVariant i: playerAngularPIDList) {
+        _playerAngularPID.push_back(i.toFloat());
+    }
+    std::cout << Text::bold("Player linear PID: {")
+                 + Text::green(std::to_string(playerAngularPID().at(0))) + ", "
+                 + Text::green(std::to_string(playerAngularPID().at(1))) + ", "
+                 + Text::green(std::to_string(playerAngularPID().at(2)))
+              << Text::bold("}") << std::endl;
+
+    QList<QVariant> keeperLinearPIDList = docMap["keeperLinearPID"].toList();
+    for (QVariant i: keeperLinearPIDList) {
+        _keeperLinearPID.push_back(i.toFloat());
+    }
+    std::cout << Text::bold("Keeper linear PID: {")
+                 + Text::green(std::to_string(keeperLinearPID().at(0))) + ", "
+                 + Text::green(std::to_string(keeperLinearPID().at(1))) + ", "
+                 + Text::green(std::to_string(keeperLinearPID().at(2)))
+              << Text::bold("}") << std::endl;
+
+    QList<QVariant> keeperAngularPIDList = docMap["keeperAngularPID"].toList();
+    for (QVariant i: keeperAngularPIDList) {
+        _keeperAngularPID.push_back(i.toFloat());
+    }
+    std::cout << Text::bold("Keeper linear PID: {")
+                 + Text::green(std::to_string(keeperAngularPID().at(0))) + ", "
+                 + Text::green(std::to_string(keeperAngularPID().at(1))) + ", "
+                 + Text::green(std::to_string(keeperAngularPID().at(2)))
+              << Text::bold("}") << std::endl;
 }
 
 bool Constants::isTeamBlue() {
@@ -224,4 +279,8 @@ float Constants::getBallRadius() const
 void Constants::setBallRadius(float ballRadius)
 {
     _ballRadius = ballRadius;
+}
+
+float Constants::maxKickPower(){
+    return _maxKickPower;
 }
