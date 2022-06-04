@@ -82,6 +82,7 @@ SOURCES += \
     src/entities/player/behaviour/interceptball/interceptball.cpp \
     src/entities/player/behaviour/pushball/pushball.cpp \
     src/entities/player/role/role_default/role_default.cpp \
+    src/entities/player/role/role_goalkeeper/role_goalkeeper.cpp \
     src/entities/referee/ballplay/ballplay.cpp \
     src/entities/referee/gameinfo/gameinfo.cpp \
     src/entities/referee/referee.cpp \
@@ -152,6 +153,7 @@ HEADERS += \
     src/entities/player/behaviour/interceptball/interceptball.h \
     src/entities/player/behaviour/pushball/pushball.h \
     src/entities/player/role/role_default/role_default.h \
+    src/entities/player/role/role_goalkeeper/role_goalkeeper.h \
     src/entities/player/skill/skills.h \
     src/entities/referee/ballplay/ballplay.h \
     src/entities/referee/gameinfo/gameinfo.h \
