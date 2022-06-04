@@ -195,6 +195,14 @@ AngularSpeed Utils::getAngularSpeedObject(float vw, bool isInDegrees, bool isInv
     return angularSpeed;
 }
 
+Color Utils::getColorObject(bool isBlue) {
+    Color color;
+
+    color.set_isblue(isBlue);
+
+    return color;
+}
+
 //Robot info methods
 RobotIdentifier Utils::getRobotIdObject(int ID, bool isBlue) {
     RobotIdentifier robotIdentifier;
