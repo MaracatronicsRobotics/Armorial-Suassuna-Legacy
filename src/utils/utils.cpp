@@ -451,6 +451,14 @@ Velocity Utils::vectorSum(const Velocity &v1, const Velocity &v2, float m) {
 
 }
 
+float Utils::getVelocityAbs(const Velocity &v) {
+    return sqrt(pow(v.vx(), 2) + pow(v.vy(), 2));
+}
+
+float Utils::getVelocityArg(const Velocity &v) {
+    return atan2(v.vy(), v.vx());
+}
+
 bool Utils::checkInterval(double value, double minValue, double maxValue) {
     return (minValue<value && value<maxValue);
 }

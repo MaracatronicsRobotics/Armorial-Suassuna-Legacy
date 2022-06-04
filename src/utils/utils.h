@@ -97,6 +97,8 @@ public:
     static Position vectorSum(const Position &v1, const Velocity &v2, float m = 1);
     static Position vectorSum(const Velocity &v1, const Position &v2, float m = 1);
     static Velocity vectorSum(const Velocity &v1, const Velocity &v2, float m = 1);
+    static float getVelocityAbs(const Velocity &v);
+    static float getVelocityArg(const Velocity &v);
 
     static bool checkInterval(double value, double minValue, double maxValue);
     static void limitValue(float *value, float minValue, float maxValue);
