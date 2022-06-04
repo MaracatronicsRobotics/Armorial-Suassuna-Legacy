@@ -27,6 +27,7 @@
 #include <src/entities/player/player.h>
 #include <src/entities/world/world.h>
 #include <src/entities/worldmap/worldmap.h>
+#include <src/entities/player/role/roles.h>
 
 class Suassuna
 {

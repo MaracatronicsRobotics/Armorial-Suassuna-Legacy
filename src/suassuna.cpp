@@ -21,8 +21,6 @@
 
 #include "suassuna.h"
 
-#include <src/entities/player/role/role_default/role_default.h>
-
 Suassuna::Suassuna(Constants *constants) {
     // Setting up constants
     _constants = constants;
@@ -49,12 +47,14 @@ void Suassuna::start(bool useGui) {
 
 
     Role_Default *role_default = new Role_Default();
+    Role_Goalkeeper *role_goalkeeper = new Role_Goalkeeper();
 
     Player *player0 = new Player(0, _worldMap, _referee, getConstants());
-    player0->setRole(role_default);
+    player0->setRole(role_goalkeeper);
     _playerList.push_back(player0);
     _world->addEntity(player0, 0);
     Player *player1 = new Player(1, _worldMap, _referee, getConstants());
+    player1->setRole(role_default);
     _playerList.push_back(player1);
     _world->addEntity(player1, 0);
     Player *player2 = new Player(2, _worldMap, _referee, getConstants());
