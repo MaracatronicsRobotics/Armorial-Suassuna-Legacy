@@ -154,6 +154,7 @@ HEADERS += \
     src/entities/player/behaviour/pushball/pushball.h \
     src/entities/player/role/role_default/role_default.h \
     src/entities/player/role/role_goalkeeper/role_goalkeeper.h \
+    src/entities/player/role/roles.h \
     src/entities/player/skill/skills.h \
     src/entities/referee/ballplay/ballplay.h \
     src/entities/referee/gameinfo/gameinfo.h \
