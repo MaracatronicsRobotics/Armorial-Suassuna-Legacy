@@ -268,6 +268,15 @@ Position Utils::threePoints(const Position &near, const Position &far, float dis
     return p;
 }
 
+Position Utils::repulsedPosition(const Position &repulserPosition, float distance, float robotOrientationToRepulser) {
+    Position rep = getPositionObject(
+        repulserPosition.x() - (distance * cos(robotOrientationToRepulser)),
+        repulserPosition.y() - (distance * sin(robotOrientationToRepulser))
+    );
+
+    return rep;
+}
+
 float Utils::distance(const Position &a, const Position &b) {
     return sqrt(pow(a.x()-b.x(),2) + pow(a.y()-b.y(),2));
 }
