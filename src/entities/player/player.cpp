@@ -65,6 +65,17 @@ Position Player::getPlayerPos() {
     return robotPos;
 }
 
+Position Player::getPlayerKickerDevicePos(){
+    float robotR = getConstants()->getRobotRadius()/2.0;
+
+    const Angle ori = getPlayerOrientation();
+    float dx = robotR * cos(ori.value());
+    float dy = robotR * sin(ori.value());
+
+    const Position pos = getPlayerPos();
+    return Utils::getPositionObject(pos.x()+dx, pos.y()+dy);
+}
+
 Angle Player::getPlayerOrientation() {
     RobotIdentifier robotId = Utils::getRobotIdObject(_playerID, Player::getConstants()->isTeamBlue());
     Robot robot = _worldMap->getRobot(robotId);

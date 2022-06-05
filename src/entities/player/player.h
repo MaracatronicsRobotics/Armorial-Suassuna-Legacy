@@ -45,6 +45,7 @@ public:
     bool isDribbling();
     float getPlayerRadius();
     Position getPlayerPos();
+    Position getPlayerKickerDevicePos();
     Angle getPlayerOrientation();
     AngularSpeed getPlayerAngularSpeed();
     Velocity getPlayerVelocity();
