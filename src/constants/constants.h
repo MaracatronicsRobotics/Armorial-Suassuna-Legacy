@@ -85,6 +85,9 @@ public:
     float getRobotRadius() const;
     void setRobotRadius(float value);
 
+    quint16 getKeeperID() const;
+    void setKeeperID(const quint16 &keeperID);
+
 private:
     QString _fileName;
     QFile file;
@@ -105,6 +108,7 @@ private:
     FieldSide _teamSide;
     int _qtdPlayers;
     float _timeToSendPacketZero;
+    quint16 _keeperID;
 
     // Foul/Referee-related constants
     float _minDistToConsiderBallMovement;
