@@ -310,49 +310,6 @@ float Locations::fieldGoalDepth() {
     return fGoalDepth;
 }
 
-bool Locations::isInsideOurField(const Position &target) {
-    return ((ourSide().isRight() && target.x()>=0) || (ourSide().isLeft() && target.x()<=0));
-}
-
-bool Locations::isInsideTheirField(const Position &target) {
-    return (isInsideOurField(target)==false);
-}
-
-bool Locations::isInsideOurArea(const Position &pos, float factor) {
-    Position ourGoalTopLeftPosition = Utils::getPositionObject(
-        ourGoal().x() + (ourSide().isLeft() ? 0.0 : -fieldDefenseWidth()),
-        ourGoal().y() + fieldDefenseWidth()
-    );
-    Position ourGoalRightBottomPosition = Utils::getPositionObject(
-        ourGoal().x() + (ourSide().isLeft() ? fieldDefenseWidth() : 0.0),
-        ourGoal().y() - fieldDefenseWidth()
-    );
-
-    return _isInsideArea(pos, factor, ourGoalTopLeftPosition, ourGoalRightBottomPosition);
-}
-
-bool Locations::isInsideTheirArea(const Position &pos, float factor) {
-    Position ourGoalTopLeftPosition = Utils::getPositionObject(
-        theirGoal().x() + (theirSide().isLeft() ? 0.0 : -fieldDefenseWidth()),
-        theirGoal().y() + fieldDefenseWidth()
-    );
-    Position ourGoalRightBottomPosition = Utils::getPositionObject(
-        theirGoal().x() + (theirSide().isLeft() ? fieldDefenseWidth() : 0.0),
-        theirGoal().y() - fieldDefenseWidth()
-    );
-
-    return _isInsideArea(pos, factor, ourGoalTopLeftPosition, ourGoalRightBottomPosition);
-}
-
-bool Locations::_isInsideArea(const Position &pos, float factor, const Position &goalLeftPost, const Position &goalRightDeslocatedPost) {
-    // rectangle
-    return( (pos.x() <= std::max(goalLeftPost.x() * factor, goalRightDeslocatedPost.x() * factor)) && (pos.x() >= std::min(goalLeftPost.x() * factor, goalRightDeslocatedPost.x() * factor)) &&
-                (pos.y() <= std::max(goalLeftPost.y() * factor, goalRightDeslocatedPost.y() * factor)) && (pos.y() >= std::min(goalLeftPost.y() * factor, goalRightDeslocatedPost.y() * factor)) );
-
-    return false;
-}
-
-
 Constants* Locations::getConstants() {
     if(_constants == nullptr) {
         std::cout << Text::red("[ERROR] ", true) << Text::bold("Constants with nullptr value at Locations") + '\n';

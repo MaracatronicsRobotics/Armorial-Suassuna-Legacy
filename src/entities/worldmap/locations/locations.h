@@ -66,10 +66,6 @@ public:
     Position ourGoalLeftPost();
     Position ourPenaltyMark();
 
-    // Our checking functions
-    bool isInsideOurField(const Position &target);
-    bool isInsideOurArea(const Position &¨target, float factor);
-
     // Their
     Position theirFieldTopCorner();
     Position theirFieldBottomCorner();
@@ -77,10 +73,6 @@ public:
     Position theirGoalRightPost();
     Position theirGoalLeftPost();
     Position theirPenaltyMark();
-
-    // Their checking functions
-    bool isInsideTheirField(const Position &target);
-    bool isInsideTheirArea(const Position &target, float factor);
 
     // Update geometry
     void updateFieldData(Field field);
@@ -109,9 +101,6 @@ private:
     float _goalLength;
     float _goalWidth;
     float _goalDepth;
-
-    // General checking functions
-    bool _isInsideArea(const Position &pos, float factor, const Position &goalLeftPost, const Position &goalRightDeslocatedPost);
 
     // Mutex for data management
     QReadWriteLock _mutex;
