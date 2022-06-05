@@ -18,7 +18,8 @@
 
     "minDistToConsiderBallMovement": 10.0,
 
-    "robotRadius": 0.09
+    "robotRadius": 0.09,
+    "ballRadius": 0.0215
 }
 
     

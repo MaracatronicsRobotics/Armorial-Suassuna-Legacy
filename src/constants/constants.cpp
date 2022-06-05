@@ -71,6 +71,9 @@ Constants::Constants(QString fileName) {
     _robotRadius = docMap["robotRadius"].toFloat();
     std::cout << Text::bold("Robot radius: ") + Text::green(std::to_string(_robotRadius), true) << std::endl;
 
+    _ballRadius = docMap["ballRadius"].toFloat();
+    std::cout << Text::bold("Ball radius: ") + Text::green(std::to_string(_ballRadius), true) << std::endl;
+
     _keeperID = quint16(docMap["keeperID"].toInt());
     std::cout << Text::bold("Keeper ID: ") + Text::green(std::to_string(_keeperID), true) << std::endl;
 }
@@ -211,4 +214,14 @@ quint16 Constants::getKeeperID() const
 void Constants::setKeeperID(const quint16 &keeperID)
 {
     _keeperID = keeperID;
+}
+
+float Constants::getBallRadius() const
+{
+    return _ballRadius;
+}
+
+void Constants::setBallRadius(float ballRadius)
+{
+    _ballRadius = ballRadius;
 }
