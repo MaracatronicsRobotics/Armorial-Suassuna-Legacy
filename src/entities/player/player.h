@@ -55,6 +55,7 @@ public:
 
     // Player Aux methods
     float getPlayerAngleTo(Position targetPos);
+    float getPlayerOrientationTo(Position targetPos, Position referencePos = Position(Utils::getPositionObject(0.0f, 0.0f, 0.0f, true)));
     float getRotationAngleTo(Position targetPos, Position referencePos);
     float getPlayerDistanceTo(Position targetPos);
     bool hasBallPossession();
