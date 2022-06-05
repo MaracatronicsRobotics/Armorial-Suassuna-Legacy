@@ -70,6 +70,9 @@ Constants::Constants(QString fileName) {
 
     _robotRadius = docMap["robotRadius"].toFloat();
     std::cout << Text::bold("Robot radius: ") + Text::green(std::to_string(_robotRadius), true) << std::endl;
+
+    _keeperID = quint16(docMap["keeperID"].toInt());
+    std::cout << Text::bold("Keeper ID: ") + Text::green(std::to_string(_keeperID), true) << std::endl;
 }
 
 bool Constants::isTeamBlue() {
@@ -198,4 +201,14 @@ float Constants::getRobotRadius() const
 void Constants::setRobotRadius(float value)
 {
     _robotRadius = value;
+}
+
+quint16 Constants::getKeeperID() const
+{
+    return _keeperID;
+}
+
+void Constants::setKeeperID(const quint16 &keeperID)
+{
+    _keeperID = keeperID;
 }
