@@ -70,6 +70,8 @@ public:
 
     static float distance(const Position &a, const Position &b);
 
+    static float velocityABS(Velocity &vel);
+
     static bool isPointAtLine(const Position &s1, const Position &s2, const Position &point);
     static bool isPointAtSegment(const Position &s1, const Position &s2, const Position &point);
     static Position projectPointAtLine(const Position &s1, const Position &s2, const Position &point);

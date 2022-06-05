@@ -272,6 +272,10 @@ float Utils::distance(const Position &a, const Position &b) {
     return sqrt(pow(a.x()-b.x(),2) + pow(a.y()-b.y(),2));
 }
 
+float Utils::velocityABS(Velocity &vel){
+    return sqrt(pow(vel.vx(), 2) + pow(vel.vy(), 2));
+}
+
 bool Utils::isPointAtLine(const Position &s1, const Position &s2, const Position &point) {
     const Position projectedPoint = Utils::projectPointAtLine(s1, s2, point);
     const float dist = Utils::distance(point, projectedPoint);
