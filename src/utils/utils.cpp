@@ -520,6 +520,33 @@ bool Utils::isInsideField(const Position &pos, float factor) {
 bool Utils::isInsideField(const Position &pos, float dx, float dy) {
     return (!isOutsideField(pos, dx, dy));
 }
+
+QList<Robot> Utils::getAdversariesInRadius(const Position &center, float radius){
+
+    // List of adversaries inside the radius, containing their ids and position
+    QList<Robot> adversariesInsideRadiusList;
+
+    Color theirColor;
+    theirColor.set_isblue(getConstants()->isTeamBlue() == false);
+
+    // List of all adversaries
+    QList<Robot> allAdversariesList = getWorldMap()->getRobots(theirColor);
+
+    for (Robot adversary : allAdversariesList){
+        // Distance between the adversary and the center
+        Position adversaryPosition = adversary.robotposition();
+        float distanceEnemyCenter = Utils::distance(adversaryPosition, center);
+
+        if (distanceEnemyCenter <= radius){
+            // If the enemy is inside radius, put it in the enemies inside radius list
+            adversariesInsideRadiusList.push_back(adversary);
+        }
+    }
+
+    return adversariesInsideRadiusList;
+
+}
+
 bool Utils::_isInsideArea(const Position &pos, float factor, const Position &goalLeftPost, const Position &goalRightDeslocatedPost) {
     // rectangle
     double min_x = std::min(goalLeftPost.x(), goalRightDeslocatedPost.x());
