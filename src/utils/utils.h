@@ -109,6 +109,8 @@ public:
     static bool isInsideField(const Position &pos, float factor = 1.0);
     static bool isInsideField(const Position &pos, float dx, float dy);
 
+    QList<Robot> getAdversariesInRadius(const Position &center, float radius);
+
 private:
     static Constants* _constants;
     static WorldMap* _worldMap;
