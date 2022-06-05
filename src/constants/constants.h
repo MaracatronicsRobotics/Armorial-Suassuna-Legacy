@@ -88,6 +88,9 @@ public:
     quint16 getKeeperID() const;
     void setKeeperID(const quint16 &keeperID);
 
+    float getBallRadius() const;
+    void setBallRadius(float ballRadius);
+
 private:
     QString _fileName;
     QFile file;
@@ -115,6 +118,8 @@ private:
 
     // Robot dimensions
     float _robotRadius;
+
+    float _ballRadius;
 };
 
 #endif // CONSTANTS_H
