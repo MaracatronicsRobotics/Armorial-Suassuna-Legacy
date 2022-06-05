@@ -544,7 +544,6 @@ QList<Robot> Utils::getAdversariesInRadius(const Position &center, float radius)
     }
 
     return adversariesInsideRadiusList;
-
 }
 
 bool Utils::_isInsideArea(const Position &pos, float factor, const Position &goalLeftPost, const Position &goalRightDeslocatedPost) {
