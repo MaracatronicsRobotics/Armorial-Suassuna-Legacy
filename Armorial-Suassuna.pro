@@ -76,6 +76,7 @@ SOURCES += \
     proto/visionservice.pb.cc \
     src/constants/constants.cpp \
     src/entities/entity.cpp \
+    src/entities/player/behaviour/ballplacement/ballplacement.cpp \
     src/entities/player/behaviour/behaviour.cpp \
     src/entities/player/behaviour/gotolookto/gotolookto.cpp \
     src/entities/player/behaviour/interceptball/interceptball.cpp \
@@ -144,6 +145,7 @@ HEADERS += \
     src/constants/constants.h \
     src/entities/baseCoach.h \
     src/entities/entity.h \
+    src/entities/player/behaviour/ballplacement/ballplacement.h \
     src/entities/player/behaviour/behaviour.h \
     src/entities/player/behaviour/behaviours.h \
     src/entities/player/behaviour/gotolookto/gotolookto.h \
