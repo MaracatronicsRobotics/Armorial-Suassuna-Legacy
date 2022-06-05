@@ -78,6 +78,7 @@ SOURCES += \
     src/entities/entity.cpp \
     src/entities/player/behaviour/behaviour.cpp \
     src/entities/player/behaviour/gotolookto/gotolookto.cpp \
+    src/entities/player/behaviour/interceptball/interceptball.cpp \
     src/entities/player/behaviour/pushball/pushball.cpp \
     src/entities/player/role/role_default/role_default.cpp \
     src/entities/referee/ballplay/ballplay.cpp \
@@ -146,6 +147,7 @@ HEADERS += \
     src/entities/player/behaviour/behaviour.h \
     src/entities/player/behaviour/behaviours.h \
     src/entities/player/behaviour/gotolookto/gotolookto.h \
+    src/entities/player/behaviour/interceptball/interceptball.h \
     src/entities/player/behaviour/pushball/pushball.h \
     src/entities/player/role/role_default/role_default.h \
     src/entities/player/skill/skills.h \
