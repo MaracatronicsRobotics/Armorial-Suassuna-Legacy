@@ -131,6 +131,23 @@ float Player::getPlayerAngleTo(Position targetPos) {
     return atan2(targetPos.y() - Player::getPlayerPos().y(), targetPos.x() - Player::getPlayerPos().x());
 }
 
+float Player::getPlayerOrientationTo(Position targetPosition, Position referencePosition) {
+    // If no reference position is defined, use the player position
+    if(referencePosition.isinvalid()) {
+        referencePosition = getPlayerPos();
+    }
+
+    float angleRobotToObjective = getRotationAngleTo(targetPosition, referencePosition);
+    float ori = getPlayerOrientation().value();
+
+    if(ori > M_PI) ori -= 2 * M_PI;
+    if(ori < -M_PI) ori += 2 * M_PI;
+
+    float angleRobotToTarget = ori + angleRobotToObjective;
+
+    return angleRobotToTarget;
+}
+
 float Player::getRotationAngleTo(Position targetPos, Position referencePos) {
     float componentX = (targetPos.x() - referencePos.x());
     float componentY = (targetPos.y() - referencePos.y());
