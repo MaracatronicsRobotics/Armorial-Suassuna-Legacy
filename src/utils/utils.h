@@ -67,6 +67,7 @@ public:
 
     //algebric methods
     static Position threePoints(const Position &near, const Position &far, float distance, float beta, bool isInDegrees = false);
+    static Position repulsedPosition(const Position &repulserPosition, float distance, float robotOrientationToRepulser);
 
     static float distance(const Position &a, const Position &b);
 
