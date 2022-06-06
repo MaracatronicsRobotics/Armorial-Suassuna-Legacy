@@ -54,7 +54,7 @@ void Suassuna::start(bool useGui) {
     _playerList.push_back(player0);
     _world->addEntity(player0, 0);
     Player *player1 = new Player(1, _worldMap, _referee, getConstants());
-    player1->setRole(role_default);
+    //player1->setRole(role_default);
     _playerList.push_back(player1);
     _world->addEntity(player1, 0);
     Player *player2 = new Player(2, _worldMap, _referee, getConstants());
