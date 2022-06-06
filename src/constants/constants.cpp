@@ -284,3 +284,35 @@ void Constants::setBallRadius(float ballRadius)
 float Constants::maxKickPower(){
     return _maxKickPower;
 }
+
+float Constants::maxChipKickPower() {
+    return _maxChipKickPower;
+}
+
+float Constants::maxRobotLinearSpeed() {
+    return _maxRobotLinearSpeed;
+}
+
+float Constants::maxRobotAngularSpeed() {
+    return _maxRobotAngularSpeed;
+}
+
+float Constants::playerChipKickAngle() {
+    return _playerChipKickAngle;
+}
+
+QList<float> Constants::playerLinearPID() {
+    return _playerLinearPID;
+}
+
+QList<float> Constants::playerAngularPID() {
+    return _playerAngularPID;
+}
+
+QList<float> Constants::keeperLinearPID() {
+    return _keeperLinearPID;
+}
+
+QList<float> Constants::keeperAngularPID() {
+    return _keeperAngularPID;
+}
