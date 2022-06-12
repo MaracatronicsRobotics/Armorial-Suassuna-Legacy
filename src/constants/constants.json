@@ -9,6 +9,9 @@
     
     "RefereeAddress": "224.5.23.1",
     "RefereePort": "10003",
+
+    "ballRadius": 0.0215,
+    "robotRadius": 0.09,
     
     "teamColor": "yellow",
     "teamSide": "right",

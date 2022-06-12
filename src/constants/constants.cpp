@@ -153,6 +153,22 @@ QString Constants::getTeamColor() const {
 
 void Constants::setTeamColor(const QString &teamColor) {
     _teamColor = teamColor;
+    if (teamColor == "blue") {
+        _color = Utils::getColorObject(true);
+    }
+    _color = Utils::getColorObject(false);
+}
+
+Color Constants::teamColor() {
+    return _color;
+}
+
+float Constants::getRobotRadius() {
+    return _robotRadius;
+}
+
+float Constants::getBallRadius() {
+    return _ballRadius;
 }
 
 FieldSide Constants::getTeamSide() {

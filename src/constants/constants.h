@@ -28,6 +28,7 @@
 
 #include <src/utils/types/fieldside/fieldside.h>
 #include <proto/messages.pb.h>
+#include <src/utils/utils.h>
 
 #define ROBOT_INVALID_ID 200
 #define YELLOW_ID 0
@@ -44,6 +45,9 @@ public:
     bool isTeamYellow();
     QString getTeamColor() const;
     void setTeamColor(const QString &teamColor);
+    Color teamColor();
+    float getRobotRadius();
+    float getBallRadius();
 
     FieldSide getTeamSide();
     FieldSide getOppositeSide();
@@ -118,8 +122,11 @@ private:
 
     // Team Constants
     QString _teamColor;
+    Color _color;
     FieldSide _teamSide;
     int _qtdPlayers;
+    float _robotRadius;
+    float _ballRadius;
     float _timeToSendPacketZero;
     quint16 _keeperID;
     float _maxKickPower;
