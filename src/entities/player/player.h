@@ -60,7 +60,7 @@ public:
     float getPlayerDistanceTo(Position targetPos);
     bool hasBallPossession();
     bool isLookingTo(Position targetPos);
-    bool isSufficientlyAlignedTo(Position targetPos, Position referencePos);
+    bool isSufficientlyAlignedTo(Position targetPos, Position referencePos = INVALID_POSITION);
 
     // Player Error
     float getLinearError();
