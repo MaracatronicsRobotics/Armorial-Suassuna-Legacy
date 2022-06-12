@@ -200,6 +200,12 @@ bool Player::isLookingTo(Position targetPos) {
     return (diff <= 0.1f); // Here goes Angular Error, should be set later
 }
 
+bool Player::isSufficientlyAlignedTo(Position targetPos, Position referencePos) {
+    AngularSpeed playerAS = getPlayerAngularSpeed();
+    return (fabs(getRotationAngleTo(targetPos, referencePos)) <= getAngularError()
+            && ((!playerAS.isindegrees()) ? playerAS.vw() <= 10.0f : playerAS <= Utils::degToRad(10.0f)));
+}
+
 float Player::getLinearError() {
     return 0.05f; // 5cm
 }
