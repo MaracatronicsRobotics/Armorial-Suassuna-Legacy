@@ -24,6 +24,8 @@
 #define GOALPOSTS_ERROR 0.1f
 #define INTERCEPT_MINBALLVELOCITY 0.2f
 #define RECEIVER_INVALID_ID 200
+#define INTERCEPT_MIN_SPEED 0.5f
+#define INTERCEPT_RADIUS 0.5f
 
 #define BALL_MINDIST 0.115f
 
@@ -49,85 +51,177 @@ Role_Goalkeeper::Role_Goalkeeper()
 
 void Role_Goalkeeper::initializeBehaviours() {
     addBehaviour(BEHAVIOUR_GOTOLOOKTO, _behaviour_goToLookTo = new Behaviour_GoToLookTo());
+//    addBehaviour(BEHAVIOUR_INTERCEPTBALL, _behaviour_interceptBall = new Behaviour_InterceptBall());
+//    addBehaviour(BEHAVIOUR_PUSHBALL, _behaviour_pushBall = new Behaviour_PushBall());
 }
 
 void Role_Goalkeeper::configure() {
+    _notAlreadyChosen = true;
 
+    setBehaviour(BEHAVIOUR_GOTOLOOKTO);
+    _actualState = STATE_FOLLOWBALL;
 }
 
 void Role_Goalkeeper::run() {
-    Position posBall = getWorldMap()->getBall().ballposition();
+    if (getReferee()->getGameInfo()->theirPenaltyKick()) {
+        _actualState = STATE_PENALTY;
+    }
 
-    if (getReferee()->getGameInfo()->penaltyKick()) {
-        if (getConstants() == nullptr) {
-            return;
-        }
+    Position playerPos = player()->getPlayerPos();
+    Position ballPos = getWorldMap()->getBall().ballposition();
+    FieldSide teamSide = getConstants()->getTeamSide();
 
-        Position aim = getLocations()->theirGoal();
-        float powerKick = getConstants()->maxKickPower();
+    switch (_actualState) {
+    case STATE_FOLLOWBALL: {
+        // Keeps following y of the ball, with x fixed.
+        float fixedPosition = 4.3f;
 
-//        _behaviour_interceptBall->setInterceptAdvance(false);
-//        _behaviour_interceptBall->setPositionToLook(posBall);
-//        _behaviour_interceptBall->setSpeedFactor(4.0f);
+        float yRightPost = getLocations()->ourGoalRightPost().y();
+        float yLeftPost = getLocations()->ourGoalLeftPost().y();
 
-        Position desiredPosition = getAttackerInterceptPosition();
+        // Sidestep will only be turned on if the ball is dangerously close to the goal
+        bool sideStep = false;
 
-        if(getLocations()->ourSide().isRight() && desiredPosition.x() > getLocations()->ourGoal().x() - GOALPOSTS_ERROR) {
-            desiredPosition.set_x(getLocations()->ourGoal().x()-GOALPOSTS_ERROR);
-        } else if(getLocations()->ourSide().isLeft() && desiredPosition.x() < getLocations()->ourGoal().x() + GOALPOSTS_ERROR) {
-            desiredPosition.set_x(getLocations()->ourGoal().x()+GOALPOSTS_ERROR);
-        }
+        FieldSide teamSide = getConstants()->getTeamSide();
+        if (teamSide.isLeft()) {
+            fixedPosition = fixedPosition * -1;
+            if (ballPos.x() < fixedPosition) {
+                fixedPosition = ballPos.x();
+            }
 
-        _behaviour_goToLookTo->setPositionToGo(desiredPosition);
-        _behaviour_goToLookTo->setPositionToLook(posBall);
+            // Swap values because of perspective
+            float aux = yRightPost;
+            yRightPost = yLeftPost;
+            yLeftPost = aux;
 
-    } else {
-        Position desiredPosition = getAttackerInterceptPosition();
-
-        if(getLocations()->ourSide().isRight() && desiredPosition.x() > getLocations()->ourGoal().x() - GOALPOSTS_ERROR) {
-            desiredPosition.set_x(getLocations()->ourGoal().x()-GOALPOSTS_ERROR);
-        } else if(getLocations()->ourSide().isLeft() && desiredPosition.x() < getLocations()->ourGoal().x() + GOALPOSTS_ERROR) {
-            desiredPosition.set_x(getLocations()->ourGoal().x()+GOALPOSTS_ERROR);
-        }
-
-        _behaviour_goToLookTo->setPositionToGo(desiredPosition);
-        _behaviour_goToLookTo->setPositionToLook(posBall);
-
-        // Kick Param
-        float ballVel = Utils::getVelocityAbs(getWorldMap()->getBall().ballvelocity());
-        if (!player()->hasBallPossession() && ballVel >= 0.2f) {
-            _notAlreadyChosen = true;
-        }
-
-        // Machine if state begins for transitionsss
-        // I really didn't understand the meaning of the previous sentence
-        if (isBallComingToGoal(INTERCEPT_MINBALLVELOCITY, 1.1f) && !player()->hasBallPossession()) {
-            setBehaviour(BEHAVIOUR_INTERCEPTBALL);
-        } else if(_takeoutEnabled) {
-            float kickPower;
-            Position aim;
-            Position posBall = getWorldMap()->getBall().ballposition();
-            bool condition = Utils::isInsideOurArea(posBall, _takeoutFactor);
-            if (condition) {
-                int bestAttacker = getBestAttacker();
-                if (bestAttacker != RECEIVER_INVALID_ID) {
-                    // Not sure if it's the right approach
-                    Player *p = new Player(bestAttacker, getWorldMap(), getReferee(), getConstants());
-                    Position bestAttackerPos = p->getPlayerPos();
-                    QList<int> shootList = {player()->getPlayerID(), bestAttacker};
-                    aim = bestAttackerPos;
-                    kickPower = fminf(getConstants()->maxKickPower(), 0.75f * sqrt((player()->getPlayerDistanceTo(bestAttackerPos) * 9.8f) / sin(2 * qDegreesToRadians(65.0))));
-                } else {
-                    aim = getLocations()->theirGoal();
-                    kickPower = getConstants()->maxKickPower();
-                }
-                push(aim, true, true, true, kickPower);
-            } else {
-                setBehaviour(BEHAVIOUR_GOTOLOOKTO);
+            if (ballPos.x() < 2.0f) {
+                sideStep = true;
             }
         } else {
-            setBehaviour(BEHAVIOUR_GOTOLOOKTO);
+            if (ballPos.x() > fixedPosition) {
+                fixedPosition = ballPos.x();
+            }
+            if (ballPos.x() > 2.0f) {
+                sideStep = true;
+            }
         }
+
+        yRightPost += 0.07f;
+        yLeftPost -= 0.07f;
+
+        float yPos = ballPos.y();
+        if (sideStep) {
+            // GK Sidestep
+            float sideStepLength = getConstants()->getRobotRadius() / 1.5f;
+            int maxSideStepCounter = 100;
+            int halfMaxSideStepCounter = maxSideStepCounter / 2;
+
+            bool sideSelector;
+
+            // If the counter is less than five, sidesteps to one side, if not, sidesteps to the other side
+            if (_sideStepCounter < halfMaxSideStepCounter) {
+                sideSelector = true;
+            } else {
+                sideSelector = false;
+            }
+
+            if (sideSelector) {
+                sideStepLength *= -1;
+            }
+
+            yPos += sideStepLength;
+
+            _sideStepCounter++;
+
+            if (_sideStepCounter > maxSideStepCounter) {
+                _sideStepCounter = 0;
+            }
+        }
+
+        // Ensure GK not leaving the goal area
+        if (yPos < yRightPost) {
+            yPos = yRightPost;
+        }
+        if (yPos > yLeftPost) {
+            yPos = yLeftPost;
+        }
+
+        Position positionToGo = Utils::getPositionObject(fixedPosition, yPos);
+
+        _behaviour_goToLookTo->setPositionToGo(positionToGo);
+        _behaviour_goToLookTo->setPositionToLook(ballPos);
+        _behaviour_goToLookTo->setReferencePosition(playerPos);
+//                _behaviour_goToLookTo->setAvoidBall(false);
+
+        setBehaviour(BEHAVIOUR_GOTOLOOKTO);
+
+        // If the ball is comming to goal
+        float minVelocity = 0.5f; // Dangerous ball velocity if comming to goal
+
+        // If GK has ball possession or it is inside our area, go to take it out
+        if (player()->hasBallPossession() || Utils::isInsideOurArea(ballPos)) {
+            _actualState = STATE_TAKEOUT;
+        }
+
+        if (isBallComingToGoal(minVelocity, 0.2f)) {
+            _actualState = STATE_INTERCEPT;
+        }
+    } break;
+    case STATE_INTERCEPT: {
+        if (!isBallComingToGoal(INTERCEPT_MIN_SPEED)) {
+            // If ball not comming to our goal but inside our area, take it out
+            // Otherwise not inside area, just follow it
+            if (Utils::isInsideOurArea(ballPos)) {
+                _actualState = STATE_TAKEOUT;
+            } else {
+                _actualState = STATE_FOLLOWBALL;
+            }
+        }
+
+        // Setup InterceptBall
+        // Makes GK look straight ahead, minimizing chances of ball ricocheting to goal
+        float xLook;
+
+        if (teamSide.isLeft()) {
+            xLook = playerPos.x() + 1.0f;
+        } else {
+            xLook = playerPos.x() - 1.0f;
+        }
+
+        Position positionToLook = Utils::getPositionObject(xLook, playerPos.y());
+
+//        _behaviour_interceptBall->setPosToLook(positionToLook);
+//        _behaviour_interceptBall->setSpeedFactor(2.5f);
+        setBehaviour(BEHAVIOUR_INTERCEPTBALL);
+    } break;
+    case STATE_TAKEOUT: {
+        if (!Utils::isInsideOurArea(ballPos)) {
+            _actualState = STATE_FOLLOWBALL;
+        }
+
+        if (!player()->hasBallPossession()) {
+            _behaviour_goToLookTo->setPositionToGo(ballPos);
+            _behaviour_goToLookTo->setPositionToLook(ballPos);
+            _behaviour_goToLookTo->setReferencePosition(playerPos);
+
+            setBehaviour(BEHAVIOUR_GOTOLOOKTO);
+        } else {
+            Position fieldCenter = getLocations()->fieldCenter();
+
+            _behaviour_goToLookTo->setPositionToGo(playerPos);
+            _behaviour_goToLookTo->setPositionToLook(fieldCenter);
+            _behaviour_goToLookTo->setReferencePosition(playerPos);
+
+            if (player()->isSufficientlyAlignedTo(fieldCenter)) {
+                player()->playerKick(getConstants()->maxChipKickPower(), true);
+            }
+        }
+        player()->playerDribble(true);
+
+    } break;
+    case STATE_PENALTY: {
+        _actualState = STATE_FOLLOWBALL;
+    } break;
     }
 }
 
@@ -193,7 +287,7 @@ Position Role_Goalkeeper::ballProjection() {
     QList<int>::iterator it;
     QList<int> avPlayers;
 
-    Color teamColor = Utils::getColorObject(getConstants()->isTeamBlue());
+    Color teamColor = getConstants()->teamColor();
     avPlayers = getWorldMap()->getRobotsIDs(teamColor);
 
     for (it = avPlayers.begin(); it != avPlayers.end(); it++) {
@@ -373,11 +467,11 @@ int Role_Goalkeeper::getBestAttacker() {
         QList<int> opPlayers;
 
         if (getConstants()->isTeamBlue()) {
-            //attackers = getListOfPlayers(teamBlue)
-            //opPlayers = getListOfPlayers(teamYellow)
+            attackers = getWorldMap()->getRobotsIDs(Utils::getColorObject(getConstants()->isTeamBlue()));
+            opPlayers = getWorldMap()->getRobotsIDs(Utils::getColorObject(getConstants()->isTeamYellow()));
         } else {
-            //attackers = getListOfPlayers(teamYellow)
-            //opPlayers = getListOfPlayers(teamBlue)
+            attackers = getWorldMap()->getRobotsIDs(Utils::getColorObject(getConstants()->isTeamYellow()));
+            opPlayers = getWorldMap()->getRobotsIDs(Utils::getColorObject(getConstants()->isTeamBlue()));
         }
 
         float menDist = 0;
