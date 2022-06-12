@@ -442,6 +442,14 @@ void Utils::angleLimitZeroTwoPi(float *angle) {
     }
 }
 
+float Utils::degToRad(float angleInDeg) {
+    return (angleInDeg*toRad);
+}
+
+float Utils::radToDeg(float angleInRad) {
+    return (angleInRad*toDeg);
+}
+
 Position Utils::vectorSum(const Position &v1, const Position &v2, float m) {
     return getPositionObject(v1.x() + m * v2.x(), v1.y() + m * v2.y(), 0.0f, false);
 }
