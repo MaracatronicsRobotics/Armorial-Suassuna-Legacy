@@ -85,6 +85,40 @@ QList<int> WorldMap::getRobotsIDs(Color color) {
     return listIDs;
 }
 
+Player* WorldMap::getPlayerPointer(int playerID) {
+    if (!_playerPointers.contains(playerID)) {
+        spdlog::error(Text::red("[ERROR] ", true) + Text::bold(QString("WorldMap::getPlayerPointer(" + std::to_string(playerID) + "), playerID " + std::to_string(playerID) + " does not exists.\n").toStdString()));
+        return nullptr;
+    }
+
+    return _playerPointers.value(playerID);
+}
+
+Player WorldMap::getPlayer(Color color, int playerID) {
+    _mutex.lockForRead();
+
+    if (!_playerObjects.contains(color)) {
+        QString colorName = color.isblue() ? "Blue" : "Yellow";
+        spdlog::error(Text::red("[ERROR] ", true) + Text::bold(QString("WorldMap::getPlayer(" + colorName+ std::to_string(playerID) + "), Color " + colorName + " does not exists.\n").toStdString()));
+        _mutex.unlock();
+        return Player();
+    }
+
+    QMap<int, Player> *requiredTeam = _playerObjects.value(color);
+
+    if (!requiredTeam->contains(playerID)) {
+        spdlog::error(Text::red("[ERROR] ", true) + Text::bold(QString("WorldMap::getPlayer(" + colorName+ std::to_string(playerID) + "), PlayerID " + std::to_string(playerID) + " does not exists.\n").toStdString()));
+        _mutex.unlock();
+        return Player();
+    }
+
+    Player requiredPlayer = requiredTeam.value(playerID);
+
+    _mutex.unlock();
+
+    return requiredPlayer;
+}
+
 Field WorldMap::getField() {
     // Lock mutex for read and take the field var
     _mutex.lockForRead();

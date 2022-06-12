@@ -28,6 +28,7 @@
 #include <src/entities/entity.h>
 #include <src/services/coach/coachservice.h>
 #include <src/entities/worldmap/locations/locations.h>
+#include <src/entities/player/player.h>
 
 class WorldMap : public Entity
 {
@@ -41,6 +42,8 @@ public:
     Robot getRobot(RobotIdentifier identifier);
     QList<Robot> getRobots(Color color);
     QList<int> getRobotsIDs(Color color);
+    Player* getPlayerPointer(int playerID);
+    Player getPlayer(Color color, int playerID);
     Field getField();
     Ball getBall();
 
@@ -69,6 +72,10 @@ private:
     // Constants
     Constants *_constants;
     Constants* getConstants();
+
+    // Players
+    QMap<int, Player*> _playerPointers;
+    QMap<Color, QMap<int, Player>*> _playerObjects;
 };
 
 #endif // WORLDMAP_H
