@@ -70,16 +70,27 @@ private:
     // Behaviours
     enum {
         BEHAVIOUR_GOTOLOOKTO,
-        BEHAVIOUR_INTERCEPTBALL
+        BEHAVIOUR_INTERCEPTBALL,
+        BEHAVIOUR_PUSHBALL
     };
 
     Behaviour_GoToLookTo *_behaviour_goToLookTo;
     // Behaviour_InterceptBall *_behaviour_interceptBall;
+    // Behaviour_PushBall *_behaviour_pushBall;
 
     // Internal
+    enum {
+        STATE_FOLLOWBALL,
+        STATE_INTERCEPT,
+        STATE_TAKEOUT,
+        STATE_PENALTY
+    };
+
+    int _actualState;
     Position _positionToGo;
     Position _positionToLook;
     bool _done;
+    int _sideStepCounter;
 };
 
 #endif // ROLE_GOALKEEPER_H
