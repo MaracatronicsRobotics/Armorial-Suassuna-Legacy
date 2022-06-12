@@ -92,6 +92,8 @@ public:
     static float angleDiff(const Angle &A, const Angle &B);
     static float angleDiff(const float A, const float B);
     static void angleLimitZeroTwoPi(float *angle);
+    static float degToRad(float angleInDeg);
+    static float radToDeg(float angleInRad);
 
     // REMINDER: vectorSum = v1 + m*v2
     static Position vectorSum(const Position &v1, const Position &v2, float m = 1);
@@ -123,6 +125,10 @@ private:
 
     static bool _isInsideArea(const Position &pos, float factor, const Position &goalLeftPost, const Position &goalRightDeslocatedPost);
     static bool _isOutsideField(const Position &pos, const float maxX, const float maxY);
+
+    // Angle Conversion constants
+    static constexpr float toRad =  0.01745329251994329577;
+    static constexpr float toDeg = 57.29577951308232087680;
 };
 
 #endif // UTILS_H
