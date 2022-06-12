@@ -34,6 +34,8 @@
 #define YELLOW_ID 0
 #define BLUE_ID 1
 
+#define INVALID_POSITION Position()
+
 using namespace Armorial;
 
 class Constants

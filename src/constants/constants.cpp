@@ -131,6 +131,12 @@ Constants::Constants(QString fileName) {
                  + Text::green(std::to_string(keeperAngularPID().at(1))) + ", "
                  + Text::green(std::to_string(keeperAngularPID().at(2)))
               << Text::bold("}") << std::endl;
+
+    // Set INVALID_POSITION
+    INVALID_POSITION.set_isinvalid(true);
+    INVALID_POSITION.set_x(0.0f);
+    INVALID_POSITION.set_y(0.0f);
+    INVALID_POSITION.set_z(0.0f);
 }
 
 bool Constants::isTeamBlue() {
