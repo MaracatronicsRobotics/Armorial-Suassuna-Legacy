@@ -69,7 +69,7 @@ void Role_Barrier::run() {
     Ball ball = getWorldMap()->getBall();
     Position ballPos = getWorldMap()->getBall().ballposition();
     Position playerPos = player()->getPlayerPos();
-    Color ourColor = getConstants()->teamColor;
+    Color ourColor = getConstants()->teamColor();
     Color theirColor = Utils::getColorObject(!ourColor.isblue());
     QList<int> ourTeamPlayers = getWorldMap()->getRobotsIDs(ourColor);
     QList<int> theirTeamPlayers = getWorldMap()->getRobotsIDs(theirColor);
@@ -78,6 +78,7 @@ void Role_Barrier::run() {
         _notAlreadyChosen = true;
     }
 
+    // Improvement: This ball possesion check to be in a Higher Control Level, and available to every Role
     bool weHaveTheBall = false;
     for (auto p : ourTeamPlayers) {
         Player *currentPlayer = new Player(p, getWorldMap(), getReferee(), getConstants());
@@ -87,21 +88,17 @@ void Role_Barrier::run() {
     }
 
     bool theyHaveTheBall = false;
-    bool theyAreInTheirField = true;
     bool iAmNearer = false;
     float nearestOpponentDist = 1000.0f;
-    int nearestOpponent;
     if (!weHaveTheBall) {
+        Position advPos;
         for (auto p: theirTeamPlayers) {
-            if(Utils::distance(getWorldMap()->getPlayer(theirColor,p).getPosition(),ballPos) <= ROBOT_RADIUS){
+            advPos = getWorldMap()->getRobot(theirColor, p).robotposition();
+            if(Utils::distance(advPos, ballPos) <= ROBOT_RADIUS){
                 theyHaveTheBall = true;
             }
-            if (!loc()->isInsideTheirField(getWorldMap()->getPlayer(theirColor,p).getPosition())) {
-                theyAreInTheirField = false;
-            }
-            if (Utils::distance(getWorldMap()->getPlayer(theirColor, p).getPlayerPos(), ballPos) < nearestOpponentDist) {
-                nearestOpponentDist = Utils::distance(getWorldMap()->getPlayer(theirColor, p).getPlayerPos(), ballPos);
-                nearestOpponent = p;
+            if (Utils::distance(advPos, ballPos) < nearestOpponentDist) {
+                nearestOpponentDist = Utils::distance(advPos, ballPos);
                 iAmNearer = Utils::distance(playerPos, ballPos) < nearestOpponentDist;
             }
         }
@@ -163,7 +160,7 @@ void Role_Barrier::run() {
 
                 if(bestAttacker != RECEIVER_INVALID_ID){
                     //Aqui tem algum aliado sem marcacao
-                    Position bestAttackerPos = getWorldMap()->getPlayer(ourColor, bestAttacker).getPlayerPos();
+                    Position bestAttackerPos = getWorldMap()->getRobot(ourColor, bestAttacker).robotposition();
                     _desiredPosition = bestAttackerPos;
                 } else {
                     _desiredPosition = getLocations()->theirGoal();
@@ -180,7 +177,7 @@ void Role_Barrier::run() {
                     _behaviour_goToLookTo->setPositionToLook(_desiredPosition);
                     _behaviour_goToLookTo->setReferencePosition(playerPos);
 
-                    if (player()->isSufficientlyAlignedTo(fieldCenter)) {
+                    if (player()->isSufficientlyAlignedTo(getLocations()->fieldCenter())) {
                         player()->playerKick(getConstants()->maxChipKickPower(), true);
                     }
                 }
@@ -208,7 +205,104 @@ void Role_Barrier::run() {
         _behaviour_goToLookTo->setPositionToGo(_desiredPosition);
         _behaviour_goToLookTo->setPositionToLook(ballPos);
         _behaviour_goToLookTo->setReferencePosition(playerPos);
-        setBehavior(BEHAVIOUR_GOTOLOOKTO);
+        setBehaviour(BEHAVIOUR_GOTOLOOKTO);
     } break;
     }
+}
+
+int Role_Barrier::getBestAttacker() {
+    if (!_notAlreadyChosen) {
+        return _bestAttacker;
+    } else {
+        int bestID = RECEIVER_INVALID_ID;
+        QList<int> attackers;
+        QList<int> opPlayers;
+
+        if (getConstants()->isTeamBlue()) {
+            attackers = getWorldMap()->getRobotsIDs(Utils::getColorObject(getConstants()->isTeamBlue()));
+            opPlayers = getWorldMap()->getRobotsIDs(Utils::getColorObject(getConstants()->isTeamYellow()));
+        } else {
+            attackers = getWorldMap()->getRobotsIDs(Utils::getColorObject(getConstants()->isTeamYellow()));
+            opPlayers = getWorldMap()->getRobotsIDs(Utils::getColorObject(getConstants()->isTeamBlue()));
+        }
+
+        float menDist = 0;
+        for (int i = 0; i < attackers.size(); i++) {
+            // Not sure if it's the best approach. Should we clean these pointers?
+            Player *p = new Player(attackers.at(i), getWorldMap(), getReferee(), getConstants());
+            Position playerPos = (*p).getPlayerPos();
+            if (Utils::distance(playerPos, getLocations()->ourGoal()) > 2.0
+                    && (*p).getPlayerID() != player()->getPlayerID()) {
+
+                Position recPos = (*p).getPlayerPos();
+                float menDistPlayer = 1000;
+                for (int j = 0; j < opPlayers.size(); j++) {
+                    Player *opPlayer = new Player(opPlayers.at(j), getWorldMap(), getReferee(), getConstants());
+                    if ((*opPlayer).isEnabled()) {
+                        Position opPos = (*opPlayer).getPlayerPos();
+                        float distPlayer = Utils::distance(recPos, opPos);
+                        if (distPlayer < menDistPlayer) {
+                            menDistPlayer = distPlayer;
+                        }
+                    }
+                }
+                if (menDistPlayer > menDist) {
+                    menDist = menDistPlayer;
+                    bestID = attackers.at(i);
+                }
+            }
+        }
+        _notAlreadyChosen = false;
+        _bestAttacker = bestID;
+
+        return bestID;
+    }
+}
+
+bool Role_Barrier::isBallComingToGoal(float minSpeed, float postsFactor) {
+    const Position posBall = getWorldMap()->getBall().ballposition();
+    const Position posRightPost = Utils::getPositionObject(getLocations()->ourGoalRightPost().x(), getLocations()->ourGoalRightPost().y()*postsFactor);
+    const Position posLeftPost = Utils::getPositionObject(getLocations()->ourGoalLeftPost().x(), getLocations()->ourGoalLeftPost().y()*postsFactor);
+
+    float velBall = Utils::getVelocityAbs(getWorldMap()->getBall().ballvelocity());
+    if (velBall < minSpeed) {
+        return false;
+    }
+    float angVel = Utils::getVelocityArg(getWorldMap()->getBall().ballvelocity());
+    float angRightPost = Utils::getAngle(posBall, posRightPost);
+    float angLeftPost = Utils::getAngle(posBall, posLeftPost);
+    float angDiffPosts = fabs(Utils::angleDiff(angRightPost, angLeftPost));
+
+    float angDiffRight = fabs(Utils::angleDiff(angVel, angRightPost));
+    float angDiffLeft = fabs(Utils::angleDiff(angVel, angLeftPost));
+
+    return (angDiffRight < angDiffPosts && angDiffLeft < angDiffPosts);
+}
+
+bool Role_Barrier::isBehindBall(Position posObjective) {
+    Position posBall = getWorldMap()->getBall().ballposition();
+    Position posPlayer = player()->getPlayerPos();
+    float anglePlayer = Utils::getAngle(posBall, posPlayer);
+    float angleDest = Utils::getAngle(posBall, posObjective);
+    float diff = Utils::angleDiff(anglePlayer, angleDest);
+
+    return (diff > M_PI / 1.5f);
+}
+
+bool Role_Barrier::isBallComing(float minSpeed, float radius) {
+    Ball ball = getWorldMap()->getBall();
+    Position ballPos = ball.ballposition();
+    Position playerPos = player()->getPlayerPos();
+
+    if (Utils::getVelocityAbs(ball.ballvelocity()) < minSpeed) {
+        return false;
+    }
+
+    float angVel = Utils::getVelocityArg(ball.ballvelocity());
+    float angPlayer = Utils::getAngle(ballPos, playerPos);
+
+    float angDiff = Utils::angleDiff(angVel, angPlayer);
+    float angError = atan2(radius, Utils::distance(playerPos, ballPos));
+
+    return (fabs(angDiff) < fabs(angError));
 }

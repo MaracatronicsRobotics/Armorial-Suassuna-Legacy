@@ -34,7 +34,7 @@ public:
     void setDistanceFromGk(float distanceFromGK) { _distanceFromGK = distanceFromGK; }
     void setRadius(float radius) { _radius = radius; }
     float getRadius() { return _radius; }
-    void setAvoidAllies(boool avoidAllies) { _avoidAllies = avoidAllies; }
+    void setAvoidAllies(bool avoidAllies) { _avoidAllies = avoidAllies; }
     void setMarkPlayer(int playerID) { _markNearestPlayer = true; _markPlayerID = playerID; }
     void setMarkBall() { _markNearestPlayer = false; }
     void setCanTakeout(bool canTakeout) { _canTakeout = canTakeout; }
@@ -89,7 +89,7 @@ private:
     // Aux
     bool isBallComingToGoal(float minSpeed, float postsFactor = 1.0f);
     bool isBehindBall(Position posObjective);
-    bool isBallComing(float minVelocity, float radius);
+    bool isBallComing(float minSpeed, float radius);
 };
 
 #endif // ROLE_BARRIER_H
