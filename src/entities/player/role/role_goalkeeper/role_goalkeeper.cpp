@@ -139,10 +139,10 @@ void Role_Goalkeeper::run() {
         }
 
         // Ensure GK not leaving the goal area
-        if (yPos < yRightPost) {
+        if (yPos > yRightPost) {
             yPos = yRightPost;
         }
-        if (yPos > yLeftPost) {
+        if (yPos < yLeftPost) {
             yPos = yLeftPost;
         }
 
