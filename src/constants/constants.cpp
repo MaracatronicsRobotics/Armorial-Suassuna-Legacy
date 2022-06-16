@@ -27,7 +27,6 @@
 Constants::Constants(QString fileName) {
     _fileName = fileName;
 
-
     file.setFileName(_fileName);
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QString val = file.readAll();
@@ -131,12 +130,6 @@ Constants::Constants(QString fileName) {
                  + Text::green(std::to_string(keeperAngularPID().at(1))) + ", "
                  + Text::green(std::to_string(keeperAngularPID().at(2)))
               << Text::bold("}") << std::endl;
-
-    // Set INVALID_POSITION
-    INVALID_POSITION.set_isinvalid(true);
-    INVALID_POSITION.set_x(0.0f);
-    INVALID_POSITION.set_y(0.0f);
-    INVALID_POSITION.set_z(0.0f);
 }
 
 bool Constants::isTeamBlue() {
@@ -160,9 +153,10 @@ QString Constants::getTeamColor() const {
 void Constants::setTeamColor(const QString &teamColor) {
     _teamColor = teamColor;
     if (teamColor == "blue") {
-        _color = Utils::getColorObject(true);
+        _color.set_isblue(true);
+    } else {
+        _color.set_isblue(false);
     }
-    _color = Utils::getColorObject(false);
 }
 
 Color Constants::teamColor() {

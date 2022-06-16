@@ -201,9 +201,12 @@ bool Player::isLookingTo(Position targetPos) {
 }
 
 bool Player::isSufficientlyAlignedTo(Position targetPos, Position referencePos) {
+    if (referencePos.isinvalid()) {
+        referencePos = getPlayerPos();
+    }
     AngularSpeed playerAS = getPlayerAngularSpeed();
     return (fabs(getRotationAngleTo(targetPos, referencePos)) <= getAngularError()
-            && ((!playerAS.isindegrees()) ? playerAS.vw() <= 10.0f : playerAS <= Utils::degToRad(10.0f)));
+            && ((!playerAS.isindegrees()) ? playerAS.vw() <= 10.0f : playerAS.vw() <= Utils::degToRad(10.0f)));
 }
 
 float Player::getLinearError() {

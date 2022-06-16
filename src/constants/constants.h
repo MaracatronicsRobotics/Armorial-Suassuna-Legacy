@@ -28,13 +28,10 @@
 
 #include <src/utils/types/fieldside/fieldside.h>
 #include <proto/messages.pb.h>
-#include <src/utils/utils.h>
 
 #define ROBOT_INVALID_ID 200
 #define YELLOW_ID 0
 #define BLUE_ID 1
-
-#define INVALID_POSITION Position()
 
 using namespace Armorial;
 

@@ -60,7 +60,7 @@ public:
     float getPlayerDistanceTo(Position targetPos);
     bool hasBallPossession();
     bool isLookingTo(Position targetPos);
-    bool isSufficientlyAlignedTo(Position targetPos, Position referencePos = INVALID_POSITION);
+    bool isSufficientlyAlignedTo(Position targetPos, Position referencePos = Utils::getPositionObject(0.0f, 0.0f, 0.0f, true));
 
     // Player Error
     float getLinearError();
@@ -73,7 +73,7 @@ public:
 
     // Skills
     void playerGoTo(Position pos);
-    void playerRotateTo(Position pos, Position referencePos = Position(Utils::getPositionObject(0.0f, 0.0f, 0.0f, true)));
+    void playerRotateTo(Position pos, Position referencePos = Utils::getPositionObject(0.0f, 0.0f, 0.0f, true));
     void playerDribble(bool enable);
     void playerKick(float power, bool isChip);
     void playerIdle();
