@@ -13,6 +13,6 @@ jobs:
         with:
           submodules: recursive
       - name: "Install dependencies"
-        run: sudo apt-get update && sudo apt-get install build-essential cmake qt5-default libprotobuf-dev protobuf-compiler libprotoc-dev protobuf-compiler-grpc libgrpc++-dev libgrpc-dev libgtest-dev libspdlog-dev && sudo apt-get upgrade
+        run: sudo apt-get update && sudo apt-get install build-essential cmake qt5-default libprotobuf-dev protobuf-compiler libprotoc-dev protobuf-compiler-grpc libgrpc++-dev libgrpc-dev libgtest-dev libfmt-dev libspdlog-dev && sudo apt-get upgrade 
       - name: "Build Armorial-Suassuna"
         run: mkdir build && cd build && qmake .. && make -j8
