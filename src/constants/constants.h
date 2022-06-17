@@ -124,8 +124,6 @@ private:
     Color _color;
     FieldSide _teamSide;
     int _qtdPlayers;
-    float _robotRadius;
-    float _ballRadius;
     float _timeToSendPacketZero;
     quint16 _keeperID;
     float _maxKickPower;
