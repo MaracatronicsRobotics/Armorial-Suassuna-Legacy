@@ -75,8 +75,8 @@ private:
     };
 
     Behaviour_GoToLookTo *_behaviour_goToLookTo;
-    // Behaviour_InterceptBall *_behaviour_interceptBall;
-    // Behaviour_PushBall *_behaviour_pushBall;
+    Behaviour_InterceptBall *_behaviour_interceptBall;
+    Behaviour_PushBall *_behaviour_pushBall;
 
     // Internal
     enum {

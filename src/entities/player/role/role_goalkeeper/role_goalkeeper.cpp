@@ -51,8 +51,8 @@ Role_Goalkeeper::Role_Goalkeeper()
 
 void Role_Goalkeeper::initializeBehaviours() {
     addBehaviour(BEHAVIOUR_GOTOLOOKTO, _behaviour_goToLookTo = new Behaviour_GoToLookTo());
-//    addBehaviour(BEHAVIOUR_INTERCEPTBALL, _behaviour_interceptBall = new Behaviour_InterceptBall());
-//    addBehaviour(BEHAVIOUR_PUSHBALL, _behaviour_pushBall = new Behaviour_PushBall());
+    addBehaviour(BEHAVIOUR_INTERCEPTBALL, _behaviour_interceptBall = new Behaviour_InterceptBall());
+    addBehaviour(BEHAVIOUR_PUSHBALL, _behaviour_pushBall = new Behaviour_PushBall());
 }
 
 void Role_Goalkeeper::configure() {
@@ -190,16 +190,16 @@ void Role_Goalkeeper::run() {
 
         Position positionToLook = Utils::getPositionObject(xLook, playerPos.y());
 
-//        _behaviour_interceptBall->setPosToLook(positionToLook);
-//        _behaviour_interceptBall->setSpeedFactor(2.5f);
+        _behaviour_interceptBall->setPosToLook(positionToLook);
+        _behaviour_interceptBall->setSpeedFactor(2.5f);
+        _behaviour_interceptBall->setUseKickDevice(false);
         setBehaviour(BEHAVIOUR_INTERCEPTBALL);
     } break;
     case STATE_TAKEOUT: {
         if (!Utils::isInsideOurArea(ballPos)) {
             _actualState = STATE_FOLLOWBALL;
-        }
+        } else if (!player()->hasBallPossession()) {
 
-        if (!player()->hasBallPossession()) {
             _behaviour_goToLookTo->setPositionToGo(ballPos);
             _behaviour_goToLookTo->setPositionToLook(ballPos);
             _behaviour_goToLookTo->setReferencePosition(playerPos);
@@ -212,12 +212,13 @@ void Role_Goalkeeper::run() {
             _behaviour_goToLookTo->setPositionToLook(fieldCenter);
             _behaviour_goToLookTo->setReferencePosition(playerPos);
 
+            player()->playerDribble(true);
+
             if (player()->isSufficientlyAlignedTo(fieldCenter)) {
+                player()->playerDribble(false);
                 player()->playerKick(getConstants()->maxChipKickPower(), true);
             }
         }
-        player()->playerDribble(true);
-
     } break;
     case STATE_PENALTY: {
         _actualState = STATE_FOLLOWBALL;
