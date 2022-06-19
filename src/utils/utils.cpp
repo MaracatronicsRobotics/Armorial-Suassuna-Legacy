@@ -209,7 +209,7 @@ RobotIdentifier Utils::getRobotIdObject(int ID, bool isBlue) {
     robotIdentifier.set_robotid(ID);
 
     Color *color = new Color();
-    color->set_isblue(isBlue);
+    color->CopyFrom(getColorObject(isBlue));
 
     robotIdentifier.set_allocated_robotcolor(color);
 
@@ -519,7 +519,7 @@ bool Utils::isInsideTheirField(const Position &pos) {
 }
 bool Utils::isInsideOurArea(const Position &pos, float factor) {
     double x_offset = getConstants()->getTeamSide().isLeft() ? (1.0 * factor) : (-1.0 * factor);
-    double y_offset = getConstants()->getTeamSide().isLeft() ? (0.5 * factor) : (-0.5 * factor);
+    double y_offset = getConstants()->getTeamSide().isLeft() ? (-0.5 * factor) : (0.5 * factor);
 
     Position ourGoalLeftPost = getWorldMap()->getLocations()->ourGoalLeftPost();
     Position ourGoalRightPost = getWorldMap()->getLocations()->ourGoalRightPost();
@@ -531,7 +531,7 @@ bool Utils::isInsideOurArea(const Position &pos, float factor) {
 }
 bool Utils::isInsideTheirArea(const Position &pos, float factor) {
     double x_offset = getConstants()->getOppositeSide().isLeft() ? (1.0 * factor) : (-1.0 * factor);
-    double y_offset = getConstants()->getOppositeSide().isLeft() ? (0.5 * factor) : (-0.5 * factor);
+    double y_offset = getConstants()->getOppositeSide().isLeft() ? (-0.5 * factor) : (0.5 * factor);
 
     Position theirGoalLeftPost = getWorldMap()->getLocations()->theirGoalLeftPost();
     Position theirGoalRightPost = getWorldMap()->getLocations()->theirGoalRightPost();
@@ -585,13 +585,13 @@ QList<Robot> Utils::getAdversariesInRadius(const Position &center, float radius)
 
 bool Utils::_isInsideArea(const Position &pos, float factor, const Position &goalLeftPost, const Position &goalRightDeslocatedPost) {
     // rectangle
-    double min_x = std::min(goalLeftPost.x(), goalRightDeslocatedPost.x());
-    double max_x = std::max(goalLeftPost.x(), goalRightDeslocatedPost.x());
+    double min_x = std::min(goalLeftPost.x() * factor, goalRightDeslocatedPost.x() * factor);
+    double max_x = std::max(goalLeftPost.x() * factor, goalRightDeslocatedPost.x() * factor);
 
-    double min_y = std::min(goalLeftPost.y(), goalRightDeslocatedPost.y());
-    double max_y = std::max(goalLeftPost.y(), goalRightDeslocatedPost.y());
+    double min_y = std::min(goalLeftPost.y() * factor, goalRightDeslocatedPost.y() * factor);
+    double max_y = std::max(goalLeftPost.y() * factor, goalRightDeslocatedPost.y() * factor);
 
-    bool x = (pos.x() >= min_x  && pos.x() <= max_x);
+    bool x = (pos.x() >= min_x && pos.x() <= max_x);
     bool y = (pos.y() >= min_y && pos.y() <= max_y);
 
     return x && y;

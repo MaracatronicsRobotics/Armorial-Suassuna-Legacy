@@ -41,7 +41,7 @@ void Locations::updateFieldData(Field field) {
     const float penaltyDist = _field.defensewidth();
 
     // Set constant positions
-    _fieldCenter = /*Position(true, 0.0, 0.0)*/ Position();
+    _fieldCenter = Utils::getPositionObject(0.0f, 0.0f);
     _fieldCenterRadius = _field.centerradius();
     _goalDepth = _field.goaldepth();
     _goalWidth = _field.goalwidth();

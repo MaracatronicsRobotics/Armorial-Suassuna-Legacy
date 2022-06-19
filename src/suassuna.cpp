@@ -46,7 +46,7 @@ void Suassuna::start(bool useGui) {
     Utils::setWorldMap(_worldMap);
 
 
-    Role_Default *role_default = new Role_Default();
+//    Role_Default *role_default = new Role_Default();
     Role_Goalkeeper *role_goalkeeper = new Role_Goalkeeper();
     Role_Barrier *role_barrier = new Role_Barrier();
 

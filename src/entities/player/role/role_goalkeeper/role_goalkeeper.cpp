@@ -141,8 +141,7 @@ void Role_Goalkeeper::run() {
         // Ensure GK not leaving the goal area
         if (yPos > yRightPost) {
             yPos = yRightPost;
-        }
-        if (yPos < yLeftPost) {
+        } else if (yPos < yLeftPost) {
             yPos = yLeftPost;
         }
 
@@ -151,9 +150,11 @@ void Role_Goalkeeper::run() {
         _behaviour_goToLookTo->setPositionToGo(positionToGo);
         _behaviour_goToLookTo->setPositionToLook(ballPos);
         _behaviour_goToLookTo->setReferencePosition(playerPos);
-//                _behaviour_goToLookTo->setAvoidBall(false);
 
         setBehaviour(BEHAVIOUR_GOTOLOOKTO);
+
+        // Ensure GK not using dribble when not necessary
+        player()->playerDribble(false);
 
         // If the ball is comming to goal
         float minVelocity = 0.5f; // Dangerous ball velocity if comming to goal

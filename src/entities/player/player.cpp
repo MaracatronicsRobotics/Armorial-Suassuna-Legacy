@@ -184,7 +184,8 @@ float Player::getPlayerDistanceTo(Position targetPos) {
 
 bool Player::hasBallPossession() {
     // Need sensor
-    if ((Utils::distance(Player::getPlayerPos(), Player::getWorldMap()->getBall().ballposition()) >= 0.25f) && Player::isLookingTo(Player::getWorldMap()->getBall().ballposition())) {
+    float ballRobotRadiusDist = getConstants()->getRobotRadius() + getConstants()->getBallRadius();
+    if ((Utils::distance(Player::getPlayerPos(), Player::getWorldMap()->getBall().ballposition()) >= ballRobotRadiusDist) && Player::isLookingTo(Player::getWorldMap()->getBall().ballposition())) {
         return true;
     }
     return false;
@@ -197,7 +198,7 @@ bool Player::isLookingTo(Position targetPos) {
     angle.set_isindegrees(false);
 
     float diff = fabs(Utils::angleDiff(Player::getPlayerOrientation(), angle));
-    return (diff <= 0.1f); // Here goes Angular Error, should be set later
+    return (diff <= getAngularError());
 }
 
 bool Player::isSufficientlyAlignedTo(Position targetPos, Position referencePos) {
@@ -214,7 +215,7 @@ float Player::getLinearError() {
 }
 
 float Player::getAngularError() {
-    return 0.02f; // ≃ 1.15 deg
+    return Utils::degToRad(4.0f);
 }
 
 QString Player::roleName() {
