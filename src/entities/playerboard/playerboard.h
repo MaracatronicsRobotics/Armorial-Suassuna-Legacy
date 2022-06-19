@@ -32,7 +32,7 @@ class PlayerBoard
 public:
     PlayerBoard();
 
-    // Getters and Setters
+    // Generic Getters and Setters
     Robot getKeeper();
     void setKeeper(const Robot &keeper);
 
@@ -52,6 +52,12 @@ public:
     void addBarrier(const Robot newBarrier);
     void addMidfielder(const Robot newMidfielder);
     void addForwarder(const Robot newForwarder);
+
+    // Position getters
+    QHash<quint8, Position> getBarriersPositions();
+    QHash<quint8, Position> getMidfieldersPositions();
+    QHash<quint8, Position> getForwardersPositions();
+    QHash<quint8, Position> getTeamPositions();
 
     // clears
     void clearBarriersList();

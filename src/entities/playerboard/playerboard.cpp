@@ -116,6 +116,54 @@ void PlayerBoard::setTeamList(const QList<Robot> &teamList)
     _teamLock.unlock();
 }
 
+QHash<quint8, Position> PlayerBoard::getBarriersPositions(){
+    QHash<quint8, Position> hashmap;
+    _barriersLock.lockForRead();
+    for (Robot r : _barriersList){
+        quint8 robotId = r.robotidentifier().robotid();
+        Position robotPosition = r.robotposition();
+        hashmap.insert(robotId, robotPosition);
+    }
+    _barriersLock.unlock();
+    return hashmap;
+}
+
+QHash<quint8, Position> PlayerBoard::getMidfieldersPositions(){
+    QHash<quint8, Position> hashmap;
+    _midfieldersLock.lockForRead();
+    for (Robot r : _midfieldersList){
+        quint8 robotId = r.robotidentifier().robotid();
+        Position robotPosition = r.robotposition();
+        hashmap.insert(robotId, robotPosition);
+    }
+    _midfieldersLock.unlock();
+    return hashmap;
+}
+
+QHash<quint8, Position> PlayerBoard::getForwardersPositions(){
+    QHash<quint8, Position> hashmap;
+    _forwardersLock.lockForRead();
+    for (Robot r : _forwardersList){
+        quint8 robotId = r.robotidentifier().robotid();
+        Position robotPosition = r.robotposition();
+        hashmap.insert(robotId, robotPosition);
+    }
+    _forwardersLock.unlock();
+    return hashmap;
+}
+
+QHash<quint8, Position> PlayerBoard::getTeamPositions(){
+    QHash<quint8, Position> hashmap;
+    _teamLock.lockForRead();
+    for (Robot r : _teamList){
+        quint8 robotId = r.robotidentifier().robotid();
+        Position robotPosition = r.robotposition();
+        hashmap.insert(robotId, robotPosition);
+    }
+    _teamLock.unlock();
+    return hashmap;
+}
+
 
 void PlayerBoard::clearTeamList(){
     _teamLock.lockForWrite();
