@@ -94,6 +94,7 @@ public:
     float getBallRadius() const;
     void setBallRadius(float ballRadius);
 
+    float maxSpeedInStop();
     float maxKickPower();
     float maxChipKickPower();
     float maxRobotLinearSpeed();
@@ -126,6 +127,7 @@ private:
     int _qtdPlayers;
     float _timeToSendPacketZero;
     quint16 _keeperID;
+    float _maxSpeedInStop;
     float _maxKickPower;
     float _maxChipKickPower;
     float _maxRobotLinearSpeed;

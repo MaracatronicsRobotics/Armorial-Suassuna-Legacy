@@ -38,64 +38,67 @@ Constants::Constants(QString fileName) {
     QVariantMap docMap = docObject.toVariantMap();
 
     _GRPCAddress = docMap["GRPCAddress"].toString();
-    std::cout << Text::bold("GRPC Address: ") + Text::green(_GRPCAddress.toStdString(), true) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("GRPC Address: ") + Text::green(_GRPCAddress.toStdString(), true) << std::endl;
 
     _GRPCActuatorPort = docMap["GRPCActuatorPort"].toInt();
-    std::cout << Text::bold("GRPC Actuator Port: ") + Text::green(std::to_string(_GRPCActuatorPort), true) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("GRPC Actuator Port: ") + Text::green(std::to_string(_GRPCActuatorPort), true) << std::endl;
 
     _GRPCCoachPort = docMap["GRPCCoachPort"].toInt();
-    std::cout << Text::bold("GRPC Coach Port: ") + Text::green(std::to_string(_GRPCCoachPort), true) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("GRPC Coach Port: ") + Text::green(std::to_string(_GRPCCoachPort), true) << std::endl;
 
     _teamColor = docMap["teamColor"].toString();
-    std::cout << Text::bold("Team Color: ") + Text::green(_teamColor.toStdString(), true) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Team Color: ") + Text::green(_teamColor.toStdString(), true) << std::endl;
 
     _teamSide = FieldSide(docMap["teamSide"].toString().toLower() == "left" ? Sides::LEFT : Sides::RIGHT);
-    std::cout << Text::bold("Team Side: ") + Text::green(docMap["teamSide"].toString().toLower().toStdString(), true) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Team Side: ") + Text::green(docMap["teamSide"].toString().toLower().toStdString(), true) << std::endl;
 
     _qtdPlayers = docMap["qtdPlayers"].toInt();
-    std::cout << Text::bold("Number of players: ") + Text::green(std::to_string(_qtdPlayers), true) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Number of players: ") + Text::green(std::to_string(_qtdPlayers), true) << std::endl;
 
     _timeToSendPacketZero = docMap["timeToSendPacketZero"].toFloat();
-    std::cout << Text::bold("Time to send packet zero: ") + Text::green(std::to_string(_timeToSendPacketZero), true) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Time to send packet zero: ") + Text::green(std::to_string(_timeToSendPacketZero), true) << std::endl;
 
     _RefereeAddress = docMap["RefereeAddress"].toString();
-    std::cout << Text::bold("Referee Address: ") + Text::green(_RefereeAddress.toStdString(), true) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Referee Address: ") + Text::green(_RefereeAddress.toStdString(), true) << std::endl;
 
     _RefereePort = docMap["RefereePort"].toInt();
-    std::cout << Text::bold("Referee Port: ") + Text::green(std::to_string(_RefereePort), true) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Referee Port: ") + Text::green(std::to_string(_RefereePort), true) << std::endl;
 
     _minDistToConsiderBallMovement = docMap["minDistToConsiderBallMovement"].toFloat();
-    std::cout << Text::bold("Min distance to consider ball movement Side: ") + Text::green(std::to_string(_minDistToConsiderBallMovement), true) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Min distance to consider ball movement Side: ") + Text::green(std::to_string(_minDistToConsiderBallMovement), true) << std::endl;
 
     _robotRadius = docMap["robotRadius"].toFloat();
-    std::cout << Text::bold("Robot radius: ") + Text::green(std::to_string(_robotRadius), true) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Robot radius: ") + Text::green(std::to_string(_robotRadius), true) << std::endl;
 
     _ballRadius = docMap["ballRadius"].toFloat();
-    std::cout << Text::bold("Ball radius: ") + Text::green(std::to_string(_ballRadius), true) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Ball radius: ") + Text::green(std::to_string(_ballRadius), true) << std::endl;
 
     _keeperID = quint16(docMap["keeperID"].toInt());
-    std::cout << Text::bold("Keeper ID: ") + Text::green(std::to_string(_keeperID), true) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Keeper ID: ") + Text::green(std::to_string(_keeperID), true) << std::endl;
+
+    _maxSpeedInStop = docMap["maxSpeedInStop"].toFloat();
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Max Speed in Stop: ") + Text::green(std::to_string(maxSpeedInStop())) << std::endl;
 
     _maxKickPower = docMap["maxKickPower"].toFloat();
-    std::cout << Text::bold("Max kick power: ") + Text::green(std::to_string(maxKickPower())) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Max kick power: ") + Text::green(std::to_string(maxKickPower())) << std::endl;
 
     _maxChipKickPower = docMap["maxChipKickPower"].toFloat();
-    std::cout << Text::bold("Max chip kick power: ") + Text::green(std::to_string(maxChipKickPower())) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Max chip kick power: ") + Text::green(std::to_string(maxChipKickPower())) << std::endl;
 
     _maxRobotLinearSpeed = docMap["maxRobotLinearSpeed"].toFloat();
-    std::cout << Text::bold("Max robot linear speed: ") + Text::green(std::to_string(maxRobotLinearSpeed())) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Max robot linear speed: ") + Text::green(std::to_string(maxRobotLinearSpeed())) << std::endl;
 
     _maxRobotAngularSpeed = docMap["maxRobotAngularSpeed"].toFloat();
-    std::cout << Text::bold("Max robot angular speed: ") + Text::green(std::to_string(maxRobotAngularSpeed())) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Max robot angular speed: ") + Text::green(std::to_string(maxRobotAngularSpeed())) << std::endl;
 
     _playerChipKickAngle = docMap["playerChipKickAngle"].toFloat();
-    std::cout << Text::bold("Player chip kick angle: ") + Text::green(std::to_string(playerChipKickAngle())) << std::endl;
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Player chip kick angle: ") + Text::green(std::to_string(playerChipKickAngle())) << std::endl;
 
     QList<QVariant> playerLinearPIDList = docMap["playerLinearPID"].toList();
     for (QVariant i: playerLinearPIDList) {
         _playerLinearPID.push_back(i.toFloat());
     }
-    std::cout << Text::bold("Player linear PID: {")
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Player linear PID: {")
                  + Text::green(std::to_string(playerLinearPID().at(0))) + ", "
                  + Text::green(std::to_string(playerLinearPID().at(1))) + ", "
                  + Text::green(std::to_string(playerLinearPID().at(2)))
@@ -105,7 +108,7 @@ Constants::Constants(QString fileName) {
     for (QVariant i: playerAngularPIDList) {
         _playerAngularPID.push_back(i.toFloat());
     }
-    std::cout << Text::bold("Player linear PID: {")
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Player angular PID: {")
                  + Text::green(std::to_string(playerAngularPID().at(0))) + ", "
                  + Text::green(std::to_string(playerAngularPID().at(1))) + ", "
                  + Text::green(std::to_string(playerAngularPID().at(2)))
@@ -115,7 +118,7 @@ Constants::Constants(QString fileName) {
     for (QVariant i: keeperLinearPIDList) {
         _keeperLinearPID.push_back(i.toFloat());
     }
-    std::cout << Text::bold("Keeper linear PID: {")
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Keeper linear PID: {")
                  + Text::green(std::to_string(keeperLinearPID().at(0))) + ", "
                  + Text::green(std::to_string(keeperLinearPID().at(1))) + ", "
                  + Text::green(std::to_string(keeperLinearPID().at(2)))
@@ -125,7 +128,7 @@ Constants::Constants(QString fileName) {
     for (QVariant i: keeperAngularPIDList) {
         _keeperAngularPID.push_back(i.toFloat());
     }
-    std::cout << Text::bold("Keeper linear PID: {")
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Keeper angular PID: {")
                  + Text::green(std::to_string(keeperAngularPID().at(0))) + ", "
                  + Text::green(std::to_string(keeperAngularPID().at(1))) + ", "
                  + Text::green(std::to_string(keeperAngularPID().at(2)))
@@ -295,6 +298,10 @@ float Constants::getBallRadius() const
 void Constants::setBallRadius(float ballRadius)
 {
     _ballRadius = ballRadius;
+}
+
+float Constants::maxSpeedInStop() {
+    return _maxSpeedInStop;
 }
 
 float Constants::maxKickPower(){

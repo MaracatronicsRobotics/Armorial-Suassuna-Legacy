@@ -18,6 +18,7 @@
     "qtdPlayers": 11,
     "timeToSendPacketZero": 1000.0,
     "keeperID": 0,
+    "maxSpeedInStop": 1.4,
     "maxKickPower": 6.5,
     "maxChipKickPower": 8.0,
     "maxRobotLinearSpeed": 3.0,
