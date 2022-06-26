@@ -35,6 +35,12 @@ Skill_Kick::Skill_Kick(WorldMap *worldMap) {
     // Create a default, invalid position
     _aimPosition = Utils::getPositionObject(0.0, 0.0, 0.0, true);
     _state = STATE_KICK;
+    setSpeedFactor(1.0f);
+    _avoidTeammates = true;
+    _avoidOpponents = true;
+    _avoidBall = true;
+    _avoidOurGoalArea = true;
+    _avoidTheirGoalArea = true;
 }
 
 void Skill_Kick::run() {
@@ -100,7 +106,7 @@ void Skill_Kick::run() {
 
     // goToLookTo
     Position lookPosition = Utils::threePoints(_aimPosition, getWorldMap()->getBall().ballposition(), 999.0f, M_PI, false);
-    player()->playerGoTo(desiredPos);
+    player()->playerGoTo(desiredPos, _avoidTeammates, _avoidOpponents, _avoidBall, _avoidOurGoalArea, _avoidTheirGoalArea, _speedFactor);
     player()->playerRotateTo(lookPosition);
     //player()->goToLookTo(desiredPos, lookPosition, avoidTeam, avoidOpp, avoidBall, false, false);
 
@@ -134,6 +140,10 @@ bool Skill_Kick::isInFrontOfObjective(){
     float angle_error = 0.0523599f; // aprox 3 graus
 
     return (diff <= angle_error);
+}
+
+void Skill_Kick::setSpeedFactor(float speedFactor) {
+    _speedFactor = speedFactor;
 }
 
 WorldMap* Skill_Kick::getWorldMap(){

@@ -23,6 +23,12 @@
 
 Skill_GoTo::Skill_GoTo() {
     _targetPosition = Utils::getPositionObject(0.0, 0.0);
+    setSpeedFactor(1.0f);
+    _avoidTeammates = true;
+    _avoidOpponents = true;
+    _avoidBall = true;
+    _avoidOurGoalArea = true;
+    _avoidTheirGoalArea = true;
 }
 
 QString Skill_GoTo::name() {
@@ -33,12 +39,16 @@ void Skill_GoTo::setTargetPosition(Position &targetPosition) {
     _targetPosition = targetPosition;
 }
 
+void Skill_GoTo::setSpeedFactor(float speedFactor) {
+    _speedFactor = speedFactor;
+}
+
 void Skill_GoTo::configure() {
 
 }
 
 void Skill_GoTo::run() {
     if(!_targetPosition.isinvalid()) {
-        player()->playerGoTo(_targetPosition);
+        player()->playerGoTo(_targetPosition, _avoidTeammates, _avoidOpponents, _avoidBall, _avoidOurGoalArea, _avoidTheirGoalArea, _speedFactor);
     }
 }

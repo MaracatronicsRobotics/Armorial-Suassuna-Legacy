@@ -32,6 +32,7 @@ public:
 
     // Target management
     void setTargetPosition(Position &targetPosition);
+    void setSpeedFactor(float speedFactor);
 
 private:
     // Skill inherited methods
@@ -40,6 +41,12 @@ private:
 
     // Internal
     Position _targetPosition;
+    float _speedFactor;
+    bool _avoidTeammates;
+    bool _avoidOpponents;
+    bool _avoidBall;
+    bool _avoidOurGoalArea;
+    bool _avoidTheirGoalArea;
 };
 
 #endif // GOTO_H

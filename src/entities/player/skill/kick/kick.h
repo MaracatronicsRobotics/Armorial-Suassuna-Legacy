@@ -43,6 +43,7 @@ private:
     bool isBehindBall(Position posObjective);
     bool isBallInFront();
     bool isInFrontOfObjective();
+    void setSpeedFactor(float speedFactor);
 
 public:
     Skill_Kick(WorldMap *worldMap);
@@ -53,6 +54,13 @@ public:
     void setIsChip(bool isChip) { _isChip = isChip; }
     void setState(int state) { _state = state; }
     WorldMap* getWorldMap();
+
+    float _speedFactor;
+    bool _avoidTeammates;
+    bool _avoidOpponents;
+    bool _avoidBall;
+    bool _avoidOurGoalArea;
+    bool _avoidTheirGoalArea;
 };
 
 #endif // SKILL_KICK_H
