@@ -235,22 +235,57 @@ void Player::setRole(Role *role) {
     _mutexRole.unlock();
 }
 
-void Player::playerGoTo(Position pos) {
-    // Here use pid output
-    // For now, lets just go straight to pos without limits
+void Player::playerGoTo(Position pos, bool avoidTeammates, bool avoidOpponents, bool avoidBall, bool avoidOurGoalArea, bool avoidTheirGoalArea, float speedFactor) {
 
     Position playerPos = Player::getPlayerPos();
-    float dx = (pos.x() - playerPos.x());
-    float dy = (pos.y() - playerPos.y());
 
-    // Getting halfway vectors trying to avoid enormous velocities
-    // This should be fixed after implementing PID
+    // Limit on field in not in ball placement
+    if(!getReferee()->getGameInfo()->ballPlacement()) {
+        if (Utils::isOutsideField(pos)) {
+            pos = Utils::limitPositionInField(pos);
+        }
+    }
+
+    float dx = _pidX->getOutput(playerPos.x(), pos.x());
+    float dy = _pidY->getOutput(playerPos.y(), pos.y());
 
     float vx = (dx * cos(getPlayerOrientation().value()) + dy * sin(getPlayerOrientation().value()));
     float vy = (dy * cos(getPlayerOrientation().value()) - dx * sin(getPlayerOrientation().value()));
 
     Velocity *robotVel = new Velocity();
-    robotVel->CopyFrom(Utils::getVelocityObject(vx/2, vy/2, 0.0f, false));
+    robotVel->CopyFrom(Utils::getVelocityObject(vx, vy, 0.0f, false));
+
+    float maxRobotLinearSpeed = getConstants()->maxRobotLinearSpeed();
+    if(!getReferee()->getGameInfo()->allowedNearBall() || getReferee()->getGameInfo()->ourBallPlacement()) {
+        maxRobotLinearSpeed = getConstants()->maxSpeedInStop();
+    }
+
+    float absVel = Utils::getVelocityAbs(*robotVel);
+    if (speedFactor != 1.0f) {
+        float absByScalar = absVel * speedFactor;
+
+        // Take unitary vector of velocity
+        robotVel->CopyFrom(Utils::getVelocityObject(robotVel->vx()/absVel, robotVel->vy()/absVel, 0.0f, false));
+
+        // Multiply it by absByScalar
+        robotVel->CopyFrom(Utils::getVelocityObject(robotVel->vx() * absByScalar, robotVel->vy() * absByScalar, 0.0f, false));
+    }
+
+    // Limit robot velocity to maxSpeed
+    if (Utils::getVelocityAbs(*robotVel) >= maxRobotLinearSpeed) {
+        // Take unitary vector of velocity
+        robotVel->CopyFrom(Utils::getVelocityObject(robotVel->vx()/absVel, robotVel->vy()/absVel, 0.0f, false));
+
+        // Multiply it by maxSpeed
+        robotVel->CopyFrom(Utils::getVelocityObject(robotVel->vx() * maxRobotLinearSpeed, robotVel->vy() * maxRobotLinearSpeed, 0.0f, false));
+    }
+
+    if (isnanf(robotVel->vx()) || isnanf(robotVel->vy())) {
+        robotVel->CopyFrom(Utils::getVelocityObject(0.0f, 0.0f, 0.0f, false));
+    }
+
+    // Here should come path planning to avoid obstacles
+
     _playerControl.set_allocated_robotvelocity(robotVel);
     //_playerControl = Utils::controlPacket(_playerID, getConstants()->isTeamBlue(), vx/2, vy/2);
 }
@@ -313,6 +348,14 @@ void Player::initialization() {
 
     // Create Control Packet pointer
     _playerControl = Utils::controlPacket(_playerID, getConstants()->isTeamBlue());
+
+    // Create PID pointers
+    _pidX = new PID(getConstants()->playerLinearPID().at(0), getConstants()->playerLinearPID().at(1), getConstants()->playerLinearPID().at(2));
+    _pidY = new PID(getConstants()->playerLinearPID().at(0), getConstants()->playerLinearPID().at(1), getConstants()->playerLinearPID().at(2));
+    _pidW = new PID(getConstants()->playerAngularPID().at(0), getConstants()->playerAngularPID().at(1), getConstants()->playerAngularPID().at(2));
+//    _pidX = new PID(1.0f, 0.0f, 0.0f);
+//    _pidY = new PID(1.0f, 0.0f, 0.0f);
+//    _pidW = new PID(1.0f, 0.0f, 0.0f);
 
     // Log
     spdlog::info(Text::cyan(QString("[PLAYER %1 : %2] ")

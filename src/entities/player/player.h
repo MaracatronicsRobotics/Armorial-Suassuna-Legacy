@@ -28,6 +28,7 @@
 #include <src/services/actuator/actuatorservice.h>
 #include <src/entities/worldmap/worldmap.h>
 #include <src/utils/utils.h>
+#include <src/entities/player/pid/pid.h>
 
 #include <src/entities/baseCoach.h>
 
@@ -72,7 +73,7 @@ public:
     void setRole(Role *role);
 
     // Skills
-    void playerGoTo(Position pos);
+    void playerGoTo(Position pos, bool avoidTeammates, bool avoidOpponents, bool avoidBall, bool avoidOurGoalArea, bool avoidTheirGoalArea, float speedFactor);
     void playerRotateTo(Position pos, Position referencePos = Utils::getPositionObject(0.0f, 0.0f, 0.0f, true));
     void playerDribble(bool enable);
     void playerKick(float power, bool isChip);
@@ -120,7 +121,12 @@ private:
     SSLReferee *_referee;
     SSLReferee* getReferee();
 
-    //Only for testing purposes
+    // PID
+    PID *_pidX;
+    PID *_pidY;
+    PID *_pidW;
+
+    // Only for testing purposes
     Position _dest;
     Position _lookTo;
 };
