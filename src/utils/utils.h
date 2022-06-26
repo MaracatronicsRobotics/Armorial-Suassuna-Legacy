@@ -116,6 +116,7 @@ public:
     static bool isOutsideField(const Position &pos, float dx, float dy);
     static bool isInsideField(const Position &pos, float factor = 1.0);
     static bool isInsideField(const Position &pos, float dx, float dy);
+    static Position limitPositionInField(Position &pos);
 
     static QList<Robot> getAdversariesInRadius(const Position &center, float radius);
 

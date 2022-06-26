@@ -558,6 +558,23 @@ bool Utils::isInsideField(const Position &pos, float dx, float dy) {
     return (!isOutsideField(pos, dx, dy));
 }
 
+Position Utils::limitPositionInField(Position &pos) {
+    // Constraints
+    Position newPos = pos;
+    float fieldMaxX = getWorldMap()->getLocations()->fieldMaxX();
+    float fieldMaxY = getWorldMap()->getLocations()->fieldMaxY();
+
+    // Check X
+    if (fabs(pos.x()) > fieldMaxX) {
+        pos = getPositionObject((pos.x()/fabs(pos.x())) * fieldMaxX, pos.y());
+    }
+
+    // Check Y
+    if (fabs(pos.y()) > fieldMaxY) {
+        pos = getPositionObject(newPos.x(), (pos.y()/fabs(pos.y())) * fieldMaxY);
+    }
+}
+
 QList<Robot> Utils::getAdversariesInRadius(const Position &center, float radius){
 
     // List of adversaries inside the radius, containing their ids and position
