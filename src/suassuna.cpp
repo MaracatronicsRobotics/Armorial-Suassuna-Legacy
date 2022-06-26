@@ -33,6 +33,9 @@ Suassuna::Suassuna(Constants *constants) {
 }
 
 void Suassuna::start(bool useGui) {
+    // Start log (TEST ONLY)
+    std::freopen( "../../PID-Analyser/logs/suassuna_log.txt", "w", stdout);
+
     // Creating World Map
     _worldMap = new WorldMap(getConstants());
     _world->addEntity(_worldMap, 2);
@@ -45,17 +48,15 @@ void Suassuna::start(bool useGui) {
     Utils::setConstants(getConstants());
     Utils::setWorldMap(_worldMap);
 
-
     Role_Default *role_default = new Role_Default();
-    Role_Goalkeeper *role_goalkeeper = new Role_Goalkeeper();
-    Role_Barrier *role_barrier = new Role_Barrier();
+    //Role_Goalkeeper *role_goalkeeper = new Role_Goalkeeper();
+    //Role_Barrier *role_barrier = new Role_Barrier();
 
     Player *player0 = new Player(0, _worldMap, _referee, getConstants());
-    player0->setRole(role_goalkeeper);
+    player0->setRole(role_default);
     _playerList.push_back(player0);
     _world->addEntity(player0, 0);
     Player *player1 = new Player(1, _worldMap, _referee, getConstants());
-    player1->setRole(role_barrier);
     _playerList.push_back(player1);
     _world->addEntity(player1, 0);
     Player *player2 = new Player(2, _worldMap, _referee, getConstants());
