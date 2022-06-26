@@ -24,6 +24,26 @@ private:
     enum {
         BEHAVIOR_GOTOLOOKTO
     };
+
+    enum {
+        PID_TEST
+    };
+
+    int _actualState;
+    Position _positionToGo;
+    Position _positionToLook;
+
+    // PID Test
+    Position _endPos;
+    bool _testRunning;
+    int _testType;
+    Velocity _playerVel;
+
+    enum {
+        VX,
+        VY,
+        VW
+    };
 };
 
 #endif // ROLE_DEFAULT_H
