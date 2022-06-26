@@ -81,6 +81,7 @@ SOURCES += \
     src/entities/player/behaviour/gotolookto/gotolookto.cpp \
     src/entities/player/behaviour/interceptball/interceptball.cpp \
     src/entities/player/behaviour/pushball/pushball.cpp \
+    src/entities/player/pid/pid.cpp \
     src/entities/player/role/role_default/role_default.cpp \
     src/entities/player/role/role_goalkeeper/role_goalkeeper.cpp \
     src/entities/player/role/role_barrier/role_barrier.cpp \
@@ -153,6 +154,7 @@ HEADERS += \
     src/entities/player/behaviour/gotolookto/gotolookto.h \
     src/entities/player/behaviour/interceptball/interceptball.h \
     src/entities/player/behaviour/pushball/pushball.h \
+    src/entities/player/pid/pid.h \
     src/entities/player/role/role_default/role_default.h \
     src/entities/player/role/role_goalkeeper/role_goalkeeper.h \
     src/entities/player/role/role_barrier/role_barrier.h \
