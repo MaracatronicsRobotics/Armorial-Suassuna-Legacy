@@ -475,6 +475,19 @@ float Utils::getVelocityArg(const Velocity &v) {
     return atan2(v.vy(), v.vx());
 }
 
+float Utils::getAccelerationAbs(const Acceleration &a) {
+    return sqrt(pow(a.ax(), 2) + pow(a.ay(), 2));
+}
+
+float Utils::getAccelerationArg(const Acceleration &a) {
+    return atan2(a.ay(), a.ax());
+}
+
+float Utils::getAccelerationSignedAbs(const Acceleration &a) {
+    // Acceleration abs * signal of Ax
+    return (sqrt(pow(a.ax(), 2) + pow(a.ay(), 2))) * (a.ax() / sqrt(pow(a.ax(), 2)));
+}
+
 bool Utils::checkInterval(double value, double minValue, double maxValue) {
     return (minValue<value && value<maxValue);
 }

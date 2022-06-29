@@ -102,6 +102,9 @@ public:
     static Velocity vectorSum(const Velocity &v1, const Velocity &v2, float m = 1);
     static float getVelocityAbs(const Velocity &v);
     static float getVelocityArg(const Velocity &v);
+    static float getAccelerationAbs(const Acceleration &a);
+    static float getAccelerationArg(const Acceleration &a);
+    static float getAccelerationSignedAbs(const Acceleration &a);
 
     static bool checkInterval(double value, double minValue, double maxValue);
     static void limitValue(float *value, float minValue, float maxValue);
