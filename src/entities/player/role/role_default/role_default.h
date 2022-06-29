@@ -38,6 +38,7 @@ private:
     bool _testRunning;
     int _testType;
     Velocity _playerVel;
+    Acceleration _playerAcc;
 
     enum {
         VX,

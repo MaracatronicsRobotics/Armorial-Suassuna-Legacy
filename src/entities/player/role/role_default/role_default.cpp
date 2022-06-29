@@ -2,7 +2,7 @@
 
 Role_Default::Role_Default() {
     _bhv_gotolookto = nullptr;
-    _testRunning = false;
+    _testRunning = true;
 }
 
 QString Role_Default::name() {
@@ -29,12 +29,6 @@ void Role_Default::run() {
 
     Position playerPos = player()->getPlayerPos();
 
-    if (Utils::distance(playerPos, _endPos) > 0.15f) {
-        _testRunning = true;
-    } else {
-        _testRunning = false;
-    }
-
     switch (_testType) {
     case(VX): {
         _endPos = Utils::getPositionObject(4, -2);
@@ -48,7 +42,8 @@ void Role_Default::run() {
     case (PID_TEST): {
         if (_testRunning) {
             _playerVel = player()->getPlayerVelocity();
-            spdlog::info(QString("PID Test - Player: (%1, %2); Vel: %3").arg(playerPos.x()).arg(playerPos.y()).arg(Utils::getVelocityAbs(_playerVel)).toStdString());
+            _playerAcc = player()->getPlayerAcceleration();
+            spdlog::info(QString("PID Test - Player: (%1, %2); Vel: %3 Acceleration: %4").arg(playerPos.x()).arg(playerPos.y()).arg(Utils::getVelocityAbs(_playerVel)).arg(Utils::getAccelerationSignedAbs(_playerAcc)).toStdString());
 
             _bhv_gotolookto->setPositionToGo(_endPos);
             _bhv_gotolookto->setReferencePosition(_endPos);
@@ -61,5 +56,10 @@ void Role_Default::run() {
     }break;
     }
 
+    if (Utils::getVelocityAbs(player()->getPlayerVelocity()) != 0.0f) {
+        _testRunning = true;
+    } else {
+        _testRunning = false;
+    }
 
 }
