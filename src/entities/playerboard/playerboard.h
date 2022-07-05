@@ -49,6 +49,9 @@ public:
     // sets
     void setPlayersList (QList<Player*> playerList);
 
+    quint8 getClosestRolePlayerTo(const Position &target, const roles role);
+    quint8 getClosestTeamPlayerTo(const Position &target);
+
 private:
     QList<Player*> _playersList;
 };

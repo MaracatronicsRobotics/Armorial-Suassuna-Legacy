@@ -30,3 +30,32 @@ QHash<quint8, Position> PlayerBoard::getPlayersPositions(const roles role){
     }
     return idPositionHashmap;
 }
+
+quint8 PlayerBoard::getClosestRolePlayerTo(const Position &target, const roles role){
+    quint8 closestPlayer = -1;
+    float smallestDistance = 99999.9f;
+    QString roleName = QString::fromStdString(std::string(magic_enum::enum_name(role)));
+    for (Player* player : _playersList){
+        if (player->roleName() == roleName){
+            float playerDistance = Utils::distance(player->getPlayerPos(), target);
+            if (playerDistance <= smallestDistance){
+                closestPlayer = player->getPlayerID();
+                smallestDistance = playerDistance;
+            }
+        }
+    }
+    return closestPlayer;
+}
+
+quint8 PlayerBoard::getClosestTeamPlayerTo(const Position &target){
+    quint8 closestPlayer = -1;
+    float smallestDistance = 99999.9f;
+    for (Player* player : _playersList){
+        float playerDistance = Utils::distance(player->getPlayerPos(), target);
+        if (playerDistance <= smallestDistance){
+            closestPlayer = player->getPlayerID();
+            smallestDistance = playerDistance;
+        }
+    }
+    return closestPlayer;
+}
