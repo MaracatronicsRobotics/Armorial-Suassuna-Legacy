@@ -26,61 +26,31 @@
 #include <QList>
 
 #include <src/utils/utils.h>
+#include <src/entities/player/player.h>
+#include <src/magic_enum.hpp>
 
 class PlayerBoard
 {
 public:
     PlayerBoard();
 
-    // Generic Getters and Setters
-    Robot getKeeper();
-    void setKeeper(const Robot &keeper);
+    enum roles {
+        ROLE_GOALKEEPER,
+        ROLE_BARRIER,
+        ROLE_MIDFIELDER,
+        ROLE_ATTACKER
+    };
 
-    QList<Robot> getBarriersList();
-    void setBarriersList(const QList<Robot> &barriersList);
+    // gets
 
-    QList<Robot> getMidfieldersList();
-    void setMidfieldersList(const QList<Robot> &midfieldersList);
+    QList<quint8> getPlayersIds (const roles role);
+    QHash<quint8, Position> getPlayersPositions(const roles role);
 
-    QList<Robot> getForwardersList();
-    void setForwardersList(const QList<Robot> &forwardersList);
-
-    QList<Robot> getTeamList();
-    void setTeamList(const QList<Robot> &teamList);
-
-    // Adds
-    void addBarrier(const Robot newBarrier);
-    void addMidfielder(const Robot newMidfielder);
-    void addForwarder(const Robot newForwarder);
-
-    // Position getters
-    QHash<quint8, Position> getBarriersPositions();
-    QHash<quint8, Position> getMidfieldersPositions();
-    QHash<quint8, Position> getForwardersPositions();
-    QHash<quint8, Position> getTeamPositions();
-
-    // clears
-    void clearBarriersList();
-    void clearMidfieldersList();
-    void clearForwardersList();
-    void clearTeamList();
-
-    void clearAllLists();
+    // sets
+    void setPlayersList (QList<Player*> playerList);
 
 private:
-    Robot _keeper;
-    QList<Robot> _barriersList;
-    QList<Robot> _midfieldersList;
-    QList<Robot> _forwardersList;
-    QList<Robot> _teamList;
-
-
-    // Locks
-    QReadWriteLock _keeperLock;
-    QReadWriteLock _barriersLock;
-    QReadWriteLock _midfieldersLock;
-    QReadWriteLock _forwardersLock;
-    QReadWriteLock _teamLock;
+    QList<Player*> _playersList;
 };
 
 #endif // PLAYERBOARD_H
