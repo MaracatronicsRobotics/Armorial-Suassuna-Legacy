@@ -175,6 +175,7 @@ HEADERS += \
     src/entities/worldmap/worldmap.h \
     src/exithandler/exithandler.h \
     src/gui/gui.h \
+    src/magic_enum.hpp \
     src/services/actuator/actuatorservice.h \
     src/services/coach/coachservice.h \
     src/suassuna.h \
