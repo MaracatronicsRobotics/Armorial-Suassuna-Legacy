@@ -44,13 +44,15 @@ public:
     // gets
 
     QList<quint8> getPlayersIds (const roles role);
-    QHash<quint8, Position> getPlayersPositions(const roles role);
+
+    QHash<quint8, Position> getTeamPlayersPositions();
+    QHash<quint8, Position> getRolePlayersPositions(const roles role);
+
+    quint8 getClosestTeamPlayerTo(const Position &target);
+    quint8 getClosestRolePlayerTo(const Position &target, const roles role);
 
     // sets
     void setPlayersList (QList<Player*> playerList);
-
-    quint8 getClosestRolePlayerTo(const Position &target, const roles role);
-    quint8 getClosestTeamPlayerTo(const Position &target);
 
 private:
     QList<Player*> _playersList;
