@@ -33,8 +33,6 @@ Suassuna::Suassuna(Constants *constants) {
 }
 
 void Suassuna::start(bool useGui) {
-    // Start log (TEST ONLY)
-    std::freopen( "../../PID-Analyser/logs/suassuna_log.txt", "w", stdout);
 
     // Creating World Map
     _worldMap = new WorldMap(getConstants());
