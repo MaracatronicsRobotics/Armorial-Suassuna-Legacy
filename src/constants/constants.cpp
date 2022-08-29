@@ -133,6 +133,10 @@ Constants::Constants(QString fileName) {
                  + Text::green(std::to_string(keeperAngularPID().at(1))) + ", "
                  + Text::green(std::to_string(keeperAngularPID().at(2)))
               << Text::bold("}") << std::endl;
+
+    _accelerationRamp = docMap["accelerationRamp"].toFloat();
+    std::cout << Text::purple("[CONSTANTS] ", true) + Text::bold("Player acceleration ramp rate: ") + Text::green(std::to_string(accelerationRamp())) << std::endl;
+
 }
 
 bool Constants::isTeamBlue() {
@@ -338,4 +342,8 @@ QList<float> Constants::keeperLinearPID() {
 
 QList<float> Constants::keeperAngularPID() {
     return _keeperAngularPID;
+}
+
+float Constants::accelerationRamp() {
+    return _accelerationRamp;
 }

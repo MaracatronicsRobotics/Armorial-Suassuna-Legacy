@@ -104,6 +104,7 @@ public:
     QList<float> playerAngularPID();
     QList<float> keeperLinearPID();
     QList<float> keeperAngularPID();
+    float accelerationRamp();
 
 private:
     QString _fileName;
@@ -137,6 +138,7 @@ private:
     QList<float> _playerAngularPID;
     QList<float> _keeperLinearPID;
     QList<float> _keeperAngularPID;
+    float _accelerationRamp;
 
     // Foul/Referee-related constants
     float _minDistToConsiderBallMovement;
