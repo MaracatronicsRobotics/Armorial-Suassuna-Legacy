@@ -24,10 +24,11 @@
     "maxRobotLinearSpeed": 3.0,
     "maxRobotAngularSpeed": 50.0,
     "playerChipKickAngle": 45.0,
-    "playerLinearPID": [2.5, 0.0, 0.0],
+    "playerLinearPID": [3.3, 0.0, 0.0],
     "playerAngularPID": [5.0, 0.0, 0.01],
-    "keeperLinearPID": [3.5, 0.0, 0.0],
+    "keeperLinearPID": [3.9, 0.0, 0.0],
     "keeperAngularPID": [8.0, 0.0, 0.0],
+    "accelerationRamp": 2.0,
 
     "minDistToConsiderBallMovement": 10.0,
 
