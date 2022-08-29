@@ -26,7 +26,14 @@ private:
     };
 
     enum {
-        PID_TEST
+        PID_TEST,
+        DEFAULT
+    };
+
+    enum {
+        VX,
+        VY,
+        VW
     };
 
     int _actualState;
@@ -40,11 +47,6 @@ private:
     Velocity _playerVel;
     Acceleration _playerAcc;
 
-    enum {
-        VX,
-        VY,
-        VW
-    };
 };
 
 #endif // ROLE_DEFAULT_H

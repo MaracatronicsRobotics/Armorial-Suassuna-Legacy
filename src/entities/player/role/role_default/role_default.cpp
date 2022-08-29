@@ -14,7 +14,7 @@ void Role_Default::initializeBehaviours() {
 }
 
 void Role_Default::configure() {
-    _actualState = PID_TEST;
+    _actualState = DEFAULT;
     _testType = VX;
     setBehaviour(BEHAVIOR_GOTOLOOKTO);
 }
@@ -36,6 +36,9 @@ void Role_Default::run() {
     case(VY): {
         _endPos = Utils::getPositionObject(0, 2);
     }break;
+    case(VW):{
+        _endPos = _player->getPlayerPos();
+    }
     }
 
     switch (_actualState) {
@@ -43,6 +46,8 @@ void Role_Default::run() {
         if (_testRunning) {
             _playerVel = player()->getPlayerVelocity();
             _playerAcc = player()->getPlayerAcceleration();
+
+            // PID test log pattern
             spdlog::info(QString("PID Test - Player: (%1, %2); Vel: %3 Acceleration: %4").arg(playerPos.x()).arg(playerPos.y()).arg(Utils::getVelocityAbs(_playerVel)).arg(Utils::getAccelerationSignedAbs(_playerAcc)).toStdString());
 
             _bhv_gotolookto->setPositionToGo(_endPos);
@@ -50,16 +55,16 @@ void Role_Default::run() {
             _bhv_gotolookto->setPositionToLook(_endPos);
 
             setBehaviour(BEHAVIOR_GOTOLOOKTO);
-        } else {
-
         }
-    }break;
+
+        if (!(std::fabs(Utils::getVelocityAbs(player()->getPlayerVelocity())) != 0.0f)) {
+            _testRunning = false;
+        }
+    } break;
+    case (DEFAULT): {
+        // Do nothing
+    } break;
     }
 
-    if (Utils::getVelocityAbs(player()->getPlayerVelocity()) != 0.0f) {
-        _testRunning = true;
-    } else {
-        _testRunning = false;
-    }
 
 }
