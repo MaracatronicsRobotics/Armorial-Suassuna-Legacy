@@ -37,7 +37,7 @@ void Role_Default::run() {
         _endPos = Utils::getPositionObject(0, 2);
     }break;
     case(VW):{
-        _endPos = _player->getPlayerPos();
+        _endPos = playerPos;
     }
     }
 
