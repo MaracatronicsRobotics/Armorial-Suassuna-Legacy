@@ -45,6 +45,7 @@ public:
     QString getTeamColor() const;
     void setTeamColor(const QString &teamColor);
     Color teamColor();
+    Color opponentColor();
     float getRobotRadius();
     float getBallRadius();
 
@@ -122,6 +123,7 @@ private:
     // Team Constants
     QString _teamColor;
     Color _color;
+    Color _opColor;
     FieldSide _teamSide;
     int _qtdPlayers;
     float _timeToSendPacketZero;

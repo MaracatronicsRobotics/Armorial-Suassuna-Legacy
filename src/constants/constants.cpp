@@ -154,13 +154,19 @@ void Constants::setTeamColor(const QString &teamColor) {
     _teamColor = teamColor;
     if (teamColor == "blue") {
         _color.set_isblue(true);
+        _opColor.set_isblue(!_color.isblue());
     } else {
         _color.set_isblue(false);
+        _opColor.set_isblue(!_color.isblue());
     }
 }
 
 Color Constants::teamColor() {
     return _color;
+}
+
+Color Constants::opponentColor() {
+    return _opColor;
 }
 
 float Constants::getRobotRadius() {
