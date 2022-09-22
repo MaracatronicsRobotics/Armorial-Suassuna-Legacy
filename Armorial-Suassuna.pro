@@ -81,6 +81,9 @@ SOURCES += \
     src/entities/player/behaviour/gotolookto/gotolookto.cpp \
     src/entities/player/behaviour/interceptball/interceptball.cpp \
     src/entities/player/behaviour/pushball/pushball.cpp \
+    src/entities/player/navigation/navigation.cpp \
+    src/entities/player/navigation/navigationalgorithm.cpp \
+    src/entities/player/navigation/univector/univectorfield.cpp \
     src/entities/player/role/role_default/role_default.cpp \
     src/entities/player/role/role_goalkeeper/role_goalkeeper.cpp \
     src/entities/player/role/role_barrier/role_barrier.cpp \
@@ -101,6 +104,9 @@ SOURCES += \
     src/services/actuator/actuatorservice.cpp \
     src/services/coach/coachservice.cpp \
     src/suassuna.cpp \
+    src/utils/freeangles/angleinterval/angleinterval.cpp \
+    src/utils/freeangles/freeangles.cpp \
+    src/utils/freeangles/obstacle/obstacle.cpp \
     src/utils/text/text.cpp \
     src/utils/timer/timer.cpp \
     src/utils/utils.cpp \
@@ -153,6 +159,9 @@ HEADERS += \
     src/entities/player/behaviour/gotolookto/gotolookto.h \
     src/entities/player/behaviour/interceptball/interceptball.h \
     src/entities/player/behaviour/pushball/pushball.h \
+    src/entities/player/navigation/navigation.h \
+    src/entities/player/navigation/navigationalgorithm.h \
+    src/entities/player/navigation/univector/univectorfield.h \
     src/entities/player/role/role_default/role_default.h \
     src/entities/player/role/role_goalkeeper/role_goalkeeper.h \
     src/entities/player/role/role_barrier/role_barrier.h \
@@ -176,6 +185,9 @@ HEADERS += \
     src/services/actuator/actuatorservice.h \
     src/services/coach/coachservice.h \
     src/suassuna.h \
+    src/utils/freeangles/angleinterval/angleinterval.h \
+    src/utils/freeangles/freeangles.h \
+    src/utils/freeangles/obstacle/obstacle.h \
     src/utils/text/text.h \
     src/utils/timer/timer.h \
     src/utils/utils.h \
