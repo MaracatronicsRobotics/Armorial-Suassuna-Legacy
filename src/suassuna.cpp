@@ -21,91 +21,72 @@
 
 #include "suassuna.h"
 
-Suassuna::Suassuna(Constants *constants) {
-    // Setting up constants
-    _constants = constants;
-
-    // Creating world
-    _world = new World(getConstants());
-
-    // Setting GUI as nullptr
+Suassuna::Suassuna() {
+    // Set GUI as nullptr by default
     _gui = nullptr;
+
+    // Start entity manager
+    _entityManager = new Threaded::EntityManager();
 }
 
-void Suassuna::start(bool useGui) {
-    // Creating World Map
-    _worldMap = new WorldMap(getConstants());
-    _world->addEntity(_worldMap, 2);
+Suassuna::~Suassuna() {
+    // If GUI is not null, hide and delete
+    if(_gui != nullptr) {
+        _gui->hide();
+        delete _gui;
+    }
 
-    // Creating gand adding referee to world
-    _referee = new SSLReferee(getConstants(), _worldMap);
-    _world->addEntity(_referee, 1);
+    // Delete all entities in EntityManager
+    delete _entityManager;
+}
 
-    // Set utils
-    Utils::setConstants(getConstants());
-    Utils::setWorldMap(_worldMap);
-
-
-    Role_Default *role_default = new Role_Default();
-    Role_Goalkeeper *role_goalkeeper = new Role_Goalkeeper();
-    Role_Barrier *role_barrier = new Role_Barrier();
-
-    Player *player0 = new Player(0, _worldMap, _referee, getConstants());
-    player0->setRole(role_goalkeeper);
-    _playerList.push_back(player0);
-    _world->addEntity(player0, 0);
-    Player *player1 = new Player(1, _worldMap, _referee, getConstants());
-    player1->setRole(role_barrier);
-    _playerList.push_back(player1);
-    _world->addEntity(player1, 0);
-    Player *player2 = new Player(2, _worldMap, _referee, getConstants());
-    _playerList.push_back(player2);
-    _world->addEntity(player2, 0);
-    Player *player3 = new Player(3, _worldMap, _referee, getConstants());
-    _playerList.push_back(player3);
-    _world->addEntity(player3, 0);
-    Player *player4 = new Player(4, _worldMap, _referee, getConstants());
-    _playerList.push_back(player4);
-    _world->addEntity(player4, 0);
-    Player *player5 = new Player(5, _worldMap, _referee, getConstants());
-    _playerList.push_back(player5);
-    _world->addEntity(player5, 0);
-
-    // Setup GUI
-    if(useGui) {
+bool Suassuna::start(bool useGUI) {
+    // If useGUI is set, create and show the GUI
+    if(useGUI) {
         _gui = new GUI();
         _gui->show();
     }
 
-    // Starting world
-    _world->start();
+    // Start worldmap
+    _worldMap = new WorldMap(Constants::visionServiceAddress(), Constants::visionServicePort());
+    _entityManager->addEntity(_worldMap);
 
-    // Disabling world thread (loop() won't run anymore)
-    _world->disableLoop();
+    // Start referee
+    _referee = new SSLReferee(_worldMap);
+    _entityManager->addEntity(_referee);
+
+    // Start controller
+    _controller = new Controller(Constants::actuatorServiceAddress(), Constants::actuatorServicePort());
+    _entityManager->addEntity(_controller);
+
+    // Start teams
+    magic_enum::enum_for_each<Common::Enums::Color>([this] (auto color) {
+        if(color != Common::Enums::Color::UNDEFINED) {
+            _teams.insert(color, new SSLTeam(color));
+            for(int i = 0; i < Constants::maxNumPlayers(); i++) {
+                Player *player = new Player(i, color, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr));
+                _teams[color]->addPlayer(player);
+
+                // Start thread only if is a Player from our team
+                if(color == Constants::teamColor()) {
+                    _entityManager->addEntity(player);
+                }
+            }
+        }
+    });
+
+    // Setup teams in WorldMap
+    _worldMap->setupTeams(_teams);
+
+    // Start all entities
+    _entityManager->startEntities();
+
+    return true;
 }
 
-void Suassuna::stop() {
-    // Stopping and waiting world
-    _world->stopEntity();
-    _world->wait();
+bool Suassuna::stop() {
+    // Stop entities registered in EntityManager (this also waits for them to stop)
+    _entityManager->disableEntities();
 
-    // Deleting world (it also delete all other entities added to it)
-    delete _world;
-
-    // If gui pointer is not null, close and delete it
-    if(_gui != nullptr) {
-        _gui->close();
-        delete _gui;
-    }
-}
-
-Constants* Suassuna::getConstants() {
-    if(_constants == nullptr) {
-        std::cout << Text::red("[ERROR] ", true) << Text::bold("Constants with nullptr value at Suassuna") + '\n';
-    }
-    else {
-        return _constants;
-    }
-
-    return nullptr;
+    return true;
 }

@@ -22,127 +22,77 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#include <QString>
-#include <QtCore>
-#include <QList>
-
-#include <src/utils/types/fieldside/fieldside.h>
-#include <proto/messages.pb.h>
+#include <Armorial/Common/Enums/Enums.h>
+#include <Armorial/Utils/ParameterHandler/ParameterHandler.h>
 
 #define ROBOT_INVALID_ID 200
-#define YELLOW_ID 0
-#define BLUE_ID 1
-
-using namespace Armorial;
 
 class Constants
 {
 public:
-    Constants(QString fileName);
+    /*!
+     * \brief Load a json file in the given file path, extracting its components.
+     * \param fileName The given file path.
+     */
+    static void loadFile(QString filePath);
 
-    bool isTeamBlue();
-    bool isTeamYellow();
-    QString getTeamColor() const;
-    void setTeamColor(const QString &teamColor);
-    Color teamColor();
-    float getRobotRadius();
-    float getBallRadius();
+    /// Network
+    // Referee
+    /*!
+     * \return A QString object containing the referee network address.
+     */
+    static QString refereeNetworkAddress();
 
-    FieldSide getTeamSide();
-    FieldSide getOppositeSide();
-    void swapTeamSide();
+    /*!
+     * \return A quint16 object containing the referee network port.
+     */
+    static quint16 refereeNetworkPort();
 
-    int getQtdPlayers() const;
-    void setQtdPlayers(int qtdPlayers);
+    /*!
+     * \return A QString object containing the referee network interface.
+     */
+    static QString refereeNetworkInterface();
 
-    QString getGRPCAddress() const;
-    void setGRPCAddress(const QString &GRPCAddress);
+    // WorldMap
+    /*!
+     * \return A QString object containing the vision service address.
+     */
+    static QString visionServiceAddress();
 
-    quint16 getGRPCActuatorPort() const;
-    void setGRPCActuatorPort(const quint16 &GRPCActuatorPort);
+    /*!
+     * \return A quint16 object containing the vision service port.
+     */
+    static quint16 visionServicePort();
 
-    quint16 getGRPCCoachPort() const;
-    void setGRPCCoachPort(const quint16 &GRPCCoachPort);
+    // Controller
+    /*!
+     * \return A QString object containing the actuator service address.
+     */
+    static QString actuatorServiceAddress();
 
-    QString getSimAddress() const;
-    void setSimAddress(const QString &SimAddress);
+    /*!
+     * \return A quint16 object containing the actuator service port.
+     */
+    static quint16 actuatorServicePort();
 
-    quint16 getSimActuatorPort() const;
-    void setSimActuatorPort(const quint16 &SimActuatorPort);
+    /// Team
+    /*!
+     * \return A Common::Enums::Color containing our team color.
+     */
+    static Common::Enums::Color teamColor();
 
-    float getTimeToSendPacketZero() const;
-    void setTimeToSendPacketZero(float timeToSendPacketZero);
-    
-    QString getRefereeAddress() const;
-    void setRefereeAddress(const QString &RefereeAddress);
+    /*!
+     * \return A Common::Types::Side containing our play side.
+     */
+    static Common::Enums::Side teamPlaySide();
 
-    quint16 getRefereePort() const;
-    void setRefereePort(const quint16 &RefereePort);
-
-    QString getTeamSide() const;
-    void setTeamSide(const QString &teamSide);
-
-    float getMinDistToConsiderBallMovement();
-    void setMinDistToConsiderBallMovement(float minDistToConsiderBallMovement);
-
-    float getRobotRadius() const;
-    void setRobotRadius(float value);
-
-    quint16 getKeeperID() const;
-    void setKeeperID(const quint16 &keeperID);
-
-    float getBallRadius() const;
-    void setBallRadius(float ballRadius);
-
-    float maxKickPower();
-    float maxChipKickPower();
-    float maxRobotLinearSpeed();
-    float maxRobotAngularSpeed();
-    float playerChipKickAngle();
-    QList<float> playerLinearPID();
-    QList<float> playerAngularPID();
-    QList<float> keeperLinearPID();
-    QList<float> keeperAngularPID();
+    /*!
+     * \return A integer containing the maximum num of players (patterns).
+     */
+    static quint16 maxNumPlayers();
 
 private:
-    QString _fileName;
-    QFile file;
-
-    // Network Constants
-    QString _GRPCAddress;
-    quint16 _GRPCActuatorPort;
-    quint16 _GRPCCoachPort;
-
-    QString _SimAddress;
-    quint16 _SimActuatorPort;
-    
-    QString _RefereeAddress;
-    quint16 _RefereePort;
-
-    // Team Constants
-    QString _teamColor;
-    Color _color;
-    FieldSide _teamSide;
-    int _qtdPlayers;
-    float _timeToSendPacketZero;
-    quint16 _keeperID;
-    float _maxKickPower;
-    float _maxChipKickPower;
-    float _maxRobotLinearSpeed;
-    float _maxRobotAngularSpeed;
-    float _playerChipKickAngle;
-    QList<float> _playerLinearPID;
-    QList<float> _playerAngularPID;
-    QList<float> _keeperLinearPID;
-    QList<float> _keeperAngularPID;
-
-    // Foul/Referee-related constants
-    float _minDistToConsiderBallMovement;
-
-    // Robot dimensions
-    float _robotRadius;
-
-    float _ballRadius;
+    static Utils::ParameterHandler _parameterHandler;
 };
 
 #endif // CONSTANTS_H

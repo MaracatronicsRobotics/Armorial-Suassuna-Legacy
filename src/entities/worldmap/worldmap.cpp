@@ -19,199 +19,130 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-
 #include "worldmap.h"
 
-#include <src/utils/text/text.h>
+#include <src/entities/coach/sslteam/sslteam.h>
+#include <src/constants/constants.h>
 
-WorldMap::WorldMap(Constants *constants) {
-    _constants = constants;
-    _coachService = nullptr;
-    _locations = nullptr;
+WorldMap::WorldMap(QString serviceAddress, quint16 servicePort) : Base::GRPC::Client<Armorial::Vision::VisionService>(serviceAddress, servicePort) {
+
 }
 
-QString WorldMap::name() {
-    return "WorldMap";
+void WorldMap::setupTeams(QMap<Common::Enums::Color, SSLTeam*> &teams) {
+    _teams = teams;
 }
 
-Robot WorldMap::getRobot(RobotIdentifier identifier) {
-    // Lock mutex for read and get the list for the identifier color
+Common::Types::Field WorldMap::getField() {
     _mutex.lockForRead();
-    QList<Robot> listToSearch = _robots.value(identifier.robotcolor().isblue());
-    _mutex.unlock();
-
-    // Try to search in the list an robot that matches the required id
-    // and return if found
-    for(int i = 0; i < listToSearch.size(); i++) {
-        Robot robot = listToSearch.at(i);
-        if(robot.robotidentifier().robotid() == identifier.robotid()) {
-            return robot;
-        }
-    }
-
-    // If not found the required robot, return an robot with invalid id
-    Robot robot = Robot();
-
-    // Create invalid identifier
-    RobotIdentifier *robotIdentifier = new RobotIdentifier();
-    identifier.set_robotid(ROBOT_INVALID_ID);
-    robot.set_allocated_robotidentifier(robotIdentifier);
-
-    // Return the invalid robot
-    return robot;
-}
-
-Robot WorldMap::getRobot(Color color, int id) {
-    // Lock mutex for read and get the list for the color
-    _mutex.lockForRead();
-    QList<Robot> listToSearch = _robots.value(color.isblue());
-    _mutex.unlock();
-
-    // Try to search in the list an robot that matches the required id
-    // and return if found
-    for(int i = 0; i < listToSearch.size(); i++) {
-        Robot robot = listToSearch.at(i);
-        if(robot.robotidentifier().robotid() == id) {
-            return robot;
-        }
-    }
-
-    // If not found the required robot, return an robot with invalid id
-    Robot robot = Robot();
-
-    // Create invalid identifier
-    RobotIdentifier *robotIdentifier = new RobotIdentifier();
-    robot.set_allocated_robotidentifier(robotIdentifier);
-
-    // Return the invalid robot
-    return robot;
-}
-
-QList<Robot> WorldMap::getRobots(Color color) {
-    // Lock mutex for read and get the list for the identifier color
-    _mutex.lockForRead();
-    QList<Robot> listToSearch = _robots.value(color.isblue());
-    _mutex.unlock();
-
-    // Return the list
-    return listToSearch;
-}
-
-QList<int> WorldMap::getRobotsIDs(Color color) {
-    // Lock mutex for read and get the list for the identifier color
-    _mutex.lockForRead();
-    QList<Robot> listToSearch = _robots.value(color.isblue());
-    QList<int> listIDs;
-    for (Robot r : listToSearch) {
-        listIDs.push_back(r.robotidentifier().robotid());
-    }
-    _mutex.unlock();
-
-    // Return the list
-    return listIDs;
-}
-
-Field WorldMap::getField() {
-    // Lock mutex for read and take the field var
-    _mutex.lockForRead();
-    Field field = _field;
+    Common::Types::Field field = _field;
     _mutex.unlock();
 
     return field;
 }
 
-Ball WorldMap::getBall() {
-    // Lock mutex for read and take the ball var
+Common::Types::Object WorldMap::getBall() {
     _mutex.lockForRead();
-    Ball ball = _ball;
+    Common::Types::Object ball = _ball;
     _mutex.unlock();
 
     return ball;
 }
 
 void WorldMap::initialization() {
-    // Create Coach Service pointer
-    _coachService = new CoachService(getConstants());
-
-    // Create Locations pointer
-    _locations = new Locations(getConstants());
-
-    // Debug
-    std::cout << Text::blue("[WORLDMAP] ", true) + Text::bold("Thread started.\n");
+    // Try to connect to server
+    if(connectToServer(true)) {
+        spdlog::info("[{}] Connected to vision service at address '{}' and port '{}'.", clientName().toStdString(), getServiceAddress().toStdString(), getServicePort());
+    }
+    else {
+        spdlog::error("[{}] Failed to connect to vision service at address '{}' and port '{}'.", clientName().toStdString(), getServiceAddress().toStdString(), getServicePort());
+        return ;
+    }
 }
 
 void WorldMap::loop() {
-    // Send requests to coach service and lock QReadWriteLock for write
-    _mutex.lockForWrite();
+    // Check if is disconnected from server and try to reconnect
+    if(!isConnectedToServer()) {
+        spdlog::warn("[{}] Disconnected from vision service, trying to reconnect...", clientName().toStdString());
+        bool couldReconnect = connectToServer(true);
 
-    // Request ball object
-    _ball = getService()->getBall();
+        if(couldReconnect) {
+            spdlog::info("[{}] Succesfully recconected to vision service at address '{}' and port '{}'.", clientName().toStdString(), getServiceAddress().toStdString(), getServicePort());
+        }
+        else {
+            spdlog::warn("[{}] Reconnection attempt to vision service at address '{}' and port '{}' failed.", clientName().toStdString(), getServiceAddress().toStdString(), getServicePort());
+            return ;
+        }
+    }
 
-    // Request field object
-    _field = getService()->getField();
-
-    // Fill data in locations
-    _locations->updateFieldData(_field);
-
-    // Request robots from team yellow
-    Color yellow;
-    yellow.set_isblue(false);
-    QList<Robot> yellowRobots = getService()->getRobots(yellow);
-
-    // Request robots from team blue
-    Color blue;
-    blue.set_isblue(true);
-    QList<Robot> blueRobots = getService()->getRobots(blue);
-
-    // Update robots in map
-    _robots.clear();
-    _robots.insert(YELLOW_ID, yellowRobots);
-    _robots.insert(BLUE_ID, blueRobots);
-
-    // Unlock mutex
-    _mutex.unlock();
+    // Update field and its objects
+    updateField();
+    updateBall();
+    updatePlayers();
 }
 
 void WorldMap::finalization() {
-    // Delete Coach Service pointer
-    delete _coachService;
-
-    // Delete Locations pointer
-    delete _locations;
-
-    // Debug
-    std::cout << Text::blue("[WORLDMAP] ", true) + Text::bold("Thread ended.\n");
+    spdlog::info("[{}] Disconnected from vision service.", clientName().toStdString());
 }
 
-Locations* WorldMap::getLocations() {
-    if(_locations == nullptr) {
-        std::cout << Text::red("[ERROR] ", true) << Text::bold("Locations with nullptr value at WorldMap") + '\n';
-    }
-    else {
-        return _locations;
-    }
+void WorldMap::updateField() {
+    // Create default data transfer objects
+    grpc::ClientContext context;
+    google::protobuf::Empty request;
+    Armorial::Field field;
 
-    return nullptr;
+    // Cast stub to get latest field packet
+    getStub()->GetField(&context, request, &field);
+
+    // Process to generate a Common::Types::Field object
+    _mutex.lockForWrite();
+    _field = Common::Types::Field(Constants::teamPlaySide(), field.centerradius(),
+                                  field.fieldlength(), field.fieldwidth(),
+                                  field.goaldepth(), field.goalwidth(),
+                                  field.defenselength(), field.defensewidth(), 0.0);
+    _mutex.unlock();
 }
 
-CoachService* WorldMap::getService() {
-    if(_coachService == nullptr) {
-        std::cout << Text::red("[ERROR] ", true) << Text::bold("CoachService with nullptr value at WorldMap") + '\n';
-    }
-    else {
-        return _coachService;
-    }
+void WorldMap::updateBall() {
+    // Create default data transfer objects
+    grpc::ClientContext context;
+    google::protobuf::Empty request;
+    Armorial::Ball ball;
 
-    return nullptr;
+    // Cast stub to get latest field packet
+    getStub()->GetBall(&context, request, &ball);
+
+    _mutex.lockForWrite();
+    _ball = Common::Types::Object({ball.ballposition().x(), ball.ballposition().y()},
+                                  {ball.ballvelocity().vx(), ball.ballvelocity().vy()},
+                                  {ball.ballacceleration().ax(), ball.ballacceleration().ay()});
+    _mutex.unlock();
 }
 
-Constants* WorldMap::getConstants() {
-    if(_constants == nullptr) {
-        std::cout << Text::red("[ERROR] ", true) << Text::bold("Constants with nullptr value at WorldMap") + '\n';
-    }
-    else {
-        return _constants;
-    }
+void WorldMap::updatePlayers() {
+    _mutex.lockForWrite();
 
-    return nullptr;
+    // For each team color, get its robots
+    magic_enum::enum_for_each<Common::Enums::Color>([this] (auto color) {
+        if(color != Common::Enums::Color::UNDEFINED) {
+            // Create default data transfer objects
+            grpc::ClientContext context;
+            google::protobuf::Empty request;
+
+            // Create color
+            Armorial::Color teamColor; teamColor.set_isblue(color == (Common::Enums::Color::BLUE));
+
+            // Cast stub to get robots for the specific team color
+            std::unique_ptr<grpc::ClientReader<Armorial::Robot>> robotsForTeam = getStub()->GetRobots(&context, teamColor);
+
+            Armorial::Robot robot;
+            while(robotsForTeam->Read(&robot)) {
+                // Update robot if it is not invalid
+                if(!robot.robotposition().isinvalid()) {
+                    _teams[color]->updatePlayer(robot);
+                }
+            }
+        }
+    });
+
+    _mutex.unlock();
 }

@@ -22,38 +22,58 @@
 #ifndef SUASSUNA_H
 #define SUASSUNA_H
 
-#include <src/gui/gui.h>
-#include <src/entities/referee/referee.h>
-#include <src/entities/player/player.h>
-#include <src/entities/world/world.h>
-#include <src/entities/worldmap/worldmap.h>
-#include <src/entities/player/role/roles.h>
+#include <Armorial/Threaded/EntityManager/EntityManager.h>
 
+#include <src/constants/constants.h>
+
+#include <src/gui/gui.h>
+#include <src/entities/referee/sslreferee.h>
+#include <src/entities/coach/sslteam/sslteam.h>
+#include <src/entities/controller/controller.h>
+
+/*!
+ * \brief The Suassuna class is responsible to manage the creation, deletion, start and stop of all
+ * the core of the Suassuna application, it is, the entities (such as referee and players) and some
+ * other modules.
+ */
 class Suassuna
 {
 public:
-    Suassuna(Constants *constants);
+    /*!
+     * \brief Suassuna constructor.
+     */
+    Suassuna();
 
-    // Internal management
-    void start(bool useGui);
-    void stop();
+    /*!
+     * \brief Suassuna destructor.
+     */
+    ~Suassuna();
+
+    /*!
+     * \brief Start Suassuna core (entities, players and some other modules).
+     * \param useGUI Starts the GUI interface if set as True.
+     * \return True if everything went ok and false otherwise.
+     */
+    [[nodiscard]] bool start(bool useGUI);
+
+    /*!
+     * \brief Stop Suassuna core (entities, players and some other modules).
+     * \return True if everything went ok and false otherwise.
+     */
+    [[nodiscard]] bool stop();
 
 private:
-    // Constants
-    Constants *_constants;
-    Constants* getConstants();
-
     // Modules
-    SSLReferee *_referee;
-    WorldMap *_worldMap;
     GUI *_gui;
+    WorldMap *_worldMap;
+    SSLReferee *_referee;
+    Controller *_controller;
 
-    // World (thread manager)
-    World *_world;
+    // Teams
+    QMap<Common::Enums::Color, SSLTeam*> _teams;
 
-    // Players
-    QList<Player*> _playerList;
-    Player *_player;
+    // Entity manager
+    Threaded::EntityManager *_entityManager;
 };
 
 #endif // SUASSUNA_H

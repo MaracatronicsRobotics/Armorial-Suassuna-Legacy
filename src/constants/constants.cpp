@@ -19,316 +19,142 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-
 #include "constants.h"
-#include <iostream>
-#include <src/utils/text/text.h>
 
-Constants::Constants(QString fileName) {
-    _fileName = fileName;
+#include <QNetworkInterface>
+#include <QRegularExpression>
 
-    file.setFileName(_fileName);
-    file.open(QIODevice::ReadOnly | QIODevice::Text);
-    QString val = file.readAll();
-    file.close();
+Utils::ParameterHandler Constants::_parameterHandler = Utils::ParameterHandler();
 
-    QJsonDocument document = QJsonDocument::fromJson(val.toUtf8());
+void Constants::loadFile(QString filePath) {
+    // Load constants file
+    bool couldLoad = _parameterHandler.loadFile(filePath);
 
-    QJsonObject docObject = document.object();
-    QVariantMap docMap = docObject.toVariantMap();
-
-    _GRPCAddress = docMap["GRPCAddress"].toString();
-    std::cout << Text::bold("GRPC Address: ") + Text::green(_GRPCAddress.toStdString(), true) << std::endl;
-
-    _GRPCActuatorPort = docMap["GRPCActuatorPort"].toInt();
-    std::cout << Text::bold("GRPC Actuator Port: ") + Text::green(std::to_string(_GRPCActuatorPort), true) << std::endl;
-
-    _GRPCCoachPort = docMap["GRPCCoachPort"].toInt();
-    std::cout << Text::bold("GRPC Coach Port: ") + Text::green(std::to_string(_GRPCCoachPort), true) << std::endl;
-
-    _teamColor = docMap["teamColor"].toString();
-    std::cout << Text::bold("Team Color: ") + Text::green(_teamColor.toStdString(), true) << std::endl;
-
-    _teamSide = FieldSide(docMap["teamSide"].toString().toLower() == "left" ? Sides::LEFT : Sides::RIGHT);
-    std::cout << Text::bold("Team Side: ") + Text::green(docMap["teamSide"].toString().toLower().toStdString(), true) << std::endl;
-
-    _qtdPlayers = docMap["qtdPlayers"].toInt();
-    std::cout << Text::bold("Number of players: ") + Text::green(std::to_string(_qtdPlayers), true) << std::endl;
-
-    _timeToSendPacketZero = docMap["timeToSendPacketZero"].toFloat();
-    std::cout << Text::bold("Time to send packet zero: ") + Text::green(std::to_string(_timeToSendPacketZero), true) << std::endl;
-
-    _RefereeAddress = docMap["RefereeAddress"].toString();
-    std::cout << Text::bold("Referee Address: ") + Text::green(_RefereeAddress.toStdString(), true) << std::endl;
-
-    _RefereePort = docMap["RefereePort"].toInt();
-    std::cout << Text::bold("Referee Port: ") + Text::green(std::to_string(_RefereePort), true) << std::endl;
-
-    _minDistToConsiderBallMovement = docMap["minDistToConsiderBallMovement"].toFloat();
-    std::cout << Text::bold("Min distance to consider ball movement Side: ") + Text::green(std::to_string(_minDistToConsiderBallMovement), true) << std::endl;
-
-    _robotRadius = docMap["robotRadius"].toFloat();
-    std::cout << Text::bold("Robot radius: ") + Text::green(std::to_string(_robotRadius), true) << std::endl;
-
-    _ballRadius = docMap["ballRadius"].toFloat();
-    std::cout << Text::bold("Ball radius: ") + Text::green(std::to_string(_ballRadius), true) << std::endl;
-
-    _keeperID = quint16(docMap["keeperID"].toInt());
-    std::cout << Text::bold("Keeper ID: ") + Text::green(std::to_string(_keeperID), true) << std::endl;
-
-    _maxKickPower = docMap["maxKickPower"].toFloat();
-    std::cout << Text::bold("Max kick power: ") + Text::green(std::to_string(maxKickPower())) << std::endl;
-
-    _maxChipKickPower = docMap["maxChipKickPower"].toFloat();
-    std::cout << Text::bold("Max chip kick power: ") + Text::green(std::to_string(maxChipKickPower())) << std::endl;
-
-    _maxRobotLinearSpeed = docMap["maxRobotLinearSpeed"].toFloat();
-    std::cout << Text::bold("Max robot linear speed: ") + Text::green(std::to_string(maxRobotLinearSpeed())) << std::endl;
-
-    _maxRobotAngularSpeed = docMap["maxRobotAngularSpeed"].toFloat();
-    std::cout << Text::bold("Max robot angular speed: ") + Text::green(std::to_string(maxRobotAngularSpeed())) << std::endl;
-
-    _playerChipKickAngle = docMap["playerChipKickAngle"].toFloat();
-    std::cout << Text::bold("Player chip kick angle: ") + Text::green(std::to_string(playerChipKickAngle())) << std::endl;
-
-    QList<QVariant> playerLinearPIDList = docMap["playerLinearPID"].toList();
-    for (QVariant i: playerLinearPIDList) {
-        _playerLinearPID.push_back(i.toFloat());
+    // Check if could load
+    if(couldLoad) {
+        spdlog::info("[Constants] Readed constants file in path '{}'.", filePath.toStdString());
     }
-    std::cout << Text::bold("Player linear PID: {")
-                 + Text::green(std::to_string(playerLinearPID().at(0))) + ", "
-                 + Text::green(std::to_string(playerLinearPID().at(1))) + ", "
-                 + Text::green(std::to_string(playerLinearPID().at(2)))
-              << Text::bold("}") << std::endl;
-
-    QList<QVariant> playerAngularPIDList = docMap["playerAngularPID"].toList();
-    for (QVariant i: playerAngularPIDList) {
-        _playerAngularPID.push_back(i.toFloat());
-    }
-    std::cout << Text::bold("Player linear PID: {")
-                 + Text::green(std::to_string(playerAngularPID().at(0))) + ", "
-                 + Text::green(std::to_string(playerAngularPID().at(1))) + ", "
-                 + Text::green(std::to_string(playerAngularPID().at(2)))
-              << Text::bold("}") << std::endl;
-
-    QList<QVariant> keeperLinearPIDList = docMap["keeperLinearPID"].toList();
-    for (QVariant i: keeperLinearPIDList) {
-        _keeperLinearPID.push_back(i.toFloat());
-    }
-    std::cout << Text::bold("Keeper linear PID: {")
-                 + Text::green(std::to_string(keeperLinearPID().at(0))) + ", "
-                 + Text::green(std::to_string(keeperLinearPID().at(1))) + ", "
-                 + Text::green(std::to_string(keeperLinearPID().at(2)))
-              << Text::bold("}") << std::endl;
-
-    QList<QVariant> keeperAngularPIDList = docMap["keeperAngularPID"].toList();
-    for (QVariant i: keeperAngularPIDList) {
-        _keeperAngularPID.push_back(i.toFloat());
-    }
-    std::cout << Text::bold("Keeper linear PID: {")
-                 + Text::green(std::to_string(keeperAngularPID().at(0))) + ", "
-                 + Text::green(std::to_string(keeperAngularPID().at(1))) + ", "
-                 + Text::green(std::to_string(keeperAngularPID().at(2)))
-              << Text::bold("}") << std::endl;
-}
-
-bool Constants::isTeamBlue() {
-    if (getTeamColor() == "blue") {
-        return true;
-    }
-    return false;
-}
-
-bool Constants::isTeamYellow(){
-    if (getTeamColor() == "yellow") {
-        return true;
-    }
-    return false;
-}
-
-QString Constants::getTeamColor() const {
-    return _teamColor;
-}
-
-void Constants::setTeamColor(const QString &teamColor) {
-    _teamColor = teamColor;
-    if (teamColor == "blue") {
-        _color.set_isblue(true);
-    } else {
-        _color.set_isblue(false);
+    else {
+        spdlog::error("[Constants] Failed to read constants file in path '{}'.", filePath.toStdString());
+        exit(-1);
     }
 }
 
-Color Constants::teamColor() {
-    return _color;
+QString Constants::refereeNetworkAddress() {
+    QString address = _parameterHandler["Network"].getAsMap()["Referee"].getAsMap()["refereeNetworkAddress"].toString();
+    bool matchNetworkAddress = QRegularExpression("[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}").match(address).hasMatch();
+
+    if(!matchNetworkAddress) {
+        spdlog::error("[Constants] Failed to read a valid address in '{}'.", __FUNCTION__);
+        exit(-1);
+    }
+
+    return address;
 }
 
-float Constants::getRobotRadius() {
-    return _robotRadius;
+quint16 Constants::refereeNetworkPort() {
+    bool converted;
+    quint16 port = _parameterHandler["Network"].getAsMap()["Referee"].getAsMap()["refereeNetworkPort"].toInt(&converted);
+
+    if(!converted) {
+        spdlog::error("[Constants] Failed to read a valid integer in '{}'.", __FUNCTION__);
+        exit(-1);
+    }
+
+    return port;
 }
 
-float Constants::getBallRadius() {
-    return _ballRadius;
+QString Constants::refereeNetworkInterface() {
+    QString interface = _parameterHandler["Network"].getAsMap()["Referee"].getAsMap()["refereeNetworkInterface"].toString();
+    bool networkInterfaceExists = QNetworkInterface::interfaceFromName(interface).isValid();
+
+    if(!networkInterfaceExists) {
+        spdlog::error("[Constants] Failed to read a valid network interface in '{}'.", __FUNCTION__);
+    }
+
+    return interface;
 }
 
-FieldSide Constants::getTeamSide() {
-    return _teamSide;
+QString Constants::visionServiceAddress() {
+    QString address = _parameterHandler["Network"].getAsMap()["WorldMap"].getAsMap()["visionServiceAddress"].toString();
+    bool matchNetworkAddress = QRegularExpression("[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}").match(address).hasMatch();
+
+    if(!matchNetworkAddress) {
+        spdlog::error("[Constants] Failed to read a valid address in '{}'.", __FUNCTION__);
+        exit(-1);
+    }
+
+    return address;
 }
 
-FieldSide Constants::getOppositeSide() {
-    return _teamSide.oppositeSide();
+quint16 Constants::visionServicePort() {
+    bool converted;
+    quint16 port = _parameterHandler["Network"].getAsMap()["WorldMap"].getAsMap()["visionServicePort"].toInt(&converted);
+
+    if(!converted) {
+        spdlog::error("[Constants] Failed to read a valid integer in '{}'.", __FUNCTION__);
+        exit(-1);
+    }
+
+    return port;
 }
 
-void Constants::swapTeamSide() {
-    _teamSide = FieldSide(_teamSide.isLeft() ? Sides::RIGHT : Sides::LEFT);
+QString Constants::actuatorServiceAddress() {
+    QString address = _parameterHandler["Network"].getAsMap()["Controller"].getAsMap()["actuatorServiceAddress"].toString();
+    bool matchNetworkAddress = QRegularExpression("[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}").match(address).hasMatch();
+
+    if(!matchNetworkAddress) {
+        spdlog::error("[Constants] Failed to read a valid address in '{}'.", __FUNCTION__);
+        exit(-1);
+    }
+
+    return address;
 }
 
-int Constants::getQtdPlayers() const {
-    return _qtdPlayers;
+quint16 Constants::actuatorServicePort() {
+    bool converted;
+    quint16 port = _parameterHandler["Network"].getAsMap()["Controller"].getAsMap()["actuatorServicePort"].toInt(&converted);
+
+    if(!converted) {
+        spdlog::error("[Constants] Failed to read a valid integer in '{}'.", __FUNCTION__);
+        exit(-1);
+    }
+
+    return port;
 }
 
-void Constants::setQtdPlayers(int qtdPlayers) {
-    _qtdPlayers = qtdPlayers;
+Common::Enums::Color Constants::teamColor() {
+    QString teamColor = _parameterHandler["Team"].getAsMap()["teamColor"].toString();
+    auto color = magic_enum::enum_cast<Common::Enums::Color>(teamColor.toUpper().toStdString());
+
+    if(!color.has_value()) {
+        spdlog::error("[Constants] Failed to read a valid color in '{}'.", __FUNCTION__);
+        return Common::Enums::Color::UNDEFINED;
+    }
+
+    return color.value();
 }
 
-QString Constants::getGRPCAddress() const {
-    return _GRPCAddress;
+Common::Enums::Side Constants::teamPlaySide() {
+    QString teamPlaySide = _parameterHandler["Team"].getAsMap()["teamPlaySide"].toString();
+    auto playSide = magic_enum::enum_cast<Common::Enums::Side>("SIDE_" + teamPlaySide.toUpper().toStdString());
+
+    if(!playSide.has_value()) {
+        spdlog::error("[Constants] Failed to read a valid play side in '{}', defaulting to LEFT.", __FUNCTION__);
+        return Common::Enums::Side::SIDE_LEFT;
+    }
+
+    return playSide.value();
 }
 
-void Constants::setGRPCAddress(const QString &GRPCAddress) {
-    _GRPCAddress = GRPCAddress;
-}
+quint16 Constants::maxNumPlayers() {
+    bool converted;
+    quint16 maxPlayers = _parameterHandler["Team"].getAsMap()["maxNumPlayers"].toInt(&converted);
 
-quint16 Constants::getGRPCActuatorPort() const {
-    return _GRPCActuatorPort;
-}
+    if(!converted) {
+        spdlog::error("[Constants] Failed to read a valid integer in '{}'.", __FUNCTION__);
+        exit(-1);
+    }
 
-void Constants::setGRPCActuatorPort(const quint16 &GRPCActuatorPort) {
-    _GRPCActuatorPort = GRPCActuatorPort;
-}
-
-quint16 Constants::getGRPCCoachPort() const {
-    return _GRPCCoachPort;
-}
-
-void Constants::setGRPCCoachPort(const quint16 &GRPCCoachPort) {
-    _GRPCCoachPort = GRPCCoachPort;
-}
-
-QString Constants::getSimAddress() const {
-    return _SimAddress;
-}
-
-void Constants::setSimAddress(const QString &SimAddress) {
-    _SimAddress = SimAddress;
-}
-
-quint16 Constants::getSimActuatorPort() const {
-    return _SimActuatorPort;
-}
-
-void Constants::setSimActuatorPort(const quint16 &SimActuatorPort) {
-    _SimActuatorPort = SimActuatorPort;
-}
-
-float Constants::getTimeToSendPacketZero() const {
-    return _timeToSendPacketZero;
-}
-
-void Constants::setTimeToSendPacketZero(float timeToSendPacketZero) {
-    _timeToSendPacketZero = timeToSendPacketZero;
-}
-
-QString Constants::getRefereeAddress() const
-{
-    return _RefereeAddress;
-}
-
-void Constants::setRefereeAddress(const QString &RefereeAddress)
-{
-    _RefereeAddress = RefereeAddress;
-}
-
-quint16 Constants::getRefereePort() const
-{
-    return _RefereePort;
-}
-
-void Constants::setRefereePort(const quint16 &RefereePort)
-{
-    _RefereePort = RefereePort;
-}
-
-float Constants::getMinDistToConsiderBallMovement(){
-    return _minDistToConsiderBallMovement;
-}
-
-void Constants::setMinDistToConsiderBallMovement(float minDistToConsiderBallMovement){
-    _minDistToConsiderBallMovement = minDistToConsiderBallMovement;
-}
-
-float Constants::getRobotRadius() const
-{
-    return _robotRadius;
-}
-
-void Constants::setRobotRadius(float value)
-{
-    _robotRadius = value;
-}
-
-quint16 Constants::getKeeperID() const
-{
-    return _keeperID;
-}
-
-void Constants::setKeeperID(const quint16 &keeperID)
-{
-    _keeperID = keeperID;
-}
-
-float Constants::getBallRadius() const
-{
-    return _ballRadius;
-}
-
-void Constants::setBallRadius(float ballRadius)
-{
-    _ballRadius = ballRadius;
-}
-
-float Constants::maxKickPower(){
-    return _maxKickPower;
-}
-
-float Constants::maxChipKickPower() {
-    return _maxChipKickPower;
-}
-
-float Constants::maxRobotLinearSpeed() {
-    return _maxRobotLinearSpeed;
-}
-
-float Constants::maxRobotAngularSpeed() {
-    return _maxRobotAngularSpeed;
-}
-
-float Constants::playerChipKickAngle() {
-    return _playerChipKickAngle;
-}
-
-QList<float> Constants::playerLinearPID() {
-    return _playerLinearPID;
-}
-
-QList<float> Constants::playerAngularPID() {
-    return _playerAngularPID;
-}
-
-QList<float> Constants::keeperLinearPID() {
-    return _keeperLinearPID;
-}
-
-QList<float> Constants::keeperAngularPID() {
-    return _keeperAngularPID;
+    return maxPlayers;
 }

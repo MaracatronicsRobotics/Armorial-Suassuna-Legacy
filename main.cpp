@@ -21,41 +21,17 @@
 
 #include <QApplication>
 #include <QCommandLineParser>
+
+#include <Armorial/Utils/ExitHandler/ExitHandler.h>
+
 #include <spdlog/spdlog.h>
 
 #include <src/suassuna.h>
-#include <src/exithandler/exithandler.h>
-#include <src/constants/constants.h>
-#include <src/entities/entity.h>
-#include <src/services/actuator/actuatorservice.h>
-#include <src/services/coach/coachservice.h>
-#include <src/utils/text/text.h>
-#include <src/utils/timer/timer.h>
 
-QCoreApplication *createApplication(int &argc, char *argv[]) {
-    // Try to found in args an '--gui'
-    bool foundArg = false;
-    for (int i = 0; i < argc; ++i) {
-        if (!qstrcmp(argv[i], "--gui")) {
-            foundArg = true;
-            break;
-        }
-    }
-
-    // if not found, call core application
-    if(!foundArg) {
-        return new QCoreApplication(argc, argv);
-    }
-    // otherwise, call gui application
-    else {
-        return new QApplication(argc, argv);
-    }
-}
-
-int main(int argc, char *argv[]){
-    QScopedPointer<QCoreApplication> a(createApplication(argc, argv));
-    a->setApplicationName("Armorial Suassuna");
-    a->setApplicationVersion("2.0.0");
+int main(int argc, char *argv[])
+{
+    // Create application
+    QApplication app(argc, argv);
 
     // Setup command line parser
     QCommandLineParser parser;
@@ -68,23 +44,44 @@ int main(int argc, char *argv[]){
     parser.addOption(useGuiOption);
 
     // Process parser in application
-    parser.process(*a);
+    parser.process(app);
 
     // Setup ExitHandler
-    ExitHandler::setApplication(a.data());
-    ExitHandler::setup();
+    Utils::ExitHandler::setApplication(&app);
+    Utils::ExitHandler::setup();
 
-    Constants *constants = new Constants(QString(PROJECT_PATH) + "/src/constants/constants.json");
-    Suassuna *suassuna = new Suassuna(constants);
+    // Load constants
+    Constants::loadFile(QString(PROJECT_PATH) + "/src/constants/constants.json");
 
-    // Start Suassuna
-    suassuna->start(parser.isSet(useGuiOption));
+    // Start Suassuna core
+    Suassuna *suassuna = new Suassuna();
+    bool started = suassuna->start(parser.isSet(useGuiOption));
 
-    // Wait for application end
-    bool exec = a->exec();
+    // Check if started well
+    if(started) {
+        spdlog::info("Suassuna started succesfully.");
+    }
+    else {
+        spdlog::error("Suassuna could not start properly, check previous log messages.");
+        exit(-1);
+    }
 
-    // Stop Suassuna
-    suassuna->stop();
+    // Hold exec
+    bool exec = app.exec();
 
+    // Check if stopped well
+    bool stopped = suassuna->stop();
+    if(stopped) {
+        spdlog::info("Suassuna stopped succesfully.");
+    }
+    else {
+        spdlog::error("Suassuna could not stop properly, check previous log messages.");
+        exit(-1);
+    }
+
+    // Delete Suassuna
+    delete suassuna;
+
+    //
     return exec;
 }

@@ -22,107 +22,91 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <QReadWriteLock>
-
-#include <src/entities/entity.h>
-#include <src/services/actuator/actuatorservice.h>
 #include <src/entities/worldmap/worldmap.h>
-#include <src/utils/utils.h>
+#include <src/entities/controller/controller.h>
+#include <src/entities/player/PID/pid.h>
+#include <src/entities/player/PID/anglepid.h>
 
-#include <src/entities/baseCoach.h>
-
-#define IDLE_COUNT 60
-
-class Player : public Entity
+class Player : public Common::Types::Object, public Threaded::Entity
 {
 public:
-    Player(int playerID, WorldMap *worldMap, SSLReferee *referee, Constants *constants);
-    ~Player();
-    QString name();
+    /*!
+     * \brief Player constructor.
+     * \param playerId, teamColor Player identifiers.
+     */
+    Player(const quint8 playerId, const Common::Enums::Color& teamColor, WorldMap* worldMap, Controller* controller);
 
-    // Player getters
-    int getPlayerID();
-    bool isDribbling();
-    float getPlayerRadius();
-    Position getPlayerPos();
-    Position getPlayerKickerDevicePos();
-    Angle getPlayerOrientation();
-    AngularSpeed getPlayerAngularSpeed();
-    Velocity getPlayerVelocity();
-    Acceleration getPlayerAcceleration();
-    RobotStatus getPlayerStatus();
-    bool isPlayerInAvaliableRobots();
+    /*!
+     * \brief Player params getters
+     */
+    Common::Enums::Color teamColor();
+    quint8 playerId();
 
-    // Player Aux methods
-    float getPlayerAngleTo(Position targetPos);
-    float getPlayerOrientationTo(Position targetPos, Position referencePos = Position(Utils::getPositionObject(0.0f, 0.0f, 0.0f, true)));
-    float getRotationAngleTo(Position targetPos, Position referencePos);
-    float getPlayerDistanceTo(Position targetPos);
-    bool hasBallPossession();
-    bool isLookingTo(Position targetPos);
-    bool isSufficientlyAlignedTo(Position targetPos, Position referencePos = Utils::getPositionObject(0.0f, 0.0f, 0.0f, true));
+    /*!
+     * \brief goTo
+     * \param position
+     */
+    void goTo(const Geometry::Vector2D& target);
 
-    // Player Error
-    float getLinearError();
-    float getAngularError();
+    /*!
+     * \brief rotateTo
+     * \param position
+     */
+    void rotateTo(const Geometry::Vector2D& target, const Geometry::Vector2D& referencePosition);
 
-    // Role Management
-    QString roleName();
-    QString behaviorName();
-    void setRole(Role *role);
+    /*!
+     * \brief rotateTo
+     * \param position
+     */
+    void rotateTo(const Geometry::Angle& targetAngle);
 
-    // Skills
-    void playerGoTo(Position pos);
-    void playerRotateTo(Position pos, Position referencePos = Utils::getPositionObject(0.0f, 0.0f, 0.0f, true));
-    void playerDribble(bool enable);
-    void playerKick(float power, bool isChip);
-    void playerIdle();
+    /*!
+     * \brief kick
+     * \param kickSpeed
+     * \param chipKickAngle
+     * \param kickAngle
+     */
+    void kick(const float& kickSpeed, const float& chipKickAngle = 0, const float& kickAngle = 0);
 
-    //PlayerControls
-    void getPlayerControl(int ID, bool isBlue);
+    /*!
+     * \brief dribble
+     * \param dribbling
+     */
+    void dribble(const bool& dribbling);
+
+protected:
+    friend class SSLTeam;
+
+    /*!
+     * \brief Update this Player class with a given Common::Types::Object containing
+     * the data.
+     * \param playerData The given data to update this Player instance.
+     */
+    void updatePlayer(Common::Types::Object playerData);
+
+    /*!
+     * \brief Mark player as idle, setting its speeds to zero.
+     */
+    void idle();
+
 private:
-    //Entity inherited methods
     void initialization();
     void loop();
     void finalization();
 
-    // Player Control
-    //QList<ControlPacket> _playerControls;
-    ControlPacket _playerControl;
-    int _playerID;
-    int _idleCount;
-    bool _isDribbling;
-    Position _playerPos;
+    // Player vars
+    quint8 _playerId;
+    Common::Enums::Color _teamColor;
+//    PID *_vxPID;
+//    PID *_vyPID;
+    AnglePID *_vwPID;
 
-    // Player Role
-    Role *_playerRole;
-
-    // Mutex
-    QReadWriteLock _mutexRole;
-
-    // Actuator Service
-    ActuatorService *_actuatorService;
-    ActuatorService* getActuatorService();
-
-    // Coach Service
-    CoachService *_coachService;
-    CoachService* getCoachService();
-
-    // Constants
-    Constants *_constants;
-    Constants* getConstants();
-
-    // WorldMap
+    // Internal
     WorldMap *_worldMap;
-    WorldMap* getWorldMap();
+    Controller *_controller;
 
-    // Referee
-    SSLReferee *_referee;
-    SSLReferee* getReferee();
-
-    //Only for testing purposes
-    Position _dest;
-    Position _lookTo;
+    // Idle control
+    Utils::Timer _idleTimer;
 };
 
 #endif // PLAYER_H

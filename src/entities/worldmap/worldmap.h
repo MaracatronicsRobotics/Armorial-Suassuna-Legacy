@@ -19,57 +19,81 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-
 #ifndef WORLDMAP_H
 #define WORLDMAP_H
 
 #include <QReadWriteLock>
 
-#include <src/entities/entity.h>
-#include <src/services/coach/coachservice.h>
-#include <src/entities/worldmap/locations/locations.h>
+#include <Armorial/Base/Client/Client.h>
+#include <Armorial/Common/Enums/Enums.h>
+#include <Armorial/Common/Types/Field/Field.h>
+#include <Armorial/Threaded/Entity/Entity.h>
 
-class WorldMap : public Entity
+#include <include/proto/visionservice.grpc.pb.h>
+
+class SSLTeam;
+
+class WorldMap : public Threaded::Entity, Base::GRPC::Client<Armorial::Vision::VisionService>
 {
 public:
-    WorldMap(Constants *constants);
+    /*!
+     * \brief Constructor for the WorldMap class.
+     * \param serviceAddress, servicePort The given parameters for the connection with the Vision Service.
+     */
+    WorldMap(QString serviceAddress, quint16 servicePort);
 
-    //
-    QString name();
+    void setupTeams(QMap<Common::Enums::Color, SSLTeam*>& teams);
 
-    // Data getters
-    Robot getRobot(RobotIdentifier identifier);
-    Robot getRobot(Color color, int id);
-    QList<Robot> getRobots(Color color);
-    QList<int> getRobotsIDs(Color color);
-    Field getField();
-    Ball getBall();
+    /*!
+     * \return A Common::Types::Field filled with the locations and parameters of the field
+     * which the team is playing.
+     */
+    Common::Types::Field getField();
+    Common::Types::Object getBall();
 
-    // Locations getter
-    Locations* getLocations();
+    // Common::Types::Object getPlayer(const Common::Enums::Color& teamColor, quint8 playerId);
 
+    // QList<Common::Types::Object> getPlayersFromTeam(const Common::Enums::Color &teamColor);
+
+protected:
+    /*!
+     * \brief Update the Common::Types::Field internal variable based on the received data
+     * from service and available constants.
+     */
+    void updateField();
+
+    /*!
+     * \brief Update the Common::Types::Object internal variable that stores the ball data.
+     */
+    void updateBall();
+
+    /*!
+     * \brief Update the list of Common::Types::Object internal variable that stores the players
+     * positions and data.
+     */
+    void updatePlayers();
 private:
-    // Entity inherited methods
+    /*!
+     * \brief initialization
+     */
     void initialization();
+
+    /*!
+     * \brief loop
+     */
     void loop();
+
+    /*!
+     * \brief finalization
+     */
     void finalization();
 
-    // Internal data
-    QMap<bool, QList<Robot>> _robots;
-    Ball _ball;
-    Field _field;
+    // Internal
+    QMap<Common::Enums::Color, SSLTeam*> _teams;
     QReadWriteLock _mutex;
 
-    // Locations
-    Locations *_locations;
-
-    // Coach Service
-    CoachService *_coachService;
-    CoachService* getService();
-
-    // Constants
-    Constants *_constants;
-    Constants* getConstants();
+    Common::Types::Field _field;
+    Common::Types::Object _ball;
 };
 
 #endif // WORLDMAP_H
