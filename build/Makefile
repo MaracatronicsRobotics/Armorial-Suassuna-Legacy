@@ -86,13 +86,21 @@ SOURCES       = ../include/proto/actuatorservice.grpc.pb.cc \
 		../src/entities/controller/controller.cpp \
 		../src/entities/player/PID/anglepid.cpp \
 		../src/entities/player/PID/pid.cpp \
+		../src/entities/player/behavior/behavior.cpp \
+		../src/entities/player/behavior/default/behavior_default.cpp \
 		../src/entities/player/player.cpp \
+		../src/entities/player/role/default/role_default.cpp \
+		../src/entities/player/role/role.cpp \
+		../src/entities/player/skill/goto/skill_goto.cpp \
+		../src/entities/player/skill/rotate/skill_rotateto.cpp \
+		../src/entities/player/skill/skill.cpp \
 		../src/entities/referee/gameinfo/sslgameinfo.cpp \
 		../src/entities/referee/sslreferee.cpp \
 		../src/entities/worldmap/worldmap.cpp \
 		../src/gui/gui.cpp \
 		../src/suassuna.cpp \
-		../src/utils/utils.cpp tmp/moc/moc_gui.cpp
+		../src/utils/utils.cpp tmp/moc/moc_role.cpp \
+		tmp/moc/moc_gui.cpp
 OBJECTS       = tmp/obj/actuatorservice.grpc.pb.o \
 		tmp/obj/actuatorservice.pb.o \
 		tmp/obj/messages.grpc.pb.o \
@@ -127,13 +135,21 @@ OBJECTS       = tmp/obj/actuatorservice.grpc.pb.o \
 		tmp/obj/controller.o \
 		tmp/obj/anglepid.o \
 		tmp/obj/pid.o \
+		tmp/obj/behavior.o \
+		tmp/obj/behavior_default.o \
 		tmp/obj/player.o \
+		tmp/obj/role_default.o \
+		tmp/obj/role.o \
+		tmp/obj/skill_goto.o \
+		tmp/obj/skill_rotateto.o \
+		tmp/obj/skill.o \
 		tmp/obj/sslgameinfo.o \
 		tmp/obj/sslreferee.o \
 		tmp/obj/worldmap.o \
 		tmp/obj/gui.o \
 		tmp/obj/suassuna.o \
 		tmp/obj/utils.o \
+		tmp/obj/moc_role.o \
 		tmp/obj/moc_gui.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -246,7 +262,16 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../src/entities/controller/controller.h \
 		../src/entities/player/PID/anglepid.h \
 		../src/entities/player/PID/pid.h \
+		../src/entities/player/behavior/behavior.h \
+		../src/entities/player/behavior/behaviors.h \
+		../src/entities/player/behavior/default/behavior_default.h \
 		../src/entities/player/player.h \
+		../src/entities/player/role/default/role_default.h \
+		../src/entities/player/role/role.h \
+		../src/entities/player/skill/goto/skill_goto.h \
+		../src/entities/player/skill/rotate/skill_rotateto.h \
+		../src/entities/player/skill/skill.h \
+		../src/entities/player/skill/skills.h \
 		../src/entities/referee/gameinfo/sslgameinfo.h \
 		../src/entities/referee/sslreferee.h \
 		../src/entities/worldmap/worldmap.h \
@@ -286,7 +311,14 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../src/entities/controller/controller.cpp \
 		../src/entities/player/PID/anglepid.cpp \
 		../src/entities/player/PID/pid.cpp \
+		../src/entities/player/behavior/behavior.cpp \
+		../src/entities/player/behavior/default/behavior_default.cpp \
 		../src/entities/player/player.cpp \
+		../src/entities/player/role/default/role_default.cpp \
+		../src/entities/player/role/role.cpp \
+		../src/entities/player/skill/goto/skill_goto.cpp \
+		../src/entities/player/skill/rotate/skill_rotateto.cpp \
+		../src/entities/player/skill/skill.cpp \
 		../src/entities/referee/gameinfo/sslgameinfo.cpp \
 		../src/entities/referee/sslreferee.cpp \
 		../src/entities/worldmap/worldmap.cpp \
@@ -481,8 +513,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../include/proto/actuatorservice.grpc.pb.h ../include/proto/actuatorservice.pb.h ../include/proto/messages.grpc.pb.h ../include/proto/messages.pb.h ../include/proto/sensorservice.grpc.pb.h ../include/proto/sensorservice.pb.h ../include/proto/ssl_gc_api.pb.h ../include/proto/ssl_gc_change.pb.h ../include/proto/ssl_gc_ci.pb.h ../include/proto/ssl_gc_common.pb.h ../include/proto/ssl_gc_engine.pb.h ../include/proto/ssl_gc_engine_config.pb.h ../include/proto/ssl_gc_game_event.pb.h ../include/proto/ssl_gc_geometry.pb.h ../include/proto/ssl_gc_rcon.pb.h ../include/proto/ssl_gc_rcon_autoref.pb.h ../include/proto/ssl_gc_rcon_remotecontrol.pb.h ../include/proto/ssl_gc_rcon_team.pb.h ../include/proto/ssl_gc_referee_message.pb.h ../include/proto/ssl_gc_state.pb.h ../include/proto/ssl_vision_detection.pb.h ../include/proto/ssl_vision_detection_tracked.pb.h ../include/proto/ssl_vision_geometry.pb.h ../include/proto/ssl_vision_wrapper.pb.h ../include/proto/ssl_vision_wrapper_tracked.pb.h ../include/proto/visionservice.grpc.pb.h ../include/proto/visionservice.pb.h ../src/constants/constants.h ../src/entities/coach/coach.h ../src/entities/coach/sslteam/sslteam.h ../src/entities/controller/controller.h ../src/entities/player/PID/anglepid.h ../src/entities/player/PID/pid.h ../src/entities/player/player.h ../src/entities/referee/gameinfo/sslgameinfo.h ../src/entities/referee/sslreferee.h ../src/entities/worldmap/worldmap.h ../src/gui/gui.h ../src/suassuna.h ../src/utils/utils.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../include/proto/actuatorservice.grpc.pb.cc ../include/proto/actuatorservice.pb.cc ../include/proto/messages.grpc.pb.cc ../include/proto/messages.pb.cc ../include/proto/sensorservice.grpc.pb.cc ../include/proto/sensorservice.pb.cc ../include/proto/ssl_gc_api.pb.cc ../include/proto/ssl_gc_change.pb.cc ../include/proto/ssl_gc_ci.pb.cc ../include/proto/ssl_gc_common.pb.cc ../include/proto/ssl_gc_engine.pb.cc ../include/proto/ssl_gc_engine_config.pb.cc ../include/proto/ssl_gc_game_event.pb.cc ../include/proto/ssl_gc_geometry.pb.cc ../include/proto/ssl_gc_rcon.pb.cc ../include/proto/ssl_gc_rcon_autoref.pb.cc ../include/proto/ssl_gc_rcon_remotecontrol.pb.cc ../include/proto/ssl_gc_rcon_team.pb.cc ../include/proto/ssl_gc_referee_message.pb.cc ../include/proto/ssl_gc_state.pb.cc ../include/proto/ssl_vision_detection.pb.cc ../include/proto/ssl_vision_detection_tracked.pb.cc ../include/proto/ssl_vision_geometry.pb.cc ../include/proto/ssl_vision_wrapper.pb.cc ../include/proto/ssl_vision_wrapper_tracked.pb.cc ../include/proto/visionservice.grpc.pb.cc ../include/proto/visionservice.pb.cc ../main.cpp ../src/constants/constants.cpp ../src/entities/coach/coach.cpp ../src/entities/coach/sslteam/sslteam.cpp ../src/entities/controller/controller.cpp ../src/entities/player/PID/anglepid.cpp ../src/entities/player/PID/pid.cpp ../src/entities/player/player.cpp ../src/entities/referee/gameinfo/sslgameinfo.cpp ../src/entities/referee/sslreferee.cpp ../src/entities/worldmap/worldmap.cpp ../src/gui/gui.cpp ../src/suassuna.cpp ../src/utils/utils.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../include/proto/actuatorservice.grpc.pb.h ../include/proto/actuatorservice.pb.h ../include/proto/messages.grpc.pb.h ../include/proto/messages.pb.h ../include/proto/sensorservice.grpc.pb.h ../include/proto/sensorservice.pb.h ../include/proto/ssl_gc_api.pb.h ../include/proto/ssl_gc_change.pb.h ../include/proto/ssl_gc_ci.pb.h ../include/proto/ssl_gc_common.pb.h ../include/proto/ssl_gc_engine.pb.h ../include/proto/ssl_gc_engine_config.pb.h ../include/proto/ssl_gc_game_event.pb.h ../include/proto/ssl_gc_geometry.pb.h ../include/proto/ssl_gc_rcon.pb.h ../include/proto/ssl_gc_rcon_autoref.pb.h ../include/proto/ssl_gc_rcon_remotecontrol.pb.h ../include/proto/ssl_gc_rcon_team.pb.h ../include/proto/ssl_gc_referee_message.pb.h ../include/proto/ssl_gc_state.pb.h ../include/proto/ssl_vision_detection.pb.h ../include/proto/ssl_vision_detection_tracked.pb.h ../include/proto/ssl_vision_geometry.pb.h ../include/proto/ssl_vision_wrapper.pb.h ../include/proto/ssl_vision_wrapper_tracked.pb.h ../include/proto/visionservice.grpc.pb.h ../include/proto/visionservice.pb.h ../src/constants/constants.h ../src/entities/coach/coach.h ../src/entities/coach/sslteam/sslteam.h ../src/entities/controller/controller.h ../src/entities/player/PID/anglepid.h ../src/entities/player/PID/pid.h ../src/entities/player/behavior/behavior.h ../src/entities/player/behavior/behaviors.h ../src/entities/player/behavior/default/behavior_default.h ../src/entities/player/player.h ../src/entities/player/role/default/role_default.h ../src/entities/player/role/role.h ../src/entities/player/skill/goto/skill_goto.h ../src/entities/player/skill/rotate/skill_rotateto.h ../src/entities/player/skill/skill.h ../src/entities/player/skill/skills.h ../src/entities/referee/gameinfo/sslgameinfo.h ../src/entities/referee/sslreferee.h ../src/entities/worldmap/worldmap.h ../src/gui/gui.h ../src/suassuna.h ../src/utils/utils.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../include/proto/actuatorservice.grpc.pb.cc ../include/proto/actuatorservice.pb.cc ../include/proto/messages.grpc.pb.cc ../include/proto/messages.pb.cc ../include/proto/sensorservice.grpc.pb.cc ../include/proto/sensorservice.pb.cc ../include/proto/ssl_gc_api.pb.cc ../include/proto/ssl_gc_change.pb.cc ../include/proto/ssl_gc_ci.pb.cc ../include/proto/ssl_gc_common.pb.cc ../include/proto/ssl_gc_engine.pb.cc ../include/proto/ssl_gc_engine_config.pb.cc ../include/proto/ssl_gc_game_event.pb.cc ../include/proto/ssl_gc_geometry.pb.cc ../include/proto/ssl_gc_rcon.pb.cc ../include/proto/ssl_gc_rcon_autoref.pb.cc ../include/proto/ssl_gc_rcon_remotecontrol.pb.cc ../include/proto/ssl_gc_rcon_team.pb.cc ../include/proto/ssl_gc_referee_message.pb.cc ../include/proto/ssl_gc_state.pb.cc ../include/proto/ssl_vision_detection.pb.cc ../include/proto/ssl_vision_detection_tracked.pb.cc ../include/proto/ssl_vision_geometry.pb.cc ../include/proto/ssl_vision_wrapper.pb.cc ../include/proto/ssl_vision_wrapper_tracked.pb.cc ../include/proto/visionservice.grpc.pb.cc ../include/proto/visionservice.pb.cc ../main.cpp ../src/constants/constants.cpp ../src/entities/coach/coach.cpp ../src/entities/coach/sslteam/sslteam.cpp ../src/entities/controller/controller.cpp ../src/entities/player/PID/anglepid.cpp ../src/entities/player/PID/pid.cpp ../src/entities/player/behavior/behavior.cpp ../src/entities/player/behavior/default/behavior_default.cpp ../src/entities/player/player.cpp ../src/entities/player/role/default/role_default.cpp ../src/entities/player/role/role.cpp ../src/entities/player/skill/goto/skill_goto.cpp ../src/entities/player/skill/rotate/skill_rotateto.cpp ../src/entities/player/skill/skill.cpp ../src/entities/referee/gameinfo/sslgameinfo.cpp ../src/entities/referee/sslreferee.cpp ../src/entities/worldmap/worldmap.cpp ../src/gui/gui.cpp ../src/suassuna.cpp ../src/utils/utils.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../src/gui/gui.ui $(DISTDIR)/
 
 
@@ -515,9 +547,26 @@ compiler_moc_predefs_clean:
 tmp/moc/moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	g++ -pipe -O2 -std=gnu++1z -Wall -W -dM -E -o tmp/moc/moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: tmp/moc/moc_gui.cpp
+compiler_moc_header_make_all: tmp/moc/moc_role.cpp tmp/moc/moc_gui.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) tmp/moc/moc_gui.cpp
+	-$(DEL_FILE) tmp/moc/moc_role.cpp tmp/moc/moc_gui.cpp
+tmp/moc/moc_role.cpp: ../src/entities/player/role/role.h \
+		../src/entities/player/behavior/behavior.h \
+		../src/entities/player/skill/skill.h \
+		../src/entities/player/player.h \
+		../src/entities/worldmap/worldmap.h \
+		../include/proto/visionservice.grpc.pb.h \
+		../include/proto/visionservice.pb.h \
+		../include/proto/messages.pb.h \
+		../src/entities/controller/controller.h \
+		../include/proto/actuatorservice.grpc.pb.h \
+		../include/proto/actuatorservice.pb.h \
+		../src/entities/player/PID/pid.h \
+		../src/entities/player/PID/anglepid.h \
+		tmp/moc/moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/zsmn/Desktop/armorial/Armorial-Suassuna/build/tmp/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/zsmn/Desktop/armorial/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../src/entities/player/role/role.h -o tmp/moc/moc_role.cpp
+
 tmp/moc/moc_gui.cpp: ../src/gui/gui.h \
 		tmp/moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
@@ -733,7 +782,9 @@ tmp/obj/anglepid.o: ../src/entities/player/PID/anglepid.cpp ../src/entities/play
 tmp/obj/pid.o: ../src/entities/player/PID/pid.cpp ../src/entities/player/PID/pid.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/pid.o ../src/entities/player/PID/pid.cpp
 
-tmp/obj/player.o: ../src/entities/player/player.cpp ../src/entities/player/player.h \
+tmp/obj/behavior.o: ../src/entities/player/behavior/behavior.cpp ../src/entities/player/behavior/behavior.h \
+		../src/entities/player/skill/skill.h \
+		../src/entities/player/player.h \
 		../src/entities/worldmap/worldmap.h \
 		../include/proto/visionservice.grpc.pb.h \
 		../include/proto/visionservice.pb.h \
@@ -743,7 +794,117 @@ tmp/obj/player.o: ../src/entities/player/player.cpp ../src/entities/player/playe
 		../include/proto/actuatorservice.pb.h \
 		../src/entities/player/PID/pid.h \
 		../src/entities/player/PID/anglepid.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/behavior.o ../src/entities/player/behavior/behavior.cpp
+
+tmp/obj/behavior_default.o: ../src/entities/player/behavior/default/behavior_default.cpp ../src/entities/player/behavior/default/behavior_default.h \
+		../src/entities/player/behavior/behavior.h \
+		../src/entities/player/skill/skill.h \
+		../src/entities/player/player.h \
+		../src/entities/worldmap/worldmap.h \
+		../include/proto/visionservice.grpc.pb.h \
+		../include/proto/visionservice.pb.h \
+		../include/proto/messages.pb.h \
+		../src/entities/controller/controller.h \
+		../include/proto/actuatorservice.grpc.pb.h \
+		../include/proto/actuatorservice.pb.h \
+		../src/entities/player/PID/pid.h \
+		../src/entities/player/PID/anglepid.h \
+		../src/entities/player/skill/skills.h \
+		../src/entities/player/skill/goto/skill_goto.h \
+		../src/entities/player/skill/rotate/skill_rotateto.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/behavior_default.o ../src/entities/player/behavior/default/behavior_default.cpp
+
+tmp/obj/player.o: ../src/entities/player/player.cpp ../src/entities/player/player.h \
+		../src/entities/worldmap/worldmap.h \
+		../include/proto/visionservice.grpc.pb.h \
+		../include/proto/visionservice.pb.h \
+		../include/proto/messages.pb.h \
+		../src/entities/controller/controller.h \
+		../include/proto/actuatorservice.grpc.pb.h \
+		../include/proto/actuatorservice.pb.h \
+		../src/entities/player/PID/pid.h \
+		../src/entities/player/PID/anglepid.h \
+		../src/entities/player/role/role.h \
+		../src/entities/player/behavior/behavior.h \
+		../src/entities/player/skill/skill.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/player.o ../src/entities/player/player.cpp
+
+tmp/obj/role_default.o: ../src/entities/player/role/default/role_default.cpp ../src/entities/player/role/default/role_default.h \
+		../src/entities/player/role/role.h \
+		../src/entities/player/behavior/behavior.h \
+		../src/entities/player/skill/skill.h \
+		../src/entities/player/player.h \
+		../src/entities/worldmap/worldmap.h \
+		../include/proto/visionservice.grpc.pb.h \
+		../include/proto/visionservice.pb.h \
+		../include/proto/messages.pb.h \
+		../src/entities/controller/controller.h \
+		../include/proto/actuatorservice.grpc.pb.h \
+		../include/proto/actuatorservice.pb.h \
+		../src/entities/player/PID/pid.h \
+		../src/entities/player/PID/anglepid.h \
+		../src/entities/player/behavior/behaviors.h \
+		../src/entities/player/behavior/default/behavior_default.h \
+		../src/entities/player/skill/skills.h \
+		../src/entities/player/skill/goto/skill_goto.h \
+		../src/entities/player/skill/rotate/skill_rotateto.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/role_default.o ../src/entities/player/role/default/role_default.cpp
+
+tmp/obj/role.o: ../src/entities/player/role/role.cpp ../src/entities/player/role/role.h \
+		../src/entities/player/behavior/behavior.h \
+		../src/entities/player/skill/skill.h \
+		../src/entities/player/player.h \
+		../src/entities/worldmap/worldmap.h \
+		../include/proto/visionservice.grpc.pb.h \
+		../include/proto/visionservice.pb.h \
+		../include/proto/messages.pb.h \
+		../src/entities/controller/controller.h \
+		../include/proto/actuatorservice.grpc.pb.h \
+		../include/proto/actuatorservice.pb.h \
+		../src/entities/player/PID/pid.h \
+		../src/entities/player/PID/anglepid.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/role.o ../src/entities/player/role/role.cpp
+
+tmp/obj/skill_goto.o: ../src/entities/player/skill/goto/skill_goto.cpp ../src/entities/player/skill/goto/skill_goto.h \
+		../src/entities/player/skill/skill.h \
+		../src/entities/player/player.h \
+		../src/entities/worldmap/worldmap.h \
+		../include/proto/visionservice.grpc.pb.h \
+		../include/proto/visionservice.pb.h \
+		../include/proto/messages.pb.h \
+		../src/entities/controller/controller.h \
+		../include/proto/actuatorservice.grpc.pb.h \
+		../include/proto/actuatorservice.pb.h \
+		../src/entities/player/PID/pid.h \
+		../src/entities/player/PID/anglepid.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/skill_goto.o ../src/entities/player/skill/goto/skill_goto.cpp
+
+tmp/obj/skill_rotateto.o: ../src/entities/player/skill/rotate/skill_rotateto.cpp ../src/entities/player/skill/rotate/skill_rotateto.h \
+		../src/entities/player/skill/skill.h \
+		../src/entities/player/player.h \
+		../src/entities/worldmap/worldmap.h \
+		../include/proto/visionservice.grpc.pb.h \
+		../include/proto/visionservice.pb.h \
+		../include/proto/messages.pb.h \
+		../src/entities/controller/controller.h \
+		../include/proto/actuatorservice.grpc.pb.h \
+		../include/proto/actuatorservice.pb.h \
+		../src/entities/player/PID/pid.h \
+		../src/entities/player/PID/anglepid.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/skill_rotateto.o ../src/entities/player/skill/rotate/skill_rotateto.cpp
+
+tmp/obj/skill.o: ../src/entities/player/skill/skill.cpp ../src/entities/player/skill/skill.h \
+		../src/entities/player/player.h \
+		../src/entities/worldmap/worldmap.h \
+		../include/proto/visionservice.grpc.pb.h \
+		../include/proto/visionservice.pb.h \
+		../include/proto/messages.pb.h \
+		../src/entities/controller/controller.h \
+		../include/proto/actuatorservice.grpc.pb.h \
+		../include/proto/actuatorservice.pb.h \
+		../src/entities/player/PID/pid.h \
+		../src/entities/player/PID/anglepid.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/skill.o ../src/entities/player/skill/skill.cpp
 
 tmp/obj/sslgameinfo.o: ../src/entities/referee/gameinfo/sslgameinfo.cpp ../src/entities/referee/gameinfo/sslgameinfo.h \
 		../src/constants/constants.h \
@@ -803,11 +964,23 @@ tmp/obj/suassuna.o: ../src/suassuna.cpp ../src/suassuna.h \
 		../include/proto/actuatorservice.grpc.pb.h \
 		../include/proto/actuatorservice.pb.h \
 		../src/entities/player/PID/pid.h \
-		../src/entities/player/PID/anglepid.h
+		../src/entities/player/PID/anglepid.h \
+		../src/entities/player/role/default/role_default.h \
+		../src/entities/player/role/role.h \
+		../src/entities/player/behavior/behavior.h \
+		../src/entities/player/skill/skill.h \
+		../src/entities/player/behavior/behaviors.h \
+		../src/entities/player/behavior/default/behavior_default.h \
+		../src/entities/player/skill/skills.h \
+		../src/entities/player/skill/goto/skill_goto.h \
+		../src/entities/player/skill/rotate/skill_rotateto.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/suassuna.o ../src/suassuna.cpp
 
 tmp/obj/utils.o: ../src/utils/utils.cpp ../src/utils/utils.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/utils.o ../src/utils/utils.cpp
+
+tmp/obj/moc_role.o: tmp/moc/moc_role.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/moc_role.o tmp/moc/moc_role.cpp
 
 tmp/obj/moc_gui.o: tmp/moc/moc_gui.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/moc_gui.o tmp/moc/moc_gui.cpp

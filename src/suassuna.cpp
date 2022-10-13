@@ -21,6 +21,8 @@
 
 #include "suassuna.h"
 
+#include <src/entities/player/role/default/role_default.h>
+
 Suassuna::Suassuna() {
     // Set GUI as nullptr by default
     _gui = nullptr;
@@ -70,6 +72,7 @@ bool Suassuna::start(bool useGUI) {
                 // Start thread only if is a Player from our team
                 if(color == Constants::teamColor()) {
                     _entityManager->addEntity(player);
+                    player->setRole(new Role_Default());
                 }
             }
         }

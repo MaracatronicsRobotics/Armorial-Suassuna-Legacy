@@ -27,6 +27,8 @@
 #include <src/entities/player/PID/pid.h>
 #include <src/entities/player/PID/anglepid.h>
 
+class Role;
+
 class Player : public Common::Types::Object, public Threaded::Entity
 {
 public:
@@ -43,16 +45,15 @@ public:
     quint8 playerId();
 
     /*!
+     * \brief Mark player as idle, setting its speeds to zero.
+     */
+    void idle();
+
+    /*!
      * \brief goTo
      * \param position
      */
     void goTo(const Geometry::Vector2D& target);
-
-    /*!
-     * \brief rotateTo
-     * \param position
-     */
-    void rotateTo(const Geometry::Vector2D& target, const Geometry::Vector2D& referencePosition);
 
     /*!
      * \brief rotateTo
@@ -74,6 +75,11 @@ public:
      */
     void dribble(const bool& dribbling);
 
+    // Role management
+    QString roleName();
+    QString behaviorName();
+    void setRole(Role *role);
+
 protected:
     friend class SSLTeam;
 
@@ -83,11 +89,6 @@ protected:
      * \param playerData The given data to update this Player instance.
      */
     void updatePlayer(Common::Types::Object playerData);
-
-    /*!
-     * \brief Mark player as idle, setting its speeds to zero.
-     */
-    void idle();
 
 private:
     void initialization();
@@ -107,6 +108,10 @@ private:
 
     // Idle control
     Utils::Timer _idleTimer;
+
+    // Role management
+    Role *_playerRole;
+    QMutex _mutexRole;
 };
 
 #endif // PLAYER_H
