@@ -67,6 +67,9 @@ public:
      * \param chipKickAngle
      * \param kickAngle
      */
+
+    void spin(bool isClockWise);
+
     void kick(const float& kickSpeed, const float& chipKickAngle = 0, const float& kickAngle = 0);
 
     /*!

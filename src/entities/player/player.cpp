@@ -162,6 +162,14 @@ void Player::rotateTo(const Geometry::Angle &targetAngle) {
     spdlog::info("{} {} {}", playerId(), wl, wr);
 }
 
+void Player::spin(bool isClockWise) {
+    if (isClockWise) {
+        _controller->setWheelsSpeed(playerId(), 255, -255);
+    } else {
+        _controller->setWheelsSpeed(playerId(), -255, 255);
+    }
+}
+
 void Player::kick(const float &kickSpeed, const float &chipKickAngle, const float &kickAngle) {
     _controller->setKick(playerId(), kickSpeed, chipKickAngle, kickAngle);
 }
