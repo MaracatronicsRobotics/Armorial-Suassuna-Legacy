@@ -19,38 +19,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef BEHAVIOR_DEFAULT_H
-#define BEHAVIOR_DEFAULT_H
+#include "behavior_moveto.h"
 
-#include <src/entities/player/behavior/behavior.h>
-#include <src/entities/player/skill/skills.h>
+Behavior_MoveTo::Behavior_MoveTo() {
+    _isRotationEnabled = false;
+    _keepDistance = false;
+}
 
-class Behavior_Default : public Behavior
-{
-public:
-    Behavior_Default();
+QString Behavior_MoveTo::name() {
+    return "Behavior_MoveTo";
+}
 
-private:
-    // Behavior inherited methods
-    void configure();
-    void run();
+void Behavior_MoveTo::configure() {
+    _skill_goTo = new Skill_GoTo();
+    _skill_rotateTo = new Skill_RotateTo();
 
-    // Skills enum
-    enum {
-        SKILL_GOTO,
-        SKILL_ROTATETO
-    };
+    addSkill(SKILL_GOTO, _skill_goTo);
+    addSkill(SKILL_ROTATETO, _skill_rotateTo);
+}
 
-    enum {
-        STATE_GO_TOP,
-        STATE_GO_BOT
-    };
+void Behavior_MoveTo::run() {
+    if (_keepDistance) {
+        // Maybe keep a distance to position
+    }
 
-    // Skills pointers
-    Skill_GoTo *_skill_goTo;
-    Skill_RotateTo *_skill_rotateTo;
-
-    int _actualState;
-};
-
-#endif // BEHAVIOR_DEFAULT_H
+    if (_isRotationEnabled) {
+        _skill_rotateTo->setTargetPosition(_desiredPosition);
+        runSkill(SKILL_ROTATETO);
+    } else {
+        _skill_goTo->setTargetPosition(_desiredPosition);
+        runSkill(SKILL_GOTO);
+    }
+}

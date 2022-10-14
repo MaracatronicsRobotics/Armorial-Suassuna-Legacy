@@ -19,38 +19,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef BEHAVIOR_DEFAULT_H
-#define BEHAVIOR_DEFAULT_H
+#ifndef SKILL_CHARGE_H
+#define SKILL_CHARGE_H
 
-#include <src/entities/player/behavior/behavior.h>
-#include <src/entities/player/skill/skills.h>
+#include <src/entities/player/skill/skill.h>
 
-class Behavior_Default : public Behavior
+class Skill_Charge : public Skill
 {
 public:
-    Behavior_Default();
+    Skill_Charge();
+
+    // Target management
+    void setUseSwappedOrientation(bool useSwappedOrientation) { _useSwappedOri = useSwappedOrientation; }
 
 private:
-    // Behavior inherited methods
+    // Skill inherited methods
     void configure();
     void run();
 
-    // Skills enum
-    enum {
-        SKILL_GOTO,
-        SKILL_ROTATETO
-    };
-
-    enum {
-        STATE_GO_TOP,
-        STATE_GO_BOT
-    };
-
-    // Skills pointers
-    Skill_GoTo *_skill_goTo;
-    Skill_RotateTo *_skill_rotateTo;
-
-    int _actualState;
+    // Internal
+    bool _useSwappedOri;
 };
 
-#endif // BEHAVIOR_DEFAULT_H
+#endif // SKILL_CHARGE_H

@@ -19,38 +19,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef BEHAVIOR_DEFAULT_H
-#define BEHAVIOR_DEFAULT_H
+#ifndef BEHAVIOR_MOVETO_H
+#define BEHAVIOR_MOVETO_H
 
 #include <src/entities/player/behavior/behavior.h>
 #include <src/entities/player/skill/skills.h>
 
-class Behavior_Default : public Behavior
+class Behavior_MoveTo : public Behavior
 {
 public:
-    Behavior_Default();
+    Behavior_MoveTo();
+    QString name();
+
+    // Setters
+    void setPosition(Geometry::Vector2D desiredPosition) { _desiredPosition = desiredPosition; }
+    void keepDistance(bool keepDistance) { _keepDistance = keepDistance; }
+    void enableRotation(bool isRotationEnabled) { _isRotationEnabled = isRotationEnabled; }
 
 private:
-    // Behavior inherited methods
     void configure();
     void run();
 
-    // Skills enum
     enum {
         SKILL_GOTO,
         SKILL_ROTATETO
     };
 
-    enum {
-        STATE_GO_TOP,
-        STATE_GO_BOT
-    };
-
-    // Skills pointers
     Skill_GoTo *_skill_goTo;
     Skill_RotateTo *_skill_rotateTo;
 
-    int _actualState;
+    bool _isRotationEnabled;
+
+    Geometry::Vector2D _desiredPosition;
+
+    bool _keepDistance;
 };
 
-#endif // BEHAVIOR_DEFAULT_H
+#endif // BEHAVIOR_MOVETO_H

@@ -38,20 +38,32 @@ void Behavior_Default::configure() {
     // Adding to behavior skill list
     addSkill(SKILL_GOTO, _skill_goTo);
     addSkill(SKILL_ROTATETO, _skill_rotateTo);
+
+    _actualState = STATE_GO_TOP;
 }
 
 void Behavior_Default::run() {
+    Geometry::Vector2D ball = getWorldMap()->getBall().getPosition();
     Geometry::Vector2D center = getWorldMap()->getField().centerCircle().center();
 
-    spdlog::info("distance = {}", player()->getPosition().dist(center));
-    if(player()->getPosition().dist(center) >= 0.2f) {
-        spdlog::info("teste1");
-        _skill_goTo->setTargetPosition(center);
-        runSkill(SKILL_GOTO);
+    switch (_actualState) {
+    case STATE_GO_TOP: {
+        _skill_goTo->setTargetPosition(getWorldMap()->getField().leftPenaltyArea().topRight());
+        if(player()->getPosition().dist(getWorldMap()->getField().leftPenaltyArea().topRight()) <= 0.12f) {
+            _actualState = STATE_GO_BOT;
+        }
+        break;
     }
-    else {
-        spdlog::info("teste2");
-        _skill_rotateTo->setTargetAngle(M_PI/2.0);
-        runSkill(SKILL_ROTATETO);
+    case STATE_GO_BOT: {
+        _skill_goTo->setTargetPosition(getWorldMap()->getField().leftPenaltyArea().bottomRight());
+        if(player()->getPosition().dist(getWorldMap()->getField().leftPenaltyArea().bottomRight()) <= 0.12f) {
+            _actualState = STATE_GO_TOP;
+        }
+        break;
     }
+    }
+
+    runSkill(SKILL_GOTO);
+
+
 }

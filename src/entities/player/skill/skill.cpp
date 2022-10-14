@@ -22,7 +22,10 @@
 
 #include "skill.h"
 
+#include <spdlog/spdlog.h>
+
 Skill::Skill() {
+    _worldMap = nullptr;
     _player = nullptr;
     _initialized = false;
 }
@@ -36,7 +39,8 @@ bool Skill::isInitialized() {
 }
 
 
-void Skill::initialize() {
+void Skill::initialize(WorldMap* worldMap) {
+    _worldMap = worldMap;
     configure();
     _initialized = true;
 }
@@ -51,4 +55,15 @@ void Skill::runSkill() {
 
 Player* Skill::player() {
     return _player;
+}
+
+WorldMap* Skill::getWorldMap() {
+    if(_worldMap == nullptr) {
+        spdlog::error("[{}] WorldMap with nullptr value.", name().toStdString());
+    }
+    else {
+        return _worldMap;
+    }
+
+    return nullptr;
 }

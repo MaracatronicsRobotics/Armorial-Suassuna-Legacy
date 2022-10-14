@@ -95,7 +95,7 @@ void Behavior::runSkill(int id) {
 
     // Check if initialized
     if(!_actualSkill->isInitialized()) {
-        _actualSkill->initialize();
+        _actualSkill->initialize(getWorldMap());
     }
 
     // Run skill

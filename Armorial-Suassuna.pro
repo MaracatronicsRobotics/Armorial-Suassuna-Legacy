@@ -70,10 +70,16 @@ SOURCES += \
         src/entities/player/PID/anglepid.cpp \
         src/entities/player/PID/pid.cpp \
         src/entities/player/behavior/behavior.cpp \
+        src/entities/player/behavior/catch/behavior_catch.cpp \
+        src/entities/player/behavior/chaseeeeeeeeer/behavior_chaser.cpp \
         src/entities/player/behavior/default/behavior_default.cpp \
+        src/entities/player/behavior/moveto/behavior_moveto.cpp \
         src/entities/player/player.cpp \
+        src/entities/player/role/attacker/role_attacker.cpp \
         src/entities/player/role/default/role_default.cpp \
+        src/entities/player/role/goalkeeper/role_goalkeeper.cpp \
         src/entities/player/role/role.cpp \
+        src/entities/player/skill/charge/skill_charge.cpp \
         src/entities/player/skill/goto/skill_goto.cpp \
         src/entities/player/skill/rotate/skill_rotateto.cpp \
         src/entities/player/skill/skill.cpp \
@@ -125,10 +131,16 @@ HEADERS += \
     src/entities/player/PID/pid.h \
     src/entities/player/behavior/behavior.h \
     src/entities/player/behavior/behaviors.h \
+    src/entities/player/behavior/catch/behavior_catch.h \
+    src/entities/player/behavior/chaseeeeeeeeer/behavior_chaser.h \
     src/entities/player/behavior/default/behavior_default.h \
+    src/entities/player/behavior/moveto/behavior_moveto.h \
     src/entities/player/player.h \
+    src/entities/player/role/attacker/role_attacker.h \
     src/entities/player/role/default/role_default.h \
+    src/entities/player/role/goalkeeper/role_goalkeeper.h \
     src/entities/player/role/role.h \
+    src/entities/player/skill/charge/skill_charge.h \
     src/entities/player/skill/goto/skill_goto.h \
     src/entities/player/skill/rotate/skill_rotateto.h \
     src/entities/player/skill/skill.h \
