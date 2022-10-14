@@ -35,6 +35,7 @@ private:
     void configure();
     void run();
 
+    bool alignedToTheirGoal();
     bool hasPossession(Geometry::Vector2D ballPos);
 
     enum {
