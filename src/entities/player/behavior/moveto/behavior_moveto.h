@@ -35,8 +35,6 @@ public:
     void setPosition(Geometry::Vector2D desiredPosition) { _desiredPosition = desiredPosition; }
     void keepDistance(bool keepDistance) { _keepDistance = keepDistance; }
     void enableRotation(bool isRotationEnabled) { _isRotationEnabled = isRotationEnabled; }
-    void enableSpin(bool isSpinEnabled) { _isSpinEnabled = isSpinEnabled; }
-    void setSpinOrientation(bool isClockWise) { _isClockWise = isClockWise; }
 
 private:
     void configure();
@@ -44,17 +42,13 @@ private:
 
     enum {
         SKILL_GOTO,
-        SKILL_ROTATETO,
-        SKILL_SPIN
+        SKILL_ROTATETO
     };
 
     Skill_GoTo *_skill_goTo;
     Skill_RotateTo *_skill_rotateTo;
-    Skill_Spin *_skill_spin;
 
     bool _isRotationEnabled;
-    bool _isSpinEnabled;
-    bool _isClockWise;
 
     Geometry::Vector2D _desiredPosition;
 

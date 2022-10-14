@@ -21,8 +21,16 @@
 
 #include "skill_goto.h"
 
-Skill_GoTo::Skill_GoTo() {
+#include <math.h>
+#include <spdlog/spdlog.h>
 
+#define ROBOT_MIN_VELOCITY_TO_CONSIDER_STUCK 0.1
+#define ROBOT_DIST_TO_WALL_TO_CONSIDER_STUCK 0.15
+#define CHECK_STUCK_ROUTINE_DELAY 2.0
+
+Skill_GoTo::Skill_GoTo() {
+    _useSwappedOri = false;
+    _useWallAntiStuck = false;
 }
 
 void Skill_GoTo::setTargetPosition(const Geometry::Vector2D& targetPosition) {
@@ -30,9 +38,31 @@ void Skill_GoTo::setTargetPosition(const Geometry::Vector2D& targetPosition) {
 }
 
 void Skill_GoTo::configure() {
-
+    _checkStuckTimer.start();
 }
 
 void Skill_GoTo::run() {
-    player()->goTo(_targetPosition);
+    // Check if robot has stucked in some point
+    if(_useWallAntiStuck) {
+        if (_checkStuckTimer.getSeconds() >= CHECK_STUCK_ROUTINE_DELAY) {
+            {
+                std::vector<Geometry::LineSegment> fieldBoundary = getWorldMap()->getField().field().boundary();
+                for (auto &ls : fieldBoundary) {
+                    if(ls.distanceToPoint(player()->getPosition()) <= ROBOT_DIST_TO_WALL_TO_CONSIDER_STUCK
+                            && player()->getVelocity().length() <= ROBOT_MIN_VELOCITY_TO_CONSIDER_STUCK) {
+                        _useSwappedOri = !_useSwappedOri;
+                        break;
+                    }
+                }
+            }
+
+            // reset delay
+            _checkStuckTimer.start();
+        }
+    }
+    else {
+        _checkStuckTimer.start();
+    }
+
+    player()->goTo(_targetPosition, _useSwappedOri);
 }

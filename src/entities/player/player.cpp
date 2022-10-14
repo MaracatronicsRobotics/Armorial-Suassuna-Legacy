@@ -30,6 +30,7 @@
 #include <algorithm>
 
 #include <src/entities/player/role/role.h>
+#include <src/constants/constants.h>
 
 Player::Player(const quint8 playerId, const Common::Enums::Color& teamColor, WorldMap *worldMap, Controller *controller) {
     _playerId = playerId;
@@ -38,17 +39,18 @@ Player::Player(const quint8 playerId, const Common::Enums::Color& teamColor, Wor
     _controller = controller;
 
     // Start PIDs
-//    _vxPID = new PID(2.0, 0.1, 0.1);
-//    _vxPID->setOutputLimits(2.5);
-//    _vxPID->setOutputRampRate(0.2);
+    _vxPID = new PID(2.0, 0.05, 0.02);
+    _vxPID->setOutputLimits(100.0);
+    _vxPID->setOutputRampRate(1.5);
 
-//    _vyPID = new PID(2.0, 0.1, 0.1);
-//    _vyPID->setOutputLimits(2.5);
-//    _vyPID->setOutputRampRate(0.2);
+    _vyPID = new PID(2.0, 0.05, 0.02);
+    _vyPID->setOutputLimits(100.0);
+    _vyPID->setOutputRampRate(1.5);
 
     _playerRole = nullptr;
+    firstIt = true;
 
-    _vwPID = new AnglePID(5.0, 0.1, 0.2, 20.0, 1.0/60.0);
+    _vwPID = new AnglePID(5.0, 0.01, 0.0, 100.0, 1.0/60.0);
 }
 
 Common::Enums::Color Player::teamColor() {
@@ -91,13 +93,15 @@ void Player::updatePlayer(Common::Types::Object playerData) {
     _idleTimer.start();
 }
 
-void Player::goTo(const Geometry::Vector2D &target) {
-    float linearSpeed = 0.5f; // 0.5m/s
+void Player::goTo(const Geometry::Vector2D &target, const float& swap) {
+    float linearSpeed = 0.7f; // 0.5m/s
+    linearSpeed = (swap ? -linearSpeed : linearSpeed);
     float L = 0.075;
     float r = 0.0325/2.0;
 
     float angleReferenceToTarget = (target - getPosition()).angle();
-    float vwOut = _vwPID->getOutput(angleReferenceToTarget, this->getOrientation().value());
+    Geometry::Angle referenceOrigin = (swap ? Geometry::Angle(this->getOrientation().value() + M_PI) : this->getOrientation());
+    float vwOut = _vwPID->getOutput(angleReferenceToTarget, referenceOrigin);
 
     float wl = ((2.0*linearSpeed) - (L*vwOut)) / (2.0 * r);
     float wr = ((2.0*linearSpeed) + (L*vwOut)) / (2.0 * r);
@@ -106,60 +110,98 @@ void Player::goTo(const Geometry::Vector2D &target) {
         return ;
     }
 
-    bool isNegL = wl < 0.0;
-    bool isNegR = wr < 0.0;
-    wl = fabs(wl);
-    wr = fabs(wr);
+
+    // estimando roads pela visao (malha de controle)
+    float linSpeed = getVelocity().length();
+    float angSpeed = getAngularSpeed();
+
+    float wl_est = ((2.0*linSpeed) - (L*angSpeed)) / (2.0 * r);
+    float wr_est = ((2.0*linSpeed) + (L*angSpeed)) / (2.0 * r);
+
+    float wlOut = _vxPID->getOutput(wl_est, wl);
+    float wrOut = _vyPID->getOutput(wr_est, wr);
+
+
+    bool isNegL = wlOut < 0.0;
+    bool isNegR = wrOut < 0.0;
+    wlOut = fabs(wl);
+    wrOut = fabs(wr);
 
     // Descomentar para rodar robo fisico
-//    {
-//        wl = int((std::min(std::max(wl, 30.0f), 100.0f) / 100.0f) * 255);
-//        wr = int((std::min(std::max(wr, 30.0f), 100.0f) / 100.0f) * 255);
-//        _controller->setWheelsSpeed(playerId(), wl * (isNegL ? (1) : -1), wr * (isNegR ? (1) : -1));
-//    }
-
-    // Descomentar para rodar robo simulado
     {
-        _controller->setWheelsSpeed(playerId(), wl * (isNegL ? (-1) : 1), wr * (isNegR ? (-1) : 1));
+        wlOut = int((std::min(std::max(wlOut, 20.0f), 100.0f) / 100.0f) * 255);
+        wrOut = int((std::min(std::max(wrOut, 20.0f), 100.0f) / 100.0f) * 255);
+        _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (1) : -1), wrOut * (isNegR ? (1) : -1));
     }
 
-    spdlog::info("{} {} {}", playerId(), wl, wr);
+    // Descomentar para rodar robo simulado
+//    {
+//        _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (-1) : 1), wrOut * (isNegR ? (-1) : 1));
+//    }
+}
+
+void Player::charge(const bool deCostinha) {
+    _controller->setWheelsSpeed(playerId(), 255 * (deCostinha ? (1) : -1), 255 * (deCostinha ? (1) : -1));
 }
 
 void Player::rotateTo(const Geometry::Angle &targetAngle) {
-    if(isnanf(targetAngle.value())) {
-        return ;
+    if(getOrientation().rotateDirection(targetAngle) == Geometry::Angle::Direction::CLOCKWISE) {
+        _controller->setWheelsSpeed(playerId(), -45.0, 45.0);
+        if(getOrientation().shortestAngleDiff(targetAngle) <= 0.4) {
+            _controller->setWheelsSpeed(playerId(), 0.0, 0.0);
+        }
     }
-
-    float L = 0.075;
-    float r = 0.0325/2.0;
-
-    float vwOut = _vwPID->getOutput(targetAngle.value(), this->getOrientation().value());
-    float wl = -((L*vwOut) / (2.0 * r));
-    float wr = ((L*vwOut) / (2.0 * r));
-
-    if(isnanf(wl) || isnanf(wr)) {
-        return ;
+    else {
+        _controller->setWheelsSpeed(playerId(), 45.0, -45.0);
+        if(getOrientation().shortestAngleDiff(targetAngle) <= 0.4) {
+            _controller->setWheelsSpeed(playerId(), 0.0, 0.0);
+        }
     }
-
-    bool isNegL = wl < 0.0;
-    bool isNegR = wr < 0.0;
-    wl = fabs(wl);
-    wr = fabs(wr);
-
-    // Descomentar para rodar robo fisico
-//    {
-//        wl = int((std::min(std::max(wl, 30.0f), 100.0f) / 100.0f) * 255);
-//        wr = int((std::min(std::max(wr, 30.0f), 100.0f) / 100.0f) * 255);
-//        _controller->setWheelsSpeed(playerId(), wl * (isNegL ? (1) : -1), wr * (isNegR ? (1) : -1));
+//    if(isnanf(targetAngle.value())) {
+//        return ;
 //    }
 
-    // Descomentar para rodar robo simulado
-    {
-        _controller->setWheelsSpeed(playerId(), wl * (isNegL ? (-1) : 1), wr * (isNegR ? (-1) : 1));
-    }
+//    float L = 0.075;
+//    float r = 0.0325/2.0;
 
-    spdlog::info("{} {} {}", playerId(), wl, wr);
+//    float vwOut = _vwPID->getOutput(targetAngle.value(), this->getOrientation().value());
+//    float wl = -((L*vwOut) / (2.0 * r));
+//    float wr = ((L*vwOut) / (2.0 * r));
+
+//    if(isnanf(wl) || isnanf(wr)) {
+//        return ;
+//    }
+
+//    // estimando roads pela visao (malha de controle)
+//    float linSpeed = getVelocity().length();
+//    float angSpeed = getAngularSpeed();
+
+//    float wl_est = ((2.0*linSpeed) - (L*angSpeed)) / (2.0 * r);
+//    float wr_est = ((2.0*linSpeed) + (L*angSpeed)) / (2.0 * r);
+
+//    float wlOut = _vxPID->getOutput(wl_est, wl);
+//    float wrOut = _vyPID->getOutput(wr_est, wr);
+
+
+//    bool isNegL = wlOut < 0.0;
+//    bool isNegR = wrOut < 0.0;
+//    wlOut = fabs(wl);
+//    wrOut = fabs(wr);
+
+//    // Descomentar para rodar robo fisico
+//    {
+//        wlOut = int((std::min(std::max(wlOut, 30.0f), 100.0f) / 100.0f) * 255);
+//        wrOut = int((std::min(std::max(wrOut, 30.0f), 100.0f) / 100.0f) * 255);
+//        _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (1) : -1), wrOut * (isNegR ? (1) : -1));
+//    }
+
+//    // Descomentar para rodar robo simulado
+////    {
+////        _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (-1) : 1), wrOut * (isNegR ? (-1) : 1));
+////    }
+
+
+//    spdlog::info("{} {} {}", playerId(), wl, wr);
 }
 
 void Player::spin(bool isClockWise) {
@@ -188,8 +230,8 @@ void Player::initialization() {
 
 void Player::loop() {
     // Check if player is idle (not received updated data from him for a long time)
-    if(_idleTimer.getSeconds() >= MAX_TIME_TO_MARK_AS_IDLE) {
-        setRole(nullptr);
+    if(_idleTimer.getSeconds() >= MAX_TIME_TO_MARK_AS_IDLE || firstIt) {
+        firstIt = false;
         idle();
     }
     else {

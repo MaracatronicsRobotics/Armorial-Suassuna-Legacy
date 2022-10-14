@@ -53,13 +53,18 @@ public:
      * \brief goTo
      * \param position
      */
-    void goTo(const Geometry::Vector2D& target);
+    void goTo(const Geometry::Vector2D& target, const float& swap = false);
 
     /*!
      * \brief rotateTo
      * \param position
      */
     void rotateTo(const Geometry::Angle& targetAngle);
+
+    /*!
+     * \brief Charges, that's it!
+     */
+    void charge(const bool deCostinha);
 
     /*!
      * \brief kick
@@ -101,8 +106,8 @@ private:
     // Player vars
     quint8 _playerId;
     Common::Enums::Color _teamColor;
-//    PID *_vxPID;
-//    PID *_vyPID;
+    PID *_vxPID;
+    PID *_vyPID;
     AnglePID *_vwPID;
 
     // Internal
@@ -111,6 +116,7 @@ private:
 
     // Idle control
     Utils::Timer _idleTimer;
+    bool firstIt;
 
     // Role management
     Role *_playerRole;
