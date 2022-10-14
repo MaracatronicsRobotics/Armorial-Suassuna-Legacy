@@ -25,6 +25,7 @@
 
 #include <src/entities/player/skill/skill.h>
 #include <Armorial/Libs/nameof/include/nameof.hpp>
+#include <src/constants/constants.h>
 
 class Behavior
 {

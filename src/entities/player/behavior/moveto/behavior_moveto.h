@@ -19,31 +19,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef ROLE_DEFAULT_H
-#define ROLE_DEFAULT_H
+#ifndef BEHAVIOR_MOVETO_H
+#define BEHAVIOR_MOVETO_H
 
-#include <src/entities/player/role/role.h>
-#include <src/entities/player/behavior/behaviors.h>
+#include <src/entities/player/behavior/behavior.h>
+#include <src/entities/player/skill/skills.h>
 
-class Role_Default : public Role
+class Behavior_MoveTo : public Behavior
 {
 public:
-    Role_Default();
+    Behavior_MoveTo();
+    QString name();
+
+    // Setters
+    void setPosition(Geometry::Vector2D desiredPosition) { _desiredPosition = desiredPosition; }
+    void keepDistance(bool keepDistance) { _keepDistance = keepDistance; }
+    void enableRotation(bool isRotationEnabled) { _isRotationEnabled = isRotationEnabled; }
 
 private:
-    // Role inherited methods
     void configure();
     void run();
 
-    // Behaviors enum
     enum {
-        BEHAVIOR_DEFAULT,
-        BEHAVIOR_MOVETO
+        SKILL_GOTO,
+        SKILL_ROTATETO
     };
 
-    // Behaviors pointers
-    Behavior_Default *_behavior_default;
-    Behavior_MoveTo *_behavior_moveTo;
+    Skill_GoTo *_skill_goTo;
+    Skill_RotateTo *_skill_rotateTo;
+
+    bool _isRotationEnabled;
+
+    Geometry::Vector2D _desiredPosition;
+
+    bool _keepDistance;
 };
 
-#endif // ROLE_DEFAULT_H
+#endif // BEHAVIOR_MOVETO_H

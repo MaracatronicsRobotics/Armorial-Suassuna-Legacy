@@ -28,11 +28,15 @@ Role_Default::Role_Default() {
 void Role_Default::configure() {
     // Starting behaviors
     _behavior_default = new Behavior_Default();
+    _behavior_moveTo = new Behavior_MoveTo();
 
     // Adding behaviors to behaviors list
     addBehavior(BEHAVIOR_DEFAULT, _behavior_default);
+    addBehavior(BEHAVIOR_MOVETO, _behavior_moveTo);
 }
 
 void Role_Default::run() {
-    setBehavior(BEHAVIOR_DEFAULT);
+    _behavior_moveTo->setPosition(getWorldMap()->getBall().getPosition());
+    _behavior_moveTo->keepDistance(true);
+    setBehavior(BEHAVIOR_MOVETO);
 }
