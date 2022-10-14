@@ -20,6 +20,7 @@
  ***/
 
 #include "behavior_chaser.h"
+#include <src/constants/constants.h>
 
 Behavior_Chaser::Behavior_Chaser() {
     _CHAAAAAAAAAAAAAAAAAAARGE = false;
@@ -50,13 +51,23 @@ void Behavior_Chaser::run() {
 }
 
 Geometry::Vector2D Behavior_Chaser::getChasePosition() {
-    Geometry::Vector2D unitVector = getWorldMap()->getBall().getPosition() - getWorldMap()->getField().theirGoalCenter();
-    Geometry::Vector2D chargePos = unitVector.normalize() * 1.1f * unitVector.length();
-
-    if (!getWorldMap()->getField().field().contains(chargePos)) {
-        chargePos = getWorldMap()->getBall().getPosition();
+    Geometry::Vector2D chasePos = _chasePos;
+    bool condition;
+    if (Constants::teamPlaySide() == Common::Enums::Side::SIDE_RIGHT) {
+        condition = player()->getPosition().x() <= _chasePos.x();
+    } else {
+        condition = player()->getPosition().x() >= _chasePos.x();
     }
 
-    chargePos = getWorldMap()->getBall().getPosition();
-    return chargePos;
+    if (condition) {
+        Geometry::Vector2D unitVector = getWorldMap()->getBall().getPosition() - getWorldMap()->getField().theirGoalCenter();
+        chasePos = unitVector.normalize() * 1.1f * unitVector.length();
+
+        if (!getWorldMap()->getField().field().contains(chasePos)) {
+            chasePos = getWorldMap()->getBall().getPosition();
+        }
+    }
+
+//    chargePos = getWorldMap()->getBall().getPosition();
+    return chasePos;
 }
