@@ -14,7 +14,7 @@ EQ            = =
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_DEPRECATED_WARNINGS -DAPP_NAME=\"Armorial-Suassuna\" -DAPP_VERSION=\"1.0.0\" -DPROJECT_PATH=\"/home/zsmn/Desktop/armorial/Armorial-Suassuna\" -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
+DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_DEPRECATED_WARNINGS -DAPP_NAME=\"Armorial-Suassuna\" -DAPP_VERSION=\"1.0.0\" -DPROJECT_PATH=\"/home/matheusbonc/Documents/Maraca/preComp2022/Armorial-Suassuna\" -DQT_NO_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -O2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC $(DEFINES)
 INCPATH       = -I../../Armorial-Suassuna -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtOpenGL -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -Itmp/moc -Itmp/moc -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
@@ -37,7 +37,7 @@ MOVE          = mv -f
 TAR           = tar -cf
 COMPRESS      = gzip -9f
 DISTNAME      = Armorial-Suassuna1.0.0
-DISTDIR = /home/zsmn/Desktop/armorial/Armorial-Suassuna/build/tmp/obj/Armorial-Suassuna1.0.0
+DISTDIR = /home/matheusbonc/Documents/Maraca/preComp2022/Armorial-Suassuna/build/tmp/obj/Armorial-Suassuna1.0.0
 LINK          = g++
 LFLAGS        = -Wl,-O1
 LIBS          = $(SUBLIBS) -lQt5Core -lprotobuf -lgrpc -lgrpc++ -lGLU -lfmt -lArmorial /usr/lib/x86_64-linux-gnu/libQt5OpenGL.so /usr/lib/x86_64-linux-gnu/libQt5Widgets.so /usr/lib/x86_64-linux-gnu/libQt5Gui.so /usr/lib/x86_64-linux-gnu/libQt5Network.so /usr/lib/x86_64-linux-gnu/libQt5Core.so /usr/lib/x86_64-linux-gnu/libGL.so -lpthread   
@@ -86,12 +86,14 @@ SOURCES       = ../include/proto/actuatorservice.grpc.pb.cc \
 		../src/entities/controller/controller.cpp \
 		../src/entities/player/PID/anglepid.cpp \
 		../src/entities/player/PID/pid.cpp \
+		../src/entities/player/behavior/barrier/behavior_barrier.cpp \
 		../src/entities/player/behavior/behavior.cpp \
 		../src/entities/player/behavior/default/behavior_default.cpp \
 		../src/entities/player/player.cpp \
 		../src/entities/player/role/default/role_default.cpp \
 		../src/entities/player/role/role.cpp \
 		../src/entities/player/skill/goto/skill_goto.cpp \
+		../src/entities/player/skill/spin/skill_spin.cpp \
 		../src/entities/player/skill/rotate/skill_rotateto.cpp \
 		../src/entities/player/skill/skill.cpp \
 		../src/entities/referee/gameinfo/sslgameinfo.cpp \
@@ -135,12 +137,14 @@ OBJECTS       = tmp/obj/actuatorservice.grpc.pb.o \
 		tmp/obj/controller.o \
 		tmp/obj/anglepid.o \
 		tmp/obj/pid.o \
+		tmp/obj/behavior_barrier.o \
 		tmp/obj/behavior.o \
 		tmp/obj/behavior_default.o \
 		tmp/obj/player.o \
 		tmp/obj/role_default.o \
 		tmp/obj/role.o \
 		tmp/obj/skill_goto.o \
+		tmp/obj/skill_spin.o \
 		tmp/obj/skill_rotateto.o \
 		tmp/obj/skill.o \
 		tmp/obj/sslgameinfo.o \
@@ -176,7 +180,6 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_eventdispatcher_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_fb_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_fontdatabase_support_private.pri \
-		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_gamepad.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_glx_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_gui.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_gui_private.pri \
@@ -189,14 +192,26 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_opengl_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_openglextensions.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_openglextensions_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_packetprotocol_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_platformcompositor_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_printsupport.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_printsupport_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qml.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qml_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qmldebug_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qmldevtools_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qmltest.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qmltest_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quick.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quick_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickparticles_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickshapes_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickwidgets.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickwidgets_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_serialport.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_service_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_sql.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_sql_private.pri \
-		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_svg.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_testlib.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_testlib_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_theme_support_private.pri \
@@ -262,6 +277,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../src/entities/controller/controller.h \
 		../src/entities/player/PID/anglepid.h \
 		../src/entities/player/PID/pid.h \
+		../src/entities/player/behavior/barrier/behavior_barrier.h \
 		../src/entities/player/behavior/behavior.h \
 		../src/entities/player/behavior/behaviors.h \
 		../src/entities/player/behavior/default/behavior_default.h \
@@ -269,6 +285,7 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../src/entities/player/role/default/role_default.h \
 		../src/entities/player/role/role.h \
 		../src/entities/player/skill/goto/skill_goto.h \
+		../src/entities/player/skill/spin/skill_spin.h \
 		../src/entities/player/skill/rotate/skill_rotateto.h \
 		../src/entities/player/skill/skill.h \
 		../src/entities/player/skill/skills.h \
@@ -311,12 +328,14 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../src/entities/controller/controller.cpp \
 		../src/entities/player/PID/anglepid.cpp \
 		../src/entities/player/PID/pid.cpp \
+		../src/entities/player/behavior/barrier/behavior_barrier.cpp \
 		../src/entities/player/behavior/behavior.cpp \
 		../src/entities/player/behavior/default/behavior_default.cpp \
 		../src/entities/player/player.cpp \
 		../src/entities/player/role/default/role_default.cpp \
 		../src/entities/player/role/role.cpp \
 		../src/entities/player/skill/goto/skill_goto.cpp \
+		../src/entities/player/skill/spin/skill_spin.cpp \
 		../src/entities/player/skill/rotate/skill_rotateto.cpp \
 		../src/entities/player/skill/skill.cpp \
 		../src/entities/referee/gameinfo/sslgameinfo.cpp \
@@ -362,7 +381,6 @@ Makefile: ../Armorial-Suassuna.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_eventdispatcher_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_fb_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_fontdatabase_support_private.pri \
-		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_gamepad.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_glx_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_gui.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_gui_private.pri \
@@ -375,14 +393,26 @@ Makefile: ../Armorial-Suassuna.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_opengl_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_openglextensions.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_openglextensions_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_packetprotocol_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_platformcompositor_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_printsupport.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_printsupport_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qml.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qml_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qmldebug_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qmldevtools_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qmltest.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qmltest_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quick.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quick_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickparticles_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickshapes_private.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickwidgets.pri \
+		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickwidgets_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_serialport.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_service_support_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_sql.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_sql_private.pri \
-		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_svg.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_testlib.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_testlib_private.pri \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_theme_support_private.pri \
@@ -443,7 +473,6 @@ Makefile: ../Armorial-Suassuna.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_eventdispatcher_support_private.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_fb_support_private.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_fontdatabase_support_private.pri:
-/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_gamepad.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_glx_support_private.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_gui.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_gui_private.pri:
@@ -456,14 +485,26 @@ Makefile: ../Armorial-Suassuna.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_opengl_private.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_openglextensions.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_openglextensions_private.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_packetprotocol_private.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_platformcompositor_support_private.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_printsupport.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_printsupport_private.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qml.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qml_private.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qmldebug_private.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qmldevtools_private.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qmltest.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_qmltest_private.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quick.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quick_private.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickparticles_private.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickshapes_private.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickwidgets.pri:
+/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_quickwidgets_private.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_serialport.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_service_support_private.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_sql.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_sql_private.pri:
-/usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_svg.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_testlib.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_testlib_private.pri:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/modules/qt_lib_theme_support_private.pri:
@@ -513,8 +554,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../include/proto/actuatorservice.grpc.pb.h ../include/proto/actuatorservice.pb.h ../include/proto/messages.grpc.pb.h ../include/proto/messages.pb.h ../include/proto/sensorservice.grpc.pb.h ../include/proto/sensorservice.pb.h ../include/proto/ssl_gc_api.pb.h ../include/proto/ssl_gc_change.pb.h ../include/proto/ssl_gc_ci.pb.h ../include/proto/ssl_gc_common.pb.h ../include/proto/ssl_gc_engine.pb.h ../include/proto/ssl_gc_engine_config.pb.h ../include/proto/ssl_gc_game_event.pb.h ../include/proto/ssl_gc_geometry.pb.h ../include/proto/ssl_gc_rcon.pb.h ../include/proto/ssl_gc_rcon_autoref.pb.h ../include/proto/ssl_gc_rcon_remotecontrol.pb.h ../include/proto/ssl_gc_rcon_team.pb.h ../include/proto/ssl_gc_referee_message.pb.h ../include/proto/ssl_gc_state.pb.h ../include/proto/ssl_vision_detection.pb.h ../include/proto/ssl_vision_detection_tracked.pb.h ../include/proto/ssl_vision_geometry.pb.h ../include/proto/ssl_vision_wrapper.pb.h ../include/proto/ssl_vision_wrapper_tracked.pb.h ../include/proto/visionservice.grpc.pb.h ../include/proto/visionservice.pb.h ../src/constants/constants.h ../src/entities/coach/coach.h ../src/entities/coach/sslteam/sslteam.h ../src/entities/controller/controller.h ../src/entities/player/PID/anglepid.h ../src/entities/player/PID/pid.h ../src/entities/player/behavior/behavior.h ../src/entities/player/behavior/behaviors.h ../src/entities/player/behavior/default/behavior_default.h ../src/entities/player/player.h ../src/entities/player/role/default/role_default.h ../src/entities/player/role/role.h ../src/entities/player/skill/goto/skill_goto.h ../src/entities/player/skill/rotate/skill_rotateto.h ../src/entities/player/skill/skill.h ../src/entities/player/skill/skills.h ../src/entities/referee/gameinfo/sslgameinfo.h ../src/entities/referee/sslreferee.h ../src/entities/worldmap/worldmap.h ../src/gui/gui.h ../src/suassuna.h ../src/utils/utils.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../include/proto/actuatorservice.grpc.pb.cc ../include/proto/actuatorservice.pb.cc ../include/proto/messages.grpc.pb.cc ../include/proto/messages.pb.cc ../include/proto/sensorservice.grpc.pb.cc ../include/proto/sensorservice.pb.cc ../include/proto/ssl_gc_api.pb.cc ../include/proto/ssl_gc_change.pb.cc ../include/proto/ssl_gc_ci.pb.cc ../include/proto/ssl_gc_common.pb.cc ../include/proto/ssl_gc_engine.pb.cc ../include/proto/ssl_gc_engine_config.pb.cc ../include/proto/ssl_gc_game_event.pb.cc ../include/proto/ssl_gc_geometry.pb.cc ../include/proto/ssl_gc_rcon.pb.cc ../include/proto/ssl_gc_rcon_autoref.pb.cc ../include/proto/ssl_gc_rcon_remotecontrol.pb.cc ../include/proto/ssl_gc_rcon_team.pb.cc ../include/proto/ssl_gc_referee_message.pb.cc ../include/proto/ssl_gc_state.pb.cc ../include/proto/ssl_vision_detection.pb.cc ../include/proto/ssl_vision_detection_tracked.pb.cc ../include/proto/ssl_vision_geometry.pb.cc ../include/proto/ssl_vision_wrapper.pb.cc ../include/proto/ssl_vision_wrapper_tracked.pb.cc ../include/proto/visionservice.grpc.pb.cc ../include/proto/visionservice.pb.cc ../main.cpp ../src/constants/constants.cpp ../src/entities/coach/coach.cpp ../src/entities/coach/sslteam/sslteam.cpp ../src/entities/controller/controller.cpp ../src/entities/player/PID/anglepid.cpp ../src/entities/player/PID/pid.cpp ../src/entities/player/behavior/behavior.cpp ../src/entities/player/behavior/default/behavior_default.cpp ../src/entities/player/player.cpp ../src/entities/player/role/default/role_default.cpp ../src/entities/player/role/role.cpp ../src/entities/player/skill/goto/skill_goto.cpp ../src/entities/player/skill/rotate/skill_rotateto.cpp ../src/entities/player/skill/skill.cpp ../src/entities/referee/gameinfo/sslgameinfo.cpp ../src/entities/referee/sslreferee.cpp ../src/entities/worldmap/worldmap.cpp ../src/gui/gui.cpp ../src/suassuna.cpp ../src/utils/utils.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../include/proto/actuatorservice.grpc.pb.h ../include/proto/actuatorservice.pb.h ../include/proto/messages.grpc.pb.h ../include/proto/messages.pb.h ../include/proto/sensorservice.grpc.pb.h ../include/proto/sensorservice.pb.h ../include/proto/ssl_gc_api.pb.h ../include/proto/ssl_gc_change.pb.h ../include/proto/ssl_gc_ci.pb.h ../include/proto/ssl_gc_common.pb.h ../include/proto/ssl_gc_engine.pb.h ../include/proto/ssl_gc_engine_config.pb.h ../include/proto/ssl_gc_game_event.pb.h ../include/proto/ssl_gc_geometry.pb.h ../include/proto/ssl_gc_rcon.pb.h ../include/proto/ssl_gc_rcon_autoref.pb.h ../include/proto/ssl_gc_rcon_remotecontrol.pb.h ../include/proto/ssl_gc_rcon_team.pb.h ../include/proto/ssl_gc_referee_message.pb.h ../include/proto/ssl_gc_state.pb.h ../include/proto/ssl_vision_detection.pb.h ../include/proto/ssl_vision_detection_tracked.pb.h ../include/proto/ssl_vision_geometry.pb.h ../include/proto/ssl_vision_wrapper.pb.h ../include/proto/ssl_vision_wrapper_tracked.pb.h ../include/proto/visionservice.grpc.pb.h ../include/proto/visionservice.pb.h ../src/constants/constants.h ../src/entities/coach/coach.h ../src/entities/coach/sslteam/sslteam.h ../src/entities/controller/controller.h ../src/entities/player/PID/anglepid.h ../src/entities/player/PID/pid.h ../src/entities/player/behavior/barrier/behavior_barrier.h ../src/entities/player/behavior/behavior.h ../src/entities/player/behavior/behaviors.h ../src/entities/player/behavior/default/behavior_default.h ../src/entities/player/player.h ../src/entities/player/role/default/role_default.h ../src/entities/player/role/role.h ../src/entities/player/skill/goto/skill_goto.h ../src/entities/player/skill/spin/skill_spin.h ../src/entities/player/skill/rotate/skill_rotateto.h ../src/entities/player/skill/skill.h ../src/entities/player/skill/skills.h ../src/entities/referee/gameinfo/sslgameinfo.h ../src/entities/referee/sslreferee.h ../src/entities/worldmap/worldmap.h ../src/gui/gui.h ../src/suassuna.h ../src/utils/utils.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../include/proto/actuatorservice.grpc.pb.cc ../include/proto/actuatorservice.pb.cc ../include/proto/messages.grpc.pb.cc ../include/proto/messages.pb.cc ../include/proto/sensorservice.grpc.pb.cc ../include/proto/sensorservice.pb.cc ../include/proto/ssl_gc_api.pb.cc ../include/proto/ssl_gc_change.pb.cc ../include/proto/ssl_gc_ci.pb.cc ../include/proto/ssl_gc_common.pb.cc ../include/proto/ssl_gc_engine.pb.cc ../include/proto/ssl_gc_engine_config.pb.cc ../include/proto/ssl_gc_game_event.pb.cc ../include/proto/ssl_gc_geometry.pb.cc ../include/proto/ssl_gc_rcon.pb.cc ../include/proto/ssl_gc_rcon_autoref.pb.cc ../include/proto/ssl_gc_rcon_remotecontrol.pb.cc ../include/proto/ssl_gc_rcon_team.pb.cc ../include/proto/ssl_gc_referee_message.pb.cc ../include/proto/ssl_gc_state.pb.cc ../include/proto/ssl_vision_detection.pb.cc ../include/proto/ssl_vision_detection_tracked.pb.cc ../include/proto/ssl_vision_geometry.pb.cc ../include/proto/ssl_vision_wrapper.pb.cc ../include/proto/ssl_vision_wrapper_tracked.pb.cc ../include/proto/visionservice.grpc.pb.cc ../include/proto/visionservice.pb.cc ../main.cpp ../src/constants/constants.cpp ../src/entities/coach/coach.cpp ../src/entities/coach/sslteam/sslteam.cpp ../src/entities/controller/controller.cpp ../src/entities/player/PID/anglepid.cpp ../src/entities/player/PID/pid.cpp ../src/entities/player/behavior/barrier/behavior_barrier.cpp ../src/entities/player/behavior/behavior.cpp ../src/entities/player/behavior/default/behavior_default.cpp ../src/entities/player/player.cpp ../src/entities/player/role/default/role_default.cpp ../src/entities/player/role/role.cpp ../src/entities/player/skill/goto/skill_goto.cpp ../src/entities/player/skill/spin/skill_spin.cpp ../src/entities/player/skill/rotate/skill_rotateto.cpp ../src/entities/player/skill/skill.cpp ../src/entities/referee/gameinfo/sslgameinfo.cpp ../src/entities/referee/sslreferee.cpp ../src/entities/worldmap/worldmap.cpp ../src/gui/gui.cpp ../src/suassuna.cpp ../src/utils/utils.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../src/gui/gui.ui $(DISTDIR)/
 
 
@@ -565,12 +606,12 @@ tmp/moc/moc_role.cpp: ../src/entities/player/role/role.h \
 		../src/entities/player/PID/anglepid.h \
 		tmp/moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/zsmn/Desktop/armorial/Armorial-Suassuna/build/tmp/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/zsmn/Desktop/armorial/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../src/entities/player/role/role.h -o tmp/moc/moc_role.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/matheusbonc/Documents/Maraca/preComp2022/Armorial-Suassuna/build/tmp/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/matheusbonc/Documents/Maraca/preComp2022/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../src/entities/player/role/role.h -o tmp/moc/moc_role.cpp
 
 tmp/moc/moc_gui.cpp: ../src/gui/gui.h \
 		tmp/moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
-	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/zsmn/Desktop/armorial/Armorial-Suassuna/build/tmp/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/zsmn/Desktop/armorial/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../src/gui/gui.h -o tmp/moc/moc_gui.cpp
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/matheusbonc/Documents/Maraca/preComp2022/Armorial-Suassuna/build/tmp/moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/home/matheusbonc/Documents/Maraca/preComp2022/Armorial-Suassuna -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtOpenGL -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/9 -I/usr/include/x86_64-linux-gnu/c++/9 -I/usr/include/c++/9/backward -I/usr/lib/gcc/x86_64-linux-gnu/9/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../src/gui/gui.h -o tmp/moc/moc_gui.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -782,6 +823,25 @@ tmp/obj/anglepid.o: ../src/entities/player/PID/anglepid.cpp ../src/entities/play
 tmp/obj/pid.o: ../src/entities/player/PID/pid.cpp ../src/entities/player/PID/pid.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/pid.o ../src/entities/player/PID/pid.cpp
 
+tmp/obj/behavior_barrier.o: ../src/entities/player/behavior/barrier/behavior_barrier.cpp ../src/entities/player/behavior/barrier/behavior_barrier.h \
+		../src/entities/player/behavior/behavior.h \
+		../src/entities/player/skill/skill.h \
+		../src/entities/player/player.h \
+		../src/entities/worldmap/worldmap.h \
+		../include/proto/visionservice.grpc.pb.h \
+		../include/proto/visionservice.pb.h \
+		../include/proto/messages.pb.h \
+		../src/entities/controller/controller.h \
+		../include/proto/actuatorservice.grpc.pb.h \
+		../include/proto/actuatorservice.pb.h \
+		../src/entities/player/PID/pid.h \
+		../src/entities/player/PID/anglepid.h \
+		../src/entities/player/skill/skills.h \
+		../src/entities/player/skill/goto/skill_goto.h \
+		../src/entities/player/skill/rotate/skill_rotateto.h \
+		../src/entities/player/skill/spin/skill_spin.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/behavior_barrier.o ../src/entities/player/behavior/barrier/behavior_barrier.cpp
+
 tmp/obj/behavior.o: ../src/entities/player/behavior/behavior.cpp ../src/entities/player/behavior/behavior.h \
 		../src/entities/player/skill/skill.h \
 		../src/entities/player/player.h \
@@ -811,7 +871,8 @@ tmp/obj/behavior_default.o: ../src/entities/player/behavior/default/behavior_def
 		../src/entities/player/PID/anglepid.h \
 		../src/entities/player/skill/skills.h \
 		../src/entities/player/skill/goto/skill_goto.h \
-		../src/entities/player/skill/rotate/skill_rotateto.h
+		../src/entities/player/skill/rotate/skill_rotateto.h \
+		../src/entities/player/skill/spin/skill_spin.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/behavior_default.o ../src/entities/player/behavior/default/behavior_default.cpp
 
 tmp/obj/player.o: ../src/entities/player/player.cpp ../src/entities/player/player.h \
@@ -847,7 +908,9 @@ tmp/obj/role_default.o: ../src/entities/player/role/default/role_default.cpp ../
 		../src/entities/player/behavior/default/behavior_default.h \
 		../src/entities/player/skill/skills.h \
 		../src/entities/player/skill/goto/skill_goto.h \
-		../src/entities/player/skill/rotate/skill_rotateto.h
+		../src/entities/player/skill/rotate/skill_rotateto.h \
+		../src/entities/player/skill/spin/skill_spin.h \
+		../src/entities/player/behavior/barrier/behavior_barrier.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/role_default.o ../src/entities/player/role/default/role_default.cpp
 
 tmp/obj/role.o: ../src/entities/player/role/role.cpp ../src/entities/player/role/role.h \
@@ -878,6 +941,20 @@ tmp/obj/skill_goto.o: ../src/entities/player/skill/goto/skill_goto.cpp ../src/en
 		../src/entities/player/PID/pid.h \
 		../src/entities/player/PID/anglepid.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/skill_goto.o ../src/entities/player/skill/goto/skill_goto.cpp
+
+tmp/obj/skill_spin.o: ../src/entities/player/skill/spin/skill_spin.cpp ../src/entities/player/skill/spin/skill_spin.h \
+		../src/entities/player/skill/skill.h \
+		../src/entities/player/player.h \
+		../src/entities/worldmap/worldmap.h \
+		../include/proto/visionservice.grpc.pb.h \
+		../include/proto/visionservice.pb.h \
+		../include/proto/messages.pb.h \
+		../src/entities/controller/controller.h \
+		../include/proto/actuatorservice.grpc.pb.h \
+		../include/proto/actuatorservice.pb.h \
+		../src/entities/player/PID/pid.h \
+		../src/entities/player/PID/anglepid.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/skill_spin.o ../src/entities/player/skill/spin/skill_spin.cpp
 
 tmp/obj/skill_rotateto.o: ../src/entities/player/skill/rotate/skill_rotateto.cpp ../src/entities/player/skill/rotate/skill_rotateto.h \
 		../src/entities/player/skill/skill.h \
@@ -973,7 +1050,9 @@ tmp/obj/suassuna.o: ../src/suassuna.cpp ../src/suassuna.h \
 		../src/entities/player/behavior/default/behavior_default.h \
 		../src/entities/player/skill/skills.h \
 		../src/entities/player/skill/goto/skill_goto.h \
-		../src/entities/player/skill/rotate/skill_rotateto.h
+		../src/entities/player/skill/rotate/skill_rotateto.h \
+		../src/entities/player/skill/spin/skill_spin.h \
+		../src/entities/player/behavior/barrier/behavior_barrier.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tmp/obj/suassuna.o ../src/suassuna.cpp
 
 tmp/obj/utils.o: ../src/utils/utils.cpp ../src/utils/utils.h

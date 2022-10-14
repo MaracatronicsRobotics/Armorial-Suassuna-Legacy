@@ -69,12 +69,14 @@ SOURCES += \
         src/entities/controller/controller.cpp \
         src/entities/player/PID/anglepid.cpp \
         src/entities/player/PID/pid.cpp \
+        src/entities/player/behavior/barrier/behavior_barrier.cpp \
         src/entities/player/behavior/behavior.cpp \
         src/entities/player/behavior/default/behavior_default.cpp \
         src/entities/player/player.cpp \
         src/entities/player/role/default/role_default.cpp \
         src/entities/player/role/role.cpp \
         src/entities/player/skill/goto/skill_goto.cpp \
+        src/entities/player/skill/spin/skill_spin.cpp \
         src/entities/player/skill/rotate/skill_rotateto.cpp \
         src/entities/player/skill/skill.cpp \
         src/entities/referee/gameinfo/sslgameinfo.cpp \
@@ -123,6 +125,7 @@ HEADERS += \
     src/entities/controller/controller.h \
     src/entities/player/PID/anglepid.h \
     src/entities/player/PID/pid.h \
+    src/entities/player/behavior/barrier/behavior_barrier.h \
     src/entities/player/behavior/behavior.h \
     src/entities/player/behavior/behaviors.h \
     src/entities/player/behavior/default/behavior_default.h \
@@ -130,6 +133,7 @@ HEADERS += \
     src/entities/player/role/default/role_default.h \
     src/entities/player/role/role.h \
     src/entities/player/skill/goto/skill_goto.h \
+    src/entities/player/skill/spin/skill_spin.h \
     src/entities/player/skill/rotate/skill_rotateto.h \
     src/entities/player/skill/skill.h \
     src/entities/player/skill/skills.h \

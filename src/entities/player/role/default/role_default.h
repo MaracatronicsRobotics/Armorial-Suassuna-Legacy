@@ -39,11 +39,13 @@ private:
     enum {
         BEHAVIOR_DEFAULT,
         BEHAVIOR_MOVETO
+        BEHAVIOR_BARRIER
     };
 
     // Behaviors pointers
     Behavior_Default *_behavior_default;
     Behavior_MoveTo *_behavior_moveTo;
+    Behavior_Barrier *_behavior_barrier;
 };
 
 #endif // ROLE_DEFAULT_H
