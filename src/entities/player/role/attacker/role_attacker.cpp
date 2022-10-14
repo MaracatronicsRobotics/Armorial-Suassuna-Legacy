@@ -23,6 +23,7 @@
 
 #define ANGLE_OPENNESS 0.2
 #define RADIUS 0.1f
+#define ANGLE_ERROR 0.1f
 
 Role_Attacker::Role_Attacker() {
 
@@ -46,7 +47,7 @@ void Role_Attacker::run() {
         _behavior_chaser->toCharge(false);
 
         setBehavior(BEHAVIOR_CHASER);
-        if (hasPossession(ballPos)) {
+        if (hasPossession(ballPos) && alignedToTheirGoal()) {
             _currState = STATE_CHARGE;
         }
         break;
@@ -64,6 +65,17 @@ void Role_Attacker::run() {
     default:
         break;
     }
+}
+
+bool Role_Attacker::alignedToTheirGoal(){
+    Geometry::Angle playerOri = player()->getOrientation();
+    Geometry::Angle playerAngleToGoal = (getWorldMap()->getField().theirGoalCenter() - player()->getPosition()).angle();
+
+
+    if (playerOri.shortestAngleDiff(playerAngleToGoal) <= ANGLE_ERROR) {
+        return true;
+    }
+    return false;
 }
 
 bool Role_Attacker::hasPossession(Geometry::Vector2D ballPos) {
