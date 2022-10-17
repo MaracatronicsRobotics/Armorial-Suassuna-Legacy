@@ -43,7 +43,6 @@ private:
         BEHAVIOR_CHASER
     };
 
-    Behavior_MoveTo *_behavior_moveTo;
     Behavior_Chaser *_behavior_chaser;
 
     enum State {

@@ -20,6 +20,7 @@
  ***/
 
 #include "role_attacker.h"
+#include "spdlog/spdlog.h"
 
 #define ANGLE_OPENNESS 0.2
 #define RADIUS 0.1f
@@ -30,10 +31,8 @@ Role_Attacker::Role_Attacker() {
 }
 
 void Role_Attacker::configure() {
-    _behavior_moveTo = new Behavior_MoveTo();
     _behavior_chaser = new Behavior_Chaser();
 
-    addBehavior(BEHAVIOR_MOVETO, _behavior_moveTo);
     addBehavior(BEHAVIOR_CHASER, _behavior_chaser);
 
     _currState = STATE_CHASE;
@@ -41,18 +40,19 @@ void Role_Attacker::configure() {
 
 void Role_Attacker::run() {
     Geometry::Vector2D ballPos = getWorldMap()->getBall().getPosition();
+    std::string state = "NULL";
 
+    Geometry::Vector2D chasePos = ballPos;
+
+    bool hasBallPoss = hasPossession(ballPos);
 
     switch(_currState) {
     case(STATE_CHASE) :{
 
-        Geometry::Vector2D chasePos = ballPos;
 
-        bool hasBallPoss = hasPossession(ballPos);
-
-
+        state = "CHASE_BALL";
         if (hasBallPoss) {
-
+            state = "CHASE_GOAL";
             chasePos = getWorldMap()->getField().theirGoalCenter();
         }
 
@@ -67,8 +67,8 @@ void Role_Attacker::run() {
     }
 
     case(STATE_CHARGE) :{
-
-        _behavior_chaser->setChase(ballPos);
+        state = "CHARGE";
+        _behavior_chaser->setChase(chasePos);
         _behavior_chaser->toCharge(true);
 
         setBehavior(BEHAVIOR_CHASER);
@@ -80,7 +80,7 @@ void Role_Attacker::run() {
     default:
         break;
     }
-
+//    spdlog::info(state);
 }
 
 bool Role_Attacker::alignedToTheirGoal(){
