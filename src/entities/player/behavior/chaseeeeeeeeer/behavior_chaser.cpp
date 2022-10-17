@@ -46,6 +46,7 @@ void Behavior_Chaser::run() {
         runSkill(SKILL_CHARGE);
     } else {
         _skill_goTo->setTargetPosition(getChasePosition());
+        _skill_goTo->enableWallAntiStuck(true);
         runSkill(SKILL_GOTO);
     }
 }
