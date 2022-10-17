@@ -32,12 +32,12 @@
 #include <src/entities/player/role/role.h>
 #include <src/constants/constants.h>
 
-Player::Player(const quint8 playerId, const Common::Enums::Color& teamColor, WorldMap *worldMap, Controller *controller, bool useSimVision) {
+Player::Player(const quint8 playerId, const Common::Enums::Color& teamColor, WorldMap *worldMap, Controller *controller, bool useSimEnv) {
     _playerId = playerId;
     _teamColor = teamColor;
     _worldMap = worldMap;
     _controller = controller;
-    _useSimVision = useSimVision;
+    _useSimEnv = useSimEnv;
 
     // Start PIDs
     _vxPID = new PID(2.0, 0.05, 0.02);
@@ -128,7 +128,7 @@ void Player::goTo(const Geometry::Vector2D &target, const float& swap) {
     wlOut = fabs(wl);
     wrOut = fabs(wr);
 
-    if (_useSimVision){
+    if (_useSimEnv){
         _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (-1) : 1), wrOut * (isNegR ? (-1) : 1));
     } else {
         wlOut = int((std::min(std::max(wlOut, 20.0f), 100.0f) / 100.0f) * 255);
@@ -154,49 +154,46 @@ void Player::rotateTo(const Geometry::Angle &targetAngle) {
             _controller->setWheelsSpeed(playerId(), 0.0, 0.0);
         }
     }
-//    if(isnanf(targetAngle.value())) {
-//        return ;
-//    }
 
-//    float L = 0.075;
-//    float r = 0.0325/2.0;
+    if(isnanf(targetAngle.value())) {
+        return ;
+    }
 
-//    float vwOut = _vwPID->getOutput(targetAngle.value(), this->getOrientation().value());
-//    float wl = -((L*vwOut) / (2.0 * r));
-//    float wr = ((L*vwOut) / (2.0 * r));
+    float L = 0.075;
+    float r = 0.0325/2.0;
 
-//    if(isnanf(wl) || isnanf(wr)) {
-//        return ;
-//    }
+    float vwOut = _vwPID->getOutput(targetAngle.value(), this->getOrientation().value());
+    float wl = -((L*vwOut) / (2.0 * r));
+    float wr = ((L*vwOut) / (2.0 * r));
 
-//    // estimando roads pela visao (malha de controle)
-//    float linSpeed = getVelocity().length();
-//    float angSpeed = getAngularSpeed();
+    if(isnanf(wl) || isnanf(wr)) {
+        return ;
+    }
 
-//    float wl_est = ((2.0*linSpeed) - (L*angSpeed)) / (2.0 * r);
-//    float wr_est = ((2.0*linSpeed) + (L*angSpeed)) / (2.0 * r);
+    // estimando roads pela visao (malha de controle)
+    float linSpeed = getVelocity().length();
+    float angSpeed = getAngularSpeed();
 
-//    float wlOut = _vxPID->getOutput(wl_est, wl);
-//    float wrOut = _vyPID->getOutput(wr_est, wr);
+    float wl_est = ((2.0*linSpeed) - (L*angSpeed)) / (2.0 * r);
+    float wr_est = ((2.0*linSpeed) + (L*angSpeed)) / (2.0 * r);
+
+    float wlOut = _vxPID->getOutput(wl_est, wl);
+    float wrOut = _vyPID->getOutput(wr_est, wr);
 
 
-//    bool isNegL = wlOut < 0.0;
-//    bool isNegR = wrOut < 0.0;
-//    wlOut = fabs(wl);
-//    wrOut = fabs(wr);
+    bool isNegL = wlOut < 0.0;
+    bool isNegR = wrOut < 0.0;
+    wlOut = fabs(wl);
+    wrOut = fabs(wr);
 
-//    // Descomentar para rodar robo fisico
-//    {
-//        wlOut = int((std::min(std::max(wlOut, 30.0f), 100.0f) / 100.0f) * 255);
-//        wrOut = int((std::min(std::max(wrOut, 30.0f), 100.0f) / 100.0f) * 255);
-//        _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (1) : -1), wrOut * (isNegR ? (1) : -1));
-//    }
 
-//    // Descomentar para rodar robo simulado
-////    {
-////        _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (-1) : 1), wrOut * (isNegR ? (-1) : 1));
-////    }
-
+    if (_useSimEnv) {
+        _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (-1) : 1), wrOut * (isNegR ? (-1) : 1));
+    } else {
+        wlOut = int((std::min(std::max(wlOut, 30.0f), 100.0f) / 100.0f) * 255);
+        wrOut = int((std::min(std::max(wrOut, 30.0f), 100.0f) / 100.0f) * 255);
+        _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (1) : -1), wrOut * (isNegR ? (1) : -1));
+    }
 
 //    spdlog::info("{} {} {}", playerId(), wl, wr);
 }
