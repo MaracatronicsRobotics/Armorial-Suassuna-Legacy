@@ -78,6 +78,7 @@ SOURCES += \
         src/entities/player/role/attacker/role_attacker.cpp \
         src/entities/player/role/default/role_default.cpp \
         src/entities/player/role/goalkeeper/role_goalkeeper.cpp \
+        src/entities/player/role/goalkeeper/role_gk.cpp \
         src/entities/player/role/role.cpp \
         src/entities/player/skill/charge/skill_charge.cpp \
         src/entities/player/skill/goto/skill_goto.cpp \
@@ -88,7 +89,9 @@ SOURCES += \
         src/entities/worldmap/worldmap.cpp \
         src/gui/gui.cpp \
         src/suassuna.cpp \
-        src/utils/utils.cpp
+        src/utils/utils.cpp \
+        src/entities/player/behavior/intercept/behavior_intercept.cpp \
+        src/entities/player/skill/spin/skill_spin.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -139,6 +142,7 @@ HEADERS += \
     src/entities/player/role/attacker/role_attacker.h \
     src/entities/player/role/default/role_default.h \
     src/entities/player/role/goalkeeper/role_goalkeeper.h \
+    src/entities/player/role/goalkeeper/role_gk.h \
     src/entities/player/role/role.h \
     src/entities/player/skill/charge/skill_charge.h \
     src/entities/player/skill/goto/skill_goto.h \
@@ -150,7 +154,9 @@ HEADERS += \
     src/entities/worldmap/worldmap.h \
     src/gui/gui.h \
     src/suassuna.h \
-    src/utils/utils.h
+    src/utils/utils.h \
+    src/entities/player/behavior/intercept/behavior_intercept.h \
+    src/entities/player/skill/spin/skill_spin.h
 
 FORMS += \
     src/gui/gui.ui

@@ -149,10 +149,6 @@ void Player::charge(const bool deCostinha) {
     _controller->setWheelsSpeed(playerId(), 255 * (deCostinha ? (1) : -1), 255 * (deCostinha ? (1) : -1));
 }
 
-void Player::charge(const bool deCostinha) {
-    _controller->setWheelsSpeed(playerId(), 255 * (deCostinha ? (1) : -1), 255 * (deCostinha ? (1) : -1));
-}
-
 void Player::rotateTo(const Geometry::Angle &targetAngle) {
     if(getOrientation().rotateDirection(targetAngle) == Geometry::Angle::Direction::CLOCKWISE) {
         _controller->setWheelsSpeed(playerId(), -45.0, 45.0);
@@ -176,20 +172,20 @@ void Player::rotateTo(const Geometry::Angle &targetAngle) {
             _controller->setWheelsSpeed(playerId(), 0.0, 0.0);
         }
     }
-//    if(isnanf(targetAngle.value())) {
-//        return ;
-//    }
+    if(isnanf(targetAngle.value())) {
+        return ;
+    }
 
-//    float L = 0.075;
-//    float r = 0.0325/2.0;
+    float L = 0.075;
+    float r = 0.0325/2.0;
 
-//    float vwOut = _vwPID->getOutput(targetAngle.value(), this->getOrientation().value());
-//    float wl = -((L*vwOut) / (2.0 * r));
-//    float wr = ((L*vwOut) / (2.0 * r));
+    float vwOut = _vwPID->getOutput(targetAngle.value(), this->getOrientation().value());
+    float wl = -((L*vwOut) / (2.0 * r));
+    float wr = ((L*vwOut) / (2.0 * r));
 
-//    if(isnanf(wl) || isnanf(wr)) {
-//        return ;
-//    }
+    if(isnanf(wl) || isnanf(wr)) {
+        return ;
+    }
 
     // estimando roads pela visao (malha de controle)
     float linSpeed = getVelocity().length();
@@ -217,14 +213,6 @@ void Player::rotateTo(const Geometry::Angle &targetAngle) {
     }
 
 //    spdlog::info("{} {} {}", playerId(), wl, wr);
-}
-
-void Player::spin(bool isClockWise) {
-    if (isClockWise) {
-        _controller->setWheelsSpeed(playerId(), 255, -255);
-    } else {
-        _controller->setWheelsSpeed(playerId(), -255, 255);
-    }
 }
 
 void Player::kick(const float &kickSpeed, const float &chipKickAngle, const float &kickAngle) {
