@@ -20,6 +20,7 @@
  ***/
 
 #include "behavior_moveto.h"
+#include <spdlog/spdlog.h>
 
 Behavior_MoveTo::Behavior_MoveTo() {
     _isRotationEnabled = false;
@@ -43,11 +44,14 @@ void Behavior_MoveTo::run() {
         // Maybe keep a distance to position
     }
 
+    spdlog::info("MOVETO Desired Position: ({}, {})", _desiredPosition.x(), _desiredPosition.y());
+
     if (_isRotationEnabled) {
         _skill_rotateTo->setTargetPosition(_desiredPosition);
-        runSkill(SKILL_ROTATETO);
+        //runSkill(SKILL_ROTATETO);
     } else {
         _skill_goTo->setTargetPosition(_desiredPosition);
+        _skill_goTo->enableWallAntiStuck(false);
         runSkill(SKILL_GOTO);
     }
 }

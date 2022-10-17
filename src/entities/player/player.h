@@ -84,6 +84,12 @@ public:
      */
     void dribble(const bool& dribbling);
 
+    /*!
+     * \brief spin
+     * \param clockWise1
+     */
+    void spin(const bool& clockWise);
+
     // Role management
     QString roleName();
     QString behaviorName();

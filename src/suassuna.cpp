@@ -24,6 +24,7 @@
 #include <src/entities/player/role/default/role_default.h>
 #include <src/entities/player/role/goalkeeper/role_goalkeeper.h>
 #include <src/entities/player/role/attacker/role_attacker.h>
+#include <src/entities/player/goalkeeper/role_gk.h>
 
 Suassuna::Suassuna() {
     // Set GUI as nullptr by default
@@ -77,7 +78,7 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
                 // Start thread only if is a Player from our team
                 if(color == Constants::teamColor()) {
                     _entityManager->addEntity(player);
-                    player->setRole(new Role_Attacker());
+                    player->setRole(new Role_GK());
                 }
             }
         }

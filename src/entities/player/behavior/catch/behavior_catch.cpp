@@ -42,52 +42,59 @@ void Behavior_Catch::configure() {
 }
 
 void Behavior_Catch::run() {
-//    Geometry::Vector2D ballPosition = getWorldMap()->getBall().getPosition();
-//    Geometry::LineSegment goalSegment(getWorldMap()->getField().ourGoalLeftPost(), getWorldMap()->getField().ourGoalRightPost());
-//    Geometry::Vector2D projectionBallOntoGoal = goalSegment.project(ballPosition);
-//    Geometry::Vector2D catchPosition = Geometry::Vector2D(0.65, projectionBallOntoGoal.y());
+   Geometry::Vector2D ballPosition = getWorldMap()->getBall().getPosition();
+   Geometry::LineSegment goalSegment(getWorldMap()->getField().ourGoalLeftPost(), getWorldMap()->getField().ourGoalRightPost());
+   Geometry::Vector2D projectionBallOntoGoal = goalSegment.project(ballPosition);
+   Geometry::Vector2D catchPosition = Geometry::Vector2D(0.65, projectionBallOntoGoal.y());
 
-//    // Check the best orientation to catch
-//    switch(_actualState) {
-//    case STATE_CATCH: {
-//        Geometry::Angle angleToCatchPosition = (catchPosition - player()->getPosition()).angle();
-//        float diffUsingOrientation = player()->getOrientation().shortestAngleDiff(angleToCatchPosition);
-//        float diffUsingSwappedOrientation = Geometry::Angle(player()->getOrientation().value() + M_PI).shortestAngleDiff(angleToCatchPosition);
+   spdlog::info("Actual State:");
 
-//        _skill_goTo->setTargetPosition(catchPosition);
-//        if(diffUsingOrientation < diffUsingSwappedOrientation) {
-//            _skill_goTo->setUseSwappedOrientation(false);
-//        }
-//        else {
-//            _skill_goTo->setUseSwappedOrientation(true);
-//        }
+   // Check the best orientation to catch
+   switch(_actualState) {
+   case STATE_CATCH: {
+       spdlog::info("STATE_CATCH:");
+       Geometry::Angle angleToCatchPosition = (catchPosition - player()->getPosition()).angle();
+       float diffUsingOrientation = player()->getOrientation().shortestAngleDiff(angleToCatchPosition);
+       float diffUsingSwappedOrientation = Geometry::Angle(player()->getOrientation().value() + M_PI).shortestAngleDiff(angleToCatchPosition);
 
-//        if(player()->getPosition().dist(catchPosition) <= 0.1) {
-//            _actualState = STATE_STOP;
-//        }
-//        runSkill(SKILL_GOTO);
-//        break;
-//    }
-//    case STATE_STOP: {
-//        player()->idle();
+       spdlog::info("Catch Pos: ({}, {})", catchPosition.x(), catchPosition.y());
+       _skill_goTo->setTargetPosition(catchPosition);
+       if(diffUsingOrientation < diffUsingSwappedOrientation) {
+           _skill_goTo->setUseSwappedOrientation(false);
+       }
+       else {
+           _skill_goTo->setUseSwappedOrientation(true);
+       }
+       _skill_goTo->enableWallAntiStuck(true);
+       runSkill(SKILL_GOTO);
 
-//        if(player()->getPosition().dist(catchPosition) > 0.1) {
-//            _actualState = STATE_CATCH;
-//        }
+       if(player()->getPosition().dist(catchPosition) <= 0.1) {
+           _actualState = STATE_STOP;
+       }
+       break;
+   }
+   case STATE_STOP: {
+       spdlog::info("STATE_STOP");
+       player()->idle();
 
-//        break;
-//    }
-//    }
+       if(player()->getPosition().dist(catchPosition) > 0.1) {
+           _actualState = STATE_CATCH;
+       }
 
-    Geometry::Vector2D dest(0.6, 0.0);
-    if(player()->getPosition().dist(dest) <= 0.1) {
-        _skill_rotateTo->setTargetAngle(Geometry::Angle(M_PI/2.0));
-        runSkill(SKILL_ROTATETO);
-        spdlog::info("aa");
-    }
-    else {
-        _skill_goTo->setTargetPosition(dest);
-        runSkill(SKILL_GOTO);
-        spdlog::info("b");
-    }
+       break;
+   }
+   }
+
+    //Geometry::Vector2D dest(0.6, 0.0);
+    
+    // if(player()->getPosition().dist(dest) <= 0.1) {
+    //     _skill_rotateTo->setTargetAngle(Geometry::Angle(M_PI/2.0));
+    //     runSkill(SKILL_ROTATETO);
+    //     spdlog::info("a");
+    // }
+    // else {
+    //     _skill_goTo->setTargetPosition(dest);
+    //     runSkill(SKILL_GOTO);
+    //     spdlog::info("b");
+    // }
 }

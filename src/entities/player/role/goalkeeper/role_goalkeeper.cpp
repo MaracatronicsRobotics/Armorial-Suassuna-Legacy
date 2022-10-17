@@ -24,19 +24,56 @@
 #include <spdlog/spdlog.h>
 
 Role_Goalkeeper::Role_Goalkeeper() {
-
+    
 }
 
 void Role_Goalkeeper::configure() {
     // Starting behaviors
-    _behavior_moveto = new Behavior_MoveTo();
+    _behavior_moveTo = new Behavior_MoveTo();
     _behavior_catch = new Behavior_Catch();
 
     // Adding behaviors to behaviors list
-    addBehavior(BEHAVIOR_MOVETO, _behavior_moveto);
+    addBehavior(BEHAVIOR_MOVETO, _behavior_moveTo);
     addBehavior(BEHAVIOR_CATCH, _behavior_catch);
+
+    _currState = MOVETO;
 }
 
 void Role_Goalkeeper::run() {
-    setBehavior(BEHAVIOR_CATCH);
+    double dist_GKball = player()->getPosition().dist(getWorldMap()->getBall().getPosition());
+    Geometry::Vector2D goalCenter = Geometry::Vector2D(getWorldMap()->getField().ourGoalCenter().x(), 0.0f);
+
+    switch(_currState) {
+    case(CATCH):{
+        setBehavior(BEHAVIOR_CATCH);
+        if ((dist_GKball > 0.2) || (goalCenter.dist(player()->getPosition()) > 0.02)) {
+            _currState = MOVETO;
+        }
+        break;        
+    }
+    case(MOVETO):{
+        _behavior_moveTo->enableRotation(false);
+        _behavior_moveTo->setPosition(goalCenter);
+        setBehavior(BEHAVIOR_MOVETO);
+        if(player()->getPosition().dist(goalCenter) < 0.02){
+            _currState = STOP;
+        }
+        else if (dist_GKball < 0.2) {
+            _currState = CATCH;
+        }
+        break;
+    }
+    case(STOP):{
+        player()->idle();
+        if(dist_GKball < 0.2){
+            _currState = CATCH;
+        } else if (goalCenter.dist(player()->getPosition()) > 0.02) {
+            _currState = MOVETO;
+        }
+    }
+    }
+
+    /*
+    O que o GK deve fazer?
+    */
 }

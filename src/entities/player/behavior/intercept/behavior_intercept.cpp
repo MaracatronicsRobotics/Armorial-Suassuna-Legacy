@@ -1,4 +1,4 @@
-﻿/***
+/***
  * Maracatronics Robotics
  * Federal University of Pernambuco (UFPE) at Recife
  * http://www.maracatronics.com/
@@ -20,7 +20,6 @@
  ***/
 
 #include "behavior_intercept.h"
-#include "math.h"
 
 Behavior_Intercept::Behavior_Intercept() {
     _firstLimitationPoint = Geometry::Vector2D(0.0, 0.0);
@@ -40,6 +39,11 @@ void Behavior_Intercept::setInterceptSegment(Geometry::Vector2D firstPoint, Geom
 }
 
 void Behavior_Intercept::configure() {
+//    _baseSpeed = getConstants()->playerBaseSpeed();
+    _baseSpeed = 45.0f;
+//    _desiredLinearError = player()->getLinearError();
+    _desiredLinearError = 0.5f;
+
     // Starting skills
     _skill_goTo = new Skill_GoTo();
     _skill_spin = new Skill_Spin();
@@ -54,10 +58,10 @@ void Behavior_Intercept::run() {
     if(_objectVel.length() <= 0.01f) {
         _interceptPos = player()->getPosition();
     } else {
-        if (_firstLimitationPoint.isValid() || _secondLimitationPoint.isValid()) {
-            _interceptPos = getInterceptionPosition();
-        } else {
+        if ((!_firstLimitationPoint.isValid()) || (!_secondLimitationPoint.isValid())) {
             _interceptPos = getOrthogonalProjection();
+        } else {
+            _interceptPos = getInterceptionPosition();
         }
     }
 
@@ -65,22 +69,29 @@ void Behavior_Intercept::run() {
     float objectDistance = sqrt(powf(_objectPos.x() - _interceptPos.x(),2) + powf(_objectPos.y() - _interceptPos.y(),2));
     float playerDistance = player()->getPosition().dist(_interceptPos);
 
-    Geometry::Vector2D uninatyVelocityVector((_interceptPos.x() - player()->getPosition().x()) / playerDistance,
+    Geometry::Vector2D uninatyVelocityVector = Geometry::Vector2D((_interceptPos.x() - player()->getPosition().x()) / playerDistance,
                                    (_interceptPos.y() - player()->getPosition().y()) / playerDistance);
     float playerVelocity = playerDistance * _objectVel.length() / objectDistance;
     _interceptVel = Geometry::Vector2D(playerVelocity * uninatyVelocityVector.x(), playerVelocity * uninatyVelocityVector.y());
 
-    if (_spinEnabled && playerDistance < 0.1f) {
+    if (_spinEnabled && playerDistance < 0.5f) {
         runSkill(SKILL_SPIN);
     } else {
         _skill_goTo->setTargetPosition(_interceptPos);
+        Geometry::Angle orientationToTarget = Geometry::Angle((_interceptPos - player()->getPosition()).angle());
+        Geometry::Angle orientationPlayer = player()->getOrientation();
+        Geometry::Angle orientationPlayerBack = Geometry::Angle(player()->getOrientation().value() + M_PI);
+        float frontAngle = orientationPlayer.shortestAngleDiff(orientationToTarget);
+        float backAngle = orientationPlayerBack.shortestAngleDiff(orientationToTarget);
+
+        _skill_goTo->setUseSwappedOrientation(backAngle < frontAngle);
         runSkill(SKILL_GOTO);
     }
 }
 
 Geometry::Vector2D Behavior_Intercept::getOrthogonalProjection() {
     // Taking the vector distance from object to player
-    Geometry::Vector2D playerVector(player()->getPosition().x() - _objectPos.x(), player()->getPosition().y() - _objectPos.y());
+    Geometry::Vector2D playerVector = Geometry::Vector2D(player()->getPosition().x() - _objectPos.x(), player()->getPosition().y() - _objectPos.y());
 
     // Taking the numeric proportion from orthogonal projection formula
     float numericProportion = (playerVector.x() * _objectVel.x() + playerVector.y()

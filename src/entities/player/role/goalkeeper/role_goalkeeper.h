@@ -20,8 +20,17 @@ private:
         BEHAVIOR_CATCH
     };
 
+    enum state {
+        CATCH,
+        MOVETO,
+        STOP
+    };
+
+    state _currState;
+    Geometry::Vector2D _desiredPosition;
+
     // Behaviors pointers
-    Behavior_MoveTo *_behavior_moveto;
+    Behavior_MoveTo *_behavior_moveTo;
     Behavior_Catch *_behavior_catch;
 };
 
