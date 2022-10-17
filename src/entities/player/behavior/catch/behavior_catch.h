@@ -19,16 +19,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef BEHAVIOR_DEFAULT_H
-#define BEHAVIOR_DEFAULT_H
+#ifndef BEHAVIOR_CATCH_H
+#define BEHAVIOR_CATCH_H
 
 #include <src/entities/player/behavior/behavior.h>
 #include <src/entities/player/skill/skills.h>
 
-class Behavior_Default : public Behavior
+class Behavior_Catch : public Behavior
 {
 public:
-    Behavior_Default();
+    Behavior_Catch();
 
 private:
     // Behavior inherited methods
@@ -42,15 +42,14 @@ private:
     };
 
     enum {
-        STATE_GO_TOP,
-        STATE_GO_BOT
+        STATE_STOP,
+        STATE_CATCH
     };
 
     // Skills pointers
     Skill_GoTo *_skill_goTo;
     Skill_RotateTo *_skill_rotateTo;
-
     int _actualState;
 };
 
-#endif // BEHAVIOR_DEFAULT_H
+#endif // BEHAVIOR_CATCH_H

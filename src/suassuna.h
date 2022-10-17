@@ -52,9 +52,10 @@ public:
     /*!
      * \brief Start Suassuna core (entities, players and some other modules).
      * \param useGUI Starts the GUI interface if set as True.
+     * \param useSimVision Starts Suassuna in the simulation vision mode if set as True.
      * \return True if everything went ok and false otherwise.
      */
-    [[nodiscard]] bool start(bool useGUI);
+    [[nodiscard]] bool start(bool useGUI, bool useSimEnv);
 
     /*!
      * \brief Stop Suassuna core (entities, players and some other modules).
@@ -68,6 +69,9 @@ private:
     WorldMap *_worldMap;
     SSLReferee *_referee;
     Controller *_controller;
+
+    // Options
+    bool _useSimEnv;
 
     // Teams
     QMap<Common::Enums::Color, SSLTeam*> _teams;

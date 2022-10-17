@@ -39,15 +39,16 @@ public:
 
     // Init skill control
     bool isInitialized();
-    void initialize();
+    void initialize(WorldMap* worldMap);
     void setPlayer(Player *player);
 
     // Run
     void runSkill();
 
 protected:
-    // Player
+    // Player and worldmap getters
     Player *player();
+    WorldMap* getWorldMap();
 
 private:
     // Virtual implementation in inherited classes
@@ -56,6 +57,9 @@ private:
 
     // Player access
     Player *_player;
+
+    // WorldMap
+    WorldMap *_worldMap;
 
     bool _initialized;
 };

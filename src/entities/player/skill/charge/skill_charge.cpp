@@ -19,38 +19,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef BEHAVIOR_DEFAULT_H
-#define BEHAVIOR_DEFAULT_H
+#include "skill_charge.h"
 
-#include <src/entities/player/behavior/behavior.h>
-#include <src/entities/player/skill/skills.h>
+#define ROBOT_MIN_VELOCITY_TO_CONSIDER_STUCK 0.1
+#define ROBOT_DIST_TO_WALL_TO_CONSIDER_STUCK 0.15
+#define CHECK_STUCK_ROUTINE_DELAY 2.0
 
-class Behavior_Default : public Behavior
-{
-public:
-    Behavior_Default();
+Skill_Charge::Skill_Charge() {
+    _useSwappedOri = false;
+}
 
-private:
-    // Behavior inherited methods
-    void configure();
-    void run();
+void Skill_Charge::configure() {
 
-    // Skills enum
-    enum {
-        SKILL_GOTO,
-        SKILL_ROTATETO
-    };
+}
 
-    enum {
-        STATE_GO_TOP,
-        STATE_GO_BOT
-    };
+void Skill_Charge::run() {
+    // Check if robot has stucked in some point
+    std::vector<Geometry::LineSegment> fieldBoundary = getWorldMap()->getField().field().boundary();
+    for (auto &ls : fieldBoundary) {
+        if(ls.distanceToPoint(player()->getPosition()) <= ROBOT_DIST_TO_WALL_TO_CONSIDER_STUCK
+                && player()->getVelocity().length() <= ROBOT_MIN_VELOCITY_TO_CONSIDER_STUCK) {
+            _useSwappedOri = !_useSwappedOri;
+            break;
+        }
+    }
 
-    // Skills pointers
-    Skill_GoTo *_skill_goTo;
-    Skill_RotateTo *_skill_rotateTo;
-
-    int _actualState;
-};
-
-#endif // BEHAVIOR_DEFAULT_H
+    player()->charge(_useSwappedOri);
+}

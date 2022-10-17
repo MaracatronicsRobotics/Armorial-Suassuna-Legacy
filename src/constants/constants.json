@@ -18,6 +18,6 @@
 	"Team": {
 		"teamColor": "yellow",
 		"teamPlaySide": "left",
-		"maxNumPlayers": 16
+		"maxNumPlayers": 3
 	}
 }

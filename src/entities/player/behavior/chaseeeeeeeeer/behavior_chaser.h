@@ -19,38 +19,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef BEHAVIOR_DEFAULT_H
-#define BEHAVIOR_DEFAULT_H
+#ifndef BEHAVIOR_CHASER_H
+#define BEHAVIOR_CHASER_H
 
 #include <src/entities/player/behavior/behavior.h>
 #include <src/entities/player/skill/skills.h>
+#include "math.h"
 
-class Behavior_Default : public Behavior
+
+class Behavior_Chaser : public Behavior
 {
 public:
-    Behavior_Default();
+    Behavior_Chaser();
+    QString name() { return "Behavior_CHASEEEEEEER!!!!"; }
+
+    void setChase(Geometry::Vector2D chasePos) { _chasePos = chasePos; }
+    void toCharge(bool charge) { _CHAAAAAAAAAAAAAAAAAAARGE = charge; }
+    bool hammerTime() { return _CHAAAAAAAAAAAAAAAAAAARGE; }
 
 private:
-    // Behavior inherited methods
     void configure();
     void run();
 
-    // Skills enum
+    Geometry::Vector2D getChasePosition();
+
     enum {
         SKILL_GOTO,
-        SKILL_ROTATETO
+        SKILL_CHARGE
     };
 
-    enum {
-        STATE_GO_TOP,
-        STATE_GO_BOT
-    };
-
-    // Skills pointers
     Skill_GoTo *_skill_goTo;
-    Skill_RotateTo *_skill_rotateTo;
+    Skill_Charge *_skill_charge;
 
-    int _actualState;
+    Geometry::Vector2D _chasePos;
+    bool _CHAAAAAAAAAAAAAAAAAAARGE;
 };
 
-#endif // BEHAVIOR_DEFAULT_H
+#endif // BEHAVIOR_CHASER_H

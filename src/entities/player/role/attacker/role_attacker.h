@@ -19,38 +19,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef BEHAVIOR_DEFAULT_H
-#define BEHAVIOR_DEFAULT_H
+#ifndef ROLE_ATTACKER_H
+#define ROLE_ATTACKER_H
 
-#include <src/entities/player/behavior/behavior.h>
-#include <src/entities/player/skill/skills.h>
+#include <src/entities/player/role/role.h>
+#include <src/entities/player/behavior/behaviors.h>
+#include <Armorial/Geometry/Arc/Arc.h>
 
-class Behavior_Default : public Behavior
+class Role_Attacker : public Role
 {
 public:
-    Behavior_Default();
+    Role_Attacker();
 
 private:
-    // Behavior inherited methods
     void configure();
     void run();
 
-    // Skills enum
-    enum {
-        SKILL_GOTO,
-        SKILL_ROTATETO
-    };
+    bool alignedToTheirGoal();
+    bool hasPossession(Geometry::Vector2D ballPos);
 
     enum {
-        STATE_GO_TOP,
-        STATE_GO_BOT
+        BEHAVIOR_MOVETO,
+        BEHAVIOR_CHASER
     };
 
-    // Skills pointers
-    Skill_GoTo *_skill_goTo;
-    Skill_RotateTo *_skill_rotateTo;
+    Behavior_Chaser *_behavior_chaser;
 
-    int _actualState;
+    enum State {
+        STATE_CHASE,
+        STATE_CHARGE
+    };
+
+    State _currState;
 };
 
-#endif // BEHAVIOR_DEFAULT_H
+#endif // ROLE_ATTACKER_H

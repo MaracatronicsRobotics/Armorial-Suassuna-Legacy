@@ -31,9 +31,6 @@ QString Behavior_MoveTo::name() {
 }
 
 void Behavior_MoveTo::configure() {
-//    _desiredBaseSpeed = 30.0f; // Check if its applicable
-//    _desiredLinearError = 1.0f; // Check if its applicable
-
     _skill_goTo = new Skill_GoTo();
     _skill_rotateTo = new Skill_RotateTo();
 

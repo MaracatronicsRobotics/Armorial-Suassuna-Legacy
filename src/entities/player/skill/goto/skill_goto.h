@@ -31,6 +31,8 @@ public:
 
     // Target management
     void setTargetPosition(const Geometry::Vector2D& targetPosition);
+    void enableWallAntiStuck(bool enable) { _useWallAntiStuck = enable; }
+    void setUseSwappedOrientation(bool useSwappedOrientation) { _useSwappedOri = useSwappedOrientation; }
 
 private:
     // Skill inherited methods
@@ -39,7 +41,9 @@ private:
 
     // Internal
     Geometry::Vector2D _targetPosition;
-    float _speedFactor;
+    Utils::Timer _checkStuckTimer;
+    bool _useSwappedOri;
+    bool _useWallAntiStuck;
 };
 
 #endif // SKILL_GOTO_H

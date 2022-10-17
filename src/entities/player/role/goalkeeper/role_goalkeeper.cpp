@@ -19,38 +19,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef BEHAVIOR_DEFAULT_H
-#define BEHAVIOR_DEFAULT_H
+#include "role_goalkeeper.h"
 
-#include <src/entities/player/behavior/behavior.h>
-#include <src/entities/player/skill/skills.h>
+#include <spdlog/spdlog.h>
 
-class Behavior_Default : public Behavior
-{
-public:
-    Behavior_Default();
+Role_Goalkeeper::Role_Goalkeeper() {
 
-private:
-    // Behavior inherited methods
-    void configure();
-    void run();
+}
 
-    // Skills enum
-    enum {
-        SKILL_GOTO,
-        SKILL_ROTATETO
-    };
+void Role_Goalkeeper::configure() {
+    // Starting behaviors
+    _behavior_moveto = new Behavior_MoveTo();
+    _behavior_catch = new Behavior_Catch();
 
-    enum {
-        STATE_GO_TOP,
-        STATE_GO_BOT
-    };
+    // Adding behaviors to behaviors list
+    addBehavior(BEHAVIOR_MOVETO, _behavior_moveto);
+    addBehavior(BEHAVIOR_CATCH, _behavior_catch);
+}
 
-    // Skills pointers
-    Skill_GoTo *_skill_goTo;
-    Skill_RotateTo *_skill_rotateTo;
-
-    int _actualState;
-};
-
-#endif // BEHAVIOR_DEFAULT_H
+void Role_Goalkeeper::run() {
+    setBehavior(BEHAVIOR_CATCH);
+}

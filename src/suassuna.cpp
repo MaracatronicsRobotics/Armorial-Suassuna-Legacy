@@ -22,10 +22,13 @@
 #include "suassuna.h"
 
 #include <src/entities/player/role/default/role_default.h>
+#include <src/entities/player/role/goalkeeper/role_goalkeeper.h>
+#include <src/entities/player/role/attacker/role_attacker.h>
 
 Suassuna::Suassuna() {
     // Set GUI as nullptr by default
     _gui = nullptr;
+    _useSimEnv = false;
 
     // Start entity manager
     _entityManager = new Threaded::EntityManager();
@@ -42,12 +45,14 @@ Suassuna::~Suassuna() {
     delete _entityManager;
 }
 
-bool Suassuna::start(bool useGUI) {
+bool Suassuna::start(bool useGUI, bool useSimEnv) {
     // If useGUI is set, create and show the GUI
     if(useGUI) {
         _gui = new GUI();
         _gui->show();
     }
+
+    _useSimEnv = useSimEnv;
 
     // Start worldmap
     _worldMap = new WorldMap(Constants::visionServiceAddress(), Constants::visionServicePort());
@@ -66,13 +71,13 @@ bool Suassuna::start(bool useGUI) {
         if(color != Common::Enums::Color::UNDEFINED) {
             _teams.insert(color, new SSLTeam(color));
             for(int i = 0; i < Constants::maxNumPlayers(); i++) {
-                Player *player = new Player(i, color, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr));
+                Player *player = new Player(i, color, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
                 _teams[color]->addPlayer(player);
 
                 // Start thread only if is a Player from our team
                 if(color == Constants::teamColor()) {
                     _entityManager->addEntity(player);
-                    player->setRole(new Role_Default());
+                    player->setRole(new Role_Attacker());
                 }
             }
         }
