@@ -36,13 +36,14 @@ public:
      * \brief Player constructor.
      * \param playerId, teamColor Player identifiers.
      */
-    Player(const quint8 playerId, const Common::Enums::Color& teamColor, WorldMap* worldMap, Controller* controller);
+    Player(const quint8 playerId, const Common::Enums::Color& teamColor, WorldMap* worldMap, Controller* controller, bool useSimVision);
 
     /*!
      * \brief Player params getters
      */
     Common::Enums::Color teamColor();
     quint8 playerId();
+    bool _useSimVision;
 
     /*!
      * \brief Mark player as idle, setting its speeds to zero.

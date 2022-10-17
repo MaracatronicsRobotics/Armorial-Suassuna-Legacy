@@ -43,6 +43,10 @@ int main(int argc, char *argv[])
     QCommandLineOption useGuiOption("gui", "Enable GUI mode");
     parser.addOption(useGuiOption);
 
+    // Use simulated or vision
+    QCommandLineOption useSimVisionOption("simulator", "Enable Simulator vision mode");
+    parser.addOption(useSimVisionOption);
+
     // Process parser in application
     parser.process(app);
 
@@ -55,7 +59,7 @@ int main(int argc, char *argv[])
 
     // Start Suassuna core
     Suassuna *suassuna = new Suassuna();
-    bool started = suassuna->start(parser.isSet(useGuiOption));
+    bool started = suassuna->start(parser.isSet(useGuiOption), parser.isSet(useSimVisionOption));
 
     // Check if started well
     if(started) {
