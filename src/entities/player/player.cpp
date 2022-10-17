@@ -40,11 +40,19 @@ Player::Player(const quint8 playerId, const Common::Enums::Color& teamColor, Wor
     _useSimEnv = useSimEnv;
 
     // Start PIDs
-    _vxPID = new PID(2.0, 0.05, 0.02);
+//    _vxPID = new PID(2.0, 0.05, 0.02);
+//    _vxPID->setOutputLimits(100.0);
+//    _vxPID->setOutputRampRate(1.5);
+
+//    _vyPID = new PID(2.0, 0.05, 0.02);
+//    _vyPID->setOutputLimits(100.0);
+//    _vyPID->setOutputRampRate(1.5);
+
+    _vxPID = new PID(1.0, 0.05, 0.02);
     _vxPID->setOutputLimits(100.0);
     _vxPID->setOutputRampRate(1.5);
 
-    _vyPID = new PID(2.0, 0.05, 0.02);
+    _vyPID = new PID(1.0, 0.05, 0.02);
     _vyPID->setOutputLimits(100.0);
     _vyPID->setOutputRampRate(1.5);
 
@@ -131,8 +139,8 @@ void Player::goTo(const Geometry::Vector2D &target, const float& swap) {
     if (_useSimEnv){
         _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (-1) : 1), wrOut * (isNegR ? (-1) : 1));
     } else {
-        wlOut = int((std::min(std::max(wlOut, 20.0f), 100.0f) / 100.0f) * 255);
-        wrOut = int((std::min(std::max(wrOut, 20.0f), 100.0f) / 100.0f) * 255);
+        wlOut = int((std::min(std::max(wlOut, 25.0f), 100.0f) / 80.0f) * 255);
+        wrOut = int((std::min(std::max(wrOut, 25.0f), 100.0f) / 80.0f) * 255);
         _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (1) : -1), wrOut * (isNegR ? (1) : -1));
     }
 }
