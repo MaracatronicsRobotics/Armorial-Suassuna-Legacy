@@ -28,6 +28,7 @@
 Suassuna::Suassuna() {
     // Set GUI as nullptr by default
     _gui = nullptr;
+    _useSimVision = false;
 
     // Start entity manager
     _entityManager = new Threaded::EntityManager();
@@ -44,12 +45,14 @@ Suassuna::~Suassuna() {
     delete _entityManager;
 }
 
-bool Suassuna::start(bool useGUI) {
+bool Suassuna::start(bool useGUI, bool useSimVision) {
     // If useGUI is set, create and show the GUI
     if(useGUI) {
         _gui = new GUI();
         _gui->show();
     }
+
+    _useSimVision = useSimVision;
 
     // Start worldmap
     _worldMap = new WorldMap(Constants::visionServiceAddress(), Constants::visionServicePort());
@@ -68,7 +71,7 @@ bool Suassuna::start(bool useGUI) {
         if(color != Common::Enums::Color::UNDEFINED) {
             _teams.insert(color, new SSLTeam(color));
             for(int i = 0; i < Constants::maxNumPlayers(); i++) {
-                Player *player = new Player(i, color, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr));
+                Player *player = new Player(i, color, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimVision);
                 _teams[color]->addPlayer(player);
 
                 // Start thread only if is a Player from our team

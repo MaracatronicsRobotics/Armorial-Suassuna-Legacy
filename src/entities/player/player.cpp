@@ -32,11 +32,12 @@
 #include <src/entities/player/role/role.h>
 #include <src/constants/constants.h>
 
-Player::Player(const quint8 playerId, const Common::Enums::Color& teamColor, WorldMap *worldMap, Controller *controller) {
+Player::Player(const quint8 playerId, const Common::Enums::Color& teamColor, WorldMap *worldMap, Controller *controller, bool useSimVision) {
     _playerId = playerId;
     _teamColor = teamColor;
     _worldMap = worldMap;
     _controller = controller;
+    _useSimVision = useSimVision;
 
     // Start PIDs
     _vxPID = new PID(2.0, 0.05, 0.02);
@@ -127,17 +128,13 @@ void Player::goTo(const Geometry::Vector2D &target, const float& swap) {
     wlOut = fabs(wl);
     wrOut = fabs(wr);
 
-    // Descomentar para rodar robo fisico
-    {
+    if (_useSimVision){
+        _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (-1) : 1), wrOut * (isNegR ? (-1) : 1));
+    } else {
         wlOut = int((std::min(std::max(wlOut, 20.0f), 100.0f) / 100.0f) * 255);
         wrOut = int((std::min(std::max(wrOut, 20.0f), 100.0f) / 100.0f) * 255);
         _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (1) : -1), wrOut * (isNegR ? (1) : -1));
     }
-
-    // Descomentar para rodar robo simulado
-//    {
-//        _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (-1) : 1), wrOut * (isNegR ? (-1) : 1));
-//    }
 }
 
 void Player::charge(const bool deCostinha) {
