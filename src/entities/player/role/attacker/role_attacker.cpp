@@ -41,18 +41,33 @@ void Role_Attacker::configure() {
 
 void Role_Attacker::run() {
     Geometry::Vector2D ballPos = getWorldMap()->getBall().getPosition();
+
+
     switch(_currState) {
     case(STATE_CHASE) :{
-        _behavior_chaser->setChase(ballPos);
+
+        Geometry::Vector2D chasePos = ballPos;
+
+        bool hasBallPoss = hasPossession(ballPos);
+
+
+        if (hasBallPoss) {
+
+            chasePos = getWorldMap()->getField().theirGoalCenter();
+        }
+
+        _behavior_chaser->setChase(chasePos);
         _behavior_chaser->toCharge(false);
 
         setBehavior(BEHAVIOR_CHASER);
-        if (hasPossession(ballPos) && alignedToTheirGoal()) {
+        if (hasBallPoss && alignedToTheirGoal()) {
             _currState = STATE_CHARGE;
         }
         break;
     }
+
     case(STATE_CHARGE) :{
+
         _behavior_chaser->setChase(ballPos);
         _behavior_chaser->toCharge(true);
 
@@ -65,6 +80,7 @@ void Role_Attacker::run() {
     default:
         break;
     }
+
 }
 
 bool Role_Attacker::alignedToTheirGoal(){
