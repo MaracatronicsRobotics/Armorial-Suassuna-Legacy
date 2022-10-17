@@ -24,7 +24,7 @@
 
 #define ANGLE_OPENNESS 0.2
 #define RADIUS 0.1f
-#define ANGLE_ERROR 0.1f
+#define ANGLE_ERROR 0.2f
 
 Role_Attacker::Role_Attacker() {
 
@@ -85,19 +85,24 @@ void Role_Attacker::run() {
 
 bool Role_Attacker::alignedToTheirGoal(){
     Geometry::Angle playerOri = player()->getOrientation();
-    Geometry::Angle playerAngleToGoal = (getWorldMap()->getField().theirGoalCenter() - player()->getPosition()).angle();
+    QList<double> points({-0.5, 0.0, 0.5});
 
+    for (float point : points) {
+        Geometry::Vector2D goalPoint = getWorldMap()->getField().theirGoalCenter();
+        goalPoint += Geometry::Vector2D(0.0, point);
+        Geometry::Angle playerAngleToGoal = (goalPoint - player()->getPosition()).angle();
 
-    if (playerOri.shortestAngleDiff(playerAngleToGoal) <= ANGLE_ERROR) {
-        return true;
+        if (playerOri.shortestAngleDiff(playerAngleToGoal) <= ANGLE_ERROR) {
+            return true;
+        }
     }
+
     return false;
 }
 
 bool Role_Attacker::hasPossession(Geometry::Vector2D ballPos) {
     Geometry::Angle playerOri = player()->getOrientation();
     Geometry::Arc front = Geometry::Arc(player()->getPosition(), RADIUS, Geometry::Angle(playerOri - ANGLE_OPENNESS), Geometry::Angle(playerOri + ANGLE_OPENNESS));
-    Geometry::Arc rear =  Geometry::Arc(player()->getPosition(), RADIUS, Geometry::Angle((playerOri + M_PI) - ANGLE_OPENNESS), Geometry::Angle((playerOri + M_PI) + ANGLE_OPENNESS));
 
-    return (front.pointInArc(ballPos) || rear.pointInArc(ballPos));
+    return front.pointInArc(ballPos);
 }
