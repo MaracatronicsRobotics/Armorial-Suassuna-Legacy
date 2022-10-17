@@ -68,7 +68,5 @@ Geometry::Vector2D Behavior_Chaser::getChasePosition() {
             chasePos = getWorldMap()->getBall().getPosition();
         }
     }
-
-//    chargePos = getWorldMap()->getBall().getPosition();
     return chasePos;
 }
