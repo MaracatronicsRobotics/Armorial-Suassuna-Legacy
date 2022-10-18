@@ -243,6 +243,7 @@ void Player::spin(const bool &clockWise) {
 }
 
 void Player::idle() {
+//    spdlog::info("entrei no idle!");
     _controller->setWheelsSpeed(playerId(), 0.0f, 0.0f);
 }
 

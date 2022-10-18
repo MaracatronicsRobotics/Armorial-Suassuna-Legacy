@@ -46,7 +46,7 @@ void Role_Goalkeeper::run() {
 //    Geometry::Vector2D goalCenter = Geometry::Vector2D(getWorldMap()->getField().ourGoalLeftPost().x(), 0.0f);
     Geometry::Vector2D goalCenter = Geometry::Vector2D(0.7f, 0.0f);
     spdlog::info("Current State: {}", _currState);
-    spdlog::info("BallPos: ({},{})", ballPos.x(), ballPos.y());
+//    spdlog::info("BallPos: ({},{})", ballPos.x(), ballPos.y());
 
     switch(_currState) {
     case(CATCH):{
@@ -63,7 +63,7 @@ void Role_Goalkeeper::run() {
             sidePosAdjust = -0.05f;
         }
         goalCenter = Geometry::Vector2D(goalCenter.x() - sidePosAdjust, limitGKSide(ballPos.y()));
-        spdlog::info("GoalCenter: ({},{})", goalCenter.x(), limitGKSide(ballPos.y()));
+//        spdlog::info("GoalCenter: ({},{})", goalCenter.x(), limitGKSide(ballPos.y()));
         if(player()->getPosition().dist(goalCenter) < 0.1){
             _currState = STOP;
         } else if (dist_GKball < 0.2) {

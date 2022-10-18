@@ -44,7 +44,7 @@ void Behavior_MoveTo::run() {
         // Maybe keep a distance to position
     }
 
-    spdlog::info("MOVETO Desired Position: ({}, {})", _desiredPosition.x(), _desiredPosition.y());
+//    spdlog::info("MOVETO Desired Position: ({}, {})", _desiredPosition.x(), _desiredPosition.y());
 
     if (_isRotationEnabled) {
         _skill_rotateTo->setTargetPosition(_desiredPosition);

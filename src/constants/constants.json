@@ -21,7 +21,7 @@
 		"maxNumPlayers": 3,
 		"goalkeeper": 1,
 		"attacker1": 0,
-		"attacker2": 2,
+		"attacker2": -1,
 		"supporter": -1
 	}
 }
