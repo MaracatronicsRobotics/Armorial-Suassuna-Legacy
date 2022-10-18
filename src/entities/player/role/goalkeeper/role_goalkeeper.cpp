@@ -41,7 +41,12 @@ void Role_Goalkeeper::configure() {
 
 void Role_Goalkeeper::run() {
     double dist_GKball = player()->getPosition().dist(getWorldMap()->getBall().getPosition());
-    Geometry::Vector2D goalCenter = Geometry::Vector2D(getWorldMap()->getField().ourGoalCenter().x(), 0.0f);
+    Geometry::Vector2D  ballPos = Geometry::Vector2D(getWorldMap()->getBall().getPosition());
+//    Geometry::Vector2D goalCenter = Geometry::Vector2D(getWorldMap()->getField().ourGoalCenter().x(), 0.0f);
+//    Geometry::Vector2D goalCenter = Geometry::Vector2D(getWorldMap()->getField().ourGoalLeftPost().x(), 0.0f);
+    Geometry::Vector2D goalCenter = Geometry::Vector2D(0.7f, 0.0f);
+    spdlog::info("Current State: {}", _currState);
+    spdlog::info("BallPos: ({},{})", ballPos.x(), ballPos.y());
 
     switch(_currState) {
     case(CATCH):{
@@ -53,14 +58,20 @@ void Role_Goalkeeper::run() {
     }
     case(MOVETO):{
         _behavior_moveTo->enableRotation(false);
-        _behavior_moveTo->setPosition(goalCenter);
-        setBehavior(BEHAVIOR_MOVETO);
-        if(player()->getPosition().dist(goalCenter) < 0.02){
-            _currState = STOP;
+        float sidePosAdjust = 0.05f;
+        if (getWorldMap()->getField().ourField().contains(getWorldMap()->getField().leftField().center())) {
+            sidePosAdjust = -0.05f;
         }
-        else if (dist_GKball < 0.2) {
+        goalCenter = Geometry::Vector2D(goalCenter.x() - sidePosAdjust, limitGKSide(ballPos.y()));
+        spdlog::info("GoalCenter: ({},{})", goalCenter.x(), limitGKSide(ballPos.y()));
+        if(player()->getPosition().dist(goalCenter) < 0.1){
+            _currState = STOP;
+        } else if (dist_GKball < 0.2) {
             _currState = CATCH;
         }
+
+        _behavior_moveTo->setPosition(goalCenter);
+        setBehavior(BEHAVIOR_MOVETO);
         break;
     }
     case(STOP):{
@@ -72,8 +83,12 @@ void Role_Goalkeeper::run() {
         }
     }
     }
+}
 
-    /*
-    O que o GK deve fazer?
-    */
+float Role_Goalkeeper::limitGKSide(float desiredY) {
+    if ((desiredY < 0.0f)) {
+        return std::max(desiredY, -0.3f);
+    } else {
+        return std::min(desiredY, 0.3f);
+    }
 }

@@ -51,7 +51,7 @@ void Behavior_MoveTo::run() {
         //runSkill(SKILL_ROTATETO);
     } else {
         _skill_goTo->setTargetPosition(_desiredPosition);
-        _skill_goTo->enableWallAntiStuck(false);
+        _skill_goTo->enableWallAntiStuck(true);
         runSkill(SKILL_GOTO);
     }
 }

@@ -26,6 +26,8 @@ private:
         STOP
     };
 
+    float limitGKSide(float desiredY);
+
     state _currState;
     Geometry::Vector2D _desiredPosition;
 

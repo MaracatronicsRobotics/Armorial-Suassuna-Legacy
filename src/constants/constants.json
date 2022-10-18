@@ -16,7 +16,7 @@
 	},
 	
 	"Team": {
-		"teamColor": "yellow",
+                "teamColor": "yellow",
 		"teamPlaySide": "left",
 		"maxNumPlayers": 3,
 		"goalkeeper": 1,
