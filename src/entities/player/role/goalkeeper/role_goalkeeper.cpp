@@ -41,44 +41,72 @@ void Role_Goalkeeper::configure() {
 
 void Role_Goalkeeper::run() {
     double dist_GKball = player()->getPosition().dist(getWorldMap()->getBall().getPosition());
-    Geometry::Vector2D  ballPos = Geometry::Vector2D(getWorldMap()->getBall().getPosition());
-//    Geometry::Vector2D goalCenter = Geometry::Vector2D(getWorldMap()->getField().ourGoalCenter().x(), 0.0f);
-//    Geometry::Vector2D goalCenter = Geometry::Vector2D(getWorldMap()->getField().ourGoalLeftPost().x(), 0.0f);
-    Geometry::Vector2D goalCenter = Geometry::Vector2D(0.7f, 0.0f);
-    spdlog::info("Current State: {}", _currState);
-//    spdlog::info("BallPos: ({},{})", ballPos.x(), ballPos.y());
+    int factor = 1;
+    if (Constants::teamPlaySide() == Common::Enums::Side::SIDE_RIGHT) {
+        factor = -1;
+    }
+    Geometry::Vector2D goalCenter = Geometry::Vector2D(getWorldMap()->getField().ourGoalCenter().x() + factor * 0.06, 0.0f);
 
     switch(_currState) {
     case(CATCH):{
-        setBehavior(BEHAVIOR_CATCH);
-        if ((dist_GKball > 0.2) || (goalCenter.dist(player()->getPosition()) > 0.02)) {
+        Geometry::LineSegment lineDefense(Geometry::Vector2D(goalCenter.x(), 0.3f), Geometry::Vector2D(goalCenter.x(), 0.3f));
+        Geometry::LineSegment ballLine(Geometry::Vector2D(getWorldMap()->getBall().getPosition()),
+                                       Geometry::Vector2D(getWorldMap()->getField().ourGoalCenter()));
+        std::vector interceptPosition = lineDefense.intersects(ballLine);
+
+
+        if (interceptPosition.at(interceptPosition.size()/2).y() > player()->getPosition().y()) {
+            _behavior_moveTo->setLeftWheelPower(255);
+            _behavior_moveTo->setRightWheelPower(255);
+        } else {
+            _behavior_moveTo->setLeftWheelPower(-255);
+            _behavior_moveTo->setRightWheelPower(-255);
+        }
+
+        _behavior_moveTo->enableRotation(false);
+        _behavior_moveTo->enableSpin(false);
+        _behavior_moveTo->setForcebleMotion(true);
+        setBehavior(BEHAVIOR_MOVETO);
+
+        if(getWorldMap()->getBall().getPosition().dist(player()->getPosition()) < 0.1){
+            _currState = SPIN;
+        } else if ((dist_GKball > 0.2) || (goalCenter.dist(player()->getPosition()) > 0.2)) {
             _currState = MOVETO;
         }
         break;        
     }
     case(MOVETO):{
         _behavior_moveTo->enableRotation(false);
-        float sidePosAdjust = 0.05f;
-        if (getWorldMap()->getField().ourField().contains(getWorldMap()->getField().leftField().center())) {
-            sidePosAdjust = -0.05f;
-        }
-        goalCenter = Geometry::Vector2D(goalCenter.x() - sidePosAdjust, limitGKSide(ballPos.y()));
-//        spdlog::info("GoalCenter: ({},{})", goalCenter.x(), limitGKSide(ballPos.y()));
-        if(player()->getPosition().dist(goalCenter) < 0.1){
-            _currState = STOP;
-        } else if (dist_GKball < 0.2) {
-            _currState = CATCH;
-        }
-
+        _behavior_moveTo->enableSpin(false);
+        _behavior_moveTo->setForcebleMotion(false);
         _behavior_moveTo->setPosition(goalCenter);
         setBehavior(BEHAVIOR_MOVETO);
+
+        if(player()->getPosition().dist(goalCenter) < 0.02){
+            _currState = ROTATE;
+        }
         break;
     }
-    case(STOP):{
-        player()->idle();
-        if(dist_GKball < 0.2){
+    case(ROTATE):{
+        Geometry::Vector2D rotateReference = Geometry::Vector2D(goalCenter.x(), 1.3f);
+        _behavior_moveTo->enableRotation(true);
+        _behavior_moveTo->enableSpin(false);
+        _behavior_moveTo->setForcebleMotion(false);
+        _behavior_moveTo->setPosition(rotateReference);
+        setBehavior(BEHAVIOR_MOVETO);
+
+        if(fabs((rotateReference - player()->getPosition()).angle() - player()->getOrientation().value()) < 0.15) {
             _currState = CATCH;
-        } else if (goalCenter.dist(player()->getPosition()) > 0.02) {
+        }
+        break;
+    }
+    case(SPIN):{
+        _behavior_moveTo->enableRotation(false);
+        _behavior_moveTo->enableSpin(true);
+        _behavior_moveTo->setForcebleMotion(false);
+        setBehavior(BEHAVIOR_MOVETO);
+
+        if((dist_GKball > 0.2) || (goalCenter.dist(player()->getPosition()) > 0.2)){
             _currState = MOVETO;
         }
     }

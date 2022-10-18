@@ -65,6 +65,9 @@ public:
     /*!
      * \brief Charges, that's it!
      */
+
+    void move(float leftWheelPower, float rightWheelPower);
+
     void charge(const bool deCostinha);
 
     /*!

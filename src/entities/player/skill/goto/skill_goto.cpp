@@ -26,7 +26,7 @@
 
 #define ROBOT_MIN_VELOCITY_TO_CONSIDER_STUCK 0.1
 #define ROBOT_DIST_TO_WALL_TO_CONSIDER_STUCK 0.15
-#define CHECK_STUCK_ROUTINE_DELAY 1.0
+#define CHECK_STUCK_ROUTINE_DELAY 0.5
 
 Skill_GoTo::Skill_GoTo() {
     _useSwappedOri = false;

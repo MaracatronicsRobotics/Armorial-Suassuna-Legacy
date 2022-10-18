@@ -226,6 +226,10 @@ void Player::rotateTo(const Geometry::Angle &targetAngle) {
 //    spdlog::info("{} {} {}", playerId(), wl, wr);
 }
 
+void Player::move(float leftWheelPower, float rightWheelPower) {
+    _controller->setWheelsSpeed(playerId(), leftWheelPower, rightWheelPower);
+}
+
 void Player::kick(const float &kickSpeed, const float &chipKickAngle, const float &kickAngle) {
     _controller->setKick(playerId(), kickSpeed, chipKickAngle, kickAngle);
 }

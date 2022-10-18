@@ -22,8 +22,9 @@ private:
 
     enum state {
         CATCH,
+        ROTATE,
         MOVETO,
-        STOP
+        SPIN
     };
 
     float limitGKSide(float desiredY);

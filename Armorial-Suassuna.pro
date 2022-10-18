@@ -84,6 +84,7 @@ SOURCES += \
         src/entities/player/skill/goto/skill_goto.cpp \
         src/entities/player/skill/rotate/skill_rotateto.cpp \
         src/entities/player/skill/skill.cpp \
+        src/entities/player/skill/skill_move.cpp \
         src/entities/referee/gameinfo/sslgameinfo.cpp \
         src/entities/referee/sslreferee.cpp \
         src/entities/worldmap/worldmap.cpp \
@@ -148,6 +149,7 @@ HEADERS += \
     src/entities/player/skill/goto/skill_goto.h \
     src/entities/player/skill/rotate/skill_rotateto.h \
     src/entities/player/skill/skill.h \
+    src/entities/player/skill/skill_move.h \
     src/entities/player/skill/skills.h \
     src/entities/referee/gameinfo/sslgameinfo.h \
     src/entities/referee/sslreferee.h \
