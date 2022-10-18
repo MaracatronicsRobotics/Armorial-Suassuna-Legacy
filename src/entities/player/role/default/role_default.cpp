@@ -37,6 +37,7 @@ void Role_Default::configure() {
 
 void Role_Default::run() {
     _behavior_moveTo->setPosition(getWorldMap()->getBall().getPosition());
-    _behavior_moveTo->keepDistance(true);
+    _behavior_moveTo->enableRotation(true);
+
     setBehavior(BEHAVIOR_MOVETO);
 }

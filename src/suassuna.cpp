@@ -73,7 +73,7 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
             _teams.insert(color, new SSLTeam(color));
 
             for (auto i : Constants::goalkeeperIds()) {
-                if (i != -1) {
+                if (i != 255) {
                     Player *player = new Player(i, color, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
                     _teams[color]->addPlayer(player);
 
@@ -85,7 +85,7 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
             }
 
             for (auto i : Constants::attackerIds()) {
-                if (i != -1) {
+                if (i != 255) {
                     Player *player = new Player(i, color, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
                     _teams[color]->addPlayer(player);
 
@@ -97,7 +97,7 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
             }
 
 //            for (auto i : Constants::supporterIds()) {
-//                if (i != -1) {
+//                if (i != 255) {
 //                    Player *player = new Player(i, color, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
 //                    _teams[color]->addPlayer(player);
 

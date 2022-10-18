@@ -49,19 +49,23 @@ void Role_Goalkeeper::run() {
 
     switch(_currState) {
     case(CATCH):{
+        std::cout << "Fon\n";
         Geometry::LineSegment lineDefense(Geometry::Vector2D(goalCenter.x(), 0.3f), Geometry::Vector2D(goalCenter.x(), 0.3f));
         Geometry::LineSegment ballLine(Geometry::Vector2D(getWorldMap()->getBall().getPosition()),
                                        Geometry::Vector2D(getWorldMap()->getField().ourGoalCenter()));
         std::vector interceptPosition = lineDefense.intersects(ballLine);
 
-
-        if (interceptPosition.at(interceptPosition.size()/2).y() > player()->getPosition().y()) {
+        if(interceptPosition.size() == 0){
+            _behavior_moveTo->setLeftWheelPower(0);
+            _behavior_moveTo->setRightWheelPower(0);
+        }else if(interceptPosition.at(interceptPosition.size()/2).y() > player()->getPosition().y()){
             _behavior_moveTo->setLeftWheelPower(255);
             _behavior_moveTo->setRightWheelPower(255);
         } else {
             _behavior_moveTo->setLeftWheelPower(-255);
             _behavior_moveTo->setRightWheelPower(-255);
         }
+
 
         _behavior_moveTo->enableRotation(false);
         _behavior_moveTo->enableSpin(false);
@@ -82,7 +86,7 @@ void Role_Goalkeeper::run() {
         _behavior_moveTo->setPosition(goalCenter);
         setBehavior(BEHAVIOR_MOVETO);
 
-        if(player()->getPosition().dist(goalCenter) < 0.02){
+        if(player()->getPosition().dist(goalCenter) < 0.05){
             _currState = ROTATE;
         }
         break;

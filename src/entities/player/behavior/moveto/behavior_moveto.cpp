@@ -44,7 +44,7 @@ void Behavior_MoveTo::configure() {
 
     addSkill(SKILL_GOTO, _skill_goTo);
     addSkill(SKILL_ROTATETO, _skill_rotateTo);
-    addSkill(SKILL_ROTATETO, _skill_rotateTo);
+    addSkill(SKILL_SPIN, _skill_spin);
     addSkill(SKILL_MOVE, _skill_move);
 }
 

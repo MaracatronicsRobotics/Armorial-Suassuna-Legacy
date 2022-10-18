@@ -161,18 +161,18 @@ void Player::charge(const bool deCostinha) {
 }
 
 void Player::rotateTo(const Geometry::Angle &targetAngle) {
-    if(getOrientation().rotateDirection(targetAngle) == Geometry::Angle::Direction::CLOCKWISE) {
-        _controller->setWheelsSpeed(playerId(), -45.0, 45.0);
-        if(getOrientation().shortestAngleDiff(targetAngle) <= 0.4) {
-            _controller->setWheelsSpeed(playerId(), 0.0, 0.0);
-        }
-    }
-    else {
-        _controller->setWheelsSpeed(playerId(), 45.0, -45.0);
-        if(getOrientation().shortestAngleDiff(targetAngle) <= 0.4) {
-            _controller->setWheelsSpeed(playerId(), 0.0, 0.0);
-        }
-    }
+//    if(getOrientation().rotateDirection(targetAngle) == Geometry::Angle::Direction::CLOCKWISE) {
+//        _controller->setWheelsSpeed(playerId(), -45.0, 45.0);
+//        if(getOrientation().shortestAngleDiff(targetAngle) <= 0.4) {
+//            _controller->setWheelsSpeed(playerId(), 0.0, 0.0);
+//        }
+//    }
+//    else {
+//        _controller->setWheelsSpeed(playerId(), 45.0, -45.0);
+//        if(getOrientation().shortestAngleDiff(targetAngle) <= 0.4) {
+//            _controller->setWheelsSpeed(playerId(), 0.0, 0.0);
+//        }
+//    }
 
     if(isnanf(targetAngle.value())) {
         return ;
