@@ -120,22 +120,20 @@ void Player::goTo(const Geometry::Vector2D &target, const float& swap) {
         return ;
     }
 
-
     // estimando roads pela visao (malha de controle)
-    float linSpeed = getVelocity().length();
-    float angSpeed = getAngularSpeed();
+//    float linSpeed = getVelocity().length();
+//    float angSpeed = getAngularSpeed();
 
-    float wl_est = ((2.0*linSpeed) - (L*angSpeed)) / (2.0 * r);
-    float wr_est = ((2.0*linSpeed) + (L*angSpeed)) / (2.0 * r);
+//    float wl_est = ((2.0*linSpeed) - (L*angSpeed)) / (2.0 * r);
+//    float wr_est = ((2.0*linSpeed) + (L*angSpeed)) / (2.0 * r);
 
-    float wlOut = _vxPID->getOutput(wl_est, wl);
-    float wrOut = _vyPID->getOutput(wr_est, wr);
+//    float wlOut = _vxPID->getOutput(wl_est, wl);
+//    float wrOut = _vyPID->getOutput(wr_est, wr);
 
-
-    bool isNegL = wlOut < 0.0;
-    bool isNegR = wrOut < 0.0;
-    wlOut = fabs(wl);
-    wrOut = fabs(wr);
+    bool isNegL = wl < 0.0;
+    bool isNegR = wr < 0.0;
+    float wlOut = fabs(wl);
+    float wrOut = fabs(wr);
 
     if (_useSimEnv){
         _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (-1) : 1), wrOut * (isNegR ? (-1) : 1));
