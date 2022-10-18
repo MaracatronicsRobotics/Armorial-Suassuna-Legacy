@@ -22,6 +22,7 @@
 #include "player.h"
 
 #define MAX_TIME_TO_MARK_AS_IDLE 1.0 // 1 second
+#define INERTIA_THRESHOLD 45.0f
 
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/bundled/color.h>
@@ -139,8 +140,20 @@ void Player::goTo(const Geometry::Vector2D &target, const float& swap) {
     if (_useSimEnv){
         _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (-1) : 1), wrOut * (isNegR ? (-1) : 1));
     } else {
-        wlOut = int((std::min(std::max(wlOut, 25.0f), 100.0f) / 80.0f) * 255);
-        wrOut = int((std::min(std::max(wrOut, 25.0f), 100.0f) / 80.0f) * 255);
+        wlOut = std::max(wlOut, 25.0f);
+        wrOut = std::max(wrOut, 25.0f);
+
+        float hipotenusa = sqrt(pow(wlOut, 2) + pow(wrOut, 2));
+        bool inertia = hipotenusa <= INERTIA_THRESHOLD;
+
+        if (inertia) {
+            wlOut = std::min(wlOut, 100.0f);
+            wrOut = std::min(wrOut, 100.0f);
+        }
+
+        wlOut = int((wlOut / 80.0f) * 255);
+        wrOut = int((wrOut / 80.0f) * 255);
+
         _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (1) : -1), wrOut * (isNegR ? (1) : -1));
     }
 }
