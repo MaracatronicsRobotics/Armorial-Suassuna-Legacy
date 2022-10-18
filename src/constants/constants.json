@@ -18,6 +18,10 @@
 	"Team": {
 		"teamColor": "yellow",
 		"teamPlaySide": "left",
-		"maxNumPlayers": 3
+		"maxNumPlayers": 3,
+		"goalkeeper": 1,
+		"attacker1": 0,
+		"attacker2": 2,
+		"supporter": -1
 	}
 }

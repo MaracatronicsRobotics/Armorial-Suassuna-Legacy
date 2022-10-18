@@ -71,20 +71,37 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
     magic_enum::enum_for_each<Common::Enums::Color>([this] (auto color) {
         if(color != Common::Enums::Color::UNDEFINED) {
             _teams.insert(color, new SSLTeam(color));
-            for(int i = 0; i < Constants::maxNumPlayers(); i++) {
+
+            for (auto i : Constants::goalkeeperIds()) {
                 Player *player = new Player(i, color, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
                 _teams[color]->addPlayer(player);
 
-                // Start thread only if is a Player from our team
                 if(color == Constants::teamColor()) {
                     _entityManager->addEntity(player);
-                    if (player->playerId() == 0) {
-                        player->setRole(new Role_GK());
-                    } else {
-                        player->setRole(new Role_Attacker());
-                    }
+                    player->setRole(new Role_GK());
                 }
             }
+
+            for (auto i : Constants::attackerIds()) {
+                Player *player = new Player(i, color, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
+                _teams[color]->addPlayer(player);
+
+                if(color == Constants::teamColor()) {
+                    _entityManager->addEntity(player);
+                    player->setRole(new Role_Attacker());
+                }
+            }
+
+//            for (auto i : Constants::supporterIds()) {
+//                Player *player = new Player(i, color, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
+//                _teams[color]->addPlayer(player);
+
+//                if(color == Constants::teamColor()) {
+//                    _entityManager->addEntity(player);
+//                    player->setRole(new Role_Supporter());
+//                }
+//            }
+
         }
     });
 
