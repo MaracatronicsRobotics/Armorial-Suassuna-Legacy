@@ -47,6 +47,10 @@ int main(int argc, char *argv[])
     QCommandLineOption useSimEnvOption("simulator", "Enable Simulator Environment mode");
     parser.addOption(useSimEnvOption);
 
+    // Swap roles
+    QCommandLineOption useRoleSwapOption("swap", "Enable role swapping");
+    parser.addOption(useRoleSwapOption);
+
     // Process parser in application
     parser.process(app);
 
@@ -59,7 +63,7 @@ int main(int argc, char *argv[])
 
     // Start Suassuna core
     Suassuna *suassuna = new Suassuna();
-    bool started = suassuna->start(parser.isSet(useGuiOption), parser.isSet(useSimEnvOption));
+    bool started = suassuna->start(parser.isSet(useGuiOption), parser.isSet(useSimEnvOption), parser.isSet(useRoleSwapOption));
 
     // Check if started well
     if(started) {

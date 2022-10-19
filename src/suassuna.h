@@ -53,9 +53,10 @@ public:
      * \brief Start Suassuna core (entities, players and some other modules).
      * \param useGUI Starts the GUI interface if set as True.
      * \param useSimVision Starts Suassuna in the simulation vision mode if set as True.
+     * \param useSwapRoles Starts role management during execution.
      * \return True if everything went ok and false otherwise.
      */
-    [[nodiscard]] bool start(bool useGUI, bool useSimEnv);
+    [[nodiscard]] bool start(bool useGUI, bool useSimEnv, bool useSwapRoles);
 
     /*!
      * \brief Stop Suassuna core (entities, players and some other modules).
@@ -72,6 +73,7 @@ private:
 
     // Options
     bool _useSimEnv;
+    bool _swapRoles;
 
     // Teams
     QMap<Common::Enums::Color, SSLTeam*> _teams;
