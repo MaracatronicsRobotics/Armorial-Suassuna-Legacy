@@ -49,19 +49,23 @@ void Role_Goalkeeper::run() {
 
     switch(_currState) {
     case(CATCH):{
-        std::cout << "Fon\n";
-        Geometry::LineSegment lineDefense(Geometry::Vector2D(goalCenter.x(), 0.3f), Geometry::Vector2D(goalCenter.x(), 0.3f));
-        Geometry::LineSegment ballLine(Geometry::Vector2D(getWorldMap()->getBall().getPosition()),
-                                       Geometry::Vector2D(getWorldMap()->getField().ourGoalCenter()));
-        std::vector interceptPosition = lineDefense.intersects(ballLine);
+//        std::cout << "Fon\n";
+//        Geometry::LineSegment lineDefense(Geometry::Vector2D(goalCenter.x(), 0.3f), Geometry::Vector2D(goalCenter.x(), 0.3f));
+//        Geometry::LineSegment ballLine(Geometry::Vector2D(getWorldMap()->getBall().getPosition()),
+//                                       Geometry::Vector2D(getWorldMap()->getField().ourGoalCenter()));
+//        std::vector interceptPosition = lineDefense.intersects(ballLine);
+        float ball_y = getWorldMap()->getBall().getPosition().y();
 
-        if(interceptPosition.size() == 0){
-            _behavior_moveTo->setLeftWheelPower(0);
-            _behavior_moveTo->setRightWheelPower(0);
-        }else if(interceptPosition.at(interceptPosition.size()/2).y() > player()->getPosition().y()){
+        if(ball_y > 0.2){
+            ball_y = 0.2;
+        }else if(ball_y < -0.2){
+            ball_y = 0.2;
+        }
+
+        if(ball_y > player()->getPosition().y()){
             _behavior_moveTo->setLeftWheelPower(255);
             _behavior_moveTo->setRightWheelPower(255);
-        } else {
+        } else if (ball_y < player()->getPosition().y()) {
             _behavior_moveTo->setLeftWheelPower(-255);
             _behavior_moveTo->setRightWheelPower(-255);
         }
@@ -75,6 +79,9 @@ void Role_Goalkeeper::run() {
         if(getWorldMap()->getBall().getPosition().dist(player()->getPosition()) < 0.1){
             _currState = SPIN;
         } else if ((dist_GKball > 0.2) || (goalCenter.dist(player()->getPosition()) > 0.2)) {
+            _currState = ROTATE;
+        }
+        if (!getWorldMap()->getField().ourPenaltyArea().contains(player()->getPosition())) {
             _currState = MOVETO;
         }
         break;        
@@ -110,7 +117,9 @@ void Role_Goalkeeper::run() {
         _behavior_moveTo->setForcebleMotion(false);
         setBehavior(BEHAVIOR_MOVETO);
 
-        if((dist_GKball > 0.2) || (goalCenter.dist(player()->getPosition()) > 0.2)){
+        if (getWorldMap()->getField().ourPenaltyArea().contains(player()->getPosition())) {
+            _currState = ROTATE;
+        } else {
             _currState = MOVETO;
         }
     }
@@ -123,4 +132,9 @@ float Role_Goalkeeper::limitGKSide(float desiredY) {
     } else {
         return std::min(desiredY, 0.3f);
     }
+}
+
+bool Role_Goalkeeper::isInsideGoalArea() {
+    if (fabs(player()->getPosition().y()) < 0.35f && (player()->getPosition().x()) > 0.65f);
+    getWorldMap()->getField().ourPenaltyArea().contains(player()->getPosition());
 }

@@ -28,6 +28,7 @@ private:
     };
 
     float limitGKSide(float desiredY);
+    bool isInsideGoalArea();
 
     state _currState;
     Geometry::Vector2D _desiredPosition;
