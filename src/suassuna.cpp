@@ -73,6 +73,8 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
         if(color != Common::Enums::Color::UNDEFINED) {
             _teams.insert(color, new SSLTeam(color));
 
+            bool assignedCanEnterGoalArea = false;
+
             for (auto i : Constants::goalkeeperIds()) {
                 if (i != 255) {
                     Player *player = new Player(i, color, _referee, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
@@ -81,6 +83,10 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
                     if(color == Constants::teamColor()) {
                         _entityManager->addEntity(player);
                         player->setRole(new Role_spinGK());
+                        if (!assignedCanEnterGoalArea){
+                            player->setCanEnterGoalArea(true);
+                            assignedCanEnterGoalArea = true;
+                        }
                     }
                 }
             }
@@ -94,20 +100,12 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
                         _entityManager->addEntity(player);
                         player->setRole(new Role_Attacker());
                     }
+                    if (!assignedCanEnterGoalArea){
+                        player->setCanEnterGoalArea(true);
+                        assignedCanEnterGoalArea = true;
+                    }
                 }
             }
-
-//            for (auto i : Constants::supporterIds()) {
-//                if (i != 255) {
-//                    Player *player = new Player(i, color, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
-//                    _teams[color]->addPlayer(player);
-
-//                    if(color == Constants::teamColor()) {
-//                        _entityManager->addEntity(player);
-//                        player->setRole(new Role_Supporter());
-//                    }
-//                }
-//            }
         }
     });
 

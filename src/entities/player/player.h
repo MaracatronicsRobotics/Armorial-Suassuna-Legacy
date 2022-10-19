@@ -44,7 +44,12 @@ public:
      */
     Common::Enums::Color teamColor();
     quint8 playerId();
-    bool _useSimEnv;
+    bool canEnterGoalArea() { return _canEnterGoalArea; }
+
+    /*!
+     * \brief Player params setters
+     */
+    void setCanEnterGoalArea(bool canEnter) { _canEnterGoalArea = canEnter; }
 
     /*!
      * \brief Mark player as idle, setting its speeds to zero.
@@ -131,6 +136,10 @@ private:
     // Role management
     Role *_playerRole;
     QMutex _mutexRole;
+
+    bool _useSimEnv;
+    bool _canEnterGoalArea;
+
 };
 
 #endif // PLAYER_H

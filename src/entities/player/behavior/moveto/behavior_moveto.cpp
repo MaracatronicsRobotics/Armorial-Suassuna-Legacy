@@ -51,11 +51,16 @@ void Behavior_MoveTo::configure() {
 }
 
 void Behavior_MoveTo::run() {
+    Geometry::Vector2D ballPos = getWorldMap()->getBall().getPosition();
+
     if (_keepDistance) {
         // Maybe keep a distance to position
     }
 
 //    spdlog::info("MOVETO Desired Position: ({}, {})", _desiredPosition.x(), _desiredPosition.y());
+    if (!player()->canEnterGoalArea() && getWorldMap()->getField().ourPenaltyArea().contains(ballPos)) {
+        _desiredPosition = getWorldMap()->getField().centerCircle().center();
+    }
 
     if (_isRotationEnabled) {
         _skill_rotateTo->setTargetPosition(_desiredPosition);

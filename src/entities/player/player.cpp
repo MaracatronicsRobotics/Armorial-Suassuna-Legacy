@@ -137,7 +137,7 @@ void Player::goTo(const Geometry::Vector2D &target, const float& swap) {
     float wrOut = fabs(wr);
 
     if (_useSimEnv){
-        _controller->setWheelsSpeed(playerId(), (wlOut / 2.5f) * (isNegL ? (-1) : 1), (wrOut / 2.5f) * (isNegR ? (-1) : 1));
+        _controller->setWheelsSpeed(playerId(), (wlOut / 2.0f) * (isNegL ? (-1) : 1), (wrOut / 2.0f) * (isNegR ? (-1) : 1));
     } else {
         wlOut = std::max(wlOut, 25.0f);
         wrOut = std::max(wrOut, 25.0f);

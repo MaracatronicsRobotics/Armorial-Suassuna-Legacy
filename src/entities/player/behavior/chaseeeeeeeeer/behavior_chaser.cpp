@@ -64,19 +64,16 @@ Geometry::Vector2D Behavior_Chaser::getChasePosition() {
 
     if (aimmingBackwards) {
         Geometry::Vector2D unitVector = getWorldMap()->getBall().getPosition() - getWorldMap()->getField().theirGoalCenter();
-        chasePos = unitVector.normalize() * 1.1f * unitVector.length();
+        chasePos = unitVector.normalize() * 0.4f * unitVector.length();
 
         if (inDangerZone(ALIGNMENT_ERROR)) {
-            spdlog::info("In Danger Zone!");
-            spdlog::info("Before chasePos: {} | {}", chasePos.x(), chasePos.y());
-//            Geometry::Angle ortAngle((chasePos.angle() + (M_PI/2.0)) * chasePos.length());
             float sideY = chasePos.y();
-            float sideFactor = 1.0f;
+            float sideFactor = 0.4f;
 
             Geometry::Vector2D topBoundary = Geometry::Vector2D(chasePos.x(), 10.0f);
             Geometry::Vector2D bottomBoundary = Geometry::Vector2D(chasePos.x(), -10.0f);
             if (chasePos.dist(topBoundary) < chasePos.dist(bottomBoundary)){
-                sideY = sideY * -1;
+                sideFactor = sideFactor * -1;
             }
             sideY = sideY + sideFactor;
 
@@ -84,12 +81,19 @@ Geometry::Vector2D Behavior_Chaser::getChasePosition() {
             if (sideY < -0.7f) sideY = -0.7f;
 
             chasePos = Geometry::Vector2D(chasePos.x(), sideY);
-            spdlog::info("After chasePos: {} | {}", chasePos.x(), chasePos.y());
         }
 
+        Geometry::Vector2D ballPos = getWorldMap()->getBall().getPosition();
+
         if (!getWorldMap()->getField().field().contains(chasePos)) {
-            spdlog::warn("Going to ball");
-            chasePos = getWorldMap()->getBall().getPosition();
+            spdlog::warn("chasePos out of field. Resetting to Going to ball.");
+            std::cout << chasePos.x() << " | " << chasePos.y() << std::endl;
+            chasePos = ballPos;
+        }
+
+        if (!player()->canEnterGoalArea() && getWorldMap()->getField().ourPenaltyArea().contains(ballPos)) {
+            spdlog::warn("Cannot enter goal Area. Resetting to Going to center.");
+            chasePos = getWorldMap()->getField().centerCircle().center();
         }
     }
     return chasePos;
@@ -99,7 +103,7 @@ bool Behavior_Chaser::inDangerZone(float alignementError) {
     Geometry::Vector2D ballPos = getWorldMap()->getBall().getPosition();
     Geometry::Vector2D playerPos = player()->getPosition();
 
-    bool centerTunnel = ballPos.y() >= getWorldMap()->getField().ourGoalRightPost().y() && ballPos.y() <= getWorldMap()->getField().ourGoalLeftPost().y();
+    bool centerTunnel = ballPos.y() >= getWorldMap()->getField().ourGoalRightPost().y() - alignementError && ballPos.y() <= getWorldMap()->getField().ourGoalLeftPost().y() + alignementError;
     bool aligned = (fabs(ballPos.y() - playerPos.y()) <= alignementError);
     bool closerToOurGoal = (ballPos.dist(getWorldMap()->getField().ourGoalCenter()) < ballPos.dist(getWorldMap()->getField().theirGoalCenter()));
 
