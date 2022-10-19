@@ -31,6 +31,7 @@ public:
     QString name();
 
     void setClockWise (bool isClockWise) { _isClockWise = isClockWise; }
+    void setSpinSpeed (int wheelSpeed) {_wheelSpeed = wheelSpeed;}
 
 private:
     // Skill inherited methods
@@ -39,6 +40,7 @@ private:
 
     // Parameters
     bool _isClockWise;
+    int _wheelSpeed;
 };
 
 #endif // SKILL_SPIN_H

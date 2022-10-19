@@ -82,6 +82,7 @@ SOURCES += \
         src/entities/player/role/default/role_default.cpp \
         src/entities/player/role/goalkeeper/role_goalkeeper.cpp \
         src/entities/player/role/goalkeeper/role_gk.cpp \
+        src/entities/player/role/goalkeeper/role_spingk.cpp \
         src/entities/player/role/role.cpp \
         src/entities/player/skill/charge/skill_charge.cpp \
         src/entities/player/skill/goto/skill_goto.cpp \
@@ -150,6 +151,7 @@ HEADERS += \
     src/entities/player/role/default/role_default.h \
     src/entities/player/role/goalkeeper/role_goalkeeper.h \
     src/entities/player/role/goalkeeper/role_gk.h \
+    src/entities/player/role/goalkeeper/role_spingk.h \
     src/entities/player/role/role.h \
     src/entities/player/skill/charge/skill_charge.h \
     src/entities/player/skill/goto/skill_goto.h \

@@ -239,11 +239,11 @@ void Player::dribble(const bool &dribbling) {
     _controller->setDribble(playerId(), dribbling);
 }
 
-void Player::spin(const bool &clockWise) {
+void Player::spin(const bool &clockWise, int wheelSpeed) {
     if (clockWise) {
-        _controller->setWheelsSpeed(playerId(), 40, -40);
+        _controller->setWheelsSpeed(playerId(), wheelSpeed, -wheelSpeed);
     } else {
-        _controller->setWheelsSpeed(playerId(), -40, 40);
+        _controller->setWheelsSpeed(playerId(), -wheelSpeed, wheelSpeed);
     }
 }
 

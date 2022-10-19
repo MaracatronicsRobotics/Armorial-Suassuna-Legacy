@@ -27,7 +27,9 @@ Behavior_MoveTo::Behavior_MoveTo() {
     _keepDistance = false;
     _spin = false;
     _spinClock = true;
+    _spinSpeed = 40;
     _forceMotion = false;
+    _antiStuck = true;
     _leftWheelPower = 0.0f;
     _rightWheelPower = 0.0f;
 }
@@ -60,6 +62,7 @@ void Behavior_MoveTo::run() {
         runSkill(SKILL_ROTATETO);
     } else if(_spin) {
         _skill_spin->setClockWise(_spinClock);
+        _skill_spin->setSpinSpeed(_spinSpeed);
         runSkill(SKILL_SPIN);
     } else if(_forceMotion) {
         _skill_move->setLeftWheelPower(_leftWheelPower);
@@ -68,7 +71,7 @@ void Behavior_MoveTo::run() {
     }
     else {
         _skill_goTo->setTargetPosition(_desiredPosition);
-        _skill_goTo->enableWallAntiStuck(true);
+        _skill_goTo->enableWallAntiStuck(_antiStuck);
         runSkill(SKILL_GOTO);
     }
 }

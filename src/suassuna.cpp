@@ -23,6 +23,7 @@
 
 #include <src/entities/player/role/default/role_default.h>
 #include <src/entities/player/role/goalkeeper/role_goalkeeper.h>
+#include <src/entities/player/role/goalkeeper/role_spingk.h>
 #include <src/entities/player/role/attacker/role_attacker.h>
 #include <src/entities/player/role/goalkeeper/role_gk.h>
 
@@ -79,7 +80,7 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
 
                     if(color == Constants::teamColor()) {
                         _entityManager->addEntity(player);
-                        player->setRole(new Role_Goalkeeper());
+                        player->setRole(new Role_spinGK());
                     }
                 }
             }

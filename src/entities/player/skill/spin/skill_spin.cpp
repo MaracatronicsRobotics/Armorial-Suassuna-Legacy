@@ -23,6 +23,7 @@
 
 Skill_Spin::Skill_Spin() {
     _isClockWise = true;
+    _wheelSpeed = 40;
 }
 
 QString Skill_Spin::name() {
@@ -33,5 +34,5 @@ void Skill_Spin::configure() {
 }
 
 void Skill_Spin::run() {
-    player()->spin(_isClockWise);
+    player()->spin(_isClockWise, _wheelSpeed);
 }

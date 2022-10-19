@@ -90,7 +90,7 @@ public:
      * \brief spin
      * \param clockWise1
      */
-    void spin(const bool& clockWise);
+    void spin(const bool& clockWise, int wheelSpeed = 40);
 
     // Role management
     QString roleName();
