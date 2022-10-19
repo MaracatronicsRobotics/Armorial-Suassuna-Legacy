@@ -56,13 +56,13 @@ void Role_Goalkeeper::run() {
 //        std::vector interceptPosition = lineDefense.intersects(ballLine);
         float ball_y = getWorldMap()->getBall().getPosition().y();
 
-        if(ball_y > 0.2){
-            ball_y = 0.2;
-        }else if(ball_y < -0.2){
-            ball_y = 0.2;
-        }
+//        if(ball_y > 0.2){
+//            ball_y = 0.2;
+//        }else if(ball_y < -0.2){
+//            ball_y = 0.2;
+//        }
 
-        if(ball_y > player()->getPosition().y()){
+        if(ball_y >= player()->getPosition().y()){
             _behavior_moveTo->setLeftWheelPower(255);
             _behavior_moveTo->setRightWheelPower(255);
         } else if (ball_y < player()->getPosition().y()) {
