@@ -79,7 +79,7 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
 
                     if(color == Constants::teamColor()) {
                         _entityManager->addEntity(player);
-                        player->setRole(new Role_Goalkeeper());
+                        player->setRole(new Role_GK());
                     }
                 }
             }

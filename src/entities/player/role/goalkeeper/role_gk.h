@@ -30,44 +30,29 @@ class Role_GK : public Role
 {
 public:
     Role_GK();
-    QString name();
-
-    void setDefenderEllipseCenter(Geometry::Vector2D ellipseCenter) { _ellipseCenter = ellipseCenter; }
-    void setDefenderEllipseParameters(QPair<float, float> ellipseParameters) { _ellipseParameters = ellipseParameters; }
 
 private:
+    // Role inherited methods
     void configure();
     void run();
 
+    // Behaviors enum
     enum {
-        BEHAVIOR_MOVETO,
-        BEHAVIOR_INTERCEPT
+        BEHAVIOR_DEFAULT,
+        BEHAVIOR_MOVETO
     };
 
-
-    // Parameters
-    bool _gkOverlap;
-    Utils::Timer _overlapTimer;
-    bool _isOverlapTimerInit;
-
     enum state {
-        STATE_BLOCKBALL,
-        STATE_PICKBALL
+        KEEP,
+        MOVETO,
+        SPIN
     };
 
     state _currState;
 
-    Geometry::Vector2D _standardPos;
-
+    // Behaviors pointers
+    Behavior_Default *_behavior_default;
     Behavior_MoveTo *_behavior_moveTo;
-    Behavior_Intercept *_behavior_intercept;
-
-    // Role Parameters
-    Geometry::Vector2D _ellipseCenter;
-    QPair<float, float> _ellipseParameters;
-
-    // Replacer
-//    QPair<Geometry::Vector2D, Geometry::Angle> getPlacementPosition(VSSRef::Foul foul, VSSRef::Color forTeam, VSSRef::Quadrant atQuadrant);
 };
 
 #endif // ROLE_GK_H
