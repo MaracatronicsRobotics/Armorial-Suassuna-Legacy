@@ -198,6 +198,16 @@ QList<quint8> Constants::attackerIds() {
 
     players.append(player);
 
+    converted = false;
+    player = _parameterHandler["Team"].getAsMap()["attacker3"].toInt(&converted);
+
+    if(!converted) {
+        spdlog::error("[Constants] Failed to read a valid integer in '{}'.", __FUNCTION__);
+        exit(-1);
+    }
+
+    players.append(player);
+
     return players;
 }
 

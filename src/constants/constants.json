@@ -22,6 +22,7 @@
                 "goalkeeper": 0,
                 "attacker1": 1,
                 "attacker2": 2,
+                "attacker3": -1,
 		"supporter": -1
 	}
 }
