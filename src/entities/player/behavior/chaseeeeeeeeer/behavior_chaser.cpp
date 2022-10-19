@@ -22,6 +22,8 @@
 #include "behavior_chaser.h"
 #include <src/constants/constants.h>
 
+#define ALIGNMENT_ERROR 0.2f
+
 Behavior_Chaser::Behavior_Chaser() {
     _CHAAAAAAAAAAAAAAAAAAARGE = false;
 }
@@ -53,20 +55,92 @@ void Behavior_Chaser::run() {
 
 Geometry::Vector2D Behavior_Chaser::getChasePosition() {
     Geometry::Vector2D chasePos = _chasePos;
-    bool condition;
+    bool aimmingBackwards;
     if (Constants::teamPlaySide() == Common::Enums::Side::SIDE_RIGHT) {
-        condition = player()->getPosition().x() <= _chasePos.x();
+        aimmingBackwards = player()->getPosition().x() <= _chasePos.x();
     } else {
-        condition = player()->getPosition().x() >= _chasePos.x();
+        aimmingBackwards = player()->getPosition().x() >= _chasePos.x();
     }
 
-    if (condition) {
+    if (aimmingBackwards) {
         Geometry::Vector2D unitVector = getWorldMap()->getBall().getPosition() - getWorldMap()->getField().theirGoalCenter();
         chasePos = unitVector.normalize() * 1.1f * unitVector.length();
 
+        if (inDangerZone(ALIGNMENT_ERROR)) {
+            spdlog::info("In Danger Zone!");
+            spdlog::info("Before chasePos: {} | {}", chasePos.x(), chasePos.y());
+//            Geometry::Angle ortAngle((chasePos.angle() + (M_PI/2.0)) * chasePos.length());
+            float sideY = chasePos.y();
+            float sideFactor = 1.0f;
+
+            Geometry::Vector2D topBoundary = Geometry::Vector2D(chasePos.x(), 10.0f);
+            Geometry::Vector2D bottomBoundary = Geometry::Vector2D(chasePos.x(), -10.0f);
+            if (chasePos.dist(topBoundary) < chasePos.dist(bottomBoundary)){
+                sideY = sideY * -1;
+            }
+            sideY = sideY + sideFactor;
+
+            if (sideY > 0.7f) sideY = 0.7f;
+            if (sideY < -0.7f) sideY = -0.7f;
+
+            chasePos = Geometry::Vector2D(chasePos.x(), sideY);
+            spdlog::info("After chasePos: {} | {}", chasePos.x(), chasePos.y());
+        }
+
         if (!getWorldMap()->getField().field().contains(chasePos)) {
+            spdlog::warn("Going to ball");
             chasePos = getWorldMap()->getBall().getPosition();
         }
     }
     return chasePos;
+}
+
+bool Behavior_Chaser::inDangerZone(float alignementError) {
+    Geometry::Vector2D ballPos = getWorldMap()->getBall().getPosition();
+    Geometry::Vector2D playerPos = player()->getPosition();
+
+    bool centerTunnel = ballPos.y() >= getWorldMap()->getField().ourGoalRightPost().y() && ballPos.y() <= getWorldMap()->getField().ourGoalLeftPost().y();
+    bool aligned = (fabs(ballPos.y() - playerPos.y()) <= alignementError);
+    bool closerToOurGoal = (ballPos.dist(getWorldMap()->getField().ourGoalCenter()) < ballPos.dist(getWorldMap()->getField().theirGoalCenter()));
+
+
+
+    return centerTunnel && aligned && closerToOurGoal;
+}
+
+bool Behavior_Chaser::inDangerZoneOld() {
+    Geometry::Vector2D ballPos = getWorldMap()->getBall().getPosition();
+
+    // Check if our goal posts are okay
+    spdlog::info("Our Goal Right Post: ({}, {})", getWorldMap()->getField().ourGoalRightPost().x(), getWorldMap()->getField().ourGoalRightPost().y());
+    spdlog::info("Our Goal Left Post: ({}, {})", getWorldMap()->getField().ourGoalLeftPost().x(), getWorldMap()->getField().ourGoalLeftPost().y());
+
+    Geometry::Arc goalZone;
+    if (Constants::teamPlaySide() == Common::Enums::SIDE_RIGHT) {
+        if (player()->getPosition().y() >= 0.0) {
+            goalZone = Geometry::Arc(ballPos, ballPos.dist(getWorldMap()->getField().ourGoalCenter()), Geometry::Angle(getWorldMap()->getField().ourGoalLeftPost().angle()), Geometry::Angle(getWorldMap()->getField().ourGoalRightPost().angle()));
+        } else {
+            goalZone = Geometry::Arc(ballPos, ballPos.dist(getWorldMap()->getField().ourGoalCenter()), Geometry::Angle(getWorldMap()->getField().ourGoalRightPost().angle()), Geometry::Angle(getWorldMap()->getField().ourGoalLeftPost().angle()));
+        }
+    } else {
+        if (player()->getPosition().y() >= 0.0) {
+            goalZone = Geometry::Arc(ballPos, ballPos.dist(getWorldMap()->getField().ourGoalCenter()), Geometry::Angle(getWorldMap()->getField().ourGoalRightPost().angle()), Geometry::Angle(getWorldMap()->getField().ourGoalLeftPost().angle()));
+        } else {
+            goalZone = Geometry::Arc(ballPos, ballPos.dist(getWorldMap()->getField().ourGoalCenter()), Geometry::Angle(getWorldMap()->getField().ourGoalLeftPost().angle()), Geometry::Angle(getWorldMap()->getField().ourGoalRightPost().angle()));
+        }
+    }
+
+    Geometry::LineSegment robotToBall(getWorldMap()->getBall().getPosition(), player()->getPosition());
+
+    std::vector<Geometry::Vector2D> intersection = goalZone.intersectionWithLine(robotToBall);
+
+
+    spdlog::info("Intersection goal zone <-> robotToBall: {}", intersection.size());
+
+    if (intersection.size() > 0) {
+        return true;
+    }
+
+    spdlog::info("Not in danger zone");
+    return false;
 }

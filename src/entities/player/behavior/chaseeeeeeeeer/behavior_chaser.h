@@ -24,6 +24,7 @@
 
 #include <src/entities/player/behavior/behavior.h>
 #include <src/entities/player/skill/skills.h>
+#include <Armorial/Geometry/Arc/Arc.h>
 #include "math.h"
 
 
@@ -42,6 +43,8 @@ private:
     void run();
 
     Geometry::Vector2D getChasePosition();
+    bool inDangerZone(float alignementError);
+    bool inDangerZoneOld();
 
     enum {
         SKILL_GOTO,
