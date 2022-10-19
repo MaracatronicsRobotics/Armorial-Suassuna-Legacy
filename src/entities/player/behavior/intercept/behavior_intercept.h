@@ -24,6 +24,7 @@
 
 #include <src/entities/player/behavior/behavior.h>
 #include <src/entities/player/skill/skills.h>
+#include "math.h"
 
 class Behavior_Intercept : public Behavior
 {
@@ -33,9 +34,11 @@ public:
 
     // Setters
     void setInterceptSegment(Geometry::Vector2D firstPoint, Geometry::Vector2D secondPoint);
+    void setBaseSpeed(float baseSpeed) { _baseSpeed = baseSpeed; }
     void setObjectPosition(Geometry::Vector2D objectPos) { _objectPos = objectPos; }
     void setObjectVelocity(Geometry::Vector2D objectVel) { _objectVel = objectVel; }
     void enableSpin(bool spinEnabled) { _spinEnabled = spinEnabled; }
+    void setLinearError(float desiredLinearError) { _desiredLinearError = desiredLinearError; }
 
     // Getters
     Geometry::Vector2D getInterceptPosition() { return _interceptPos; }
@@ -63,7 +66,9 @@ private:
     Geometry::Vector2D _objectVel;
     Geometry::Vector2D _interceptPos;
     Geometry::Vector2D _interceptVel;
+    float _baseSpeed;
     bool _spinEnabled;
+    float _desiredLinearError;
 
     // Auxiliary Functions
     Geometry::Vector2D getOrthogonalProjection();

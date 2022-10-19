@@ -24,6 +24,7 @@
 
 #include <src/entities/worldmap/worldmap.h>
 #include <src/entities/controller/controller.h>
+#include <src/entities/referee/sslreferee.h>
 #include <src/entities/player/PID/pid.h>
 #include <src/entities/player/PID/anglepid.h>
 
@@ -36,7 +37,7 @@ public:
      * \brief Player constructor.
      * \param playerId, teamColor Player identifiers.
      */
-    Player(const quint8 playerId, const Common::Enums::Color& teamColor, WorldMap* worldMap, Controller* controller, bool useSimEnv);
+    Player(const quint8 playerId, const Common::Enums::Color& teamColor, VSSReferee* referee, WorldMap* worldMap, Controller* controller, bool useSimEnv);
 
     /*!
      * \brief Player params getters
@@ -65,6 +66,9 @@ public:
     /*!
      * \brief Charges, that's it!
      */
+
+    void move(float leftWheelPower, float rightWheelPower);
+
     void charge(const bool deCostinha);
 
     /*!
@@ -74,8 +78,6 @@ public:
      * \param kickAngle
      */
 
-    void spin(bool isClockWise);
-
     void kick(const float& kickSpeed, const float& chipKickAngle = 0, const float& kickAngle = 0);
 
     /*!
@@ -83,6 +85,12 @@ public:
      * \param dribbling
      */
     void dribble(const bool& dribbling);
+
+    /*!
+     * \brief spin
+     * \param clockWise1
+     */
+    void spin(const bool& clockWise);
 
     // Role management
     QString roleName();
@@ -113,6 +121,7 @@ private:
 
     // Internal
     WorldMap *_worldMap;
+    VSSReferee *_referee;
     Controller *_controller;
 
     // Idle control

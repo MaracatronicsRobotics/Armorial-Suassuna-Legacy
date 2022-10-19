@@ -19,53 +19,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef BEHAVIOR_MOVETO_H
-#define BEHAVIOR_MOVETO_H
+#ifndef SKILL_MOVE_H
+#define SKILL_MOVE_H
 
-#include <src/entities/player/behavior/behavior.h>
-#include <src/entities/player/skill/skills.h>
+#include <src/entities/player/skill/skill.h>
 
-class Behavior_MoveTo : public Behavior
+class Skill_Move : public Skill
 {
 public:
-    Behavior_MoveTo();
+    Skill_Move();
     QString name();
 
-    // Setters
-    void setPosition(Geometry::Vector2D desiredPosition) { _desiredPosition = desiredPosition; }
-    void keepDistance(bool keepDistance) { _keepDistance = keepDistance; }
-    void enableRotation(bool isRotationEnabled) { _isRotationEnabled = isRotationEnabled; }
-    void enableSpin(bool spin) { _spin = spin; }
-    void setSpinOrientation(bool clockwise) { _spinClock = clockwise; }
-    void setForcebleMotion(bool forceMotion) { _forceMotion = forceMotion; }
+    // Target management
     void setLeftWheelPower(float leftWheelPower) { _leftWheelPower = leftWheelPower; }
     void setRightWheelPower(float rightWheelPower) { _rightWheelPower = rightWheelPower; }
+
 private:
+    // Skill inherited methods
     void configure();
     void run();
 
-    enum {
-        SKILL_GOTO,
-        SKILL_ROTATETO,
-        SKILL_SPIN,
-        SKILL_MOVE
-    };
-
-    Skill_GoTo *_skill_goTo;
-    Skill_RotateTo *_skill_rotateTo;
-    Skill_Spin *_skill_spin;
-    Skill_Move *_skill_move;
-
-    bool _isRotationEnabled;
-    bool _spin;
-    bool _spinClock; // positive = clockwise
-    bool _forceMotion;
+    // Internal
     float _leftWheelPower;
     float _rightWheelPower;
-
-    Geometry::Vector2D _desiredPosition;
-
-    bool _keepDistance;
 };
 
-#endif // BEHAVIOR_MOVETO_H
+#endif // SKILL_MOVE_H

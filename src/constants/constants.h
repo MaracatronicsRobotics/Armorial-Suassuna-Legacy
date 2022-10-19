@@ -91,6 +91,21 @@ public:
      */
     static quint16 maxNumPlayers();
 
+    /*!
+     * \return A list of integers containing the ids assigned to goalkeeper role.
+     */
+    static QList<quint8> goalkeeperIds();
+
+    /*!
+     * \return A list of integers containing the ids assigned to attacker role.
+     */
+    static QList<quint8> attackerIds();
+
+    /*!
+     * \return A list of integers containing the ids assigned to supporter role.
+     */
+    static QList<quint8> supporterIds();
+
 private:
     static Utils::ParameterHandler _parameterHandler;
 };

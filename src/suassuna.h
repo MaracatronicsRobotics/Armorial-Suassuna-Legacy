@@ -67,7 +67,7 @@ private:
     // Modules
     GUI *_gui;
     WorldMap *_worldMap;
-    SSLReferee *_referee;
+    VSSReferee *_referee;
     Controller *_controller;
 
     // Options

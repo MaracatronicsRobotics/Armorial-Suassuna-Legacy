@@ -22,6 +22,7 @@
 #include "player.h"
 
 #define MAX_TIME_TO_MARK_AS_IDLE 1.0 // 1 second
+#define INERTIA_THRESHOLD 45.0f
 
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/bundled/color.h>
@@ -32,9 +33,10 @@
 #include <src/entities/player/role/role.h>
 #include <src/constants/constants.h>
 
-Player::Player(const quint8 playerId, const Common::Enums::Color& teamColor, WorldMap *worldMap, Controller *controller, bool useSimEnv) {
+Player::Player(const quint8 playerId, const Common::Enums::Color& teamColor, VSSReferee* referee, WorldMap *worldMap, Controller *controller, bool useSimEnv) {
     _playerId = playerId;
     _teamColor = teamColor;
+    _referee = referee;
     _worldMap = worldMap;
     _controller = controller;
     _useSimEnv = useSimEnv;
@@ -119,28 +121,38 @@ void Player::goTo(const Geometry::Vector2D &target, const float& swap) {
         return ;
     }
 
-
     // estimando roads pela visao (malha de controle)
-    float linSpeed = getVelocity().length();
-    float angSpeed = getAngularSpeed();
+//    float linSpeed = getVelocity().length();
+//    float angSpeed = getAngularSpeed();
 
-    float wl_est = ((2.0*linSpeed) - (L*angSpeed)) / (2.0 * r);
-    float wr_est = ((2.0*linSpeed) + (L*angSpeed)) / (2.0 * r);
+//    float wl_est = ((2.0*linSpeed) - (L*angSpeed)) / (2.0 * r);
+//    float wr_est = ((2.0*linSpeed) + (L*angSpeed)) / (2.0 * r);
 
-    float wlOut = _vxPID->getOutput(wl_est, wl);
-    float wrOut = _vyPID->getOutput(wr_est, wr);
+//    float wlOut = _vxPID->getOutput(wl_est, wl);
+//    float wrOut = _vyPID->getOutput(wr_est, wr);
 
-
-    bool isNegL = wlOut < 0.0;
-    bool isNegR = wrOut < 0.0;
-    wlOut = fabs(wl);
-    wrOut = fabs(wr);
+    bool isNegL = wl < 0.0;
+    bool isNegR = wr < 0.0;
+    float wlOut = fabs(wl);
+    float wrOut = fabs(wr);
 
     if (_useSimEnv){
-        _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (-1) : 1), wrOut * (isNegR ? (-1) : 1));
+        _controller->setWheelsSpeed(playerId(), (wlOut / 2.5f) * (isNegL ? (-1) : 1), (wrOut / 2.5f) * (isNegR ? (-1) : 1));
     } else {
-        wlOut = int((std::min(std::max(wlOut, 25.0f), 100.0f) / 80.0f) * 255);
-        wrOut = int((std::min(std::max(wrOut, 25.0f), 100.0f) / 80.0f) * 255);
+        wlOut = std::max(wlOut, 25.0f);
+        wrOut = std::max(wrOut, 25.0f);
+
+        float hipotenusa = sqrt(pow(wlOut, 2) + pow(wrOut, 2));
+        bool inertia = hipotenusa <= INERTIA_THRESHOLD;
+
+        if (inertia) {
+            wlOut = std::min(wlOut, 100.0f);
+            wrOut = std::min(wrOut, 100.0f);
+        }
+
+        wlOut = int((wlOut / 80.0f) * 255);
+        wrOut = int((wrOut / 80.0f) * 255);
+
         _controller->setWheelsSpeed(playerId(), wlOut * (isNegL ? (1) : -1), wrOut * (isNegR ? (1) : -1));
     }
 }
@@ -150,11 +162,21 @@ void Player::charge(const bool deCostinha) {
 }
 
 void Player::rotateTo(const Geometry::Angle &targetAngle) {
-    if(getOrientation().rotateDirection(targetAngle) == Geometry::Angle::Direction::CLOCKWISE) {
-        _controller->setWheelsSpeed(playerId(), -45.0, 45.0);
-        if(getOrientation().shortestAngleDiff(targetAngle) <= 0.4) {
-            _controller->setWheelsSpeed(playerId(), 0.0, 0.0);
-        }
+//    if(getOrientation().rotateDirection(targetAngle) == Geometry::Angle::Direction::CLOCKWISE) {
+//        _controller->setWheelsSpeed(playerId(), -45.0, 45.0);
+//        if(getOrientation().shortestAngleDiff(targetAngle) <= 0.4) {
+//            _controller->setWheelsSpeed(playerId(), 0.0, 0.0);
+//        }
+//    }
+//    else {
+//        _controller->setWheelsSpeed(playerId(), 45.0, -45.0);
+//        if(getOrientation().shortestAngleDiff(targetAngle) <= 0.4) {
+//            _controller->setWheelsSpeed(playerId(), 0.0, 0.0);
+//        }
+//    }
+
+    if(isnanf(targetAngle.value())) {
+        return ;
     }
     else {
         _controller->setWheelsSpeed(playerId(), 45.0, -45.0);
@@ -162,7 +184,6 @@ void Player::rotateTo(const Geometry::Angle &targetAngle) {
             _controller->setWheelsSpeed(playerId(), 0.0, 0.0);
         }
     }
-
     if(isnanf(targetAngle.value())) {
         return ;
     }
@@ -206,12 +227,8 @@ void Player::rotateTo(const Geometry::Angle &targetAngle) {
 //    spdlog::info("{} {} {}", playerId(), wl, wr);
 }
 
-void Player::spin(bool isClockWise) {
-    if (isClockWise) {
-        _controller->setWheelsSpeed(playerId(), 255, -255);
-    } else {
-        _controller->setWheelsSpeed(playerId(), -255, 255);
-    }
+void Player::move(float leftWheelPower, float rightWheelPower) {
+    _controller->setWheelsSpeed(playerId(), leftWheelPower, rightWheelPower);
 }
 
 void Player::kick(const float &kickSpeed, const float &chipKickAngle, const float &kickAngle) {
@@ -222,7 +239,16 @@ void Player::dribble(const bool &dribbling) {
     _controller->setDribble(playerId(), dribbling);
 }
 
+void Player::spin(const bool &clockWise) {
+    if (clockWise) {
+        _controller->setWheelsSpeed(playerId(), 40, -40);
+    } else {
+        _controller->setWheelsSpeed(playerId(), -40, 40);
+    }
+}
+
 void Player::idle() {
+//    spdlog::info("entrei no idle!");
     _controller->setWheelsSpeed(playerId(), 0.0f, 0.0f);
 }
 
@@ -237,17 +263,20 @@ void Player::loop() {
         idle();
     }
     else {
-        /// TODO: cast role
-        //_controller->setWheelsSpeed(playerId(), 255, -255);
-        _mutexRole.lock();
-        if(_playerRole != nullptr) {
-            if(!_playerRole->isInitialized()) {
-                _playerRole->initialize(_worldMap);
-            }
-            _playerRole->setPlayer(this);
-            _playerRole->runRole();
+        if(_referee->stopRobots()) {
+            idle();
         }
-        _mutexRole.unlock();
+        else {
+            _mutexRole.lock();
+            if(_playerRole != nullptr) {
+                if(!_playerRole->isInitialized()) {
+                    _playerRole->initialize(_worldMap);
+                }
+                _playerRole->setPlayer(this);
+                _playerRole->runRole();
+            }
+            _mutexRole.unlock();
+        }
     }
 }
 

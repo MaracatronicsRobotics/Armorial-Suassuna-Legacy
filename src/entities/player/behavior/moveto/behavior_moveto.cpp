@@ -20,10 +20,16 @@
  ***/
 
 #include "behavior_moveto.h"
+#include <spdlog/spdlog.h>
 
 Behavior_MoveTo::Behavior_MoveTo() {
     _isRotationEnabled = false;
     _keepDistance = false;
+    _spin = false;
+    _spinClock = true;
+    _forceMotion = false;
+    _leftWheelPower = 0.0f;
+    _rightWheelPower = 0.0f;
 }
 
 QString Behavior_MoveTo::name() {
@@ -33,9 +39,13 @@ QString Behavior_MoveTo::name() {
 void Behavior_MoveTo::configure() {
     _skill_goTo = new Skill_GoTo();
     _skill_rotateTo = new Skill_RotateTo();
+    _skill_spin = new Skill_Spin();
+    _skill_move = new Skill_Move();
 
     addSkill(SKILL_GOTO, _skill_goTo);
     addSkill(SKILL_ROTATETO, _skill_rotateTo);
+    addSkill(SKILL_SPIN, _skill_spin);
+    addSkill(SKILL_MOVE, _skill_move);
 }
 
 void Behavior_MoveTo::run() {
@@ -43,11 +53,22 @@ void Behavior_MoveTo::run() {
         // Maybe keep a distance to position
     }
 
+//    spdlog::info("MOVETO Desired Position: ({}, {})", _desiredPosition.x(), _desiredPosition.y());
+
     if (_isRotationEnabled) {
         _skill_rotateTo->setTargetPosition(_desiredPosition);
         runSkill(SKILL_ROTATETO);
-    } else {
+    } else if(_spin) {
+        _skill_spin->setClockWise(_spinClock);
+        runSkill(SKILL_SPIN);
+    } else if(_forceMotion) {
+        _skill_move->setLeftWheelPower(_leftWheelPower);
+        _skill_move->setRightWheelPower(_rightWheelPower);
+        runSkill(SKILL_MOVE);
+    }
+    else {
         _skill_goTo->setTargetPosition(_desiredPosition);
+        _skill_goTo->enableWallAntiStuck(true);
         runSkill(SKILL_GOTO);
     }
 }

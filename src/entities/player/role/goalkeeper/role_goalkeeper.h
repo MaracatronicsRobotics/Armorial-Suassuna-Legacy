@@ -20,8 +20,21 @@ private:
         BEHAVIOR_CATCH
     };
 
+    enum state {
+        CATCH,
+        ROTATE,
+        MOVETO,
+        SPIN
+    };
+
+    float limitGKSide(float desiredY);
+    bool isInsideGoalArea();
+
+    state _currState;
+    Geometry::Vector2D _desiredPosition;
+
     // Behaviors pointers
-    Behavior_MoveTo *_behavior_moveto;
+    Behavior_MoveTo *_behavior_moveTo;
     Behavior_Catch *_behavior_catch;
 };
 

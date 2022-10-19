@@ -58,6 +58,12 @@ void Behavior::initialize(WorldMap *worldMap) {
 
 void Behavior::setPlayer(Player *player) {
     _player = player;
+
+    QList<Skill*> skillList = _skillList.values();
+    QList<Skill*>::iterator it;
+    for(it = skillList.begin(); it != skillList.end(); it++) {
+        (*it)->setPlayer(_player);
+    }
 }
 
 void Behavior::runBehavior() {

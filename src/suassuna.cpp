@@ -24,6 +24,7 @@
 #include <src/entities/player/role/default/role_default.h>
 #include <src/entities/player/role/goalkeeper/role_goalkeeper.h>
 #include <src/entities/player/role/attacker/role_attacker.h>
+#include <src/entities/player/role/goalkeeper/role_gk.h>
 
 Suassuna::Suassuna() {
     // Set GUI as nullptr by default
@@ -59,7 +60,7 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
     _entityManager->addEntity(_worldMap);
 
     // Start referee
-    _referee = new SSLReferee(_worldMap);
+    _referee = new VSSReferee(_worldMap);
     _entityManager->addEntity(_referee);
 
     // Start controller
@@ -70,16 +71,42 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
     magic_enum::enum_for_each<Common::Enums::Color>([this] (auto color) {
         if(color != Common::Enums::Color::UNDEFINED) {
             _teams.insert(color, new SSLTeam(color));
-            for(int i = 0; i < Constants::maxNumPlayers(); i++) {
-                Player *player = new Player(i, color, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
-                _teams[color]->addPlayer(player);
 
-                // Start thread only if is a Player from our team
-                if(color == Constants::teamColor()) {
-                    _entityManager->addEntity(player);
-                    player->setRole(new Role_Attacker());
+            for (auto i : Constants::goalkeeperIds()) {
+                if (i != 255) {
+                    Player *player = new Player(i, color, _referee, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
+                    _teams[color]->addPlayer(player);
+
+                    if(color == Constants::teamColor()) {
+                        _entityManager->addEntity(player);
+                        player->setRole(new Role_Goalkeeper());
+                    }
                 }
             }
+
+            for (auto i : Constants::attackerIds()) {
+                if (i != 255) {
+                    Player *player = new Player(i, color, _referee, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
+                    _teams[color]->addPlayer(player);
+
+                    if(color == Constants::teamColor()) {
+                        _entityManager->addEntity(player);
+                        player->setRole(new Role_Attacker());
+                    }
+                }
+            }
+
+//            for (auto i : Constants::supporterIds()) {
+//                if (i != 255) {
+//                    Player *player = new Player(i, color, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
+//                    _teams[color]->addPlayer(player);
+
+//                    if(color == Constants::teamColor()) {
+//                        _entityManager->addEntity(player);
+//                        player->setRole(new Role_Supporter());
+//                    }
+//                }
+//            }
         }
     });
 
