@@ -19,38 +19,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef SSLREFEREE_H
-#define SSLREFEREE_H
+#ifndef VSSREFEREE_H
+#define VSSREFEREE_H
 
 #include <Armorial/Base/Client/Client.h>
 #include <Armorial/Threaded/Entity/Entity.h>
 #include <Armorial/Geometry/Vector2D/Vector2D.h>
 
-#include <src/entities/referee/gameinfo/sslgameinfo.h>
 #include <src/entities/worldmap/worldmap.h>
 
 /*!
- * \brief The SSLReferee class is responsible to receive the upcoming data from Referee
+ * \brief The VSSReferee class is responsible to receive the upcoming data from Referee
  * and make it available for the team.
  */
-class SSLReferee : public Threaded::Entity, public Base::UDP::Client
+class VSSReferee : public Threaded::Entity, public Base::UDP::Client
 {
 public:
     /*!
-     * \brief SSLReferee constructor.
+     * \brief VSSReferee constructor.
      */
-    SSLReferee(WorldMap *worldMap);
+    VSSReferee(WorldMap *worldMap);
 
     /*!
-     * \brief SSLReferee destructor.
+     * \brief VSSReferee destructor.
      */
-    ~SSLReferee();
+    ~VSSReferee();
 
-    /*!
-     * \brief getGameInfo
-     * \return
-     */
-    SSLGameInfo* getGameInfo();
+    bool stopRobots() { return _stopRobots; }
 
 private:
     void initialization();
@@ -58,12 +53,8 @@ private:
     void finalization();
 
     // Internal
-    SSLGameInfo *_gameInfo;
     WorldMap *_worldMap;
-
-    // Management of NOTREADY state
-    Geometry::Vector2D _lastBallPosition;
-    bool _updatedNotReady;
+    bool _stopRobots;
 };
 
 #endif // SSLREFEREE_H

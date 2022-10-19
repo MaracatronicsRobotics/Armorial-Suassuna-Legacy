@@ -62,6 +62,9 @@ SOURCES += \
         include/proto/ssl_vision_wrapper_tracked.pb.cc \
         include/proto/visionservice.grpc.pb.cc \
         include/proto/visionservice.pb.cc \
+        include/proto/vssref_command.pb.cc \
+        include/proto/vssref_common.pb.cc \
+        include/proto/vssref_placement.pb.cc \
         main.cpp \
         src/constants/constants.cpp \
         src/entities/coach/coach.cpp \
@@ -127,6 +130,9 @@ HEADERS += \
     include/proto/ssl_vision_wrapper_tracked.pb.h \
     include/proto/visionservice.grpc.pb.h \
     include/proto/visionservice.pb.h \
+    include/proto/vssref_command.pb.h \
+    include/proto/vssref_common.pb.h \
+    include/proto/vssref_placement.pb.h \
     src/constants/constants.h \
     src/entities/coach/coach.h \
     src/entities/coach/sslteam/sslteam.h \

@@ -23,24 +23,21 @@
 
 #include <Armorial/Utils/Utils.h>
 
+#include <include/proto/vssref_command.pb.h>
 #include <src/constants/constants.h>
 
 #define MIN_DIST_TO_CONSIDER_BALL_MOVEMENT 0.2f // 20cm
 
-SSLReferee::SSLReferee(WorldMap *worldMap) : Base::UDP::Client(Constants::refereeNetworkAddress(), Constants::refereeNetworkPort(), Constants::refereeNetworkInterface()) {
-    _gameInfo = new SSLGameInfo();
+VSSReferee::VSSReferee(WorldMap *worldMap) : Base::UDP::Client(Constants::refereeNetworkAddress(), Constants::refereeNetworkPort(), Constants::refereeNetworkInterface()) {
     _worldMap = worldMap;
+    _stopRobots = false;
 }
 
-SSLReferee::~SSLReferee() {
+VSSReferee::~VSSReferee() {
 
 }
 
-SSLGameInfo* SSLReferee::getGameInfo() {
-    return _gameInfo;
-}
-
-void SSLReferee::initialization() {
+void VSSReferee::initialization() {
     bool connectedToRefereeNetwork = bindAndConnectToMulticastNetwork();
     if(connectedToRefereeNetwork) {
         spdlog::info("[{}] Connected to referee network at address '{}:{}' and interface '{}'.", clientName().toStdString(), getServerAddress().toStdString(),
@@ -53,7 +50,7 @@ void SSLReferee::initialization() {
     }
 }
 
-void SSLReferee::loop() {
+void VSSReferee::loop() {
     while(hasPendingDatagrams()) {
         // Take datagram
         auto datagram = receiveDatagram();
@@ -64,32 +61,21 @@ void SSLReferee::loop() {
         }
 
         // Try to convert datagram to protocol type
-        Referee wrapperData;
+        VSSRef::ref_to_team::VSSRef_Command wrapperData;
         bool converted = Utils::Proto::convertDatagramToType(datagram.value(), wrapperData);
 
         // If could not convert the received datagram, just go to another packet
         if(!converted) {
+            spdlog::warn("[{}] Failed to parse datagram.", clientName().toStdString());
             continue;
         }
 
-        // Update game info with received referee data
-        getGameInfo()->updateGameInfo(wrapperData);
-    }
-
-    // Check when the game state is not ready if the ball was moved
-    if(getGameInfo()->getState() & SSLGameInfo::READY) {
-        // If ball moved for a min distance, set game as on!
-        if(_worldMap->getBall().getPosition().dist(_lastBallPosition) >= MIN_DIST_TO_CONSIDER_BALL_MOVEMENT) {
-            getGameInfo()->setBallKicked();
-        }
-    }
-    else {
-        // Update ball last position until reaches a ready state
-        _lastBallPosition = _worldMap->getBall().getPosition();
+        _stopRobots = !(wrapperData.foul() == VSSRef::Foul::GAME_ON);
+        spdlog::info("[{}] Received the '{}' command for '{}' at quadrant '{}'.", clientName().toStdString(), VSSRef::Foul_Name(wrapperData.foul()), VSSRef::Color_Name(wrapperData.teamcolor()), VSSRef::Quadrant_Name(wrapperData.foulquadrant()));
     }
 }
 
-void SSLReferee::finalization() {
+void VSSReferee::finalization() {
     // Disconnect from referee multicast network and wait
     disconnectFromNetwork();
 

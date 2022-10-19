@@ -33,9 +33,10 @@
 #include <src/entities/player/role/role.h>
 #include <src/constants/constants.h>
 
-Player::Player(const quint8 playerId, const Common::Enums::Color& teamColor, WorldMap *worldMap, Controller *controller, bool useSimEnv) {
+Player::Player(const quint8 playerId, const Common::Enums::Color& teamColor, VSSReferee* referee, WorldMap *worldMap, Controller *controller, bool useSimEnv) {
     _playerId = playerId;
     _teamColor = teamColor;
+    _referee = referee;
     _worldMap = worldMap;
     _controller = controller;
     _useSimEnv = useSimEnv;
@@ -262,17 +263,20 @@ void Player::loop() {
         idle();
     }
     else {
-        /// TODO: cast role
-        //_controller->setWheelsSpeed(playerId(), 255, -255);
-        _mutexRole.lock();
-        if(_playerRole != nullptr) {
-            if(!_playerRole->isInitialized()) {
-                _playerRole->initialize(_worldMap);
-            }
-            _playerRole->setPlayer(this);
-            _playerRole->runRole();
+        if(_referee->stopRobots()) {
+            idle();
         }
-        _mutexRole.unlock();
+        else {
+            _mutexRole.lock();
+            if(_playerRole != nullptr) {
+                if(!_playerRole->isInitialized()) {
+                    _playerRole->initialize(_worldMap);
+                }
+                _playerRole->setPlayer(this);
+                _playerRole->runRole();
+            }
+            _mutexRole.unlock();
+        }
     }
 }
 

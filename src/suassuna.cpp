@@ -60,7 +60,7 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
     _entityManager->addEntity(_worldMap);
 
     // Start referee
-    _referee = new SSLReferee(_worldMap);
+    _referee = new VSSReferee(_worldMap);
     _entityManager->addEntity(_referee);
 
     // Start controller
@@ -74,7 +74,7 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
 
             for (auto i : Constants::goalkeeperIds()) {
                 if (i != 255) {
-                    Player *player = new Player(i, color, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
+                    Player *player = new Player(i, color, _referee, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
                     _teams[color]->addPlayer(player);
 
                     if(color == Constants::teamColor()) {
@@ -86,7 +86,7 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
 
             for (auto i : Constants::attackerIds()) {
                 if (i != 255) {
-                    Player *player = new Player(i, color, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
+                    Player *player = new Player(i, color, _referee, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
                     _teams[color]->addPlayer(player);
 
                     if(color == Constants::teamColor()) {

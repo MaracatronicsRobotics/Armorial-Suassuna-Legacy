@@ -24,6 +24,7 @@
 
 #include <src/entities/worldmap/worldmap.h>
 #include <src/entities/controller/controller.h>
+#include <src/entities/referee/sslreferee.h>
 #include <src/entities/player/PID/pid.h>
 #include <src/entities/player/PID/anglepid.h>
 
@@ -36,7 +37,7 @@ public:
      * \brief Player constructor.
      * \param playerId, teamColor Player identifiers.
      */
-    Player(const quint8 playerId, const Common::Enums::Color& teamColor, WorldMap* worldMap, Controller* controller, bool useSimEnv);
+    Player(const quint8 playerId, const Common::Enums::Color& teamColor, VSSReferee* referee, WorldMap* worldMap, Controller* controller, bool useSimEnv);
 
     /*!
      * \brief Player params getters
@@ -120,6 +121,7 @@ private:
 
     // Internal
     WorldMap *_worldMap;
+    VSSReferee *_referee;
     Controller *_controller;
 
     // Idle control
