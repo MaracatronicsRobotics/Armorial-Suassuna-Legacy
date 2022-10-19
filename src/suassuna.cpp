@@ -138,7 +138,7 @@ bool Suassuna::start(bool useGUI, bool useSimEnv, bool useSwapRoles) {
 //                    _teams[color]->_players.at(0)->setRole(new Role_Supporter());
                 }
             }
-        }
+        });
     }
 
     // Setup teams in WorldMap
