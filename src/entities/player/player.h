@@ -111,6 +111,8 @@ public:
     QString behaviorName();
     void setRole(Role *role);
 
+    bool isClockwiseSpin();
+
 protected:
     friend class SSLTeam;
 

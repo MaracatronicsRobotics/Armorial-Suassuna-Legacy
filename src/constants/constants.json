@@ -3,7 +3,7 @@
 		"Referee": {
 			"refereeNetworkAddress": "224.5.23.2",
 			"refereeNetworkPort": 10003,
-			"refereeNetworkInterface": "wlp2s0"
+			"refereeNetworkInterface": "enp3s0"
 		},
 		"WorldMap": {
 			"visionServiceAddress": "127.0.0.1",
@@ -17,12 +17,12 @@
 	
 	"Team": {
                 "teamColor": "yellow",
-                "teamPlaySide": "right",
+                "teamPlaySide": "left",
 		"maxNumPlayers": 3,
-                "goalkeeper": 0,
-                "attacker1": 1,
-                "attacker2": 255,
-                "attacker3": 255,
-        	"supporter": 2
+                "goalkeeper": 255,
+                "attacker1": 0,
+                "attacker2": 1,
+                "attacker3": 2,
+		"supporter": 255
 	}
 }
