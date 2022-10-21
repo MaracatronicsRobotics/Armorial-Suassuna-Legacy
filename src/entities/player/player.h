@@ -97,6 +97,10 @@ public:
      */
     void spin(const bool& clockWise, int wheelSpeed = 40);
 
+    // Team communcation
+    void setTeamList(QList<Player*> team) { _team = team; }
+    QList<Player*> getTeamList() { return _team; }
+
     // Role management
     QString roleName();
     QString behaviorName();
@@ -132,6 +136,9 @@ private:
     // Idle control
     Utils::Timer _idleTimer;
     bool firstIt;
+
+    // Team communication
+    QList<Player*> _team;
 
     // Role management
     Role *_playerRole;

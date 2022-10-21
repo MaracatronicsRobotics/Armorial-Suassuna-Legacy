@@ -34,6 +34,8 @@ void Behavior_Chaser::configure() {
 
     addSkill(SKILL_GOTO, _skill_goTo);
     addSkill(SKILL_CHARGE, _skill_charge);
+
+    _hasBallPos = false;
 }
 
 void Behavior_Chaser::run() {
@@ -67,20 +69,24 @@ Geometry::Vector2D Behavior_Chaser::getChasePosition() {
         chasePos = unitVector.normalize() * 0.4f * unitVector.length();
 
         if (inDangerZone(ALIGNMENT_ERROR)) {
-            float sideY = chasePos.y();
-            float sideFactor = 0.4f;
+            if (!_hasBallPos) {
+                float sideY = chasePos.y();
+                float sideFactor = 0.4f;
 
-            Geometry::Vector2D topBoundary = Geometry::Vector2D(chasePos.x(), 10.0f);
-            Geometry::Vector2D bottomBoundary = Geometry::Vector2D(chasePos.x(), -10.0f);
-            if (chasePos.dist(topBoundary) < chasePos.dist(bottomBoundary)){
-                sideFactor = sideFactor * -1;
+                Geometry::Vector2D topBoundary = Geometry::Vector2D(chasePos.x(), 10.0f);
+                Geometry::Vector2D bottomBoundary = Geometry::Vector2D(chasePos.x(), -10.0f);
+                if (chasePos.dist(topBoundary) < chasePos.dist(bottomBoundary)){
+                    sideFactor = sideFactor * -1;
+                }
+                sideY = sideY + sideFactor;
+
+                if (sideY > 0.7f) sideY = 0.7f;
+                if (sideY < -0.7f) sideY = -0.7f;
+
+                chasePos = Geometry::Vector2D(chasePos.x(), sideY);
+            } else {
+                chasePos = player()->getPosition();
             }
-            sideY = sideY + sideFactor;
-
-            if (sideY > 0.7f) sideY = 0.7f;
-            if (sideY < -0.7f) sideY = -0.7f;
-
-            chasePos = Geometry::Vector2D(chasePos.x(), sideY);
         }
 
         Geometry::Vector2D ballPos = getWorldMap()->getBall().getPosition();

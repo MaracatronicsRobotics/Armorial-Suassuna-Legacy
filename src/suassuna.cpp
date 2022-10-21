@@ -88,6 +88,7 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
                             assignedCanEnterGoalArea = true;
                         }
                     }
+                    _players.push_back(player);
                 }
             }
 
@@ -104,6 +105,7 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
                         player->setCanEnterGoalArea(true);
                         assignedCanEnterGoalArea = true;
                     }
+                    _players.push_back(player);
                 }
             }
         }

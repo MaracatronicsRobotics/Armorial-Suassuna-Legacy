@@ -29,7 +29,7 @@
 class Role_Attacker : public Role
 {
 public:
-    Role_Attacker();
+    Role_Attacker(bool supporter = false);
 
 private:
     void configure();
@@ -37,20 +37,24 @@ private:
 
     bool alignedToTheirGoal();
     bool hasPossession(Geometry::Vector2D ballPos);
+    Geometry::Vector2D getSecondAttackerPos();
 
     enum {
         BEHAVIOR_MOVETO,
         BEHAVIOR_CHASER
     };
 
+    Behavior_MoveTo *_behavior_moveTo;
     Behavior_Chaser *_behavior_chaser;
 
     enum State {
         STATE_CHASE,
-        STATE_CHARGE
+        STATE_CHARGE,
+        STATE_SUPPORT
     };
 
     State _currState;
+    bool _supporter;
 };
 
 #endif // ROLE_ATTACKER_H

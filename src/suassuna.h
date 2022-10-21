@@ -78,6 +78,9 @@ private:
 
     // Entity manager
     Threaded::EntityManager *_entityManager;
+
+    // Players list
+    QList<Player*> _players;
 };
 
 #endif // SUASSUNA_H

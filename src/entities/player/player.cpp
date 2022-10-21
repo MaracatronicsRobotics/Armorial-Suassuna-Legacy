@@ -60,6 +60,7 @@ Player::Player(const quint8 playerId, const Common::Enums::Color& teamColor, VSS
 
     _playerRole = nullptr;
     firstIt = true;
+    _team = QList<Player*>();
 
     _vwPID = new AnglePID(5.0, 0.01, 0.0, 100.0, 1.0/60.0);
 }
