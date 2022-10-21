@@ -22,8 +22,6 @@
 #include "role_attacker.h"
 #include "spdlog/spdlog.h"
 
-#define ANGLE_OPENNESS 0.2
-#define RADIUS 0.1f
 #define ANGLE_ERROR 0.2f
 
 Role_Attacker::Role_Attacker(bool supporter) {
@@ -45,17 +43,13 @@ void Role_Attacker::configure() {
 
 void Role_Attacker::run() {
     Geometry::Vector2D ballPos = getWorldMap()->getBall().getPosition();
-    std::string state = "NULL";
-
     Geometry::Vector2D chasePos = ballPos;
 
-    bool hasBallPoss = hasPossession(ballPos);
+    bool hasBallPoss = player()->hasPossession(ballPos);
 
     switch(_currState) {
     case(STATE_CHASE) :{
-        state = "CHASE_BALL";
         if (hasBallPoss) {
-            state = "CHASE_GOAL";
             chasePos = getWorldMap()->getField().theirGoalCenter();
             _behavior_chaser->hasBallPos(true);
         }
@@ -67,13 +61,9 @@ void Role_Attacker::run() {
         if (hasBallPoss && alignedToTheirGoal()) {
             _currState = STATE_CHARGE;
         }
-        if (ballPos.dist(getSecondAttackerPos()) < ballPos.dist(player()->getPosition())) {
-            _currState = STATE_SUPPORT;
-        }
         break;
     }
     case(STATE_CHARGE) :{
-        state = "CHARGE";
         _behavior_chaser->setChase(chasePos);
         _behavior_chaser->toCharge(true);
 
@@ -82,34 +72,15 @@ void Role_Attacker::run() {
         }
 
         setBehavior(BEHAVIOR_CHASER);
-        if (!hasPossession(ballPos)) {
+        if (!player()->hasPossession(ballPos)) {
             _currState = STATE_CHASE;
         }
-        // Don't think state charge should go to support
         break;
     }
-    case(STATE_SUPPORT) :{
-        state = "SUPPORT";
-        Geometry::Vector2D center = Geometry::Vector2D(0.2, ballPos.y());
-        if (Constants::teamPlaySide() == Common::Enums::Side::SIDE_LEFT) {
-            center = Geometry::Vector2D(center.x() * -1, center.y());
-        }
 
-        _behavior_moveTo->enableRotation(false);
-        _behavior_moveTo->enableSpin(false);
-        _behavior_moveTo->setForcebleMotion(false);
-        _behavior_moveTo->enableAntiStuck(true);
-        _behavior_moveTo->setPosition(center);
-        setBehavior(BEHAVIOR_MOVETO);
-        if (ballPos.dist(getSecondAttackerPos()) > ballPos.dist(player()->getPosition())) {
-            _currState = STATE_CHASE;
-        }
-        break;
-    }
     default:
         break;
     }
-//    spdlog::info(state);
 }
 
 bool Role_Attacker::alignedToTheirGoal(){
@@ -127,13 +98,6 @@ bool Role_Attacker::alignedToTheirGoal(){
     }
 
     return false;
-}
-
-bool Role_Attacker::hasPossession(Geometry::Vector2D ballPos) {
-    Geometry::Angle playerOri = player()->getOrientation();
-    Geometry::Arc front = Geometry::Arc(player()->getPosition(), RADIUS, Geometry::Angle(playerOri - ANGLE_OPENNESS), Geometry::Angle(playerOri + ANGLE_OPENNESS));
-
-    return front.pointInArc(ballPos);
 }
 
 Geometry::Vector2D Role_Attacker::getSecondAttackerPos() {

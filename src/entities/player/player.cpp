@@ -23,6 +23,8 @@
 
 #define MAX_TIME_TO_MARK_AS_IDLE 1.0 // 1 second
 #define INERTIA_THRESHOLD 45.0f
+#define RADIUS 0.1f
+#define ANGLE_OPENNESS 0.2
 
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/bundled/color.h>
@@ -249,8 +251,30 @@ void Player::spin(const bool &clockWise, int wheelSpeed) {
 }
 
 void Player::idle() {
-//    spdlog::info("entrei no idle!");
-    _controller->setWheelsSpeed(playerId(), 0.0f, 0.0f);
+    if (_useSimEnv) {
+        _controller->setWheelsSpeed(playerId(), 0.0f, 0.0f);
+    } else {
+        _controller->setWheelsSpeed(playerId(), 0, 0);
+    }
+}
+
+bool Player::hasPossession(Geometry::Vector2D ballPos) {
+    Geometry::Angle playerOri = getOrientation();
+    Geometry::Arc front = Geometry::Arc(getPosition(), RADIUS, Geometry::Angle(playerOri - ANGLE_OPENNESS), Geometry::Angle(playerOri + ANGLE_OPENNESS));
+
+    return front.pointInArc(ballPos);
+}
+
+bool Player::teamHasBall(Geometry::Vector2D ballPos) {
+    bool teamWithBall = false;
+    for (Player * p : _team) {
+        teamWithBall = p->hasPossession(ballPos);
+        if (teamWithBall) {
+            return true;
+        }
+    }
+    return false;
+
 }
 
 void Player::initialization() {

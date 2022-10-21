@@ -21,11 +21,7 @@
 
 #include "suassuna.h"
 
-#include <src/entities/player/role/default/role_default.h>
-#include <src/entities/player/role/goalkeeper/role_goalkeeper.h>
-#include <src/entities/player/role/goalkeeper/role_spingk.h>
-#include <src/entities/player/role/attacker/role_attacker.h>
-#include <src/entities/player/role/goalkeeper/role_gk.h>
+#include <src/entities/player/role/roles.h>
 
 Suassuna::Suassuna() {
     // Set GUI as nullptr by default
@@ -100,6 +96,23 @@ bool Suassuna::start(bool useGUI, bool useSimEnv) {
                     if(color == Constants::teamColor()) {
                         _entityManager->addEntity(player);
                         player->setRole(new Role_Attacker());
+                    }
+                    if (!assignedCanEnterGoalArea){
+                        player->setCanEnterGoalArea(true);
+                        assignedCanEnterGoalArea = true;
+                    }
+                    _players.push_back(player);
+                }
+            }
+
+            for (auto i : Constants::supporterIds()) {
+                if (i != 255) {
+                    Player *player = new Player(i, color, _referee, _worldMap, ((color == Constants::teamColor()) ? _controller : nullptr), _useSimEnv);
+                    _teams[color]->addPlayer(player);
+
+                    if(color == Constants::teamColor()) {
+                        _entityManager->addEntity(player);
+                        player->setRole(new Role_Barrier());
                     }
                     if (!assignedCanEnterGoalArea){
                         player->setCanEnterGoalArea(true);

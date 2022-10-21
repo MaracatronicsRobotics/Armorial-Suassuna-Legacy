@@ -96,7 +96,8 @@ SOURCES += \
         src/suassuna.cpp \
         src/utils/utils.cpp \
         src/entities/player/behavior/intercept/behavior_intercept.cpp \
-        src/entities/player/skill/spin/skill_spin.cpp
+        src/entities/player/skill/spin/skill_spin.cpp \
+    src/entities/player/role/barrier/role_barrier.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -166,7 +167,9 @@ HEADERS += \
     src/suassuna.h \
     src/utils/utils.h \
     src/entities/player/behavior/intercept/behavior_intercept.h \
-    src/entities/player/skill/spin/skill_spin.h
+    src/entities/player/skill/spin/skill_spin.h \
+    src/entities/player/role/barrier/role_barrier.h \
+    src/entities/player/role/roles.h
 
 FORMS += \
     src/gui/gui.ui

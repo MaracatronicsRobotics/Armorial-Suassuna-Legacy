@@ -113,17 +113,11 @@ bool Behavior_Chaser::inDangerZone(float alignementError) {
     bool aligned = (fabs(ballPos.y() - playerPos.y()) <= alignementError);
     bool closerToOurGoal = (ballPos.dist(getWorldMap()->getField().ourGoalCenter()) < ballPos.dist(getWorldMap()->getField().theirGoalCenter()));
 
-
-
     return centerTunnel && aligned && closerToOurGoal;
 }
 
 bool Behavior_Chaser::inDangerZoneOld() {
     Geometry::Vector2D ballPos = getWorldMap()->getBall().getPosition();
-
-    // Check if our goal posts are okay
-    spdlog::info("Our Goal Right Post: ({}, {})", getWorldMap()->getField().ourGoalRightPost().x(), getWorldMap()->getField().ourGoalRightPost().y());
-    spdlog::info("Our Goal Left Post: ({}, {})", getWorldMap()->getField().ourGoalLeftPost().x(), getWorldMap()->getField().ourGoalLeftPost().y());
 
     Geometry::Arc goalZone;
     if (Constants::teamPlaySide() == Common::Enums::SIDE_RIGHT) {
@@ -144,13 +138,9 @@ bool Behavior_Chaser::inDangerZoneOld() {
 
     std::vector<Geometry::Vector2D> intersection = goalZone.intersectionWithLine(robotToBall);
 
-
-    spdlog::info("Intersection goal zone <-> robotToBall: {}", intersection.size());
-
     if (intersection.size() > 0) {
         return true;
     }
 
-    spdlog::info("Not in danger zone");
     return false;
 }

@@ -27,6 +27,7 @@
 #include <src/entities/referee/sslreferee.h>
 #include <src/entities/player/PID/pid.h>
 #include <src/entities/player/PID/anglepid.h>
+#include <Armorial/Geometry/Arc/Arc.h>
 
 class Role;
 
@@ -96,6 +97,9 @@ public:
      * \param clockWise1
      */
     void spin(const bool& clockWise, int wheelSpeed = 40);
+
+    bool hasPossession(Geometry::Vector2D ballPos);
+    bool teamHasBall(Geometry::Vector2D ballPos);
 
     // Team communcation
     void setTeamList(QList<Player*> team) { _team = team; }
