@@ -270,11 +270,7 @@ bool Player::isClockwiseSpin() {
     }
 
 void Player::idle() {
-    if (_useSimEnv) {
-        _controller->setWheelsSpeed(playerId(), 0.0f, 0.0f);
-    } else {
-        _controller->setWheelsSpeed(playerId(), 0, 0);
-    }
+    _controller->setWheelsSpeed(playerId(), 0, 0);
 }
 
 bool Player::hasPossession(Geometry::Vector2D ballPos) {

@@ -19,10 +19,10 @@
                 "teamColor": "yellow",
                 "teamPlaySide": "left",
 		"maxNumPlayers": 3,
-                "goalkeeper": 255,
-                "attacker1": 0,
-                "attacker2": 1,
-                "attacker3": 2,
+                "goalkeeper": 0,
+                "attacker1": 1,
+                "attacker2": 2,
+                "attacker3": 255,
 		"supporter": 255
 	}
 }

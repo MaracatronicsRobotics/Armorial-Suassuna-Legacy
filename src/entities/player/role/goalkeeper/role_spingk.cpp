@@ -31,7 +31,6 @@ void Role_spinGK::run() {
 
     switch (_currState) {
     case(MOVETO):{
-        std::cout << "MOVE\n";
         _behavior_moveTo->enableSpin(false);
         _behavior_moveTo->setForcebleMotion(false);
         _behavior_moveTo->enableAntiStuck(true);
@@ -45,7 +44,6 @@ void Role_spinGK::run() {
     }
     case(SPIN):{
         if(player()->isClockwiseSpin()){
-            std::cout << "SPIN\n";
             _behavior_moveTo->setSpinOrientation(true);
         } else {
             _behavior_moveTo->setSpinOrientation(false);
@@ -57,32 +55,36 @@ void Role_spinGK::run() {
         _behavior_moveTo->enableAntiStuck(false);
         setBehavior(BEHAVIOR_MOVETO );
 
-        if(fabs((lookingPosition - player()->getPosition()).angle() - player()->getOrientation().value()) > 1.0f){
+        if(fabs((lookingPosition - player()->getPosition()).angle() - player()->getOrientation().value()) > 0.3f){
             _currState = ROTATE;
+        }
+        if (!getWorldMap()->getField().ourPenaltyArea().contains(player()->getPosition())) {
+            _currState = MOVETO;
         }
         break;
     }
     case(ROTATE):{
-        std::cout << "ROTATE\n";
         _behavior_moveTo->setForcebleMotion(false);
-        _behavior_moveTo->setSpinSpeed(0);
+        _behavior_moveTo->setSpinSpeed(5);
         _behavior_moveTo->enableSpin(true);
+        _behavior_moveTo->setSpinOrientation(true);
         _behavior_moveTo->enableAntiStuck(false);
         setBehavior(BEHAVIOR_MOVETO);
 
-        if (fabs((lookingPosition - player()->getPosition()).angle() - player()->getOrientation().value()) < 0.5f){
-            player()->idle();
+        if (fabs((lookingPosition - player()->getPosition()).angle() - player()->getOrientation().value()) < 0.07f){
             _currState = CHASE;
+        }
+        if (!getWorldMap()->getField().ourPenaltyArea().contains(player()->getPosition())) {
+            _currState = MOVETO;
         }
         break;
     }
     case(CHASE):{
-        std::cout << "CHASE\n";
         _behavior_moveTo->setForcebleMotion(true);
         _behavior_moveTo->enableSpin(false);
         _behavior_moveTo->enableAntiStuck(false);
 
-        Geometry::LineSegment lineDefense(Geometry::Vector2D(gkPosition.x(), 0.3f), Geometry::Vector2D(gkPosition.x(), -0.3f));
+        Geometry::LineSegment lineDefense(Geometry::Vector2D(gkPosition.x(), 0.25f), Geometry::Vector2D(gkPosition.x(), -0.25f));
         Geometry::Vector2D ballVelocity = getWorldMap()->getBall().getVelocity();
         Geometry::LineSegment ballLine(getWorldMap()->getBall().getPosition(), ballVelocity.stretchToLength(2));
 
@@ -95,15 +97,18 @@ void Role_spinGK::run() {
         } else {
             Geometry::LineSegment bigLineDefense(Geometry::Vector2D(gkPosition.x(), 10.0f), Geometry::Vector2D(gkPosition.x(), -10.0f));
             if (bigLineDefense.intersects(ballLine).size() > 0) {
-                if (bigLineDefense.intersects(ballLine)[0].y() > 0.3f) {
-                    interceptPosition = Geometry::Vector2D(gkPosition.x(), 0.3);
+                if (bigLineDefense.intersects(ballLine)[0].y() > 0.25f) {
+                    interceptPosition = Geometry::Vector2D(gkPosition.x(), 0.25);
                 } else {
-                    interceptPosition = Geometry::Vector2D(gkPosition.x(), -0.3);
+                    interceptPosition = Geometry::Vector2D(gkPosition.x(), -0.25);
                 }
             } else {
                 interceptPosition = player()->getPosition();
             }
         }
+        float relation = fabs(gkPosition.x() / 0.5 * (gkPosition.x() +
+                         fabs(gkPosition.x() - getWorldMap()->getBall().getPosition().x())));
+        interceptPosition = Geometry::Vector2D(interceptPosition.x(), relation *interceptPosition.y());
         if(interceptPosition.y() > player()->getPosition().y()){
             _behavior_moveTo->setLeftWheelPower(255);
             _behavior_moveTo->setRightWheelPower(255);
@@ -115,16 +120,23 @@ void Role_spinGK::run() {
         if(player()->getPosition().dist(interceptPosition) < 0.05){
             _behavior_moveTo->setLeftWheelPower(0);
             _behavior_moveTo->setRightWheelPower(0);
+        }
         setBehavior(BEHAVIOR_MOVETO);
 
-        if (player()->getPosition().dist(interceptPosition) < 0.1) {
-            //_currState = SPIN;
+        if (!getWorldMap()->getField().ourPenaltyArea().contains(player()->getPosition())) {
+            _currState = MOVETO;
         } else {
-            if (!getWorldMap()->getField().ourPenaltyArea().contains(player()->getPosition())) {
-                //_currState = MOVETO;
+            if (player()->getPosition().dist(getWorldMap()->getBall().getPosition()) < 0.1) {
+                _currState = SPIN;
             }
         }
-        }
+    }
+        break;
+    case(WAIT):{
+        _behavior_moveTo->setForcebleMotion(true);
+        _behavior_moveTo->setPosition(player()->getPosition());
+        _behavior_moveTo->enableSpin(false);
+        setBehavior(BEHAVIOR_MOVETO);
     }
     }
 }

@@ -19,7 +19,8 @@ private:
         MOVETO,
         SPIN,
         ROTATE,
-        CHASE
+        CHASE,
+        WAIT
     };
 
     // Behaviors enum
