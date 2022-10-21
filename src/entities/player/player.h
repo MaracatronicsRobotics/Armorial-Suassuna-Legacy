@@ -100,6 +100,7 @@ public:
 
     bool hasPossession(Geometry::Vector2D ballPos);
     bool teamHasBall(Geometry::Vector2D ballPos);
+    bool alignedToTheirGoal();
 
     // Team communcation
     void setTeamList(QList<Player*> team) { _team = team; }

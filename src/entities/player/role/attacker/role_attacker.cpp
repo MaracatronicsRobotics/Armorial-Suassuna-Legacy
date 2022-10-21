@@ -22,8 +22,6 @@
 #include "role_attacker.h"
 #include "spdlog/spdlog.h"
 
-#define ANGLE_ERROR 0.2f
-
 Role_Attacker::Role_Attacker(bool supporter) {
     _supporter = supporter;
 }
@@ -58,7 +56,7 @@ void Role_Attacker::run() {
         _behavior_chaser->toCharge(false);
 
         setBehavior(BEHAVIOR_CHASER);
-        if (hasBallPoss && alignedToTheirGoal()) {
+        if (hasBallPoss && player()->alignedToTheirGoal()) {
             _currState = STATE_CHARGE;
         }
         break;
@@ -81,23 +79,6 @@ void Role_Attacker::run() {
     default:
         break;
     }
-}
-
-bool Role_Attacker::alignedToTheirGoal(){
-    Geometry::Angle playerOri = player()->getOrientation();
-    QList<double> points({-0.8, 0.0, 0.8});
-
-    for (float point : points) {
-        Geometry::Vector2D goalPoint = getWorldMap()->getField().theirGoalCenter();
-        goalPoint += Geometry::Vector2D(0.0, point);
-        Geometry::Angle playerAngleToGoal = (goalPoint - player()->getPosition()).angle();
-
-        if (playerOri.shortestAngleDiff(playerAngleToGoal) <= ANGLE_ERROR) {
-            return true;
-        }
-    }
-
-    return false;
 }
 
 Geometry::Vector2D Role_Attacker::getSecondAttackerPos() {

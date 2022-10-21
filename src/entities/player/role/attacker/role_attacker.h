@@ -34,7 +34,6 @@ private:
     void configure();
     void run();
 
-    bool alignedToTheirGoal();
     Geometry::Vector2D getSecondAttackerPos();
 
     enum {

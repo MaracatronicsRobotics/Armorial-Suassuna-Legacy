@@ -25,6 +25,7 @@
 #define INERTIA_THRESHOLD 45.0f
 #define RADIUS 0.1f
 #define ANGLE_OPENNESS 0.2
+#define ANGLE_ERROR 0.2f
 
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/bundled/color.h>
@@ -303,6 +304,23 @@ void Player::loop() {
             _mutexRole.unlock();
         }
     }
+}
+
+bool Player::alignedToTheirGoal(){
+    Geometry::Angle playerOri =     getOrientation();
+    QList<double> points({-0.8, 0.0, 0.8});
+
+    for (float point : points) {
+        Geometry::Vector2D goalPoint = _worldMap->getField().theirGoalCenter();
+        goalPoint += Geometry::Vector2D(0.0, point);
+        Geometry::Angle playerAngleToGoal = (goalPoint - getPosition()).angle();
+
+        if (playerOri.shortestAngleDiff(playerAngleToGoal) <= ANGLE_ERROR) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void Player::finalization() {

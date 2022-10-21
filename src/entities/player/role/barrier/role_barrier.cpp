@@ -42,9 +42,10 @@ void Role_Barrier::configure() {
 void Role_Barrier::run() {
     Geometry::Vector2D ballPos = getWorldMap()->getBall().getPosition();
     float ballY = ballPos.y();
+
     switch(_currState) {
     case(STATE_TOWER) :{
-        spdlog::info("TOWER");
+
         Geometry::Vector2D towerPos = Geometry::Vector2D(_fixedTowerX, ballY);
 
         _behavior_chaser->setChase(towerPos);
@@ -64,7 +65,6 @@ void Role_Barrier::run() {
         break;
     }
     case(STATE_BLOCK) :{
-        spdlog::info("BLOCK");
 
         _behavior_chaser->setChase(ballPos);
         _behavior_chaser->toCharge(true);
@@ -82,17 +82,20 @@ void Role_Barrier::run() {
     }
 
     case(STATE_DEFEND) :{
-        spdlog::info("DEFEND");
 
         Geometry::Vector2D chasePos = ballPos;
 
         if (player()->hasPossession(ballPos)) {
-            chasePos = getWorldMap()->getField().centerCircle().center();
+            chasePos = getWorldMap()->getField().theirGoalCenter();
             _behavior_chaser->hasBallPos(true);
+        }
+        bool aligned = false;
+        if (player()->alignedToTheirGoal()) {
+            aligned = true;
         }
 
         _behavior_chaser->setChase(chasePos);
-        _behavior_chaser->toCharge(false);
+        _behavior_chaser->toCharge(aligned);
         setBehavior(BEHAVIOR_CHASER);
 
         if (!getWorldMap()->getField().ourField().contains(ballPos)){
