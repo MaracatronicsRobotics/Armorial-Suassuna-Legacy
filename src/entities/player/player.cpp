@@ -23,9 +23,9 @@
 
 #define MAX_TIME_TO_MARK_AS_IDLE 1.0 // 1 second
 #define INERTIA_THRESHOLD 45.0f
-#define RADIUS 0.1f
-#define ANGLE_OPENNESS 0.2
-#define ANGLE_ERROR 0.2f
+#define RADIUS 0.15f
+#define ANGLE_OPENNESS 0.3
+#define ANGLE_ERROR 0.4f
 
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/bundled/color.h>
@@ -322,7 +322,7 @@ void Player::loop() {
 
 bool Player::alignedToTheirGoal(){
     Geometry::Angle playerOri =     getOrientation();
-    QList<double> points({-0.8, 0.0, 0.8});
+    QList<double> points({-0.04, 0.0, 0.04});
 
     for (float point : points) {
         Geometry::Vector2D goalPoint = _worldMap->getField().theirGoalCenter();
