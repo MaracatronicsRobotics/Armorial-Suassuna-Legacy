@@ -19,39 +19,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef ROLE_ATTACKER_H
-#define ROLE_ATTACKER_H
+#ifndef ROLE_BARRIER_H
+#define ROLE_BARRIER_H
 
 #include <src/entities/player/role/role.h>
 #include <src/entities/player/behavior/behaviors.h>
 
-class Role_Attacker : public Role
+class Role_Barrier : public Role
 {
 public:
-    Role_Attacker(bool supporter = false);
+    Role_Barrier();
 
 private:
     void configure();
     void run();
 
-    Geometry::Vector2D getSecondAttackerPos();
-
     enum {
-        BEHAVIOR_MOVETO,
         BEHAVIOR_CHASER
     };
 
-    Behavior_MoveTo *_behavior_moveTo;
     Behavior_Chaser *_behavior_chaser;
 
     enum State {
-        STATE_CHASE,
-        STATE_CHARGE,
-        STATE_SUPPORT
+        STATE_TOWER,
+        STATE_BLOCK,
+        STATE_DEFEND
     };
 
     State _currState;
-    bool _supporter;
+    float _fixedTowerX;
+
+    // Functions
+    bool isInTowerArea(Geometry::Vector2D target);
 };
 
-#endif // ROLE_ATTACKER_H
+#endif // ROLE_BARRIER_H

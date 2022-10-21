@@ -24,6 +24,7 @@
 
 #include <src/entities/player/behavior/behavior.h>
 #include <src/entities/player/skill/skills.h>
+#include <Armorial/Geometry/Arc/Arc.h>
 #include "math.h"
 
 
@@ -35,6 +36,7 @@ public:
 
     void setChase(Geometry::Vector2D chasePos) { _chasePos = chasePos; }
     void toCharge(bool charge) { _CHAAAAAAAAAAAAAAAAAAARGE = charge; }
+    void hasBallPos(bool ballPos) { _hasBallPos = ballPos; }
     bool hammerTime() { return _CHAAAAAAAAAAAAAAAAAAARGE; }
 
 private:
@@ -42,6 +44,8 @@ private:
     void run();
 
     Geometry::Vector2D getChasePosition();
+    bool inDangerZone(float alignementError);
+    bool inDangerZoneOld();
 
     enum {
         SKILL_GOTO,
@@ -53,6 +57,7 @@ private:
 
     Geometry::Vector2D _chasePos;
     bool _CHAAAAAAAAAAAAAAAAAAARGE;
+    bool _hasBallPos;
 };
 
 #endif // BEHAVIOR_CHASER_H

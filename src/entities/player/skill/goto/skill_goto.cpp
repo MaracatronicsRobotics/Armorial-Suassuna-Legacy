@@ -46,13 +46,17 @@ void Skill_GoTo::run() {
     if(_useWallAntiStuck) {
         if (_checkStuckTimer.getSeconds() >= CHECK_STUCK_ROUTINE_DELAY) {
             {
-                std::vector<Geometry::LineSegment> fieldBoundary = getWorldMap()->getField().field().boundary();
-                for (auto &ls : fieldBoundary) {
-                    if(ls.distanceToPoint(player()->getPosition()) <= ROBOT_DIST_TO_WALL_TO_CONSIDER_STUCK
-                            && player()->getVelocity().length() <= ROBOT_MIN_VELOCITY_TO_CONSIDER_STUCK) {
-                        _useSwappedOri = !_useSwappedOri;
-                        break;
-                    }
+//                std::vector<Geometry::LineSegment> fieldBoundary = getWorldMap()->getField().field().boundary();
+//                for (auto &ls : fieldBoundary) {
+//                    if(ls.distanceToPoint(player()->getPosition()) <= ROBOT_DIST_TO_WALL_TO_CONSIDER_STUCK
+//                            && player()->getVelocity().length() <= ROBOT_MIN_VELOCITY_TO_CONSIDER_STUCK) {
+//                        _useSwappedOri = !_useSwappedOri;
+//                        break;
+//                    }
+//                }
+
+                if(player()->getVelocity().length() <= ROBOT_MIN_VELOCITY_TO_CONSIDER_STUCK) {
+                    _useSwappedOri = !_useSwappedOri;
                 }
             }
 

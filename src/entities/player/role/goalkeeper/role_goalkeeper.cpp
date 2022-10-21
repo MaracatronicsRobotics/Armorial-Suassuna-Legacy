@@ -54,7 +54,7 @@ void Role_Goalkeeper::run() {
 //        Geometry::LineSegment ballLine(Geometry::Vector2D(getWorldMap()->getBall().getPosition()),
 //                                       Geometry::Vector2D(getWorldMap()->getField().ourGoalCenter()));
 //        std::vector interceptPosition = lineDefense.intersects(ballLine);
-        float ball_y = getWorldMap()->getBall().getPosition().y();
+//        float ball_y = getWorldMap()->getBall().getPosition().y();
 
 //        if(ball_y > 0.2){
 //            ball_y = 0.2;
@@ -62,19 +62,24 @@ void Role_Goalkeeper::run() {
 //            ball_y = 0.2;
 //        }
 
-        if(ball_y >= player()->getPosition().y()){
-            _behavior_moveTo->setLeftWheelPower(255);
-            _behavior_moveTo->setRightWheelPower(255);
-        } else if (ball_y < player()->getPosition().y()) {
-            _behavior_moveTo->setLeftWheelPower(-255);
-            _behavior_moveTo->setRightWheelPower(-255);
+//        if(ball_y >= player()->getPosition().y()){
+//            _behavior_moveTo->setLeftWheelPower(255);
+//            _behavior_moveTo->setRightWheelPower(255);
+//        } else if (ball_y < player()->getPosition().y()) {
+//            _behavior_moveTo->setLeftWheelPower(-255);
+//            _behavior_moveTo->setRightWheelPower(-255);
+//        }
+
+        if(getWorldMap()->getField().ourPenaltyArea().contains(getWorldMap()->getBall().getPosition())){
+            _behavior_moveTo->enableRotation(false);
+            _behavior_moveTo->enableSpin(false);
+            _behavior_moveTo->setForcebleMotion(true);
+            _behavior_moveTo->setPosition(getWorldMap()->getBall().getPosition());
+            setBehavior(BEHAVIOR_MOVETO);
+
+        }else{
+            //_behavior_moveTo->enableRotation()
         }
-
-
-        _behavior_moveTo->enableRotation(false);
-        _behavior_moveTo->enableSpin(false);
-        _behavior_moveTo->setForcebleMotion(true);
-        setBehavior(BEHAVIOR_MOVETO);
 
         if(getWorldMap()->getBall().getPosition().dist(player()->getPosition()) < 0.1){
             _currState = SPIN;

@@ -23,6 +23,9 @@
 
 #define MAX_TIME_TO_MARK_AS_IDLE 1.0 // 1 second
 #define INERTIA_THRESHOLD 45.0f
+#define RADIUS 0.1f
+#define ANGLE_OPENNESS 0.2
+#define ANGLE_ERROR 0.2f
 
 #include <spdlog/spdlog.h>
 #include <spdlog/fmt/bundled/color.h>
@@ -60,6 +63,7 @@ Player::Player(const quint8 playerId, const Common::Enums::Color& teamColor, VSS
 
     _playerRole = nullptr;
     firstIt = true;
+    _team = QList<Player*>();
 
     _vwPID = new AnglePID(5.0, 0.01, 0.0, 100.0, 1.0/60.0);
 }
@@ -137,7 +141,7 @@ void Player::goTo(const Geometry::Vector2D &target, const float& swap) {
     float wrOut = fabs(wr);
 
     if (_useSimEnv){
-        _controller->setWheelsSpeed(playerId(), (wlOut / 2.5f) * (isNegL ? (-1) : 1), (wrOut / 2.5f) * (isNegR ? (-1) : 1));
+        _controller->setWheelsSpeed(playerId(), (wlOut / 2.0f) * (isNegL ? (-1) : 1), (wrOut / 2.0f) * (isNegR ? (-1) : 1));
     } else {
         wlOut = std::max(wlOut, 25.0f);
         wrOut = std::max(wrOut, 25.0f);
@@ -239,17 +243,53 @@ void Player::dribble(const bool &dribbling) {
     _controller->setDribble(playerId(), dribbling);
 }
 
-void Player::spin(const bool &clockWise) {
+void Player::spin(const bool &clockWise, int wheelSpeed) {
     if (clockWise) {
-        _controller->setWheelsSpeed(playerId(), 40, -40);
+        _controller->setWheelsSpeed(playerId(), wheelSpeed, -wheelSpeed);
     } else {
-        _controller->setWheelsSpeed(playerId(), -40, 40);
+        _controller->setWheelsSpeed(playerId(), -wheelSpeed, wheelSpeed);
     }
 }
 
+bool Player::isClockwiseSpin() {
+    Geometry::Vector2D ballPos = _worldMap->getBall().getPosition();
+    Geometry::Vector2D playerPos = getPosition();
+    if(_worldMap->getField().ourGoalCenter().x() > 0.0f) {
+        if(ballPos.y() > playerPos.y()) {
+            return false;
+        }else {
+            return true;
+        }
+    }else {
+        if(ballPos.y() > playerPos.y()) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+    }
+
 void Player::idle() {
-//    spdlog::info("entrei no idle!");
-    _controller->setWheelsSpeed(playerId(), 0.0f, 0.0f);
+    _controller->setWheelsSpeed(playerId(), 0, 0);
+}
+
+bool Player::hasPossession(Geometry::Vector2D ballPos) {
+    Geometry::Angle playerOri = getOrientation();
+    Geometry::Arc front = Geometry::Arc(getPosition(), RADIUS, Geometry::Angle(playerOri - ANGLE_OPENNESS), Geometry::Angle(playerOri + ANGLE_OPENNESS));
+
+    return front.pointInArc(ballPos);
+}
+
+bool Player::teamHasBall(Geometry::Vector2D ballPos) {
+    bool teamWithBall = false;
+    for (Player * p : _team) {
+        teamWithBall = p->hasPossession(ballPos);
+        if (teamWithBall) {
+            return true;
+        }
+    }
+    return false;
+
 }
 
 void Player::initialization() {
@@ -278,6 +318,23 @@ void Player::loop() {
             _mutexRole.unlock();
         }
     }
+}
+
+bool Player::alignedToTheirGoal(){
+    Geometry::Angle playerOri =     getOrientation();
+    QList<double> points({-0.8, 0.0, 0.8});
+
+    for (float point : points) {
+        Geometry::Vector2D goalPoint = _worldMap->getField().theirGoalCenter();
+        goalPoint += Geometry::Vector2D(0.0, point);
+        Geometry::Angle playerAngleToGoal = (goalPoint - getPosition()).angle();
+
+        if (playerOri.shortestAngleDiff(playerAngleToGoal) <= ANGLE_ERROR) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void Player::finalization() {

@@ -27,6 +27,7 @@
 #include <src/entities/referee/sslreferee.h>
 #include <src/entities/player/PID/pid.h>
 #include <src/entities/player/PID/anglepid.h>
+#include <Armorial/Geometry/Arc/Arc.h>
 
 class Role;
 
@@ -44,7 +45,12 @@ public:
      */
     Common::Enums::Color teamColor();
     quint8 playerId();
-    bool _useSimEnv;
+    bool canEnterGoalArea() { return _canEnterGoalArea; }
+
+    /*!
+     * \brief Player params setters
+     */
+    void setCanEnterGoalArea(bool canEnter) { _canEnterGoalArea = canEnter; }
 
     /*!
      * \brief Mark player as idle, setting its speeds to zero.
@@ -90,12 +96,22 @@ public:
      * \brief spin
      * \param clockWise1
      */
-    void spin(const bool& clockWise);
+    void spin(const bool& clockWise, int wheelSpeed = 40);
+
+    bool hasPossession(Geometry::Vector2D ballPos);
+    bool teamHasBall(Geometry::Vector2D ballPos);
+    bool alignedToTheirGoal();
+
+    // Team communcation
+    void setTeamList(QList<Player*> team) { _team = team; }
+    QList<Player*> getTeamList() { return _team; }
 
     // Role management
     QString roleName();
     QString behaviorName();
     void setRole(Role *role);
+
+    bool isClockwiseSpin();
 
 protected:
     friend class SSLTeam;
@@ -128,9 +144,16 @@ private:
     Utils::Timer _idleTimer;
     bool firstIt;
 
+    // Team communication
+    QList<Player*> _team;
+
     // Role management
     Role *_playerRole;
     QMutex _mutexRole;
+
+    bool _useSimEnv;
+    bool _canEnterGoalArea;
+
 };
 
 #endif // PLAYER_H

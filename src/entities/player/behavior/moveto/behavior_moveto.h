@@ -35,11 +35,14 @@ public:
     void setPosition(Geometry::Vector2D desiredPosition) { _desiredPosition = desiredPosition; }
     void keepDistance(bool keepDistance) { _keepDistance = keepDistance; }
     void enableRotation(bool isRotationEnabled) { _isRotationEnabled = isRotationEnabled; }
+    void enableAntiStuck(bool antiStuck){_antiStuck = antiStuck;}
     void enableSpin(bool spin) { _spin = spin; }
     void setSpinOrientation(bool clockwise) { _spinClock = clockwise; }
+    void setSpinSpeed(int spinSpeed) { _spinSpeed = spinSpeed; }
     void setForcebleMotion(bool forceMotion) { _forceMotion = forceMotion; }
     void setLeftWheelPower(float leftWheelPower) { _leftWheelPower = leftWheelPower; }
     void setRightWheelPower(float rightWheelPower) { _rightWheelPower = rightWheelPower; }
+
 private:
     void configure();
     void run();
@@ -59,7 +62,9 @@ private:
     bool _isRotationEnabled;
     bool _spin;
     bool _spinClock; // positive = clockwise
+    int _spinSpeed;
     bool _forceMotion;
+    bool _antiStuck;
     float _leftWheelPower;
     float _rightWheelPower;
 
