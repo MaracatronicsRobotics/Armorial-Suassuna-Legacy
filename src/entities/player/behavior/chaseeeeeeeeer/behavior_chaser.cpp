@@ -46,7 +46,7 @@ void Behavior_Chaser::run() {
         float frontAngle = orientationPlayer.shortestAngleDiff(orientationToTarget);
         float backAngle = orientationPlayerBack.shortestAngleDiff(orientationToTarget);
 
-        _skill_charge->setUseSwappedOrientation(backAngle < frontAngle);
+        _skill_charge->setUseSwappedOrientation(backAngle > frontAngle);
         runSkill(SKILL_CHARGE);
     } else {
         _skill_goTo->setTargetPosition(getChasePosition());
