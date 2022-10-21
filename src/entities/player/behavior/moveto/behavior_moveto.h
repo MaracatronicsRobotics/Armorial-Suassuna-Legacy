@@ -38,7 +38,7 @@ public:
     void enableAntiStuck(bool antiStuck){_antiStuck = antiStuck;}
     void enableSpin(bool spin) { _spin = spin; }
     void setSpinOrientation(bool clockwise) { _spinClock = clockwise; }
-    void setSpinSpeed(int spinSpeed) {_spinSpeed = spinSpeed;}
+    void setSpinSpeed(int spinSpeed) { _spinSpeed = spinSpeed; }
     void setForcebleMotion(bool forceMotion) { _forceMotion = forceMotion; }
     void setLeftWheelPower(float leftWheelPower) { _leftWheelPower = leftWheelPower; }
     void setRightWheelPower(float rightWheelPower) { _rightWheelPower = rightWheelPower; }
