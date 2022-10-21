@@ -251,12 +251,26 @@ void Player::spin(const bool &clockWise, int wheelSpeed) {
     }
 }
 
-void Player::idle() {
-    if (_useSimEnv) {
-        _controller->setWheelsSpeed(playerId(), 0.0f, 0.0f);
-    } else {
-        _controller->setWheelsSpeed(playerId(), 0, 0);
+bool Player::isClockwiseSpin() {
+    Geometry::Vector2D ballPos = _worldMap->getBall().getPosition();
+    Geometry::Vector2D playerPos = getPosition();
+    if(_worldMap->getField().ourGoalCenter().x() > 0.0f) {
+        if(ballPos.y() > playerPos.y()) {
+            return false;
+        }else {
+            return true;
+        }
+    }else {
+        if(ballPos.y() > playerPos.y()) {
+            return true;
+        }else {
+            return false;
+        }
     }
+    }
+
+void Player::idle() {
+    _controller->setWheelsSpeed(playerId(), 0, 0);
 }
 
 bool Player::hasPossession(Geometry::Vector2D ballPos) {

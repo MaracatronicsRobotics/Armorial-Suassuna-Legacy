@@ -18,7 +18,9 @@ private:
     enum state{
         MOVETO,
         SPIN,
-        IDLE
+        ROTATE,
+        CHASE,
+        WAIT
     };
 
     // Behaviors enum
