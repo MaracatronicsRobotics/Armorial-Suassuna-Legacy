@@ -101,7 +101,7 @@ void Role_Attacker::run() {
         _behavior_moveTo->enableAntiStuck(true);
         _behavior_moveTo->setPosition(center);
         setBehavior(BEHAVIOR_MOVETO);
-        if (ballPos.dist(getSecondAttackerPos()) <= ballPos.dist(player()->getPosition())) {
+        if (ballPos.dist(getSecondAttackerPos()) > ballPos.dist(player()->getPosition())) {
             _currState = STATE_CHASE;
         }
         break;
