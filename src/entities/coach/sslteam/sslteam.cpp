@@ -9,10 +9,33 @@ SSLTeam::SSLTeam(const Common::Enums::Color& teamColor) {
 
 void SSLTeam::addPlayer(Player *player) {
     _players.push_back(player);
+    bool IDExists = false;
+    for (auto id : _ids) {
+        if (id == player->playerId()) {
+            IDExists = true;
+        }
+    }
+    if (!IDExists) {
+        _ids.push_back(player->playerId());
+    }
 }
 
 Common::Enums::Color SSLTeam::teamColor() const {
     return _teamColor;
+}
+
+QList<quint8> SSLTeam::getIDs() {
+    return _ids;
+}
+
+Player* SSLTeam::getPlayer(quint8 id) {
+    for (auto p : _players) {
+        if (p->playerId() == id) {
+            return p;
+        }
+    }
+
+    return nullptr;
 }
 
 void SSLTeam::updatePlayer(const Armorial::Robot &playerData) {

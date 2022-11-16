@@ -51,6 +51,9 @@ public:
      */
     Common::Enums::Color teamColor() const;
 
+    QList<quint8> getIDs();
+    Player* getPlayer(quint8 id);
+
 protected:
     friend class WorldMap;
 
@@ -62,6 +65,7 @@ protected:
 
 private:
     QList<Player*> _players;
+    QList<quint8> _ids;
     Common::Enums::Color _teamColor;
 };
 
