@@ -6,17 +6,274 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1280</width>
+    <height>720</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>GUI</string>
+   <string>Armorial-Suassuna VSSS</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
-  <widget class="QMenuBar" name="menubar"/>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>1280</width>
+      <height>720</height>
+     </rect>
+    </property>
+    <property name="tabPosition">
+     <enum>QTabWidget::West</enum>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <widget class="QWidget" name="Game">
+     <attribute name="title">
+      <string>Tab 1</string>
+     </attribute>
+     <widget class="RobotFrame" name="robotFrame_0">
+      <property name="geometry">
+       <rect>
+        <x>760</x>
+        <y>5</y>
+        <width>230</width>
+        <height>80</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+     </widget>
+     <widget class="RobotFrame" name="robotFrame_1">
+      <property name="geometry">
+       <rect>
+        <x>1000</x>
+        <y>5</y>
+        <width>230</width>
+        <height>80</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+     </widget>
+     <widget class="RobotFrame" name="robotFrame_2">
+      <property name="geometry">
+       <rect>
+        <x>760</x>
+        <y>90</y>
+        <width>230</width>
+        <height>80</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+     </widget>
+     <widget class="RobotFrame" name="robotFrame_3">
+      <property name="geometry">
+       <rect>
+        <x>1000</x>
+        <y>90</y>
+        <width>230</width>
+        <height>80</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+     </widget>
+     <widget class="RobotFrame" name="robotFrame_4">
+      <property name="geometry">
+       <rect>
+        <x>760</x>
+        <y>175</y>
+        <width>230</width>
+        <height>80</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+     </widget>
+     <widget class="RobotFrame" name="robotFrame_5">
+      <property name="geometry">
+       <rect>
+        <x>1000</x>
+        <y>175</y>
+        <width>230</width>
+        <height>80</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+     </widget>
+     <widget class="FieldView" name="fieldView">
+      <property name="geometry">
+       <rect>
+        <x>1</x>
+        <y>0</y>
+        <width>720</width>
+        <height>405</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QWidget" name="widget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>760</x>
+        <y>10</y>
+        <width>471</width>
+        <height>241</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QTreeWidget" name="treeWidget">
+      <property name="geometry">
+       <rect>
+        <x>760</x>
+        <y>260</y>
+        <width>470</width>
+        <height>260</height>
+       </rect>
+      </property>
+      <attribute name="headerVisible">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="headerDefaultSectionSize">
+       <number>235</number>
+      </attribute>
+      <column>
+       <property name="text">
+        <string>Coach tree</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string/>
+       </property>
+      </column>
+     </widget>
+     <zorder>robotFrame_5</zorder>
+     <zorder>robotFrame_4</zorder>
+     <zorder>robotFrame_3</zorder>
+     <zorder>robotFrame_2</zorder>
+     <zorder>robotFrame_1</zorder>
+     <zorder>robotFrame_0</zorder>
+     <zorder>widget</zorder>
+     <zorder>treeWidget</zorder>
+     <zorder>fieldView</zorder>
+    </widget>
+    <widget class="QWidget" name="Configurations">
+     <attribute name="title">
+      <string>Tab 2</string>
+     </attribute>
+     <widget class="QWidget" name="layoutWidget" native="true">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>50</y>
+        <width>201</width>
+        <height>112</height>
+       </rect>
+      </property>
+      <widget class="QWidget" name="verticalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>201</width>
+         <height>112</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetDefaultConstraint</enum>
+        </property>
+        <item>
+         <widget class="QCheckBox" name="attackerBox">
+          <property name="text">
+           <string>Show Attacker Position</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="defenderBox">
+          <property name="text">
+           <string>Show Defender Position</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="goalkeeperBox">
+          <property name="text">
+           <string>Show Goalkeeper Ellipse</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="pathBox">
+          <property name="text">
+           <string>Show Path Planning</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1280</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>FieldView</class>
+   <extends>QOpenGLWidget</extends>
+   <header location="global">Armorial/Common/Widgets/FieldView/FieldView.h</header>
+   <slots>
+    <slot>redraw()</slot>
+    <slot>geometryChanged()</slot>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>RobotFrame</class>
+   <extends>QFrame</extends>
+   <header location="global">src/gui/robotframe/robotframe.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -22,15 +22,28 @@
 #include "gui.h"
 #include "ui_gui.h"
 
-GUI::GUI(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::GUI)
-{
-    ui->setupUi(this);
+#include <src/entities/player/player.h>
+
+GUI::GUI(WorldMap *worldMap, VSSReferee *referee, QWidget *parent) : QMainWindow(parent), ui(new Ui::GUI) {
+    // Setting initial vars
+    _defPosition = Geometry::Vector2D(0.0, 0.0);
+    _referee = referee;
+    _worldMap = worldMap;
+
+    // Setup UI
+    _ui->setupUi(this);
+    loadRobotFrames();
+    setDarkTheme();
+
+    // Setup fieldview
+//    _ui->fieldView
+
+    // Setup tree
+    treeInitialSetup();
 }
 
 GUI::~GUI()
 {
-    delete ui;
+    delete _ui;
 }
 

@@ -23,20 +23,57 @@
 #define GUI_H
 
 #include <QMainWindow>
+#include <QTreeWidgetItem>
+#include <QLabel>
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class GUI; }
-QT_END_NAMESPACE
+#include <src/entities/worldmap/worldmap.h>
+#include <src/entities/referee/sslreferee.h>
+
+#include <Armorial/Geometry/Vector2D/Vector2D.h>
+
+#include <Armorial/Common/Widgets/Widgets.h>
+#include <Armorial/Common/Widgets/FieldView/FieldView.h>
+#include <Armorial/Common/Widgets/GLText/GLText.h>
+
+
+namespace Ui {
+class GUI;
+}
+class RobotFrame;
 
 class GUI : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    GUI(QWidget *parent = nullptr);
+    explicit GUI(WorldMap *worldMap, VSSReferee *referee, QWidget *parent = nullptr);
     ~GUI();
 
 private:
-    Ui::GUI *ui;
+    Ui::GUI *_ui;
+    void setDarkTheme();
+
+    // Tree management
+    QMap<quint8, QTreeWidgetItem*> _players;
+    QMap<QTreeWidgetItem*, QTreeWidgetItem*> _playerRole;
+    Geometry::Vector2D _defPos;
+    QPixmap getRobotPixMap(quint8 playerID);
+    QPixmap getRolePixMap(QString roleName);
+    void treeInitialSetup();
+    void updatePlaybookName(QString name);
+    void updatePlayers(QList<quint8> &players);
+
+    // Frames management
+    QList<RobotFrame*> _robotFrames;
+    void loadRobotFrames();
+
+    // WorldMap
+    WorldMap *_worldMap;
+    WorldMap* getWorldMap();
+
+    // VSSSReferee
+    VSSReferee *_referee;
+    VSSReferee* getReferee();
 };
+
 #endif // GUI_H

@@ -93,6 +93,7 @@ SOURCES += \
         src/entities/referee/sslreferee.cpp \
         src/entities/worldmap/worldmap.cpp \
         src/gui/gui.cpp \
+    src/gui/robotframe/robotframe.cpp \
         src/suassuna.cpp \
         src/utils/utils.cpp \
         src/entities/player/behavior/intercept/behavior_intercept.cpp \
@@ -164,6 +165,7 @@ HEADERS += \
     src/entities/referee/sslreferee.h \
     src/entities/worldmap/worldmap.h \
     src/gui/gui.h \
+    src/gui/robotframe/robotframe.h \
     src/suassuna.h \
     src/utils/utils.h \
     src/entities/player/behavior/intercept/behavior_intercept.h \
