@@ -48,6 +48,14 @@ Common::Types::Object WorldMap::getBall() {
     return ball;
 }
 
+SSLTeam* WorldMap::getTeam(Common::Enums::Color color) {
+    _mutex.lockForRead();
+    SSLTeam *team = _teams.value(color);
+    _mutex.unlock();
+
+    return team;
+}
+
 void WorldMap::initialization() {
     // Try to connect to server
     if(connectToServer(true)) {

@@ -50,6 +50,7 @@ public:
      */
     Common::Types::Field getField();
     Common::Types::Object getBall();
+    SSLTeam* getTeam(Common::Enums::Color);
 
     // Common::Types::Object getPlayer(const Common::Enums::Color& teamColor, quint8 playerId);
 
