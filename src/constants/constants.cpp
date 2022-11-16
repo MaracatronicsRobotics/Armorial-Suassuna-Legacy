@@ -135,6 +135,18 @@ Common::Enums::Color Constants::teamColor() {
     return color.value();
 }
 
+QString Constants::teamColorName() {
+    QString teamColor = _parameterHandler["Team"].getAsMap()["teamColor"].toString();
+    auto color = magic_enum::enum_cast<Common::Enums::Color>(teamColor.toUpper().toStdString());
+
+    if(!color.has_value()) {
+        spdlog::error("[Constants] Failed to read a valid color in '{}'.", __FUNCTION__);
+        return QString("");
+    }
+
+    return teamColor;
+}
+
 Common::Enums::Side Constants::teamPlaySide() {
     QString teamPlaySide = _parameterHandler["Team"].getAsMap()["teamPlaySide"].toString();
     auto playSide = magic_enum::enum_cast<Common::Enums::Side>("SIDE_" + teamPlaySide.toUpper().toStdString());

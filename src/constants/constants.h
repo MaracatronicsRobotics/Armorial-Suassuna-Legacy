@@ -82,6 +82,11 @@ public:
     static Common::Enums::Color teamColor();
 
     /*!
+     * \return A QString containing our team color name.
+     */
+    static QString teamColorName();
+
+    /*!
      * \return A Common::Types::Side containing our play side.
      */
     static Common::Enums::Side teamPlaySide();
