@@ -19,30 +19,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
+
 #include "skill.h"
 
+#include <spdlog/spdlog.h>
+
+#include <src/entities/player/player.h>
+#include <src/entities/basestation/basestation.h>
+#include <src/entities/worldmap/worldmap.h>
+
 Skill::Skill() {
+    _worldMap = nullptr;
     _player = nullptr;
-    _constants = nullptr;
     _initialized = false;
-}
-
-Skill::~Skill() {
-
 }
 
 bool Skill::isInitialized() {
     return _initialized;
 }
 
-void Skill::initialize(Constants *constants) {
-    // Init constants
-    _constants = constants;
-
-    // Call configure method
+void Skill::initialize(WorldMap* worldMap) {
+    _worldMap = worldMap;
     configure();
-
-    // Confirm initialize skill
     _initialized = true;
 }
 
@@ -51,7 +49,6 @@ void Skill::setPlayer(Player *player) {
 }
 
 void Skill::runSkill() {
-    // Run skill (implemented by child inherited method)
     run();
 }
 
@@ -59,12 +56,16 @@ Player* Skill::player() {
     return _player;
 }
 
-Constants* Skill::getConstants() {
-    if(_constants == nullptr) {
-        std::cout << Text::red("[ERROR] ", true) << Text::bold("Constants with nullptr value at " + this->name().toStdString()) + '\n';
+void Skill::setWheelsSpeed(const float &wheelLeft, const float &wheelRight) {
+    _player->setWheelsSpeed(wheelLeft, wheelRight);
+}
+
+WorldMap* Skill::getWorldMap() {
+    if(_worldMap == nullptr) {
+        spdlog::error("[{}] WorldMap with nullptr value.", name().toStdString());
     }
     else {
-        return _constants;
+        return _worldMap;
     }
 
     return nullptr;

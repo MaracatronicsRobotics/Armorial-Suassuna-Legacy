@@ -22,107 +22,76 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include <QReadWriteLock>
+#include <src/entities/basesuassuna.h>
+#include <src/common/types/robot/robot.h>
 
-#include <src/entities/entity.h>
-#include <src/services/actuator/actuatorservice.h>
-#include <src/entities/worldmap/worldmap.h>
-#include <src/utils/utils.h>
-
-#include <src/entities/baseCoach.h>
-
-#define IDLE_COUNT 60
-
-class Player : public Entity
+class Player : public Suassuna::Robot, public Threaded::Entity
 {
 public:
-    Player(int playerID, WorldMap *worldMap, SSLReferee *referee, Constants *constants);
-    ~Player();
-    QString name();
+    Player(const Common::Enums::Color& teamColor, const quint8& robotId, BaseStation* controller, WorldMap *worldMap);
 
-    // Player getters
-    int getPlayerID();
-    bool isDribbling();
-    float getPlayerRadius();
-    Position getPlayerPos();
-    Position getPlayerKickerDevicePos();
-    Angle getPlayerOrientation();
-    AngularSpeed getPlayerAngularSpeed();
-    Velocity getPlayerVelocity();
-    Acceleration getPlayerAcceleration();
-    RobotStatus getPlayerStatus();
-    bool isPlayerInAvaliableRobots();
-
-    // Player Aux methods
-    float getPlayerAngleTo(Position targetPos);
-    float getPlayerOrientationTo(Position targetPos, Position referencePos = Position(Utils::getPositionObject(0.0f, 0.0f, 0.0f, true)));
-    float getRotationAngleTo(Position targetPos, Position referencePos);
-    float getPlayerDistanceTo(Position targetPos);
-    bool hasBallPossession();
-    bool isLookingTo(Position targetPos);
-    bool isSufficientlyAlignedTo(Position targetPos, Position referencePos = Utils::getPositionObject(0.0f, 0.0f, 0.0f, true));
-
-    // Player Error
-    float getLinearError();
-    float getAngularError();
-
-    // Role Management
+    // Role management
     QString roleName();
     QString behaviorName();
-    void setRole(Role *role);
 
-    // Skills
-    void playerGoTo(Position pos);
-    void playerRotateTo(Position pos, Position referencePos = Utils::getPositionObject(0.0f, 0.0f, 0.0f, true));
-    void playerDribble(bool enable);
-    void playerKick(float power, bool isChip);
-    void playerIdle();
+    /*!
+     * \brief setRole
+     * \param role
+     */
+    void setRole(Role* role);
 
-    //PlayerControls
-    void getPlayerControl(int ID, bool isBlue);
+protected:
+    // Friend classes for update and internal control of the player
+    friend class Team;
+    friend class Skill;
+    friend class Behavior;
+    friend class Role;
+    friend class Playbook;
+
+    /*!
+     * \brief Update this Player class with a given Common::Types::Object containing
+     * the data.
+     * \param playerData The given data to update this Player instance.
+     */
+    void updatePlayer(Common::Types::Object playerData);
+
+    /*!
+     * \brief Mark player as idle, setting its speeds to zero.
+     */
+    void idle();
+
+    /*!
+     * \brief Set this player wheels speed.
+     */
+    void setWheelsSpeed(const float& wheelLeft, const float& wheelRight);
+
+    /*!
+     * \return The Controller pointer of this player instance.
+     */
+    BaseStation* controller();
+
 private:
-    //Entity inherited methods
+    /*!
+     * \brief Entity inherited methods.
+     */
     void initialization();
     void loop();
     void finalization();
 
-    // Player Control
-    //QList<ControlPacket> _playerControls;
-    ControlPacket _playerControl;
-    int _playerID;
-    int _idleCount;
-    bool _isDribbling;
-    Position _playerPos;
-
-    // Player Role
+    // Role management
     Role *_playerRole;
+    QMutex _mutexRole;
 
-    // Mutex
-    QReadWriteLock _mutexRole;
+    // Control
+    Armorial::ControlPacket _controlPacket;
 
-    // Actuator Service
-    ActuatorService *_actuatorService;
-    ActuatorService* getActuatorService();
-
-    // Coach Service
-    CoachService *_coachService;
-    CoachService* getCoachService();
-
-    // Constants
-    Constants *_constants;
-    Constants* getConstants();
-
-    // WorldMap
+    // Modules
+    BaseStation *_controller;
     WorldMap *_worldMap;
-    WorldMap* getWorldMap();
 
-    // Referee
-    SSLReferee *_referee;
-    SSLReferee* getReferee();
-
-    //Only for testing purposes
-    Position _dest;
-    Position _lookTo;
+    // Idle control
+    Utils::Timer _idleTimer;
+    bool _firstIt;
 };
 
 #endif // PLAYER_H

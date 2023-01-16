@@ -22,38 +22,61 @@
 #ifndef SUASSUNA_H
 #define SUASSUNA_H
 
-#include <src/gui/gui.h>
-#include <src/entities/referee/referee.h>
-#include <src/entities/player/player.h>
-#include <src/entities/world/world.h>
-#include <src/entities/worldmap/worldmap.h>
-#include <src/entities/player/role/roles.h>
+#include <Armorial/Threaded/EntityManager/EntityManager.h>
 
-class Suassuna
+#include <src/common/constants/constants.h>
+
+#include <src/gui/gui.h>
+#include <src/entities/vision/vision.h>
+#include <src/entities/worldmap/worldmap.h>
+#include <src/entities/basestation/basestation.h>
+
+/*!
+ * \brief The Suassuna class is responsible to manage the creation, deletion, start and stop of all
+ * the core of the Suassuna application, it is, the entities (such as referee and players) and some
+ * other modules.
+ */
+class SuassunaCore
 {
 public:
-    Suassuna(Constants *constants);
+    /*!
+     * \brief Suassuna constructor.
+     */
+    SuassunaCore();
 
-    // Internal management
-    void start(bool useGui);
-    void stop();
+    /*!
+     * \brief Suassuna destructor.
+     */
+    ~SuassunaCore();
+
+    /*!
+     * \brief Start Suassuna core (entities, players and some other modules).
+     * \param useGUI Starts the GUI interface if set as True.
+     * \return True if everything went ok and false otherwise.
+     */
+    [[nodiscard]] bool start(bool useGUI);
+
+    /*!
+     * \brief Stop Suassuna core (entities, players and some other modules).
+     * \return True if everything went ok and false otherwise.
+     */
+    [[nodiscard]] bool stop();
 
 private:
-    // Constants
-    Constants *_constants;
-    Constants* getConstants();
-
     // Modules
-    SSLReferee *_referee;
-    WorldMap *_worldMap;
-    GUI *_gui;
+    GUI* _gui;
+    WorldMap* _worldMap;
+    BaseStation* _controller;
+    Vision* _vision;
 
-    // World (thread manager)
-    World *_world;
+    // Teams
+    QMap<Common::Enums::Color, Team*> _teams;
 
-    // Players
-    QList<Player*> _playerList;
-    Player *_player;
+    // Entity manager
+    Threaded::EntityManager *_entityManager;
+
+    // Players list
+    QList<Player*> _players;
 };
 
 #endif // SUASSUNA_H

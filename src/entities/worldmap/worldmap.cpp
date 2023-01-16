@@ -19,199 +19,67 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-
 #include "worldmap.h"
 
-#include <src/utils/text/text.h>
+#include <spdlog/spdlog.h>
 
-WorldMap::WorldMap(Constants *constants) {
-    _constants = constants;
-    _coachService = nullptr;
-    _locations = nullptr;
+#include <src/common/constants/constants.h>
+#include <src/common/utils/utils.h>
+#include <src/entities/coach/team/team.h>
+
+WorldMap::WorldMap() {
+    // Setup default field
+    _field = Common::Types::Field(Suassuna::Constants::teamPlaySide(), 0.25, 1.5, 1.3, 0.1, 0.4, 0.15, 0.7, 0.1125);
 }
 
-QString WorldMap::name() {
-    return "WorldMap";
+void WorldMap::setupTeams(QMap<Common::Enums::Color, Team*>& teams) {
+    _teams = teams;
 }
 
-Robot WorldMap::getRobot(RobotIdentifier identifier) {
-    // Lock mutex for read and get the list for the identifier color
+Common::Types::Field WorldMap::getField() {
     _mutex.lockForRead();
-    QList<Robot> listToSearch = _robots.value(identifier.robotcolor().isblue());
-    _mutex.unlock();
-
-    // Try to search in the list an robot that matches the required id
-    // and return if found
-    for(int i = 0; i < listToSearch.size(); i++) {
-        Robot robot = listToSearch.at(i);
-        if(robot.robotidentifier().robotid() == identifier.robotid()) {
-            return robot;
-        }
-    }
-
-    // If not found the required robot, return an robot with invalid id
-    Robot robot = Robot();
-
-    // Create invalid identifier
-    RobotIdentifier *robotIdentifier = new RobotIdentifier();
-    identifier.set_robotid(ROBOT_INVALID_ID);
-    robot.set_allocated_robotidentifier(robotIdentifier);
-
-    // Return the invalid robot
-    return robot;
-}
-
-Robot WorldMap::getRobot(Color color, int id) {
-    // Lock mutex for read and get the list for the color
-    _mutex.lockForRead();
-    QList<Robot> listToSearch = _robots.value(color.isblue());
-    _mutex.unlock();
-
-    // Try to search in the list an robot that matches the required id
-    // and return if found
-    for(int i = 0; i < listToSearch.size(); i++) {
-        Robot robot = listToSearch.at(i);
-        if(robot.robotidentifier().robotid() == id) {
-            return robot;
-        }
-    }
-
-    // If not found the required robot, return an robot with invalid id
-    Robot robot = Robot();
-
-    // Create invalid identifier
-    RobotIdentifier *robotIdentifier = new RobotIdentifier();
-    robot.set_allocated_robotidentifier(robotIdentifier);
-
-    // Return the invalid robot
-    return robot;
-}
-
-QList<Robot> WorldMap::getRobots(Color color) {
-    // Lock mutex for read and get the list for the identifier color
-    _mutex.lockForRead();
-    QList<Robot> listToSearch = _robots.value(color.isblue());
-    _mutex.unlock();
-
-    // Return the list
-    return listToSearch;
-}
-
-QList<int> WorldMap::getRobotsIDs(Color color) {
-    // Lock mutex for read and get the list for the identifier color
-    _mutex.lockForRead();
-    QList<Robot> listToSearch = _robots.value(color.isblue());
-    QList<int> listIDs;
-    for (Robot r : listToSearch) {
-        listIDs.push_back(r.robotidentifier().robotid());
-    }
-    _mutex.unlock();
-
-    // Return the list
-    return listIDs;
-}
-
-Field WorldMap::getField() {
-    // Lock mutex for read and take the field var
-    _mutex.lockForRead();
-    Field field = _field;
+    Common::Types::Field field = _field;
     _mutex.unlock();
 
     return field;
 }
 
-Ball WorldMap::getBall() {
-    // Lock mutex for read and take the ball var
+Common::Types::Object WorldMap::getBall() {
     _mutex.lockForRead();
-    Ball ball = _ball;
+    Common::Types::Object ball = _ball;
     _mutex.unlock();
 
     return ball;
 }
 
-void WorldMap::initialization() {
-    // Create Coach Service pointer
-    _coachService = new CoachService(getConstants());
-
-    // Create Locations pointer
-    _locations = new Locations(getConstants());
-
-    // Debug
-    std::cout << Text::blue("[WORLDMAP] ", true) + Text::bold("Thread started.\n");
-}
-
-void WorldMap::loop() {
-    // Send requests to coach service and lock QReadWriteLock for write
+void WorldMap::updatePlayers(const QList<Armorial::Robot>& robots) {
     _mutex.lockForWrite();
-
-    // Request ball object
-    _ball = getService()->getBall();
-
-    // Request field object
-    _field = getService()->getField();
-
-    // Fill data in locations
-    _locations->updateFieldData(_field);
-
-    // Request robots from team yellow
-    Color yellow;
-    yellow.set_isblue(false);
-    QList<Robot> yellowRobots = getService()->getRobots(yellow);
-
-    // Request robots from team blue
-    Color blue;
-    blue.set_isblue(true);
-    QList<Robot> blueRobots = getService()->getRobots(blue);
-
-    // Update robots in map
-    _robots.clear();
-    _robots.insert(YELLOW_ID, yellowRobots);
-    _robots.insert(BLUE_ID, blueRobots);
-
-    // Unlock mutex
+    for(const auto& r : robots) {
+        Common::Enums::Color teamColor = Suassuna::Utils::isColorBlue(r.robotidentifier().robotcolor()) ? Common::Enums::Color::BLUE : Common::Enums::Color::YELLOW;
+        if(!r.robotposition().isinvalid()) {
+            _teams[teamColor]->updatePlayer(r);
+        }
+    }
     _mutex.unlock();
 }
 
-void WorldMap::finalization() {
-    // Delete Coach Service pointer
-    delete _coachService;
-
-    // Delete Locations pointer
-    delete _locations;
-
-    // Debug
-    std::cout << Text::blue("[WORLDMAP] ", true) + Text::bold("Thread ended.\n");
+void WorldMap::updateBall(const QList<Armorial::Ball>& balls) {
+    _mutex.lockForWrite();
+    if(balls.size()) {
+        Armorial::Ball mostConfidentBall = balls.first();
+        _ball = Common::Types::Object({mostConfidentBall.ballposition().x(), mostConfidentBall.ballposition().y()},
+                                      {mostConfidentBall.ballvelocity().vx(), mostConfidentBall.ballvelocity().vy()},
+                                      {mostConfidentBall.ballacceleration().ax(), mostConfidentBall.ballacceleration().ay()});
+    }
+    _mutex.unlock();
 }
 
-Locations* WorldMap::getLocations() {
-    if(_locations == nullptr) {
-        std::cout << Text::red("[ERROR] ", true) << Text::bold("Locations with nullptr value at WorldMap") + '\n';
-    }
-    else {
-        return _locations;
-    }
-
-    return nullptr;
-}
-
-CoachService* WorldMap::getService() {
-    if(_coachService == nullptr) {
-        std::cout << Text::red("[ERROR] ", true) << Text::bold("CoachService with nullptr value at WorldMap") + '\n';
-    }
-    else {
-        return _coachService;
-    }
-
-    return nullptr;
-}
-
-Constants* WorldMap::getConstants() {
-    if(_constants == nullptr) {
-        std::cout << Text::red("[ERROR] ", true) << Text::bold("Constants with nullptr value at WorldMap") + '\n';
-    }
-    else {
-        return _constants;
-    }
-
-    return nullptr;
+void WorldMap::updateField(const Common::Types::Field& field) {
+    _mutex.lockForWrite();
+    _field = Common::Types::Field(Suassuna::Constants::teamPlaySide(), field.centerRadius()/1000.0,
+                                  field.length()/1000.0, field.width()/1000.0,
+                                  field.goalDepth()/1000.0, field.goalWidth()/1000.0,
+                                  field.penaltyDepth()/1000.0, field.penaltyWidth()/1000.0,
+                                  field.penaltyMarkDistanceFromGoal()/1000.0);
+    _mutex.unlock();
 }

@@ -22,31 +22,35 @@
 #ifndef SKILL_H
 #define SKILL_H
 
-// #include <src/entities/coach/basecoach.h>
-#include <src/constants/constants.h>
-#include <src/entities/player/player.h>
+#include <src/entities/basesuassuna.h>
+#include <math.h>
 
 class Skill
 {
 public:
     Skill();
-    virtual ~Skill();
+    virtual ~Skill() = default;
 
-    // Skill name (for debug)
-    virtual QString name() = 0;
+    // Name
+    virtual inline QString name() {
+        return NAMEOF_TYPE_RTTI(*this).data();
+    }
 
     // Init skill control
     bool isInitialized();
-    void initialize(Constants *constants);
+    void initialize(WorldMap* worldMap);
     void setPlayer(Player *player);
 
-    // Method to run in behavior
+    // Run
     void runSkill();
 
 protected:
-    // Player and constants getters
-    Player *player();
-    Constants *getConstants();
+    // Player and worldmap getters
+    WorldMap* getWorldMap();
+    Player* player();
+
+    // Interface with Player
+    void setWheelsSpeed(const float& wheelLeft, const float& wheelRight);
 
 private:
     // Virtual implementation in inherited classes
@@ -56,10 +60,10 @@ private:
     // Player access
     Player *_player;
 
-    // Constants
-    Constants *_constants;
+    // WorldMap
+    WorldMap *_worldMap;
 
-    // Init control
+    // Internal control
     bool _initialized;
 };
 

@@ -1,0 +1,26 @@
+{
+	"Network": {
+		"Referee": {
+			"refereeNetworkAddress": "224.5.23.2",
+			"refereeNetworkPort": 10003,
+			"refereeNetworkInterface": "lo"
+		},
+		"Vision": {
+			"visionAddress": "224.0.0.1",
+			"visionPort": 10002,
+			"visionNetworkInterface": "lo"
+		},
+		"Actuator": {
+			"actuatorAddress": "127.0.0.1",
+			"actuatorBluePort": 20011,
+			"actuatorYellowPort": 20011,
+			"actuatorNetworkInterface": "lo"
+		}
+	},
+	
+	"Team": {
+                "teamColor": "yellow",
+                "teamPlaySide": "left",
+		"maxNumPlayers": 3
+	}
+}

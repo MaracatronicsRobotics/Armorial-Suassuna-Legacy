@@ -19,57 +19,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-
 #ifndef WORLDMAP_H
 #define WORLDMAP_H
 
-#include <QReadWriteLock>
+#include <QObject>
 
-#include <src/entities/entity.h>
-#include <src/services/coach/coachservice.h>
-#include <src/entities/worldmap/locations/locations.h>
+#include <src/entities/basesuassuna.h>
 
-class WorldMap : public Entity
+class WorldMap : public QObject
 {
+    Q_OBJECT
 public:
-    WorldMap(Constants *constants);
+    /*!
+     * \brief Constructor for the WorldMap class.
+     */
+    WorldMap();
 
-    //
-    QString name();
+    /*!
+     * \brief Setup the internal pointers for the teams. This method is called via the Suassuna core interface.
+     * \param teams The given teams.
+     */
+    void setupTeams(QMap<Common::Enums::Color, Team*>& teams);
 
-    // Data getters
-    Robot getRobot(RobotIdentifier identifier);
-    Robot getRobot(Color color, int id);
-    QList<Robot> getRobots(Color color);
-    QList<int> getRobotsIDs(Color color);
-    Field getField();
-    Ball getBall();
-
-    // Locations getter
-    Locations* getLocations();
+    // Getters for internal objects
+    Common::Types::Field getField();
+    Common::Types::Object getBall();
+    // Common::Types::Object getPlayer(const Common::Enums::Color& teamColor, quint8 playerId);
+    // QList<Common::Types::Object> getPlayersFromTeam(const Common::Enums::Color &teamColor);
 
 private:
-    // Entity inherited methods
-    void initialization();
-    void loop();
-    void finalization();
+    // Internal objects
+    QMap<Common::Enums::Color, Team*> _teams;
+    Common::Types::Field _field;
+    Common::Types::Object _ball;
 
-    // Internal data
-    QMap<bool, QList<Robot>> _robots;
-    Ball _ball;
-    Field _field;
+    // Internal mutex for object management
     QReadWriteLock _mutex;
 
-    // Locations
-    Locations *_locations;
-
-    // Coach Service
-    CoachService *_coachService;
-    CoachService* getService();
-
-    // Constants
-    Constants *_constants;
-    Constants* getConstants();
+public slots:
+    void updatePlayers(const QList<Armorial::Robot>& robots);
+    void updateBall(const QList<Armorial::Ball>& balls);
+    void updateField(const Common::Types::Field& field);
 };
 
 #endif // WORLDMAP_H

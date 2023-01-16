@@ -1,3 +1,6 @@
 [submodule "proto"]
 	path = proto
 	url = https://github.com/MaracatronicsRobotics/Armorial-Proto.git
+[submodule "include/proto"]
+	path = include/proto
+	url = https://github.com/MaracatronicsRobotics/Armorial-Proto.git

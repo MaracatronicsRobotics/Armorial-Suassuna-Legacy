@@ -21,91 +21,87 @@
 
 #include "suassuna.h"
 
-Suassuna::Suassuna(Constants *constants) {
-    // Setting up constants
-    _constants = constants;
+#include <src/entities/basestation/sim/simstation.h>
+#include <src/entities/coach/team/team.h>
+#include <src/entities/player/player.h>
 
-    // Creating world
-    _world = new World(getConstants());
+#include <src/entities/player/role/default/role_default.h> // TODO: remove
 
-    // Setting GUI as nullptr
+SuassunaCore::SuassunaCore() {
+    // Set GUI as nullptr by default
     _gui = nullptr;
+
+    // Start entity manager
+    _entityManager = new Threaded::EntityManager();
 }
 
-void Suassuna::start(bool useGui) {
-    // Creating World Map
-    _worldMap = new WorldMap(getConstants());
-    _world->addEntity(_worldMap, 2);
-
-    // Creating gand adding referee to world
-    _referee = new SSLReferee(getConstants(), _worldMap);
-    _world->addEntity(_referee, 1);
-
-    // Set utils
-    Utils::setConstants(getConstants());
-    Utils::setWorldMap(_worldMap);
-
-
-    Role_Default *role_default = new Role_Default();
-    Role_Goalkeeper *role_goalkeeper = new Role_Goalkeeper();
-    Role_Barrier *role_barrier = new Role_Barrier();
-
-    Player *player0 = new Player(0, _worldMap, _referee, getConstants());
-    player0->setRole(role_goalkeeper);
-    _playerList.push_back(player0);
-    _world->addEntity(player0, 0);
-    Player *player1 = new Player(1, _worldMap, _referee, getConstants());
-    player1->setRole(role_barrier);
-    _playerList.push_back(player1);
-    _world->addEntity(player1, 0);
-    Player *player2 = new Player(2, _worldMap, _referee, getConstants());
-    _playerList.push_back(player2);
-    _world->addEntity(player2, 0);
-    Player *player3 = new Player(3, _worldMap, _referee, getConstants());
-    _playerList.push_back(player3);
-    _world->addEntity(player3, 0);
-    Player *player4 = new Player(4, _worldMap, _referee, getConstants());
-    _playerList.push_back(player4);
-    _world->addEntity(player4, 0);
-    Player *player5 = new Player(5, _worldMap, _referee, getConstants());
-    _playerList.push_back(player5);
-    _world->addEntity(player5, 0);
-
-    // Setup GUI
-    if(useGui) {
-        _gui = new GUI();
-        _gui->show();
-    }
-
-    // Starting world
-    _world->start();
-
-    // Disabling world thread (loop() won't run anymore)
-    _world->disableLoop();
-}
-
-void Suassuna::stop() {
-    // Stopping and waiting world
-    _world->stopEntity();
-    _world->wait();
-
-    // Deleting world (it also delete all other entities added to it)
-    delete _world;
-
-    // If gui pointer is not null, close and delete it
+SuassunaCore::~SuassunaCore() {
+    // If GUI is not null, hide and delete
     if(_gui != nullptr) {
-        _gui->close();
+        _gui->hide();
         delete _gui;
     }
+
+    // Delete all entities in EntityManager
+    delete _entityManager;
 }
 
-Constants* Suassuna::getConstants() {
-    if(_constants == nullptr) {
-        std::cout << Text::red("[ERROR] ", true) << Text::bold("Constants with nullptr value at Suassuna") + '\n';
-    }
-    else {
-        return _constants;
+bool SuassunaCore::start(bool useGUI) {
+    // Start worldmap
+    _worldMap = new WorldMap();
+
+    // Start controller
+    _controller = new SimStation();
+    _entityManager->addEntity(_controller);
+
+    // Start vision
+    _vision = new Vision();
+    _entityManager->addEntity(_vision);
+
+    // If useGUI is set, create and show the GUI
+    if(useGUI) {
+        _gui = new GUI();
+        _gui->show();
+
+        QObject::connect(_vision, &Vision::sendRobots, _gui, &GUI::updateRobots);
+        QObject::connect(_vision, &Vision::sendBalls, _gui, &GUI::updateBalls);
+        QObject::connect(_vision, &Vision::sendField, _gui, &GUI::updateFieldGeometry);
     }
 
-    return nullptr;
+    // Start teams
+    magic_enum::enum_for_each<Common::Enums::Color>([this] (auto color) {
+        if(color != Common::Enums::Color::UNDEFINED) {
+            _teams.insert(color, new Team(color));
+
+            for(int i = 0; i < Suassuna::Constants::maxNumPlayers(); i++) {
+                Player *player = new Player(color, i, ((color == Suassuna::Constants::teamColor()) ? _controller : nullptr), _worldMap);
+                _teams[color]->addPlayer(player);
+
+                if(color == Suassuna::Constants::teamColor()) {
+                    _entityManager->addEntity(player);
+                    player->setRole(new Role_Default());
+                }
+            }
+        }
+    });
+
+    // Make connections between modules
+    QObject::connect(_vision, &Vision::sendRobots, _worldMap, &WorldMap::updatePlayers);
+    QObject::connect(_vision, &Vision::sendBalls, _worldMap, &WorldMap::updateBall);
+    QObject::connect(_vision, &Vision::sendField, _worldMap, &WorldMap::updateField);
+
+    // Setup teams in WorldMap
+    _worldMap->setupTeams(_teams);
+
+    // Start all entities
+    _entityManager->startEntities();
+
+    return true;
+}
+
+bool SuassunaCore::stop() {
+    // Stop entities registered in EntityManager (this also waits for them to stop)
+    _entityManager->disableEntities();
+
+    return true;
 }

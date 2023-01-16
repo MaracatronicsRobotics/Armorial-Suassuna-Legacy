@@ -19,68 +19,61 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
+
 #ifndef ROLE_H
 #define ROLE_H
 
-#include <QObject>
+#include <src/entities/basesuassuna.h>
 
-#include <src/constants/constants.h>
-#include <src/entities/worldmap/worldmap.h>
-#include <src/entities/referee/referee.h>
-#include <src/entities/player/player.h>
-#include <src/entities/player/behaviour/behaviour.h>
-
-class Role : public QObject {
+class Role : public QObject
+{
     Q_OBJECT
 public:
     Role();
     virtual ~Role();
 
+    // Name
+    virtual inline QString name() {
+        return NAMEOF_TYPE_RTTI(*this).data();
+    }
+
+    // Init role control
     bool isInitialized();
-    void initialize(Constants *constants, WorldMap *worldMap, SSLReferee *referee);
+    void initialize(WorldMap *worldMap);
     void setPlayer(Player *player);
 
+    // Actual Behavior name
+    QString actualBehaviorName();
+
+    // Method to run in playbook
     void runRole();
 
-    virtual QString name() = 0;
-
-    Behaviour* getActualBehaviour();
-    virtual void initializeBehaviours() = 0;
-    QHash<int, Behaviour*> getBehaviours();
-    void setBehaviour(int behaviourID);
-
-    Player* player();
-
 protected:
-    void addBehaviour(int behaviourID, Behaviour *behaviour);
+    // Role control methods
+    void addBehavior(int id, Behavior *behavior);
+    void setBehavior(int id);
 
-    Constants* getConstants();
+    // Player and constants getters
+    Player* player();
     WorldMap* getWorldMap();
-    SSLReferee* getReferee();
-    Locations* getLocations();
 
 private:
+    // Virtual implementation in inherited classes
     virtual void configure() = 0;
     virtual void run() = 0;
 
+    // Player access
     Player *_player;
 
-    Constants *_constants;
+    // Worldmap
     WorldMap *_worldMap;
-    SSLReferee *_referee;
-    Locations *_loc;
 
-    // Behaviours for game status control
-    Behaviour *_goToLookTo; // Future changes: Behaviour -> GoToLookTo (wich extends behaviour)
-    bool _isHalted;
+    // Behavior list
+    QMap<int, Behavior*> _behaviorList;
+    Behavior *_actualBehavior;
 
-    // Behaviour list
-    QHash<int, Behaviour*> _behaviourList;
-    Behaviour *_behaviour;
-    Behaviour *_actualBehaviour;
-
+    // Initialize control
     bool _initialized;
-    bool _configureEnabled;
 };
 
 #endif // ROLE_H

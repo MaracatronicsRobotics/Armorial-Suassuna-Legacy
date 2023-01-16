@@ -1,73 +1,41 @@
+/***
+ * Maracatronics Robotics
+ * Federal University of Pernambuco (UFPE) at Recife
+ * http://www.maracatronics.com/
+ *
+ * This file is part of Armorial project.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ***/
+
 #ifndef REFEREE_H
 #define REFEREE_H
 
-#include <QUdpSocket>
-#include <QMutex>
-#include <QNetworkDatagram>
+#include <Armorial/Threaded/Entity/Entity.h>
 
-#include <src/utils/text/text.h>
-#include <src/utils/utils.h>
-#include <src/entities/entity.h>
-#include <src/entities/referee/gameinfo/gameinfo.h>
-#include <src/entities/referee/ballplay/ballplay.h>
-#include <src/entities/worldmap/worldmap.h>
-
-#include <proto/messages.pb.h>
-#include <proto/ssl_gc_referee_message.pb.h>
-
-class SSLReferee : public Entity
+class Referee : public Threaded::Entity
 {
-    Q_OBJECT
 public:
-    SSLReferee(Constants *constants, WorldMap *worldMap);
-    ~SSLReferee();
-
-    QString name();
-
-    GameInfo* getGameInfo();
-    int getRemainingTime();
-    Referee_Stage getLastStage();
-    Referee_Command getLastCommand();
-    Referee_TeamInfo getLastTeamInfo(Color teamColor);
-    Position getLastPlacementPosition();
-
-    // Return if ball is inside field, outside goal areas and player can take it
-    bool isBallInPlay();
+    Referee();
 
 private:
-    // Entity inherited methods
+    /*!
+     * \brief Entity inherited methods.
+     */
     void initialization();
     void loop();
     void finalization();
-
-    // Socket management
-    QUdpSocket *_refereeSocket;
-    void createAndInitializeSocket();
-
-    // Packet management
-    Referee_Command _lastCommand;
-    Referee_Stage _lastStage;
-    QHash<bool, Referee_TeamInfo> _lastTeamsInfo;
-    Position _lastPlacementPosition;
-    int _remainingTime;
-    QReadWriteLock _packetMutex;
-
-    // BallPlay checker
-    BallPlay *_ballPlay;
-
-    // GameInfo
-    GameInfo *_gameInfo;
-
-    // Constants
-    Constants *_constants;
-    Constants* getConstants();
-
-    // WorldMap
-    WorldMap *_worldMap;
-    WorldMap* getWorldMap();
-
-signals:
-    void updateReferee();
 };
 
 #endif // REFEREE_H
