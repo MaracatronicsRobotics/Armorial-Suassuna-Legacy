@@ -19,37 +19,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef BEHAVIOR_DEFAULT_H
-#define BEHAVIOR_DEFAULT_H
+#include "skill_spin.h"
 
-#include <src/entities/player/behavior/behavior.h>
-#include <src/entities/player/skill/goto/skill_goto.h>
-#include <src/entities/player/skill/rotateto/skill_rotateto.h>
-#include <src/entities/player/skill/spin/skill_spin.h>
+Skill_Spin::Skill_Spin() {
+}
 
-class Behavior_Default : public Behavior
-{
-public:
-    Behavior_Default();
+void Skill_Spin::configure() {
+    _isClockwise = true;
+    _spinSpeed = 50.0f;
+}
 
-private:
-    // Behavior inherited methods
-    void configure();
-    void run();
+void Skill_Spin::run() {
+    if (_isClockwise) {
+        setWheelsSpeed(_spinSpeed, -_spinSpeed);
+    } else {
+        setWheelsSpeed(-_spinSpeed, _spinSpeed);
+    }
+}
 
-    // Skills pointers
-    Skill_GoTo *_skill_goTo;
-    Skill_RotateTo *_skill_rotateTo;
-    Skill_Spin *_skill_spin;
+void Skill_Spin::setClockwiseDirection(const bool &isClockwise) {
+    _isClockwise = isClockwise;
+}
 
-    // Skills enum
-    enum {
-        SKILL_GOTO,
-        SKILL_ROTATETO,
-        SKILL_SPIN
-    };
-
-    Geometry::Vector2D _targetPosition;
-};
-
-#endif // BEHAVIOR_DEFAULT_H
+void Skill_Spin::setSpinSpeed(const float &spinSpeed) {
+    _spinSpeed = spinSpeed;
+}

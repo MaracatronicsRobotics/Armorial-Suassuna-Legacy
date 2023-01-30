@@ -19,37 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef BEHAVIOR_DEFAULT_H
-#define BEHAVIOR_DEFAULT_H
+#ifndef SKILL_SPIN_H
+#define SKILL_SPIN_H
 
-#include <src/entities/player/behavior/behavior.h>
-#include <src/entities/player/skill/goto/skill_goto.h>
-#include <src/entities/player/skill/rotateto/skill_rotateto.h>
-#include <src/entities/player/skill/spin/skill_spin.h>
+#include <src/entities/player/skill/skill.h>
 
-class Behavior_Default : public Behavior
+class Skill_Spin : public Skill
 {
 public:
-    Behavior_Default();
+    Skill_Spin();
+    void setClockwiseDirection(const bool& isClockwise);
+    void setSpinSpeed(const float& spinSpeed);
 
 private:
-    // Behavior inherited methods
     void configure();
     void run();
 
-    // Skills pointers
-    Skill_GoTo *_skill_goTo;
-    Skill_RotateTo *_skill_rotateTo;
-    Skill_Spin *_skill_spin;
-
-    // Skills enum
-    enum {
-        SKILL_GOTO,
-        SKILL_ROTATETO,
-        SKILL_SPIN
-    };
-
-    Geometry::Vector2D _targetPosition;
+    // Internal
+    bool _isClockwise;
+    float _spinSpeed;
 };
 
-#endif // BEHAVIOR_DEFAULT_H
+#endif // SKILL_SPIN_H

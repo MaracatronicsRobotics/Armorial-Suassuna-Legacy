@@ -55,6 +55,7 @@ SOURCES += \
     src/entities/player/player.cpp \
     src/entities/player/skill/goto/skill_goto.cpp \
     src/entities/player/skill/rotateto/skill_rotateto.cpp \
+    src/entities/player/skill/spin/skill_spin.cpp \
     src/entities/player/skill/skill.cpp \
     src/entities/referee/referee.cpp \
     src/entities/vision/filters/kalman/kalmanfilter.cpp \
@@ -88,6 +89,7 @@ HEADERS += \
     src/entities/player/player.h \
     src/entities/player/skill/goto/skill_goto.h \
     src/entities/player/skill/rotateto/skill_rotateto.h \
+    src/entities/player/skill/spin/skill_spin.h \
     src/entities/player/skill/skill.h \
     src/entities/referee/referee.h \
     src/entities/vision/filters/filters.h \
