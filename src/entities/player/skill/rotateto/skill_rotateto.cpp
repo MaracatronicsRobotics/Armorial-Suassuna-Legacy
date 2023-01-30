@@ -28,6 +28,7 @@ Skill_RotateTo::Skill_RotateTo() {
 
 void Skill_RotateTo::configure() {
     _targetAngle = 0.0f;
+    _isSimulation = true;
 }
 
 float smallestAngleDiff2(float target, float source) {
@@ -82,4 +83,8 @@ void Skill_RotateTo::run() {
 
 void Skill_RotateTo::setTargetAngle(const float &targetAngle) {
     _targetAngle = targetAngle;
+}
+
+void Skill_RotateTo::setSimulationGame(const bool &isSimulation) {
+    _isSimulation = isSimulation;
 }

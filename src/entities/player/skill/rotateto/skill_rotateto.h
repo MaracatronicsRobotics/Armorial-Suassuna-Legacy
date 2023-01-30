@@ -29,6 +29,7 @@ class Skill_RotateTo : public Skill
 public:
     Skill_RotateTo();
     void setTargetAngle(const float& targetAngle);
+    void setSimulationGame(const bool& isSimulation);
 
 private:
     void configure();
@@ -36,6 +37,7 @@ private:
 
     // Internal
     float _targetAngle;
+    bool _isSimulation;
 };
 
 #endif // SKILL_ROTATETO_H

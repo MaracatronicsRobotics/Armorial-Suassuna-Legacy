@@ -28,6 +28,7 @@ Skill_GoTo::Skill_GoTo() {
 
 void Skill_GoTo::configure() {
     _targetPosition = Geometry::Vector2D(0.0, 0.0);
+    _isSimulation = true;
 }
 
 float smallestAngleDiff(float target, float source) {
@@ -99,4 +100,8 @@ void Skill_GoTo::run() {
 
 void Skill_GoTo::setTargetPosition(const Geometry::Vector2D &targetPosition) {
     _targetPosition = targetPosition;
+}
+
+void Skill_GoTo::setSimulationGame(const bool &isSimulation) {
+    _isSimulation = isSimulation;
 }

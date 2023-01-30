@@ -30,6 +30,7 @@ public:
     Skill_GoTo();
 
     void setTargetPosition(const Geometry::Vector2D& targetPosition);
+    void setSimulationGame(const bool& isSimulation);
 
 private:
     void configure();
@@ -37,6 +38,7 @@ private:
 
     // Internal
     Geometry::Vector2D _targetPosition;
+    bool _isSimulation;
 };
 
 #endif // SKILL_GOTO_H
