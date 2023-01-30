@@ -24,7 +24,6 @@
 #include <src/entities/player/player.h>
 
 Skill_GoTo::Skill_GoTo() {
-
 }
 
 void Skill_GoTo::configure() {
@@ -45,8 +44,10 @@ float smallestAngleDiff(float target, float source) {
 
 void Skill_GoTo::run() {
     float Kp = 20.0f;
+    float Ki = 0.0f;
     float Kd = 2.5f;
     static float lastError = 0.0f;
+    static float cumulativeError = 0.0f;
 
     float rightMotorSpeed;
     float leftMotorSpeed;
@@ -65,23 +66,25 @@ void Skill_GoTo::run() {
         angError = smallestAngleDiff(robotAngle, angleToTarget);
     }
 
-    float motorSpeed = (Kp*angError) + (Kd * (angError - lastError));// + 0.2 * sumErr;
+    float motorSpeed = (Kp*angError) + (Ki*cumulativeError) + (Kd * (angError - lastError));// + 0.2 * sumErr;
     lastError = angError;
+    // Maybe the cumulative error should be apllied before motorSpeed declaration
+    cumulativeError += angError;
 
     float baseSpeed = 30;
     // Normalize
     motorSpeed = motorSpeed > baseSpeed ? baseSpeed : motorSpeed;
     motorSpeed = motorSpeed < -baseSpeed ? -baseSpeed : motorSpeed;
 
-    if (motorSpeed > 0) {
-        leftMotorSpeed = baseSpeed ;
-        rightMotorSpeed = baseSpeed - motorSpeed;
+    if (!reversed) {
+        if (motorSpeed > 0) {
+            leftMotorSpeed = baseSpeed ;
+            rightMotorSpeed = baseSpeed - motorSpeed;
+        } else {
+            leftMotorSpeed = baseSpeed + motorSpeed;
+            rightMotorSpeed = baseSpeed;
+        }
     } else {
-        leftMotorSpeed = baseSpeed + motorSpeed;
-        rightMotorSpeed = baseSpeed;
-    }
-
-    if (reversed) {
         if (motorSpeed > 0) {
             leftMotorSpeed = -baseSpeed + motorSpeed;
             rightMotorSpeed = -baseSpeed ;
