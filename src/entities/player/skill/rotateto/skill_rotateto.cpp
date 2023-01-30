@@ -23,9 +23,7 @@
 
 #include <src/entities/player/player.h>
 
-Skill_RotateTo::Skill_RotateTo()
-{
-
+Skill_RotateTo::Skill_RotateTo() {
 }
 
 void Skill_RotateTo::configure() {
@@ -46,28 +44,31 @@ float smallestAngleDiff2(float target, float source) {
 
 void Skill_RotateTo::run() {
     float Kp = 20.0f;
+    float Ki = 0.0f;
     float Kd = 2.5f;
     static float lastError = 0.0f;
+    static float cumulativeError = 0.0f;
 
     float rightMotorSpeed;
     float leftMotorSpeed;
     bool reversed = false;
 
     float robotAngle = player()->getOrientation().value();
-    float angleToTarget = _targetAngle;
+    float angError = smallestAngleDiff2(robotAngle, _targetAngle);
 
-    //float angError = player()->getOrientation().shortestAngleDiff(angleToTarget);
-    float angError = smallestAngleDiff2(robotAngle, angleToTarget);
     if(fabs(angError) > M_PI/2.0 + M_PI/20.0) {
         reversed = true;
         robotAngle = Geometry::Angle(robotAngle + M_PI).value();
         // Calculates the error and reverses the front of the robot
-        angError = smallestAngleDiff2(robotAngle, angleToTarget);
+        angError = smallestAngleDiff2(robotAngle, _targetAngle);
     }
 
-    float motorSpeed = (Kp*angError) + (Kd * (angError - lastError));// + 0.2 * sumErr;
+    float motorSpeed = (Kp*angError) + (Ki*cumulativeError) + (Kd * (angError - lastError));// + 0.2 * sumErr;
     lastError = angError;
+    // Maybe the cumulative error should be apllied before motorSpeed declaration
+    cumulativeError += angError;
 
+    // The standard movement of the robots will be a clockwise rotation
     leftMotorSpeed = motorSpeed ;
     rightMotorSpeed = -motorSpeed;
 
