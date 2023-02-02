@@ -57,6 +57,7 @@ SOURCES += \
     src/entities/player/skill/rotateto/skill_rotateto.cpp \
     src/entities/player/skill/skill.cpp \
     src/entities/referee/referee.cpp \
+    src/entities/vision/filters/kalman/kalmanfilter.cpp \
     src/entities/vision/filters/loss/lossfilter.cpp \
     src/entities/vision/filters/noise/noisefilter.cpp \
     src/entities/vision/object/visionobject.cpp \
@@ -90,6 +91,7 @@ HEADERS += \
     src/entities/player/skill/skill.h \
     src/entities/referee/referee.h \
     src/entities/vision/filters/filters.h \
+    src/entities/vision/filters/kalman/kalmanfilter.h \
     src/entities/vision/filters/loss/lossfilter.h \
     src/entities/vision/filters/noise/noisefilter.h \
     src/entities/vision/object/visionobject.h \

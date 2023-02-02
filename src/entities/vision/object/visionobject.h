@@ -95,9 +95,13 @@ private:
     float _confidence;
     bool _valid;
 
+    // Timer for angularSpeed
+    Utils::Timer _aSpeedTimer;
+
     // Object filters
     LossFilter _lossFilter;
     NoiseFilter _noiseFilter;
+    KalmanFilter _kalmanFilter;
 };
 
 #endif // VISIONOBJECT_H
