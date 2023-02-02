@@ -24,5 +24,6 @@
 
 #include "loss/lossfilter.h"
 #include "noise/noisefilter.h"
+#include "kalman/kalmanfilter.h"
 
 #endif // FILTERS_H

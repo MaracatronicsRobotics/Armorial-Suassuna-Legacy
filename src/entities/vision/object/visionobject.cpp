@@ -38,33 +38,45 @@ bool VisionObject::isObjectValid() {
 }
 
 void VisionObject::updateObject(const float &confidence, const Geometry::Vector2D &pos, const Geometry::Angle &orientation) {
-    // Update confidence
+    // Update object confidence
     _confidence = confidence;
 
     // If noise filter is not initialized
     if(!_noiseFilter.isInitialized()) {
         // Init noise
         _noiseFilter.startNoise();
-
         // Set invalid
         setInvalid();
     }
+    // If noise filter is already initialized
     else {
         // If object is safe (survived at noise filter)
         if(isObjectSafe()) {
-           // Reset loss filter
-           _lossFilter.startLoss();
+            // Reset loss filter
+            _lossFilter.startLoss();
 
-           // Set position and orientation
-           setPosition(pos);
-           setOrientation(orientation);
+            setAngularSpeed((orientation.value() - getOrientation().value())/_aSpeedTimer.getSeconds());
 
-           // Set as valid
-           setValid();
+            // Iterate in kalman filter
+            _kalmanFilter.update(pos);
+
+            // Update positions, orientations, velocity and confidence
+            setPosition(_kalmanFilter.getPosition());
+            setVelocity(_kalmanFilter.getVelocity());
+            setAcceleration(_kalmanFilter.getAcceleration());
+
+            // Reset timer
+            _aSpeedTimer.start();
+
+            // Update orientation (TODO: filter here?)
+            setOrientation(orientation);
+
+            // Set as valid
+            setValid();
         }
-        // If object is not safe (noise filter running)
+        // If object is unsafe yet (noise is running)
         else {
-            // Mark as invalid
+            // Set invalid
             setInvalid();
 
             // Reset loss
@@ -89,7 +101,10 @@ void VisionObject::updateObject() {
         }
         // If object is not lost already and is safe
         else if(!isObjectLoss() && isObjectSafe()){
-            /// TODO: Update positions, orientations, velocity and confidence based on kalman
+            // Update positions, orientations, velocity and confidence
+            setPosition(_kalmanFilter.getPredictedPosition());
+            setVelocity(_kalmanFilter.getPredictedVelocity());
+            setAcceleration(_kalmanFilter.getPredictedAcceleration());
         }
     }
 }
