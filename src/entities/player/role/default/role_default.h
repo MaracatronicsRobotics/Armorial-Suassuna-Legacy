@@ -24,6 +24,7 @@
 
 #include <src/entities/player/role/role.h>
 #include <src/entities/player/behavior/default/behavior_default.h>
+#include <src/entities/player/behavior/move/behavior_move.h>
 
 class Role_Default : public Role
 {
