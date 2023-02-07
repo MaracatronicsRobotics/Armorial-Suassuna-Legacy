@@ -19,35 +19,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ***/
 
-#ifndef ROLE_DEFAULT_H
-#define ROLE_DEFAULT_H
+#ifndef BEHAVIOR_INTERCEPT_H
+#define BEHAVIOR_INTERCEPT_H
 
-#include <src/entities/player/role/role.h>
-#include <src/entities/player/behavior/default/behavior_default.h>
+#include <src/entities/player/behavior/behavior.h>
 #include <src/entities/player/behavior/move/behavior_move.h>
-#include <src/entities/player/behavior/intercept/behavior_intercept.h>
 
-class Role_Default : public Role
+class Behavior_Intercept : public Behavior
 {
 public:
-    Role_Default();
+    Behavior_Intercept();
+
+    //Setters
+    void setInterceptSegment(Geometry::LineSegment interceptSegment) { _interceptSegment = interceptSegment; }
+    void setObjectPosition(Geometry::Vector2D objectPosition) { _objectPosition = objectPosition; }
+    void setObjectVelocity(Geometry::Vector2D objectVelocity) { _objectVelocity = objectVelocity; }
+    void setIntersectionAccuracy(float intersectionAccuracy);
 
 private:
-    // Role inherited methods
+    // Behavior inherited methods
     void configure();
     void run();
 
-    // Behaviors enum
+    // Skills pointers
+    Skill_GoTo *_skill_goTo;
+
+    // Skills enum
     enum {
-        BEHAVIOR_DEFAULT,
-        BEHAVIOR_MOVE,
-        BEHAVIOR_INTERCEPT
+        SKILL_GOTO
     };
 
-    // Behaviors pointers
-    Behavior_Default *_behavior_default;
-    Behavior_Move *_behavior_move;
-    Behavior_Intercept *_behavior_intercept;
+    Geometry::LineSegment _interceptSegment;
+    Geometry::Vector2D _objectPosition;
+    Geometry::Vector2D _objectVelocity;
+    Geometry::Vector2D _interceptPosition;
+    float _intersectionAccuracy;
 };
 
-#endif // ROLE_DEFAULT_H
+#endif // BEHAVIOR_INTERCEPT_H
