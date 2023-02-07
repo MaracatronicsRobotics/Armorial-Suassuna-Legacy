@@ -21,18 +21,42 @@
 
 #include "role_default.h"
 
-Role_Default::Role_Default() {
+#include <src/entities/player/player.h>
+#include <src/entities/worldmap/worldmap.h>
 
+Role_Default::Role_Default() {
 }
 
 void Role_Default::configure() {
     // Starting behaviors
     _behavior_default = new Behavior_Default();
+    _behavior_move = new Behavior_Move();
+    _behavior_intercept = new Behavior_Intercept();
 
     // Adding behaviors to behaviors list
     addBehavior(BEHAVIOR_DEFAULT, _behavior_default);
+    addBehavior(BEHAVIOR_MOVE, _behavior_move);
+    addBehavior(BEHAVIOR_INTERCEPT, _behavior_intercept);
 }
 
 void Role_Default::run() {
-    setBehavior(BEHAVIOR_DEFAULT);
+    // Test logic for the 3 main skills ocurring simultaneously
+    if(player()->robotId() == 0) {
+        // Move the robot to other positions and see if it moves to the target position using the best face no move
+        _behavior_move->setMovementType(Behavior_Move::MOVEMENT::MOVE);
+        _behavior_move->setTargetPosition(getWorldMap()->getBall().getPosition());
+        setBehavior(BEHAVIOR_MOVE);
+    } else if (player()->robotId() == 1) {
+        // Move the robot to other positions and see if it rotate to the target position using the smarter rotation diretion route
+        _behavior_move->setMovementType(Behavior_Move::MOVEMENT::ROTATE);
+        _behavior_move->setTargetAngle((getWorldMap()->getBall().getPosition() - player()->getPosition()).angle());
+        setBehavior(BEHAVIOR_MOVE);
+    } else {
+        // Move the robot to positions where you can see both spin directions
+        _behavior_intercept->setInterceptSegment(Geometry::LineSegment(Geometry::Vector2D(0.4f, -0.5f), Geometry::Vector2D(0.4f, 0.5f)));
+        _behavior_intercept->setObjectPosition(getWorldMap()->getBall().getPosition());
+        _behavior_intercept->setObjectVelocity(getWorldMap()->getBall().getVelocity());
+        _behavior_intercept->setIntersectionAccuracy(0.3f);
+        setBehavior(BEHAVIOR_INTERCEPT);
+    }
 }

@@ -49,6 +49,7 @@ SOURCES += \
     src/entities/coach/coach.cpp \
     src/entities/coach/team/team.cpp \
     src/entities/player/behavior/default/behavior_default.cpp \
+    src/entities/player/behavior/intercept/behavior_intercept.cpp \
     src/entities/player/behavior/move/behavior_move.cpp \
     src/entities/player/role/default/role_default.cpp \
     src/entities/player/role/role.cpp \
@@ -84,6 +85,7 @@ HEADERS += \
     src/entities/coach/coach.h \
     src/entities/coach/team/team.h \
     src/entities/player/behavior/default/behavior_default.h \
+    src/entities/player/behavior/intercept/behavior_intercept.h \
     src/entities/player/behavior/move/behavior_move.h \
     src/entities/player/role/default/role_default.h \
     src/entities/player/role/role.h \
