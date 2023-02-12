@@ -52,6 +52,7 @@ SOURCES += \
     src/entities/player/behavior/intercept/behavior_intercept.cpp \
     src/entities/player/behavior/move/behavior_move.cpp \
     src/entities/player/role/default/role_default.cpp \
+    src/entities/player/role/goalkeeper/role_goalkeeper.cpp \
     src/entities/player/role/role.cpp \
     src/entities/player/behavior/behavior.cpp \
     src/entities/player/player.cpp \
@@ -88,6 +89,7 @@ HEADERS += \
     src/entities/player/behavior/intercept/behavior_intercept.h \
     src/entities/player/behavior/move/behavior_move.h \
     src/entities/player/role/default/role_default.h \
+    src/entities/player/role/goalkeeper/role_goalkeeper.h \
     src/entities/player/role/role.h \
     src/entities/player/behavior/behavior.h \
     src/entities/player/player.h \

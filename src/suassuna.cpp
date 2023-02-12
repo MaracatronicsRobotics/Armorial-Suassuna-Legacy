@@ -26,6 +26,7 @@
 #include <src/entities/player/player.h>
 
 #include <src/entities/player/role/default/role_default.h> // TODO: remove
+#include <src/entities/player/role/goalkeeper/role_goalkeeper.h> // TODO: remove
 
 SuassunaCore::SuassunaCore() {
     // Set GUI as nullptr by default
@@ -79,7 +80,11 @@ bool SuassunaCore::start(bool useGUI) {
 
                 if(color == Suassuna::Constants::teamColor()) {
                     _entityManager->addEntity(player);
-                    player->setRole(new Role_Default());
+                    if (i == 0) {
+                        player->setRole(new Role_Goalkeeper());
+                    } else {
+                        player->setRole(new Role_Default());
+                    }
                 }
             }
         }
