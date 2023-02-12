@@ -60,11 +60,26 @@ void Role_Goalkeeper::run() {
         setBehavior(BEHAVIOR_MOVE);
     } else {
         // Defense routine on a normal game state
+        Geometry::Vector2D ourGoalCenter = getWorldMap()->getField().ourGoalCenter();
         Geometry::Rectangle ourGoalArea = getWorldMap()->getField().ourPenaltyArea();
         setBehavior(BEHAVIOR_MOVE);
 
+        // Spin when the ball and GK are too close
+        if (player()->getPosition().dist(ballPosition) < 0.08f) {
+            _behavior_move->setClockwiseSpin(isClockwiseSpin());
+            _behavior_move->setMovementType(Behavior_Move::MOVEMENT::SPIN);
+        }
+        // Kick out ball when is is slow to avoid a penalty foul
+        else if (ourGoalArea.contains(ballPosition) && (ballVelocity.length() < 0.2f)) {
+            if (ourGoalCenter.dist(player()->getPosition()) < ourGoalCenter.dist(ballPosition)) {
+                _behavior_move->setTargetPosition(ballPosition);
+            } else {
+                _behavior_move->setTargetPosition(ourGoalCenter);
+            }
+            _behavior_move->setMovementType(Behavior_Move::MOVEMENT::MOVE);
+        }
         // Await in the defense line when located outside our goal area
-        if (!ourGoalArea.contains(player()->getPosition())) {
+        else if (!ourGoalArea.contains(player()->getPosition())) {
             _behavior_move->setTargetPosition(standardPosition);
             _behavior_move->setMovementType(Behavior_Move::MOVEMENT::MOVE);
         } else {
@@ -99,6 +114,22 @@ void Role_Goalkeeper::run() {
                     _state = ROTATE;
                 }
             }
+        }
+    }
+}
+
+bool Role_Goalkeeper::isClockwiseSpin() {
+    if (getWorldMap()->getField().ourGoalCenter().x() > 0.0f) {
+        if (getWorldMap()->getBall().getPosition().y() > player()->getPosition().y()) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        if (getWorldMap()->getBall().getPosition().y() > player()->getPosition().y()) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
