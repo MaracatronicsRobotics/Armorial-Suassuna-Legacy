@@ -57,6 +57,7 @@ private:
     bool _gkOverlap;
 
     // Auxiliary methods
+    bool isClockwiseSpin();
     float getIntersectionAccuracy(Geometry::LineSegment interceptionSegment);
 };
 
