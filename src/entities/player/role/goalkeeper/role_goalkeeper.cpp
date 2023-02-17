@@ -24,6 +24,9 @@
 #include <src/entities/player/player.h>
 #include <src/entities/worldmap/worldmap.h>
 
+#define SPIN_DISTANCE 0.08f
+#define STOP_VELOCITY 0.2f
+
 Role_Goalkeeper::Role_Goalkeeper() {
     _gkOverlap = false;
 }
@@ -65,12 +68,12 @@ void Role_Goalkeeper::run() {
         setBehavior(BEHAVIOR_MOVE);
 
         // Spin when the ball and GK are too close
-        if (player()->getPosition().dist(ballPosition) < 0.08f) {
+        if (player()->getPosition().dist(ballPosition) < SPIN_DISTANCE) {
             _behavior_move->setClockwiseSpin(isClockwiseSpin());
             _behavior_move->setMovementType(Behavior_Move::MOVEMENT::SPIN);
         }
         // Kick out ball when is is slow to avoid a penalty foul
-        else if (ourGoalArea.contains(ballPosition) && (ballVelocity.length() < 0.2f)) {
+        else if (ourGoalArea.contains(ballPosition) && (ballVelocity.length() < STOP_VELOCITY)) {
             if (ourGoalCenter.dist(player()->getPosition()) < ourGoalCenter.dist(ballPosition)) {
                 _behavior_move->setTargetPosition(ballPosition);
             } else {
@@ -135,6 +138,12 @@ bool Role_Goalkeeper::isClockwiseSpin() {
 }
 
 float Role_Goalkeeper::getIntersectionAccuracy(Geometry::LineSegment interceptionSegment) {
+    // The accuracy is 0 - 1 scale  which determines how if the GK should intercept at the ball
+    // movement line or the ball projection (0: projection preference; 1: ball m. line prefeence).
+    // It is easy to note that if the ball is in the defense line, the projection is the true
+    // intersection result, so the ball distance to the defense line is a proportional parameter.
+    // Also, if the ball velocity magnitude is high, it probably won't change its movement
+    // direction abruptely, so this magnitude is also a proportional parameter.
     Geometry::Vector2D ballPosition = getWorldMap()->getBall().getPosition();
     float ballDangerDistance = Geometry::Line(interceptionSegment).distanceToLine(ballPosition);
     float ballVelocityMagnitude = getWorldMap()->getBall().getVelocity().length();
