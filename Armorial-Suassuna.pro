@@ -50,9 +50,11 @@ SOURCES += \
     src/entities/coach/team/team.cpp \
     src/entities/player/behavior/default/behavior_default.cpp \
     src/entities/player/behavior/intercept/behavior_intercept.cpp \
+    src/entities/player/behavior/kick/behavior_kick.cpp \
     src/entities/player/behavior/move/behavior_move.cpp \
     src/entities/player/navigation/navigation.cpp \
     src/entities/player/navigation/univector/univector.cpp \
+    src/entities/player/role/attacker/role_attacker.cpp \
     src/entities/player/role/default/role_default.cpp \
     src/entities/player/role/goalkeeper/role_goalkeeper.cpp \
     src/entities/player/role/role.cpp \
@@ -89,9 +91,11 @@ HEADERS += \
     src/entities/coach/team/team.h \
     src/entities/player/behavior/default/behavior_default.h \
     src/entities/player/behavior/intercept/behavior_intercept.h \
+    src/entities/player/behavior/kick/behavior_kick.h \
     src/entities/player/behavior/move/behavior_move.h \
     src/entities/player/navigation/navigation.h \
     src/entities/player/navigation/univector/univector.h \
+    src/entities/player/role/attacker/role_attacker.h \
     src/entities/player/role/default/role_default.h \
     src/entities/player/role/goalkeeper/role_goalkeeper.h \
     src/entities/player/role/role.h \
