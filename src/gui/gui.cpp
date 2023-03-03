@@ -40,6 +40,16 @@ GUI::GUI(QWidget *parent) : QWidget(parent), ui(new Ui::GUI) {
     // Setup deafult field and create field view
     Common::Types::Field field_vssA(Common::Enums::Side::SIDE_LEFT, 250.0, 1500.0, 1300.0, 100.0, 400.0, 150.0, 700.0, 112.5);
     ui->fieldViewLayout->addWidget(_fieldView = new FieldView(field_vssA, "", this));
+
+    QStringList nameList;
+    for (int i = 0; i < Suassuna::Constants::maxNumPlayers(); i++) {
+        nameList.push_back(QString("Robot %1").arg(i));
+    }
+    ui->comboBox->addItems(nameList);
+
+    connect(ui->comboBox, SIGNAL(currentTextChanged(QString)), this, SLOT(setRobotChoice(QString)));
+    connect(ui->checkTargetPos, SIGNAL(toggled(bool)), this, SLOT(setShowInterestPoints(bool)));
+    connect(ui->checkNavigation, SIGNAL(toggled(bool)), this, SLOT(setShowPath(bool)));
 }
 
 GUI::~GUI() {
@@ -82,4 +92,28 @@ void GUI::updateRobots(const QList<Armorial::Robot>& robots) {
 
 void GUI::updateFieldGeometry(const Common::Types::Field& fieldGeometry) {
     _fieldView->updateFieldGeometry(fieldGeometry);
+}
+
+void GUI::updateInterestPoints(quint8 robotId, const QList<Geometry::Vector2D>& points) {
+    _fieldView->updateInterestPoints(robotId, points);
+}
+
+void GUI::updateVectorsAngles(quint8 robotId, const QVector<Geometry::Vector2D>& angles) {
+    _fieldView->updateVectorsAngles(robotId, angles);
+}
+
+void GUI::setRobotChoice(const QString& robotId) {
+    for (quint8 i = 0; i < Suassuna::Constants::maxNumPlayers(); i++) {
+        if (robotId == QString("Robot %1").arg(i)) {
+            _fieldView->setRobotChoice(i);
+        }
+    }
+}
+
+void GUI::setShowInterestPoints(const bool& toShow) {
+    _fieldView->setShowInterestPoints(toShow);
+}
+
+void GUI::setShowPath(const bool& toShow) {
+    _fieldView->setShowPath(toShow);
 }

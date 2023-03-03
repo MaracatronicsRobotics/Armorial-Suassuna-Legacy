@@ -24,6 +24,8 @@
 
 #include <src/entities/basesuassuna.h>
 #include <src/common/types/robot/robot.h>
+#include <src/entities/player/navigation/navigation.h>
+#include <src/gui/gui.h>
 
 class Player : public Suassuna::Robot, public Threaded::Entity
 {
@@ -39,6 +41,7 @@ public:
      * \param role
      */
     void setRole(Role* role);
+    void setGUI(GUI* gui);
 
 protected:
     // Friend classes for update and internal control of the player
@@ -92,6 +95,9 @@ private:
     // Idle control
     Utils::Timer _idleTimer;
     bool _firstIt;
+
+    GUI *_gui;
+
 };
 
 #endif // PLAYER_H

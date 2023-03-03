@@ -30,6 +30,9 @@
 #include <include/proto/messages.pb.h>
 
 #include <src/common/types/robot/robot.h>
+#include <src/common/constants/constants.h>
+
+#include <src/entities/player/navigation/univector/univector.h>
 
 class FieldView : public Common::Widgets::FieldView
 {
@@ -67,6 +70,27 @@ public:
      */
     void updateQuadrantStatus(const Common::Enums::Quadrant& quadrant, bool status);
 
+    /*!
+     * \brief updateInterestPoints
+     * \param points
+     */
+    void updateInterestPoints(quint8 robotId, const QList<Geometry::Vector2D>& points);
+
+    /*!
+     * \brief updateVectorsAngles
+     * \param angles
+     */
+    void updateVectorsAngles(quint8 robotId, const QVector<Geometry::Vector2D>& angles);
+
+    /*!
+     * \brief GUI choice options setters
+     * \param GUI choices
+     */
+    void setRobotChoice(const quint8& robotId);
+    void setShowInterestPoints(const bool& toShow);
+    void setShowPath(const bool& toShow);
+    void drawUnivector(Geometry::Vector2D targetPos);
+
 protected:
     /*!
      * \brief Setup robot display list override (draw VSS robots instead of SSL)
@@ -82,7 +106,13 @@ private:
     // Internal objects
     QList<Armorial::Ball> _balls;
     QList<Armorial::Robot> _robots;
+    Common::Types::Field _field;
     QMap<Common::Enums::Quadrant, bool> _quadrantStatus;
+    QMap<quint8, QList<Geometry::Vector2D>> _interestPoints;
+    QMap<quint8, QVector<Geometry::Vector2D>> _uniVector;
+    quint8 _robotChoice;
+    bool _showInterestPoints;
+    bool _showPath;
     QMutex _drawMutex;
 };
 

@@ -70,6 +70,10 @@ void Behavior::setPlayer(Player *player) {
     }
 }
 
+void Behavior::setGUI(GUI *gui) {
+    _gui = gui;
+}
+
 void Behavior::runBehavior() {
     // Check if behavior have at least one skill
     if(_skillList.size() == 0) {
@@ -116,6 +120,10 @@ void Behavior::runSkill(int id) {
 
 Player* Behavior::player() {
     return _player;
+}
+
+GUI* Behavior::gui() {
+    return _gui;
 }
 
 WorldMap* Behavior::getWorldMap() {

@@ -23,6 +23,8 @@
 #define SKILL_H
 
 #include <src/entities/basesuassuna.h>
+#include <src/entities/player/navigation/navigation.h>
+#include <src/gui/gui.h>
 #include <math.h>
 
 class Skill
@@ -41,6 +43,8 @@ public:
     void initialize(WorldMap* worldMap);
     void setPlayer(Player *player);
 
+    void setGUI(GUI *gui);
+
     // Run
     void runSkill();
 
@@ -48,6 +52,9 @@ protected:
     // Player and worldmap getters
     WorldMap* getWorldMap();
     Player* player();
+    Navigation* nav();
+
+    GUI* gui();
 
     // Interface with Player
     void setWheelsSpeed(const float& wheelLeft, const float& wheelRight);
@@ -65,6 +72,9 @@ private:
 
     // Internal control
     bool _initialized;
+
+    Navigation *_nav;
+    GUI *_gui;
 };
 
 #endif // SKILL_H

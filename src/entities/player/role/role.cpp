@@ -64,6 +64,10 @@ void Role::setPlayer(Player *player) {
     _player = player;
 }
 
+void Role::setGUI(GUI *gui) {
+    _gui = gui;
+}
+
 QString Role::actualBehaviorName() {
     if(_actualBehavior == nullptr) {
         return "NONE";
@@ -132,4 +136,8 @@ WorldMap* Role::getWorldMap() {
     }
 
     return nullptr;
+}
+
+GUI* Role::gui() {
+    return _gui;
 }

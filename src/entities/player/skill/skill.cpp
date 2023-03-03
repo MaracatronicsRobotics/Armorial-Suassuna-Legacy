@@ -32,6 +32,8 @@ Skill::Skill() {
     _worldMap = nullptr;
     _player = nullptr;
     _initialized = false;
+    _nav = nullptr;
+    _gui = nullptr;
 }
 
 bool Skill::isInitialized() {
@@ -48,12 +50,26 @@ void Skill::setPlayer(Player *player) {
     _player = player;
 }
 
+void Skill::setGUI(GUI *gui) {
+    _gui = gui;
+}
+
 void Skill::runSkill() {
+    _nav = new Navigation(_player->identifier().robotid(), _worldMap);
+    _nav->setGUI(gui());
     run();
 }
 
 Player* Skill::player() {
     return _player;
+}
+
+Navigation* Skill::nav() {
+    return _nav;
+}
+
+GUI* Skill::gui() {
+    return _gui;
 }
 
 void Skill::setWheelsSpeed(const float &wheelLeft, const float &wheelRight) {

@@ -48,6 +48,8 @@ SuassunaCore::~SuassunaCore() {
 }
 
 bool SuassunaCore::start(bool useGUI) {
+    _gui = nullptr;
+
     // Start worldmap
     _worldMap = new WorldMap();
 
@@ -80,6 +82,7 @@ bool SuassunaCore::start(bool useGUI) {
 
                 if(color == Suassuna::Constants::teamColor()) {
                     _entityManager->addEntity(player);
+                    player->setGUI(_gui);
                     if (i == 0) {
                         player->setRole(new Role_Goalkeeper());
                     } else {

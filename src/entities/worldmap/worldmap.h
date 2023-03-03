@@ -25,6 +25,7 @@
 #include <QObject>
 
 #include <src/entities/basesuassuna.h>
+#include <src/entities/coach/team/team.h>
 
 class WorldMap : public QObject
 {
@@ -44,8 +45,9 @@ public:
     // Getters for internal objects
     Common::Types::Field getField();
     Common::Types::Object getBall();
-    // Common::Types::Object getPlayer(const Common::Enums::Color& teamColor, quint8 playerId);
+    QPair<Geometry::Vector2D, bool> getPlayerPosition(const Common::Enums::Color& teamColor, quint8 playerId);
     // QList<Common::Types::Object> getPlayersFromTeam(const Common::Enums::Color &teamColor);
+    QList<quint8> getPlayersIds(const Common::Enums::Color &teamColor);
 
 private:
     // Internal objects
