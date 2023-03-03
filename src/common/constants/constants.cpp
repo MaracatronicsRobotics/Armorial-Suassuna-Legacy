@@ -182,3 +182,63 @@ quint16 Constants::maxNumPlayers() {
 
     return maxPlayers;
 }
+
+float Constants::univectorRadius() {
+    bool converted;
+    float univectorRadius = _parameterHandler["Univector"].getAsMap()["radius"].toInt(&converted);
+
+    if(!converted) {
+        spdlog::error("[Constants] Failed to read a valid float in '{}'.", __FUNCTION__);
+        exit(-1);
+    }
+
+    return univectorRadius;
+}
+
+float Constants::univectorKr() {
+    bool converted;
+    float univectorKr = _parameterHandler["Univector"].getAsMap()["kr"].toInt(&converted);
+
+    if(!converted) {
+        spdlog::error("[Constants] Failed to read a valid float in '{}'.", __FUNCTION__);
+        exit(-1);
+    }
+
+    return univectorKr;
+}
+
+float Constants::univectorDelta() {
+    bool converted;
+    float univectorDelta = _parameterHandler["Univector"].getAsMap()["delta"].toInt(&converted);
+
+    if(!converted) {
+        spdlog::error("[Constants] Failed to read a valid float in '{}'.", __FUNCTION__);
+        exit(-1);
+    }
+
+    return univectorDelta;
+}
+
+float Constants::univectorDmin() {
+    bool converted;
+    float univectorDMin = _parameterHandler["Univector"].getAsMap()["dMin"].toInt(&converted);
+
+    if(!converted) {
+        spdlog::error("[Constants] Failed to read a valid float in '{}'.", __FUNCTION__);
+        exit(-1);
+    }
+
+    return univectorDMin;
+}
+
+float Constants::univectorKo() {
+    bool converted;
+    float univectorKo = _parameterHandler["Univector"].getAsMap()["ko"].toInt(&converted);
+
+    if(!converted) {
+        spdlog::error("[Constants] Failed to read a valid float in '{}'.", __FUNCTION__);
+        exit(-1);
+    }
+
+    return univectorKo;
+}

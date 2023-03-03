@@ -19,8 +19,16 @@
 	},
 	
 	"Team": {
-                "teamColor": "yellow",
-                "teamPlaySide": "left",
+		"teamColor": "yellow",
+		"teamPlaySide": "left",
 		"maxNumPlayers": 3
+	},
+
+	"Univector": {
+                "radius": 350.0,
+                "kr": 500.0,
+                "delta": 50.0,
+                "dMin": 75.0,
+				"ko": 0.21
 	}
 }
