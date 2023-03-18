@@ -27,6 +27,7 @@
 
 #include <src/entities/player/role/default/role_default.h> // TODO: remove
 #include <src/entities/player/role/goalkeeper/role_goalkeeper.h> // TODO: remove
+#include <src/entities/player/role/attacker/role_attacker.h>
 
 SuassunaCore::SuassunaCore() {
     // Set GUI as nullptr by default
@@ -85,9 +86,11 @@ bool SuassunaCore::start(bool useGUI) {
                     player->setGUI(_gui);
                     if (i == 0) {
                         player->setRole(new Role_Goalkeeper());
+                    } else if(i == 1) {
+                        player->setRole(new Role_Attacker());
                     } else {
                         player->setRole(new Role_Default());
-                    }
+                    }                       
                 }
             }
         }
