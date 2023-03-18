@@ -26,11 +26,12 @@
 #include <src/entities/player/behavior/default/behavior_default.h>
 #include <src/entities/player/behavior/move/behavior_move.h>
 #include <src/entities/player/behavior/intercept/behavior_intercept.h>
+#include <src/entities/player/behavior/push/behavior_push.h>
 
-class Attacker : public Role
+class Role_Attacker : public Role
 {
 public:
-    Attacker();
+    Role_Attacker();
 
 private:
     // Role inherited methods
@@ -41,13 +42,15 @@ private:
     enum {
         BEHAVIOR_DEFAULT,
         BEHAVIOR_MOVE,
-        BEHAVIOR_INTERCEPT
+        BEHAVIOR_INTERCEPT,
+        BEHAVIOR_PUSH
     };
 
     // Behaviors pointers
     Behavior_Default *_behavior_default;
     Behavior_Move *_behavior_move;
     Behavior_Intercept *_behavior_intercept;
+    Behavior_Push *_behavior_push;
 };
 
 #endif // ATTACKER_H
