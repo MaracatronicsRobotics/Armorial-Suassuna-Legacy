@@ -52,6 +52,7 @@ SOURCES += \
     src/entities/player/behavior/intercept/behavior_intercept.cpp \
     src/entities/player/behavior/kick/behavior_kick.cpp \
     src/entities/player/behavior/move/behavior_move.cpp \
+    src/entities/player/behavior/push/behavior_push.cpp \
     src/entities/player/navigation/navigation.cpp \
     src/entities/player/navigation/univector/univector.cpp \
     src/entities/player/role/attacker/role_attacker.cpp \
@@ -93,6 +94,7 @@ HEADERS += \
     src/entities/player/behavior/intercept/behavior_intercept.h \
     src/entities/player/behavior/kick/behavior_kick.h \
     src/entities/player/behavior/move/behavior_move.h \
+    src/entities/player/behavior/push/behavior_push.h \
     src/entities/player/navigation/navigation.h \
     src/entities/player/navigation/univector/univector.h \
     src/entities/player/role/attacker/role_attacker.h \

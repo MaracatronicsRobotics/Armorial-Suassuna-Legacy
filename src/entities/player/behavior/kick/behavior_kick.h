@@ -25,7 +25,6 @@
 #include <src/entities/player/behavior/behavior.h>
 #include <src/entities/player/skill/goto/skill_goto.h>
 #include <src/entities/player/skill/rotateto/skill_rotateto.h>
-#include <src/entities/player/skill/spin/skill_spin.h>
 
 class Behavior_Kick : public Behavior
 {
@@ -40,14 +39,14 @@ private:
     // Skills pointers
     Skill_GoTo *_skill_goTo;
     Skill_RotateTo *_skill_rotateTo;
-    Skill_Spin *_skill_spin;
 
     // Skills enum
     enum {
         SKILL_GOTO,
-        SKILL_ROTATETO,
-        SKILL_SPIN
+        SKILL_ROTATETO
     };
+
+    Geometry::Vector2D getKickPos(Geometry::Vector2D targetPos);
 
     Geometry::Vector2D _targetPosition;
 };
