@@ -20,6 +20,7 @@
  ***/
 
 #include "behavior_push.h"
+#include <spdlog/spdlog.h>
 
 #include <src/entities/player/player.h>
 #include <src/entities/worldmap/worldmap.h>
@@ -52,9 +53,7 @@ void Behavior_Push::run() {
 
     Geometry::Line pushingLine(Geometry::LineSegment(getWorldMap()->getField().theirGoalCenter(),
                                                      ballPosition));
-    std::optional<Geometry::Vector2D> pushPosOpt;
-
-    //std::cout << magic_enum::enum_name(_behaviorState) << std::endl;
+    std::optional<Geometry::Vector2D> pushPos;
 
     switch (_behaviorState) {
     case GOTO_STATE:{
@@ -68,19 +67,12 @@ void Behavior_Push::run() {
 
         Geometry::LineSegment ballVerticalLine(VertLineVector1,VertLineVector2);
 
-        pushPosOpt = pushingLine.intersect(ballVerticalLine);
+        pushPos = pushingLine.intersect(ballVerticalLine);
 
-        Geometry::Vector2D pushPos = pushPosOpt.value();
-
-        printf("Ponto de Bola: (%f,%f)\n", getWorldMap()->getBall().getPosition().x(), ballPosition.y());
-        printf("Ponto de V1: (%f,%f)\n", VertLineVector1.x(), VertLineVector1.y());
-        printf("Ponto de V2: (%f,%f)\n", VertLineVector2.x(), VertLineVector2.y());
-        printf("Ponto de Interceptacao: (%f,%f)\n", pushPos.x(), pushPos.y());
-
-        _skill_goTo->setTargetPosition(pushPosOpt.value());
+        _skill_goTo->setTargetPosition(pushPos.value());
         runSkill(SKILL_GOTO);
 
-        if(playerPosition.dist(pushPosOpt.value()) < 0.1f){
+        if(playerPosition.dist(pushPos.value()) < 0.1f){
             _behaviorState = ROTATE_STATE;
         }
 
@@ -90,17 +82,25 @@ void Behavior_Push::run() {
         Geometry::Angle angleToBall = (ballPosition - playerPosition).angle();
         _skill_rotateTo->setTargetAngle(angleToBall.value());
         runSkill(SKILL_ROTATETO);
-        if((player()->getOrientation() - angleToBall).value() < 0.05f){
+
+        if(abs(player()->getOrientation().value() - angleToBall.value()) < 0.05f){
             _behaviorState = PUSH_STATE;
-        }else if(playerPosition.dist(pushPosOpt.value()) > 0.20f){
+        }else if(abs(playerPosition.dist(ballPosition)) > 0.2f){
             _behaviorState = GOTO_STATE;
         }
+
         break;
     }
     case PUSH_STATE:
-        _skill_goTo->setTargetPosition(Geometry::Vector2D(0.0f,0.0f));
+        if(abs(playerPosition.dist(ballPosition)) < 0.03f){
+            _skill_goTo->setTargetPosition(getWorldMap()->getField().theirGoalCenter());
+        }else{
+            _skill_goTo->setTargetPosition(ballPosition);
+        }
+
         runSkill(SKILL_GOTO);
-        if(playerPosition.dist(Geometry::Vector2D(0.0f,0.0f)) < 0.05f){
+        
+        if(playerPosition.dist(ballPosition) > 0.15f){
             _behaviorState = GOTO_STATE;
         }
         break;

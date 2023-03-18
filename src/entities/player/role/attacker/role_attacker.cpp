@@ -43,11 +43,7 @@ void Role_Attacker::configure() {
 
 void Role_Attacker::run() {
     // Chase the ball while distant from it
-    if(player()->getPosition().dist(getWorldMap()->getBall().getPosition()) > 0.1f){
-        _behavior_move->setTargetPosition(getWorldMap()->getBall().getPosition());
-        _behavior_move->setMovementType(Behavior_Move::MOVE);
-        setBehavior(BEHAVIOR_MOVE);
-    }else{
+
         setBehavior(BEHAVIOR_PUSH);
-    }
+
 }
