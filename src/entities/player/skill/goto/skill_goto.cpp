@@ -29,6 +29,8 @@ Skill_GoTo::Skill_GoTo() {
 void Skill_GoTo::configure() {
     _targetPosition = Geometry::Vector2D(0.0, 0.0);
     _isSimulation = true;
+    _avoidBall = false;
+    _togglePathPlanning = true;
 }
 
 float smallestAngleDiff(float target, float source) {
@@ -60,12 +62,17 @@ void Skill_GoTo::run() {
 
     //float angleToTarget = (_targetPosition - player()->getPosition()).angle();
 
-//    float angleToTarget = atan2(_targetPosition.y() - player()->getPosition().y(),
-//                                _targetPosition.x() - player()->getPosition().x());
 
     // Navigation output here
-    // inputs: curr pos, goal pos, to avoid opponents, to avoid teammates, to avoid ball;
-    Geometry::Angle angleToTarget = nav()->angleToTarget(player()->getPosition(), _targetPosition, true, true, false);
+    Geometry::Angle angleToTarget;
+    if(_togglePathPlanning){
+        // inputs: curr pos, goal pos, to avoid opponents, to avoid teammates, to avoid ball;
+        angleToTarget = nav()->angleToTarget(player()->getPosition(), _targetPosition,
+                                                             true, true, _avoidBall);
+    }else{
+        angleToTarget = atan2(_targetPosition.y() - player()->getPosition().y(),
+                                    _targetPosition.x() - player()->getPosition().x());
+    }
 
     float angError = smallestAngleDiff(robotAngle, angleToTarget.value());
     if(fabs(angError) > M_PI/2.0 + M_PI/20.0) {
@@ -124,3 +131,12 @@ void Skill_GoTo::setTargetPosition(const Geometry::Vector2D &targetPosition) {
 void Skill_GoTo::setSimulationGame(const bool &isSimulation) {
     _isSimulation = isSimulation;
 }
+
+void Skill_GoTo::setAvoidBall(bool avoidBall){
+    _avoidBall = avoidBall;
+}
+
+void Skill_GoTo::togglePathPlanning(bool togglePP){
+    _togglePathPlanning = togglePP;
+}
+

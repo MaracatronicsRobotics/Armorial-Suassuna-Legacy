@@ -31,6 +31,8 @@ public:
 
     void setTargetPosition(const Geometry::Vector2D& targetPosition);
     void setSimulationGame(const bool& isSimulation);
+    void setAvoidBall(bool avoidBall);
+    void togglePathPlanning(bool togglePP);
 
 private:
     void configure();
@@ -39,6 +41,8 @@ private:
     // Internal
     Geometry::Vector2D _targetPosition;
     bool _isSimulation;
+    bool _avoidBall;
+    bool _togglePathPlanning;
     void sendTargetPosition(const QList<Geometry::Vector2D>& targets);
 };
 
