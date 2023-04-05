@@ -75,7 +75,7 @@ float Univector::phiAuf(Geometry::Vector2D obs_pos,  Geometry::Vector2D robot_po
 
 double Univector::phiTuf(float theta, float d_x, float d_y){
     bool flag = true;
-    if(Suassuna::Constants::teamPlaySide() == Common::Enums::Side::SIDE_LEFT){
+    if(Suassuna::Constants::teamPlaySide() == Common::Enums::Side::SIDE_RIGHT){
         flag = false;
     }
 

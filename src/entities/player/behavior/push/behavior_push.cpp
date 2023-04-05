@@ -57,6 +57,8 @@ void Behavior_Push::run() {
 
     switch (_behaviorState) {
     case GOTO_STATE:{
+
+        //Creates a vertical line to intersect the pushing line
         if(getWorldMap()->getField().playingLeftSide()){
             VertLineVector1 = Geometry::Vector2D(ballPosition.x() - 0.1f, -0.650f);
             VertLineVector2 = Geometry::Vector2D((ballPosition.x() - 0.1f), 0.650f);
@@ -64,45 +66,61 @@ void Behavior_Push::run() {
             VertLineVector1 = Geometry::Vector2D(ballPosition.x() + 0.1f, -0.650f);
             VertLineVector2 = Geometry::Vector2D((ballPosition.x() + 0.1f), 0.650f);
         }
-
         Geometry::LineSegment ballVerticalLine(VertLineVector1,VertLineVector2);
 
         pushPos = pushingLine.intersect(ballVerticalLine);
 
         _skill_goTo->setTargetPosition(pushPos.value());
+        _skill_goTo->togglePathPlanning(true);
+        _skill_goTo->setAvoidBall(true);
         runSkill(SKILL_GOTO);
 
-        if(playerPosition.dist(pushPos.value()) < 0.1f){
+        if(playerPosition.dist(pushPos.value()) < 0.2f){
+            spdlog::info("Rotate State");
+            _skill_goTo->togglePathPlanning(false);
+            runSkill(SKILL_GOTO);
+        }else if(playerPosition.dist(pushPos.value()) < 0.07f){
             _behaviorState = ROTATE_STATE;
         }
 
         break;
     }
     case ROTATE_STATE:{
-        Geometry::Angle angleToBall = (ballPosition - playerPosition).angle();
-        _skill_rotateTo->setTargetAngle(angleToBall.value());
-        runSkill(SKILL_ROTATETO);
+        spdlog::info("Rotate State");
 
-        if(abs(player()->getOrientation().value() - angleToBall.value()) < 0.05f){
+        //Check if it's necessary to adjust the orientation
+        //Also checks if the ball gets farther meanwhile
+        Geometry::Angle angleToBall = (ballPosition - playerPosition).angle();
+        if(abs(player()->getOrientation().value() - angleToBall.value()) < 0.07f){
             _behaviorState = PUSH_STATE;
-        }else if(abs(playerPosition.dist(ballPosition)) > 0.2f){
+        }else if(abs(playerPosition.dist(ballPosition)) > 0.15f){
             _behaviorState = GOTO_STATE;
         }
+
+        _skill_rotateTo->setTargetAngle(angleToBall.value());
+        runSkill(SKILL_ROTATETO);
 
         break;
     }
     case PUSH_STATE:
+        spdlog::info("Push State");
+
+        //If the ball gets farther
+        if(playerPosition.dist(ballPosition) > 0.15f){
+            _behaviorState = GOTO_STATE;
+        }
+
+        //Targets their goal, if the ball is very close
         if(abs(playerPosition.dist(ballPosition)) < 0.03f){
             _skill_goTo->setTargetPosition(getWorldMap()->getField().theirGoalCenter());
         }else{
             _skill_goTo->setTargetPosition(ballPosition);
         }
 
+        _skill_goTo->togglePathPlanning(false);
+        _skill_goTo->setAvoidBall(false);
         runSkill(SKILL_GOTO);
-        
-        if(playerPosition.dist(ballPosition) > 0.15f){
-            _behaviorState = GOTO_STATE;
-        }
+               
         break;
     default:
         _behaviorState = GOTO_STATE;
