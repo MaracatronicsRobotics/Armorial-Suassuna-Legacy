@@ -29,7 +29,7 @@ float Univector::wrapToPi(float angle){
 }
 
 float Univector::gaussian(float r, float d_const){
-    return exp(-(r * r/(2 * d_const * d_const)));
+    return (1/d_const) * (1/sqrtf(2 * static_cast<float>(M_PI))) * exp(-(r * r/(2 * d_const * d_const)));
 }
 
 Geometry::Vector2D Univector::closestObstacle(Geometry::Vector2D pos, QList<Geometry::Vector2D> obstacles){
