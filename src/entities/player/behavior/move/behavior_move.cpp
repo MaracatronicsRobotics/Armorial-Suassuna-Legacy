@@ -49,6 +49,7 @@ void Behavior_Move::run() {
     switch(_movementType) {
         case MOVEMENT::MOVE:
             _skill_goTo->setTargetPosition(_targetPosition);
+            _skill_goTo->setGUI(gui());
             runSkill(SKILL_GOTO);
             break;
         case MOVEMENT::ROTATE:

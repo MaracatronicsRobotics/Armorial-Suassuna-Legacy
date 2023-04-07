@@ -24,6 +24,7 @@
 #define ROLE_H
 
 #include <src/entities/basesuassuna.h>
+#include <src/gui/gui.h>
 
 class Role : public QObject
 {
@@ -42,6 +43,8 @@ public:
     void initialize(WorldMap *worldMap);
     void setPlayer(Player *player);
 
+    void setGUI(GUI *gui);
+
     // Actual Behavior name
     QString actualBehaviorName();
 
@@ -56,6 +59,8 @@ protected:
     // Player and constants getters
     Player* player();
     WorldMap* getWorldMap();
+
+    GUI* gui();
 
 private:
     // Virtual implementation in inherited classes
@@ -74,6 +79,8 @@ private:
 
     // Initialize control
     bool _initialized;
+
+    GUI *_gui;
 };
 
 #endif // ROLE_H

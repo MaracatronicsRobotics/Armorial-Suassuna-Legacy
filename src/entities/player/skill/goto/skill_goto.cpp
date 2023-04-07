@@ -44,6 +44,8 @@ float smallestAngleDiff(float target, float source) {
 }
 
 void Skill_GoTo::run() {
+    nav()->setGUI(gui());
+
     float Kp = 20.0f;
     float Ki = 0.0f;
     float Kd = 2.5f;
@@ -55,16 +57,22 @@ void Skill_GoTo::run() {
     bool reversed = false;
 
     float robotAngle = player()->getOrientation().value();
-    //float angleToTarget = (_targetPosition - player()->getPosition()).angle();
-    float angleToTarget = atan2(_targetPosition.y() - player()->getPosition().y(),
-                                _targetPosition.x() - player()->getPosition().x());
 
-    float angError = smallestAngleDiff(robotAngle, angleToTarget);
+    //float angleToTarget = (_targetPosition - player()->getPosition()).angle();
+
+//    float angleToTarget = atan2(_targetPosition.y() - player()->getPosition().y(),
+//                                _targetPosition.x() - player()->getPosition().x());
+
+    // Navigation output here
+    // inputs: curr pos, goal pos, to avoid opponents, to avoid teammates, to avoid ball;
+    Geometry::Angle angleToTarget = nav()->angleToTarget(player()->getPosition(), _targetPosition, true, true, false);
+
+    float angError = smallestAngleDiff(robotAngle, angleToTarget.value());
     if(fabs(angError) > M_PI/2.0 + M_PI/20.0) {
         reversed = true;
         robotAngle = Geometry::Angle(robotAngle + M_PI).value();
         // Calculates the error and reverses the front of the robot
-        angError = smallestAngleDiff(robotAngle, angleToTarget);
+        angError = smallestAngleDiff(robotAngle, angleToTarget.value());
     }
 
     float motorSpeed = (Kp*angError) + (Ki*cumulativeError) + (Kd * (angError - lastError));// + 0.2 * sumErr;
@@ -96,6 +104,17 @@ void Skill_GoTo::run() {
     }
 
     setWheelsSpeed(leftMotorSpeed, rightMotorSpeed);
+
+    if (gui() != nullptr) {
+        QList<Geometry::Vector2D> interestPoints;
+        interestPoints.push_back(_targetPosition);
+        QVector<Geometry::Vector2D> univector;
+        Geometry::Vector2D projection = Geometry::Vector2D(angleToTarget, 1.0f);
+        projection = Geometry::Vector2D(player()->getPosition().x() + projection.x(), player()->getPosition().y() + projection.y());
+        univector.push_back(projection);
+        gui()->updateInterestPoints(player()->identifier().robotid(), interestPoints);
+        gui()->updateVectorsAngles(player()->identifier().robotid(), univector);
+    }
 }
 
 void Skill_GoTo::setTargetPosition(const Geometry::Vector2D &targetPosition) {

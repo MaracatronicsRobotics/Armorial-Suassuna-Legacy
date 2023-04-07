@@ -103,6 +103,31 @@ public:
      */
     static quint16 maxNumPlayers();
 
+    /*!
+     * \return Univector Field's Radius value.
+     */
+    static float univectorRadius();
+
+    /*!
+     * \return Univector Field's Kr value.
+     */
+    static float univectorKr();
+
+    /*!
+     * \return Univector Field's Delta value.
+     */
+    static float univectorDelta();
+
+    /*!
+     * \return Univector Field's D minimum.
+     */
+    static float univectorDmin();
+
+    /*!
+     * \return Univector Field's Ko.
+     */
+    static float univectorKo();
+
 private:
     static Utils::ParameterHandler _parameterHandler;
 };

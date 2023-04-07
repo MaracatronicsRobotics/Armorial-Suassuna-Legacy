@@ -24,6 +24,7 @@
 #define BEHAVIOR_H
 
 #include <src/entities/basesuassuna.h>
+#include <src/gui/gui.h>
 
 class Behavior
 {
@@ -41,6 +42,9 @@ public:
     void initialize(WorldMap* worldMap);
     void setPlayer(Player* player);
 
+    void setGUI(GUI* gui);
+
+
     // Method to run in role
     void runBehavior();
 
@@ -52,6 +56,8 @@ protected:
     // Player and constants getters
     WorldMap* getWorldMap();
     Player* player();
+
+    GUI* gui();
 
 private:
 
@@ -71,6 +77,8 @@ private:
 
     // Initialize control
     bool _initialized;
+
+    GUI *_gui;
 };
 
 #endif // BEHAVIOR_H

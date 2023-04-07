@@ -56,6 +56,7 @@ void Behavior_Default::run() {
         // Move the robot to other positions and see if it moves
         // to the target position using the best face no move
         _skill_goTo->setTargetPosition(_targetPosition);
+        _skill_goTo->setGUI(gui());
         runSkill(SKILL_GOTO);
     } else {
         // Move the robot to positions where you can see both spin directions

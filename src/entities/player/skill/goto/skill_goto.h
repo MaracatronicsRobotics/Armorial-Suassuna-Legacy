@@ -39,6 +39,7 @@ private:
     // Internal
     Geometry::Vector2D _targetPosition;
     bool _isSimulation;
+    void sendTargetPosition(const QList<Geometry::Vector2D>& targets);
 };
 
 #endif // SKILL_GOTO_H

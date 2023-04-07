@@ -70,6 +70,10 @@ void Player::setRole(Role *role) {
     _mutexRole.unlock();
 }
 
+void Player::setGUI(GUI *gui) {
+    _gui = gui;
+}
+
 void Player::updatePlayer(Common::Types::Object playerData) {
     setPosition(playerData.getPosition());
     setVelocity(playerData.getVelocity());
@@ -111,6 +115,7 @@ void Player::loop() {
                 _playerRole->initialize(_worldMap);
             }
             _playerRole->setPlayer(this);
+            _playerRole->setGUI(_gui);
             _playerRole->runRole();
         }
         else {

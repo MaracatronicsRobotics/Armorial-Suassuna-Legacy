@@ -71,6 +71,7 @@ void Behavior_Intercept::run() {
     }
 
     _skill_goTo->setTargetPosition(_interceptPosition);
+    _skill_goTo->setGUI(gui());
     runSkill(SKILL_GOTO);
 }
 

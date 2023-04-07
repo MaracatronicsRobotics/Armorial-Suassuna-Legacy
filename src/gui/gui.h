@@ -39,6 +39,9 @@ public:
     explicit GUI(QWidget *parent = nullptr);
     ~GUI();
 
+    void updateInterestPoints(quint8 robotId, const QList<Geometry::Vector2D>& points);
+    void updateVectorsAngles(quint8 robotId, const QVector<Geometry::Vector2D>& angles);
+
 private:
     Ui::GUI *ui;
 
@@ -53,6 +56,9 @@ public slots:
     void updateBalls(const QList<Armorial::Ball>& balls);
     void updateRobots(const QList<Armorial::Robot>& robots);
     void updateFieldGeometry(const Common::Types::Field& fieldGeometry);
+    void setRobotChoice(const QString& robotId);
+    void setShowInterestPoints(const bool& toShow);
+    void setShowPath(const bool& toShow);
 };
 
 #endif // GUI_H
