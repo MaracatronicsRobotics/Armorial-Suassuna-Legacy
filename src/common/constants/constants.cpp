@@ -185,7 +185,7 @@ quint16 Constants::maxNumPlayers() {
 
 float Constants::univectorRadius() {
     bool converted;
-    float univectorRadius = _parameterHandler["Univector"].getAsMap()["radius"].toInt(&converted);
+    float univectorRadius = _parameterHandler["Univector"].getAsMap()["radius"].toFloat(&converted);
 
     if(!converted) {
         spdlog::error("[Constants] Failed to read a valid float in '{}'.", __FUNCTION__);
@@ -197,7 +197,7 @@ float Constants::univectorRadius() {
 
 float Constants::univectorKr() {
     bool converted;
-    float univectorKr = _parameterHandler["Univector"].getAsMap()["kr"].toInt(&converted);
+    float univectorKr = _parameterHandler["Univector"].getAsMap()["kr"].toFloat(&converted);
 
     if(!converted) {
         spdlog::error("[Constants] Failed to read a valid float in '{}'.", __FUNCTION__);
@@ -209,7 +209,7 @@ float Constants::univectorKr() {
 
 float Constants::univectorDelta() {
     bool converted;
-    float univectorDelta = _parameterHandler["Univector"].getAsMap()["delta"].toInt(&converted);
+    float univectorDelta = _parameterHandler["Univector"].getAsMap()["delta"].toFloat(&converted);
 
     if(!converted) {
         spdlog::error("[Constants] Failed to read a valid float in '{}'.", __FUNCTION__);
@@ -221,7 +221,7 @@ float Constants::univectorDelta() {
 
 float Constants::univectorDmin() {
     bool converted;
-    float univectorDMin = _parameterHandler["Univector"].getAsMap()["dMin"].toInt(&converted);
+    float univectorDMin = _parameterHandler["Univector"].getAsMap()["dMin"].toFloat(&converted);
 
     if(!converted) {
         spdlog::error("[Constants] Failed to read a valid float in '{}'.", __FUNCTION__);
@@ -233,7 +233,7 @@ float Constants::univectorDmin() {
 
 float Constants::univectorKo() {
     bool converted;
-    float univectorKo = _parameterHandler["Univector"].getAsMap()["ko"].toInt(&converted);
+    float univectorKo = _parameterHandler["Univector"].getAsMap()["ko"].toFloat(&converted);
 
     if(!converted) {
         spdlog::error("[Constants] Failed to read a valid float in '{}'.", __FUNCTION__);
