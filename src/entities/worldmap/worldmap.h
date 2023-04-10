@@ -45,9 +45,7 @@ public:
     // Getters for internal objects
     Common::Types::Field getField();
     Common::Types::Object getBall();
-    QPair<Geometry::Vector2D, bool> getPlayerPosition(const Common::Enums::Color& teamColor, quint8 playerId);
-    // QList<Common::Types::Object> getPlayersFromTeam(const Common::Enums::Color &teamColor);
-    QList<quint8> getPlayersIds(const Common::Enums::Color &teamColor);
+    Team* getTeam(const Common::Enums::Color& teamColor);
 
 private:
     // Internal objects

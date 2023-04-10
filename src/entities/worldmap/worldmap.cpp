@@ -51,33 +51,12 @@ Common::Types::Object WorldMap::getBall() {
     return ball;
 }
 
-QPair<Geometry::Vector2D, bool> WorldMap::getPlayerPosition(const Common::Enums::Color& teamColor, quint8 playerId) {
+Team* WorldMap::getTeam(const Common::Enums::Color& teamColor) {
     _mutex.lockForWrite();
-    QList<Suassuna::Robot*> team = _teams[teamColor]->getPlayers();
+    Team* team = _teams[teamColor];
     _mutex.unlock();
 
-    // Return True in pair if robot found
-    for (Suassuna::Robot* player : team) {
-        if (player->identifier().robotid() == playerId) {
-            return QPair(player->getPosition(), true);
-        }
-    }
-
-    return QPair(Geometry::Vector2D(), false);
-}
-
-QList<quint8> WorldMap::getPlayersIds(const Common::Enums::Color &teamColor) {
-    QList<quint8> playersIds;
-
-    _mutex.lockForWrite();
-    QList<Suassuna::Robot*> team = _teams[teamColor]->getPlayers();
-    _mutex.unlock();
-
-    for (auto robot : team) {
-        playersIds.append(robot->identifier().robotid());
-    }
-
-    return playersIds;
+    return team;
 }
 
 void WorldMap::updatePlayers(const QList<Armorial::Robot>& robots) {

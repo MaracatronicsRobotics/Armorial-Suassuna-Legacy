@@ -180,7 +180,7 @@ QVector<float> Univector::generateUnivectorField(Geometry::Vector2D robot_pos,
 
     float robot_obs_dist = norm(robot_obs_delta.first, robot_obs_delta.second);
 
-    float phi_auf = phiAuf(obstacle, robot_pos, robot_obs_dist, v_obs, v_rob);
+    float phi_auf = phiAuf(obstacle, robot_pos, robot_obs_dist, v_rob, v_obs);
     float phi_composed = phiComposed(phi_tuf, phi_auf, robot_obs_dist, obstacles);
 
     QVector<float> nh_phi = Nh(phi_composed);

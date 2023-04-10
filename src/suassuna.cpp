@@ -83,7 +83,7 @@ bool SuassunaCore::start(bool useGUI) {
                 if(color == Suassuna::Constants::teamColor()) {
                     _entityManager->addEntity(player);
                     player->setGUI(_gui);
-                    if (i == 0) {
+                    if (i == 2) {
                         player->setRole(new Role_Goalkeeper());
                     } else {
                         player->setRole(new Role_Default());

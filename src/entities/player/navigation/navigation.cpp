@@ -8,9 +8,9 @@ Navigation::Navigation(quint8 playerId, WorldMap *worldMap) {
 }
 
 QList<Geometry::Vector2D> Navigation::getObstacles(bool avoidOpponents, bool avoidTeammates, bool avoidBall){
-    Common::Enums::Color ourColor = Suassuna::Constants::teamColor();
-
     QList<Geometry::Vector2D> obstacles;
+
+    Common::Enums::Color ourColor = Suassuna::Constants::teamColor();
     if (avoidOpponents) {
         Common::Enums::Color theirColor;
         if (ourColor == Common::Enums::Color::YELLOW) {
@@ -19,24 +19,18 @@ QList<Geometry::Vector2D> Navigation::getObstacles(bool avoidOpponents, bool avo
             theirColor = Common::Enums::Color::YELLOW;
         }
 
-        QList<quint8> opPlayers = getWorldMap()->getPlayersIds(theirColor);
-        for(int i = 0; i < opPlayers.size(); i++) {
-            QPair<Geometry::Vector2D, bool> pos = getWorldMap()->getPlayerPosition(theirColor, opPlayers[i]);
-            if(pos.second){
-                obstacles.push_back(Geometry::Vector2D(pos.first.x() * 1000.0, pos.first.y() * 1000.0));
-            }
+        Team* theirTeam = getWorldMap()->getTeam(theirColor);
+        for (auto theirPlayer : theirTeam->getPlayers()) {
+            Geometry::Vector2D theirPlayerPosition = theirPlayer->getPosition() * 1000.0f;
+            obstacles.push_back(theirPlayerPosition);
         }
     }
 
     if (avoidTeammates) {
-        QList<quint8> allyPlayers = getWorldMap()->getPlayersIds(ourColor);
-        for(int i = 0; i < allyPlayers.size(); i++) {
-            if(allyPlayers[i] != _playerId) {
-                QPair<Geometry::Vector2D, bool> pos = getWorldMap()->getPlayerPosition(ourColor, allyPlayers[i]);
-                if(pos.second){
-                    obstacles.push_back(Geometry::Vector2D(pos.first.x() * 1000.0, pos.first.y() * 1000.0));
-                }
-            }
+        Team* ourTeam = getWorldMap()->getTeam(ourColor);
+        for (auto ourPlayer : ourTeam->getPlayers()) {
+            Geometry::Vector2D ourPlayerPosition = ourPlayer->getPosition() * 1000.0f;
+            obstacles.push_back(ourPlayerPosition);
         }
     }
 
@@ -50,6 +44,10 @@ QList<Geometry::Vector2D> Navigation::getObstacles(bool avoidOpponents, bool avo
 
 QVector<float> Navigation::getVector(Geometry::Vector2D robotPos, Geometry::Vector2D targetPos, bool avoidOpponents, bool avoidTeammates, bool avoidBall){
     QList<Geometry::Vector2D> obstacles = getObstacles(avoidOpponents, avoidTeammates, avoidBall);
+    Common::Enums::Color ourColor = Suassuna::Constants::teamColor();
+    Geometry::Vector2D playerVelocity = getWorldMap()->getTeam(ourColor)->getPlayer(0).value().getVelocity();
+    QPair<float, float> v_robot(-playerVelocity.x(), -playerVelocity.y());
+    //std::cout << "Player0_velX: " << playerVelocity.x() << " Player0_velY: " << playerVelocity.y() << "\n";
     QVector<float> uni = _univector->generateUnivectorField(robotPos, targetPos, obstacles, QPair<float, float>(0, 0), QPair<float, float>(0, 0));
 //    QVector<float> uni = _univector->generateHyperbolicField(targetPos, robotPos);
     return uni;
