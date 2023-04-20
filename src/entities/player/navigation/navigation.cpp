@@ -21,7 +21,7 @@ QList<Geometry::Vector2D> Navigation::getObstacles(bool avoidOpponents, bool avo
 
         Team* theirTeam = getWorldMap()->getTeam(theirColor);
         for (auto theirPlayer : theirTeam->getPlayers()) {
-            Geometry::Vector2D theirPlayerPosition = theirPlayer->getPosition() * 1000.0f;
+            Geometry::Vector2D theirPlayerPosition = theirPlayer->getPosition();
             obstacles.push_back(theirPlayerPosition);
         }
     }
@@ -29,7 +29,7 @@ QList<Geometry::Vector2D> Navigation::getObstacles(bool avoidOpponents, bool avo
     if (avoidTeammates) {
         Team* ourTeam = getWorldMap()->getTeam(ourColor);
         for (auto ourPlayer : ourTeam->getPlayers()) {
-            Geometry::Vector2D ourPlayerPosition = ourPlayer->getPosition() * 1000.0f;
+            Geometry::Vector2D ourPlayerPosition = ourPlayer->getPosition();
             obstacles.push_back(ourPlayerPosition);
         }
     }
@@ -45,10 +45,16 @@ QList<Geometry::Vector2D> Navigation::getObstacles(bool avoidOpponents, bool avo
 QVector<float> Navigation::getVector(Geometry::Vector2D robotPos, Geometry::Vector2D targetPos, bool avoidOpponents, bool avoidTeammates, bool avoidBall){
     QList<Geometry::Vector2D> obstacles = getObstacles(avoidOpponents, avoidTeammates, avoidBall);
     Common::Enums::Color ourColor = Suassuna::Constants::teamColor();
+
+    // Getting Player Velocity
     Geometry::Vector2D playerVelocity = getWorldMap()->getTeam(ourColor)->getPlayer(0).value().getVelocity();
-    QPair<float, float> v_robot(-playerVelocity.x(), -playerVelocity.y());
+    QPair<float, float> v_robot(playerVelocity.x(), playerVelocity.y());
+
+    // Getting Ball Velocity
+    Geometry::Vector2D ballVelocity = getWorldMap()->getBall().getVelocity();
+    QPair<float, float> v_ball = {ballVelocity.x(), ballVelocity.y()};
     //std::cout << "Player0_velX: " << playerVelocity.x() << " Player0_velY: " << playerVelocity.y() << "\n";
-    QVector<float> uni = _univector->generateUnivectorField(robotPos, targetPos, obstacles, QPair<float, float>(0, 0), QPair<float, float>(0, 0));
+    QVector<float> uni = _univector->generateUnivectorField(robotPos, targetPos, obstacles, v_robot, QPair<float, float>(0, 0));
 //    QVector<float> uni = _univector->generateHyperbolicField(targetPos, robotPos);
     return uni;
 }
